@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import {createStackNavigator} from 'react-navigation';
 
 export default class App extends React.Component {
   render() {
@@ -10,6 +11,13 @@ export default class App extends React.Component {
     );
   }
 }
+
+const MainStackNavigator = createStackNavigator (
+  { 
+    App: App,
+
+  }
+)
 
 const styles = StyleSheet.create({
   container: {
