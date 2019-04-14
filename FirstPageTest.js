@@ -26,7 +26,7 @@ const MainStackNavigator = createStackNavigator (
 
   },
   {
-      initialRouteName: 'FirstPageTest'
+      initialRouteName: 'Area'
   }
 );
 const NavigationApp = createNavigationContainer(MainStackNavigator);
