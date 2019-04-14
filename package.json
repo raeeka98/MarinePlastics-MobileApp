@@ -14,5 +14,9 @@
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
   },
+  "peerDependencies": {
+    "react-native": "^0.55.4",
+    "react": "16.0.0-alpha.6"
+  },
   "private": true
 }
