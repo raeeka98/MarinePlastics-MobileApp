@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {UIManager, Animated, TextInput, Keyboard, Dimensions, View, Text, StyleSheet} from 'react-native'
+import {UIManager, Animated, TextInput, Keyboard, Dimensions, View, Text, StyleSheet, ScrollView} from 'react-native'
 import {Item, Footer, FooterTab, Button, Icon, CheckBox} from 'native-base'
 
 /**
@@ -67,20 +67,21 @@ export default class Area extends Component{
         const {shift} = this.state;
         return(
             <Animated.View style={[styles.container, {transform: [{translateY: shift}]}]}>
+                <ScrollView style={{marginBottom:50}}>
                 <View style={styles.inputSingleContainer}>
                     <Text style={{fontSize:20}}>Beach Info</Text>
                     <Text style={styles.inputSingle}>Beach Name</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={{fontSize: 16,height:40}} onFocus={()=> {console.log("Presseefweg")}}></TextInput>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput} onFocus={()=> {console.log("Presseefweg")}}></TextInput>
                     </Item>
 
                     <Text style={styles.inputSingle}>Coordinates (Link to GPS stuff here)</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={{fontSize: 16,height:40}}></TextInput>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
                     </Item>
                     <Text style={styles.inputSingle}>Beach Name</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={{fontSize: 16,height:40}}></TextInput>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
                     </Item>
                 </View>
                 <View style={styles.inputDoubleContainer}>
@@ -89,15 +90,15 @@ export default class Area extends Component{
                             Major Usage:
                         </Text> 
                         <View style={styles.checkBox}>
-                            <CheckBox style={{marginRight:5, height: 25, width: 25}} checked={false} />
+                            <CheckBox style={styles.checkBoxInput} checked={false} />
                             <Text style={{marginLeft:10}}>Recreation</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={{marginRight:5, height: 25, width: 25}} checked={false} />
+                            <CheckBox style={styles.checkBoxInput} checked={false} />
                             <Text style={{marginLeft:10}}>Commercial</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={{marginRight:5, height: 25, width: 25}} checked={false} />
+                            <CheckBox style={styles.checkBoxInput} checked={false} />
                             <Text style={{marginLeft:10}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
@@ -109,15 +110,15 @@ export default class Area extends Component{
                             Reason For Beach Choice:
                         </Text>
                         <View style={styles.checkBox}>
-                            <CheckBox style={{marginRight:5, height: 25, width: 25}} checked={true} />
+                            <CheckBox style={styles.checkBoxInput} checked={true} />
                             <Text  style={{marginLeft:5}}>Proximity/Convenience</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={{marginRight:5, height: 25, width: 25}} checked={false} />
+                            <CheckBox style={styles.checkBoxInput} checked={false} />
                             <Text style={{marginLeft:10}}>Known for Debris</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={{marginRight:5, height: 25, width: 25}} checked={false} />
+                            <CheckBox style={styles.checkBoxInput} checked={false} />
                             <Text style={{marginLeft:10}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
@@ -125,6 +126,68 @@ export default class Area extends Component{
                         </Item>
                     </View>
                 </View>
+                <View style={{marginLeft: 15, marginRight:15}}>
+                    <Text style={styles.inputSingle}>Compass Direction (Degrees)</Text>
+                    <Item regular>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                    </Item>
+                </View>
+                <View style={styles.segmentSeparator}></View>
+                <View style={styles.inputSingleContainer}>
+                    <Text style={{fontSize: 20}}>Nearest River Output</Text>
+                    <Text style={styles.inputSingle}>River Name</Text>
+                    <Item regular>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                    </Item>
+                    <Text style={styles.inputSingle}>Approximate Distance</Text>
+                    <Item regular>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                    </Item>
+                </View>
+                <View style={styles.segmentSeparator}></View>
+                <View style={styles.inputSingleContainer}>
+                    <Text style={{fontSize: 20}}>Last Tide Before Cleanup</Text>
+                    <Text style={styles.inputSingle}>Type</Text>
+                    <Item regular>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                    </Item>
+                </View>
+                <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
+                    <View style={styles.inputDouble}>
+                        <Text style={styles.inputDouble}>Height (ft.)</Text>
+                        <Item regular>
+                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        </Item>
+                    </View>
+                    <View style={styles.inputDouble}>
+                        <Text style={styles.inputDouble}>Time</Text>
+                        <Item regular>
+                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        </Item>
+                    </View>
+                </View>
+                <View style={styles.inputSingleContainer}>
+                    <Text style={{fontSize: 20}}>Next Tide After Cleanup</Text>
+                    <Text style={styles.inputSingle}>Type</Text>
+                    <Item regular>
+                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                    </Item>
+                </View>
+                <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
+                    <View style={styles.inputDouble}>
+                        <Text style={styles.inputDouble}>Height (ft.)</Text>
+                        <Item regular>
+                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        </Item>
+                    </View>
+                    <View style={styles.inputDouble}>
+                        <Text style={styles.inputDouble}>Time</Text>
+                        <Item regular>
+                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        </Item>
+                    </View>
+                </View>
+                </ScrollView>
                 <Footer style={styles.footer}>
                     <FooterTab>
                         <Button vertical onPress={this.moveToTeamInfo}>
@@ -175,6 +238,22 @@ const styles = StyleSheet.create({
     checkBox: {
         flexDirection: 'row',
         marginTop: 3
+    },
+    checkBoxInput: {
+        marginRight:5, 
+        height: 25, 
+        width: 25
+    },
+    textInput: {
+        height: 40,
+        fontSize: 16
+    },
+    segmentSeparator: {
+        padding: 15,
+        marginLeft: 15,
+        marginRight: 15,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 1
     },
     footer: {
         position: 'absolute',
