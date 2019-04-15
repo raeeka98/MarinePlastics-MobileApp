@@ -1,6 +1,10 @@
 import React, {Component} from 'react'
 import {UIManager, Animated, TextInput, Keyboard, Dimensions, View, Text, StyleSheet, ScrollView} from 'react-native'
 import {Item, Footer, FooterTab, Button, Icon, CheckBox} from 'native-base'
+import DateTimePicker from 'react-native-modal-datetime-picker'
+
+
+import KeyboardView from './KeyboardView'
 
 /**
  * I think that users still need to enter in this information while they're at the beach because they need
@@ -8,55 +12,61 @@ import {Item, Footer, FooterTab, Button, Icon, CheckBox} from 'native-base'
  * they're out in the field
 */
 const invisiblePlaceholder = "                                                                                                   "
-const{ State: TextInputState} = TextInput;
 
 export default class Area extends Component{
     state = {
-        shift: new Animated.Value(0),
-    };
-
-    componentWillMount() {
-        this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.handleKeyboardDidShow);
-        this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.handleKeyboardDidHide);
+        showLastTime: false,
+        lastTime: new Date(),
+        lastHours: '00',
+        lastMinutes: '00',
+        showNextTime: false,
+        nextTime: new Date(),
+        nextHours: '00',
+        nextMinutes: '00'
     }
 
-    componentWillUnmount() {
-        this.keyboardDidShowSub.remove();
-        this.keyboardDidHideSub.remove();
+    static navigationOptions =  {
+        title: "Survey Area"
     }
 
-    /**Some magic off of stack overflow */
-    handleKeyboardDidShow = (event) => {
-        const {height: windowHeight} = Dimensions.get('window');
-        const keyboardHeight = event.endCoordinates.height;
-        const currentlyFocusedField = TextInputState.currentlyFocusedField();
-        UIManager.measure(currentlyFocusedField, (originX, originY, width, height, pageX, pageY) => {
-            const fieldHeight = height;
-            const fieldTop = pageY;
-            const gap = (windowHeight - keyboardHeight) - (fieldTop + fieldHeight);
-            if(gap >= 0) {
-                return;
-            }
-            Animated.timing(
-                this.state.shift,
-                {
-                    toValue: gap,
-                    duration: 100,
-                    useNativeDriver: true,
-                }
-            ).start();
-        });
+    onPressLastTime = () => {
+        this.setState({showLastTime: true})
     }
 
-    handleKeyboardDidHide = () => {
-        Animated.timing(
-            this.state.shift,
+    setLastTime = (time) => {
+        this.setState(
             {
-                toValue: 0,
-                duration: 100,
-                useNativeDriver: true,
+                lastTime: time,
+                lastHours: time.getHours() < 10 ? `0${time.getHours()}` : time.getHours(),
+                lastMinutes: time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes(),
+                showLastTime: false
             }
-        ).start();
+        )
+    }
+
+    onCancelLast = () => {
+        this.setState({showLastTime: false})
+
+    }
+
+    onPressNextTime = () => {
+        this.setState({showNextTime: true})
+    }
+
+    setNextTime = (time) => {
+        this.setState(
+            {
+                nextTime: time,
+                nextHours: time.getHours() < 10 ? `0${time.getHours()}` : time.getHours(),
+                nextMinutes: time.getMinutes().length < 10 ? `0${time.getMinutes()}` : time.getMinutes(),
+                showNextTime: false
+            }
+        )
+    }
+
+    onCancelNext = () => {
+        this.setState({showNextTime: false})
+
     }
 
     moveToTeamInfo = () => {
@@ -64,10 +74,11 @@ export default class Area extends Component{
     }
 
     render() {
-        const {shift} = this.state;
         return(
-            <Animated.View style={[styles.container, {transform: [{translateY: shift}]}]}>
+            <KeyboardView style={styles.container}>
                 <ScrollView style={{marginBottom:50}}>
+
+                {/* Render the Beach Info */}
                 <View style={styles.inputSingleContainer}>
                     <Text style={{fontSize:20}}>Beach Info</Text>
                     <Text style={styles.inputSingle}>Beach Name</Text>
@@ -132,6 +143,8 @@ export default class Area extends Component{
                         <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
                     </Item>
                 </View>
+
+                {/* Render the Nearest River Output Section */}
                 <View style={styles.segmentSeparator}></View>
                 <View style={styles.inputSingleContainer}>
                     <Text style={{fontSize: 20}}>Nearest River Output</Text>
@@ -144,6 +157,8 @@ export default class Area extends Component{
                         <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
                     </Item>
                 </View>
+
+                {/* Render Tide information */}
                 <View style={styles.segmentSeparator}></View>
                 <View style={styles.inputSingleContainer}>
                     <Text style={{fontSize: 20}}>Last Tide Before Cleanup</Text>
@@ -160,9 +175,22 @@ export default class Area extends Component{
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={styles.inputDouble}>Time</Text>
+                        <Text style={{marginBottom: 5}}>Time</Text>
                         <Item regular>
-                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                            <Button onPress={this.onPressLastTime} style={{color: 'gray'}}>
+                                <Icon name='clock'></Icon>
+                                <Text style={{marginRight: 5}}>
+                                    Select Time
+                                </Text>
+                            </Button>
+                            <DateTimePicker
+                                isVisible={this.state.showLastTime}    
+                                mode={'time'}
+                                onConfirm={this.setLastTime}
+                                is24Hour={false}   
+                                onCancel={this.onCancelLast}                   
+                            />
+                            <Text>{this.state.lastHours + ":" + this.state.lastMinutes}</Text>
                         </Item>
                     </View>
                 </View>
@@ -181,13 +209,26 @@ export default class Area extends Component{
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={styles.inputDouble}>Time</Text>
+                        <Text style={{marginBottom: 5}}>Time</Text>
                         <Item regular>
-                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                            <Button onPress={this.onPressNextTime} style={{color: 'gray'}}>
+                                <Icon name='clock'></Icon>
+                                <Text style={{marginRight: 5}}>Select Time</Text>
+                            </Button>
+                            <DateTimePicker
+                                isVisible={this.state.showNextTime}    
+                                mode={'time'}
+                                onConfirm={this.setNextTime}
+                                is24Hour={false}   
+                                onCancel={this.onCancelNext}                   
+                            />
+                            <Text>{this.state.nextHours + ":" + this.state.nextMinutes}</Text>
                         </Item>
                     </View>
                 </View>
                 </ScrollView>
+
+                {/* Render the footer used for navigation */}
                 <Footer style={styles.footer}>
                     <FooterTab>
                         <Button vertical onPress={this.moveToTeamInfo}>
@@ -212,7 +253,7 @@ export default class Area extends Component{
                         </Button>
                     </FooterTab>
                 </Footer>
-            </Animated.View>
+            </KeyboardView>
         )
     }
 }

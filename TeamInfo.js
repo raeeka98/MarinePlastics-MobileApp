@@ -67,6 +67,7 @@ export default class TeamInfo extends Component {
                 </View>
                 <View style={styles.inputDoubleContainer}>
                     <View style={styles.inputDouble}>
+                        
                         <Text>Date</Text>
                         <Item regular>
                             <DatePicker 
@@ -81,6 +82,7 @@ export default class TeamInfo extends Component {
                         <Text>Time</Text>
                         <Item regular>
                             <Button onPress={this.onPressTime} style={{color: 'gray'}}>
+                                <Icon name='clock'/>
                                 <Text>
                                     Select Time
                                 </Text>
