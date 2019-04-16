@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {UIManager, Animated, TextInput, Keyboard, Dimensions, View, Text, StyleSheet, ScrollView} from 'react-native'
+import {TextInput, View, Text, StyleSheet, ScrollView} from 'react-native'
 import {Item, Footer, FooterTab, Button, Icon, CheckBox} from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
@@ -15,6 +15,7 @@ const invisiblePlaceholder = "                                                  
 
 export default class Area extends Component{
     state = {
+        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
         showLastTime: false,
         lastTime: new Date(),
         lastHours: '00',
@@ -27,6 +28,20 @@ export default class Area extends Component{
 
     static navigationOptions =  {
         title: "Survey Area"
+    }
+
+    displayTimeString = (time) => {
+        const tideTime = this.state.surveyData[time]
+        if(!tideTime)
+            return "00:00";
+        let timeString, hours, hourString, minutes, minutesString;
+        hours = tideTime.getHours();
+        hourString = hours < 10 ? `0${hours}` : `${hours}`
+        minutes = tideTime.getMinutes();
+        minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+        timeString = `${hourString}:${minutesString}`;
+        return timeString;
     }
 
     onPressLastTime = () => {
@@ -70,7 +85,40 @@ export default class Area extends Component{
     }
 
     moveToTeamInfo = () => {
-        this.props.navigation.push('TeamInfo');
+        this.props.navigation.push('TeamInfo', {surveyData: this.state.surveyData});
+    }
+
+    updateSurveyTime(refName, e) {
+        let key = refName;
+        let val = e;
+
+        this.setState(prevState => {
+            prevState.surveyData[key] = val;
+            return prevState;
+        })
+        
+    }
+
+    updateSurveyState(refName, e) {
+        console.log(e);
+        let key =  refName;//e.target.id;
+        let value = e.nativeEvent.text;
+        console.log(`Key: ${key}, value: ${value}`);
+        this.setState(prevState => {
+            prevState.surveyData[key] = value;
+            return prevState;
+        })
+        
+        console.log("State set: " + JSON.stringify(this.state.surveyData))
+    }
+
+    checkedbox(refName, e) {
+        let key = refName;
+        let selection = this.state.surveyData[refName];
+        this.setState(prevState => {
+            prevState.surveyData[key] = !selection;
+            return prevState;
+        })
     }
 
     render() {
@@ -83,16 +131,34 @@ export default class Area extends Component{
                     <Text style={{fontSize:20}}>Beach Info</Text>
                     <Text style={styles.inputSingle}>Beach Name</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput} onFocus={()=> {console.log("Presseefweg")}}></TextInput>
+                        <TextInput
+                            ref = 'beachName' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'beachName')}
+                            value={this.state.surveyData.beachName}
+                        />
                     </Item>
 
-                    <Text style={styles.inputSingle}>Coordinates (Link to GPS stuff here)</Text>
+                    <Text style={styles.inputSingle}>Latitude (Link to GPS stuff here)</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        <TextInput
+                            ref = 'latitude' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'latitude')}
+                            value={this.state.surveyData.latitude}
+                        />
                     </Item>
-                    <Text style={styles.inputSingle}>Beach Name</Text>
+                    <Text style={styles.inputSingle}>Longitude (Link to GPS stuff here)</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        <TextInput
+                            ref = 'longitude' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'longitude')}
+                            value={this.state.surveyData.longitude}
+                        />
                     </Item>
                 </View>
                 <View style={styles.inputDoubleContainer}>
@@ -101,19 +167,35 @@ export default class Area extends Component{
                             Major Usage:
                         </Text> 
                         <View style={styles.checkBox}>
-                            <CheckBox style={styles.checkBoxInput} checked={false} />
+                            <CheckBox 
+                                style={styles.checkBoxInput} 
+                                checked={this.state.surveyData.usageRecreation} 
+                                onPress={this.checkedbox.bind(this, 'usageRecreation')} 
+                            />
                             <Text style={{marginLeft:10}}>Recreation</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={styles.checkBoxInput} checked={false} />
+                            <CheckBox 
+                                style={styles.checkBoxInput} 
+                                checked={this.state.surveyData.usageCommercial} 
+                                onPress={this.checkedbox.bind(this, 'usageCommercial')} 
+                            />
                             <Text style={{marginLeft:10}}>Commercial</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={styles.checkBoxInput} checked={false} />
+                            <CheckBox 
+                                style={styles.checkBoxInput} 
+                                checked={this.state.surveyData.usageOther} 
+                                onPress={this.checkedbox.bind(this, 'usageOther')} 
+                            />
                             <Text style={{marginLeft:10}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
-                            <TextInput placeholder={invisiblePlaceholder} style={{height: 30}}></TextInput>
+                            <TextInput 
+                                editable={this.state.surveyData.usageOther === true} 
+                                placeholder={invisiblePlaceholder} 
+                                style={{height: 30}}
+                            />
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
@@ -121,26 +203,48 @@ export default class Area extends Component{
                             Reason For Beach Choice:
                         </Text>
                         <View style={styles.checkBox}>
-                            <CheckBox style={styles.checkBoxInput} checked={true} />
+                            <CheckBox 
+                                style={styles.checkBoxInput} 
+                                checked={this.state.surveyData.locationChoiceProximity} 
+                                onPress={this.checkedbox.bind(this, 'locationChoiceProximity')} 
+                            />
                             <Text  style={{marginLeft:5}}>Proximity/Convenience</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={styles.checkBoxInput} checked={false} />
+                            <CheckBox 
+                                style={styles.checkBoxInput} 
+                                checked={this.state.surveyData.locationChoiceDebris} 
+                                onPress={this.checkedbox.bind(this, 'locationChoiceDebris')} 
+                            />
                             <Text style={{marginLeft:10}}>Known for Debris</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox style={styles.checkBoxInput} checked={false} />
+                            <CheckBox 
+                                style={styles.checkBoxInput} 
+                                checked={this.state.surveyData.locationChoiceOther} 
+                                onPress={this.checkedbox.bind(this, 'locationChoiceOther')} 
+                            />
                             <Text style={{marginLeft:10}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
-                            <TextInput placeholder={invisiblePlaceholder} style={{height: 30}}></TextInput>
+                            <TextInput 
+                                editable={this.state.surveyData.locationChoiceOther === true} 
+                                placeholder={invisiblePlaceholder} 
+                                style={{height: 30}}
+                            />
                         </Item>
                     </View>
                 </View>
                 <View style={{marginLeft: 15, marginRight:15}}>
                     <Text style={styles.inputSingle}>Compass Direction (Degrees)</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        <TextInput
+                            ref = 'cmpsDir' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'cmpsDir')}
+                            value={this.state.surveyData.cmpsDir}
+                        />
                     </Item>
                 </View>
 
@@ -150,11 +254,23 @@ export default class Area extends Component{
                     <Text style={{fontSize: 20}}>Nearest River Output</Text>
                     <Text style={styles.inputSingle}>River Name</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        <TextInput
+                            ref = 'riverName' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'riverName')}
+                            value={this.state.surveyData.riverName}
+                        />
                     </Item>
                     <Text style={styles.inputSingle}>Approximate Distance</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        <TextInput
+                            ref = 'riverDistance' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'riverDistance')}
+                            value={this.state.surveyData.riverDistance}
+                        />
                     </Item>
                 </View>
 
@@ -164,14 +280,26 @@ export default class Area extends Component{
                     <Text style={{fontSize: 20}}>Last Tide Before Cleanup</Text>
                     <Text style={styles.inputSingle}>Type</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        <TextInput
+                            ref = 'tideTypeA' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'tideTypeA')}
+                            value={this.state.surveyData.tideTypeA}
+                        />
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
                     <View style={styles.inputDouble}>
                         <Text style={styles.inputDouble}>Height (ft.)</Text>
                         <Item regular>
-                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                            <TextInput
+                            ref = 'tideHeightA' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'tideHeightA')}
+                            value={this.state.surveyData.tideHeightA}
+                        />
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
@@ -186,11 +314,11 @@ export default class Area extends Component{
                             <DateTimePicker
                                 isVisible={this.state.showLastTime}    
                                 mode={'time'}
-                                onConfirm={this.setLastTime}
+                                onConfirm={this.updateSurveyTime.bind(this, 'tideTimeA')}
                                 is24Hour={false}   
                                 onCancel={this.onCancelLast}                   
                             />
-                            <Text>{this.state.lastHours + ":" + this.state.lastMinutes}</Text>
+                            <Text>{this.displayTimeString('tideTimeA')}</Text>
                         </Item>
                     </View>
                 </View>
@@ -198,14 +326,26 @@ export default class Area extends Component{
                     <Text style={{fontSize: 20}}>Next Tide After Cleanup</Text>
                     <Text style={styles.inputSingle}>Type</Text>
                     <Item regular>
-                        <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                        <TextInput
+                            ref = 'tideTypeB' 
+                            placeholder={invisiblePlaceholder} 
+                            style={styles.textInput} 
+                            onChange={this.updateSurveyState.bind(this, 'tideTypeB')}
+                            value={this.state.surveyData.tideTypeB}
+                        />
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
                     <View style={styles.inputDouble}>
                         <Text style={styles.inputDouble}>Height (ft.)</Text>
                         <Item regular>
-                            <TextInput placeholder={invisiblePlaceholder} style={styles.textInput}></TextInput>
+                            <TextInput
+                                ref = 'tideHeightB' 
+                                placeholder={invisiblePlaceholder} 
+                                style={styles.textInput} 
+                                onChange={this.updateSurveyState.bind(this, 'tideHeightB')}
+                                value={this.state.surveyData.tideHeightB}
+                            />
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
@@ -218,11 +358,11 @@ export default class Area extends Component{
                             <DateTimePicker
                                 isVisible={this.state.showNextTime}    
                                 mode={'time'}
-                                onConfirm={this.setNextTime}
+                                onConfirm={this.updateSurveyTime.bind(this, 'tideTimeB')}
                                 is24Hour={false}   
                                 onCancel={this.onCancelNext}                   
                             />
-                            <Text>{this.state.nextHours + ":" + this.state.nextMinutes}</Text>
+                            <Text>{this.displayTimeString('tideTimeB')}</Text>
                         </Item>
                     </View>
                 </View>

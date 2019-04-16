@@ -1,17 +1,38 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TextInput} from 'react-native';
-import {Container, DatePicker, Icon, Item, Input, Footer, FooterTab, Button} from 'native-base';
+import {StyleSheet, Text, View} from 'react-native';
+import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button} from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
 export default class TeamInfo extends Component {
+
+    constructor(props){
+        super(props);
+    }
     state = {
         showTime: false,
         time: new Date(),
         hours: '00',
-        minutes: '00'
+        minutes: '00',
+        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
+        srsData: {},
+        asData:{}
     }
     static navigationOptions = {
         title: "Team information"
+    }
+
+    displayTimeString = () => {
+        const {cleanupTime} = this.state.surveyData
+        if(!cleanupTime)
+            return "00:00";
+        let timeString, hours, hourString, minutes, minutesString;
+        hours = cleanupTime.getHours();
+        hourString = hours < 10 ? `0${hours}` : `${hours}`
+        minutes = cleanupTime.getMinutes();
+        minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+        timeString = `${hourString}:${minutesString}`;
+        return timeString;
     }
 
     onPressBack = () => {
@@ -39,7 +60,32 @@ export default class TeamInfo extends Component {
     }
 
     moveToArea = () => {
-        this.props.navigation.push('Area');
+        this.props.navigation.push('Area', {surveyData: this.state.surveyData});
+    }
+
+    updateSurveyState(refName, e) {
+        console.log(e);
+        let key =  refName;//e.target.id;
+        let value = e.nativeEvent.text;
+        console.log(`Key: ${key}, value: ${value}`);
+        this.setState(prevState => {
+            prevState.surveyData[key] = value;
+            return prevState;
+        })
+        if(key === 'cleanupTime')
+            this.setState({showTime: false})
+        console.log("State set: " + JSON.stringify(this.state.surveyData))
+    }
+
+    updateSurveyTime(refName, e) {
+        let key = refName;
+        let val = e;
+
+        this.setState(prevState => {
+            prevState.surveyData[key] = val;
+            return prevState;
+        })
+        
     }
 
     render() {
@@ -49,19 +95,36 @@ export default class TeamInfo extends Component {
                 <View style={styles.inputSingleContainer} >
                     <Text style={styles.inputSingle}>First Name</Text>
                     <Item regular>
-                        <Input></Input>
+                        <Input 
+                            editable={true}
+                            ref='userFirst'
+                            onChange={this.updateSurveyState.bind(this, 'userFirst')}
+                            value={this.state.surveyData.userFirst}
+                        />
                     </Item>
                     <Text style={styles.inputSingle}>Last Name</Text>
                     <Item regular>
-                        <Input></Input>
+                        <Input
+                            ref='userLast'
+                            onChange={this.updateSurveyState.bind(this, 'userLast')}
+                            value={this.state.surveyData.userLast}
+                        />
                     </Item>
                     <Text style={styles.inputSingle}>Organization Name</Text>
                     <Item regular>
-                        <Input></Input>
+                        <Input
+                            ref='orgName'
+                            onChange={this.updateSurveyState.bind(this, 'orgName')}
+                            value={this.state.surveyData.orgName}
+                        />
                     </Item>
                     <Text style={styles.inputSingle}>Organization Location</Text>
                     <Item regular>
-                        <Input></Input>
+                        <Input
+                            ref='orgLoc'
+                            onChange={this.updateSurveyState.bind(this, 'orgLoc')}
+                            value={this.state.surveyData.orgLoc}
+                        />
                     </Item>
                     
                 </View>
@@ -71,7 +134,8 @@ export default class TeamInfo extends Component {
                         <Text>Date</Text>
                         <Item regular>
                             <DatePicker 
-                                
+                                ref='cleanupDate'
+                                onDateChange={this.updateSurveyTime.bind(this, 'cleanupDate')}
                                 maximumDate={new Date()}
                                 defaultDate = {new Date()}
                                 locale={'en-us'}
@@ -88,13 +152,15 @@ export default class TeamInfo extends Component {
                                 </Text>
                             </Button>
                             <DateTimePicker
+                                ref='cleanupTime'
                                 isVisible={this.state.showTime}    
                                 mode={'time'}
-                                onConfirm={this.setTime}
-                                is24Hour={false}   
+                                onConfirm={this.updateSurveyTime.bind(this, 'cleanupTime')}
+                                is24Hour={false}
+                                maximumDate={new Date()}   
                                 onCancel={this.onCancel}                   
                             />
-                            <Text>{this.state.hours + ":" + this.state.minutes}</Text>
+                            <Text>{this.displayTimeString()}</Text>
                         </Item>
                     </View>  
                 </View>
