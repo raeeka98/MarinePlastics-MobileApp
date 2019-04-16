@@ -1,42 +1,47 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {createStackNavigator, createNavigationContainer} from 'react-navigation';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
+import AppNavigator from './navigation/AppNavigator';
+import HomePage from './screens/HomePage';
+import BoardingPage from './screens/BoardingPage';
+import LogInPage from './screens/LogInPage';
+import ProfilePage from './screens/ProfilePage';
+import SurveyPage from './screens/SurveyPage';
+import PublishPage from './screens/PublishPage';
+import ChooseBeachPage from './screens/ChooseBeachPage';
+import TeamInfo from './screens/survey/TeamInfo'
+import Area from './screens/survey/Area'
+
+
+const MainNavigator = createStackNavigator({
+  Boarding: {screen: BoardingPage},
+  Home: {screen: HomePage},
+  Login: {screen: LogInPage},
+  Profile: {screen: ProfilePage},
+  SurveyEntry: {screen: SurveyPage},
+  PublishFinalizeSurvey: {screen: PublishPage},
+  ChooseBeach: {screen: ChooseBeachPage},
+  TeamInfo: {screen: TeamInfo},
+  Area: {screen: Area}
+});
+
+const App = createNavigationContainer(MainNavigator);
+
+export default App;
+
+/*
 export default class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      latitude: null,
-      longitude: null,
-      error: null,
-    };
-  }
-
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null,
-        });
-      },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-  }
+  
 
   render() {
     return (
-      <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Latitude: {this.state.latitude}</Text>
-        <Text>Longitude: {this.state.longitude}</Text>
-        {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
-      </View>
+      <NavigationApp/>
     );
   }
 }
+*/
+
 
 
 const styles = StyleSheet.create({
