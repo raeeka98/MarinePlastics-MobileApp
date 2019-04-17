@@ -10,8 +10,9 @@ import ProfilePage from './screens/ProfilePage';
 import SurveyPage from './screens/SurveyPage';
 import PublishPage from './screens/PublishPage';
 import ChooseBeachPage from './screens/ChooseBeachPage';
-import TeamInfo from './screens/survey/TeamInfo'
-import Area from './screens/survey/Area'
+import TeamInfo from './screens/survey/TeamInfo';
+import Area from './screens/survey/Area';
+import LocationPage from './screens/LocationPage';
 
 
 const MainNavigator = createStackNavigator({
@@ -23,7 +24,8 @@ const MainNavigator = createStackNavigator({
   PublishFinalizeSurvey: {screen: PublishPage},
   ChooseBeach: {screen: ChooseBeachPage},
   TeamInfo: {screen: TeamInfo},
-  Area: {screen: Area}
+  Area: {screen: Area},
+  Location: {screen: LocationPage}
 });
 
 const App = createNavigationContainer(MainNavigator);
