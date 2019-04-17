@@ -3,6 +3,9 @@ import {StyleSheet, Text, View} from 'react-native';
 import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button} from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
+import SurveyFooter from './SurveyFooter'
+import styles from './surveyStyles'
+
 export default class TeamInfo extends Component {
 
     constructor(props){
@@ -61,6 +64,10 @@ export default class TeamInfo extends Component {
 
     moveToArea = () => {
         this.props.navigation.push('Area', {surveyData: this.state.surveyData});
+    }
+
+    moveToSRS = () => {
+        this.props.navigation.push('SurfaceRibScan', {surveyData: this.state.surveyData});
     }
 
     updateSurveyState(refName, e) {
@@ -164,56 +171,8 @@ export default class TeamInfo extends Component {
                         </Item>
                     </View>  
                 </View>
-                <Footer style={styles.footer}>
-                    <FooterTab>
-                        <Button active style={{color: 'skyblue'}}>
-                            <Icon name='person' />
-                            <Text style={{color: 'white'}}>Info</Text>
-                        </Button>
-                        <Button vertical onPress={this.moveToArea}>
-                            <Icon name='navigate' />
-                            <Text >Area</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name='grid' />
-                            <Text >SRS</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name='people' />
-                            <Text >AS</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name='search' />
-                            <Text >Micro</Text>
-                        </Button>
-                    </FooterTab>
-                </Footer>
+                <SurveyFooter teamInfo moveToArea={this.moveToArea} moveToSRS={this.moveToSRS}/>
             </View>  
         )
     }
 }
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-        },
-        inputSingleContainer: {
-            padding: 30,
-        },
-        inputSingle: {
-            marginTop: 15
-        },
-        inputDoubleContainer: {
-            flexDirection: 'row'
-        },
-        inputDouble: { 
-            flex: 2,
-            marginLeft: 10,
-            marginRight: 10
-        },
-        footer: {
-            position: 'absolute',
-            bottom: 0,
-            backgroundColor: 'yellow',
-            justifyContent: 'center'
-        }
-    })

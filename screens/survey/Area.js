@@ -3,8 +3,9 @@ import {TextInput, View, Text, StyleSheet, ScrollView} from 'react-native'
 import {Item, Footer, FooterTab, Button, Icon, CheckBox} from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
-
-import KeyboardView from './KeyboardView'
+import SurveyFooter from './SurveyFooter'
+import KeyboardView from '../../components/KeyboardView'
+import styles from './surveyStyles'
 
 /**
  * I think that users still need to enter in this information while they're at the beach because they need
@@ -86,6 +87,10 @@ export default class Area extends Component{
 
     moveToTeamInfo = () => {
         this.props.navigation.push('TeamInfo', {surveyData: this.state.surveyData});
+    }
+
+    moveToSRS = () => {
+        this.props.navigation.push('SurfaceRibScan', {surveyData: this.state.surveyData});
     }
 
     updateSurveyTime(refName, e) {
@@ -369,77 +374,9 @@ export default class Area extends Component{
                 </ScrollView>
 
                 {/* Render the footer used for navigation */}
-                <Footer style={styles.footer}>
-                    <FooterTab>
-                        <Button vertical onPress={this.moveToTeamInfo}>
-                            <Icon name='person' />
-                            <Text>Info</Text>
-                        </Button>
-                        <Button active style={{color: 'skyblue'}} vertical>
-                            <Icon name='navigate' />
-                            <Text style={{color: 'white'}}>Area</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name='grid' />
-                            <Text >SRS</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name='people' />
-                            <Text >AS</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name='search' />
-                            <Text >Micro</Text>
-                        </Button>
-                    </FooterTab>
-                </Footer>
+                <SurveyFooter area moveToTeamInfo={this.moveToTeamInfo} moveToSRS={this.moveToSRS}/>
             </KeyboardView>
         )
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    inputSingleContainer: {
-        padding: 30,
-    },
-    inputSingle: {
-        marginTop: 15
-    },
-    inputDoubleContainer: {
-        flexDirection: 'row'
-    },
-    inputDouble: { 
-        flex: 2,
-        marginLeft: 10,
-        marginRight: 10
-    },
-    checkBox: {
-        flexDirection: 'row',
-        marginTop: 3
-    },
-    checkBoxInput: {
-        marginRight:5, 
-        height: 25, 
-        width: 25
-    },
-    textInput: {
-        height: 40,
-        fontSize: 16
-    },
-    segmentSeparator: {
-        padding: 15,
-        marginLeft: 15,
-        marginRight: 15,
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1
-    },
-    footer: {
-        position: 'absolute',
-        bottom: 0,
-        backgroundColor: 'yellow',
-        justifyContent: 'center'
-    }
-})

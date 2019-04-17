@@ -2,7 +2,6 @@ import React from 'react';
 import {createStackNavigator, createNavigationContainer} from 'react-navigation';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-import AppNavigator from './navigation/AppNavigator';
 import HomePage from './screens/HomePage';
 import BoardingPage from './screens/BoardingPage';
 import LogInPage from './screens/LogInPage';
@@ -12,19 +11,26 @@ import PublishPage from './screens/PublishPage';
 import ChooseBeachPage from './screens/ChooseBeachPage';
 import TeamInfo from './screens/survey/TeamInfo'
 import Area from './screens/survey/Area'
+import SurfaceRibScan from './screens/survey/SurfaceRibScan'
 
 
-const MainNavigator = createStackNavigator({
-  Boarding: {screen: BoardingPage},
-  Home: {screen: HomePage},
-  Login: {screen: LogInPage},
-  Profile: {screen: ProfilePage},
-  SurveyEntry: {screen: SurveyPage},
-  PublishFinalizeSurvey: {screen: PublishPage},
-  ChooseBeach: {screen: ChooseBeachPage},
-  TeamInfo: {screen: TeamInfo},
-  Area: {screen: Area}
-});
+const MainNavigator = createStackNavigator(
+  {
+    Boarding: {screen: BoardingPage},
+    Home: {screen: HomePage},
+    Login: {screen: LogInPage},
+    Profile: {screen: ProfilePage},
+    SurveyEntry: {screen: SurveyPage},
+    PublishFinalizeSurvey: {screen: PublishPage},
+    ChooseBeach: {screen: ChooseBeachPage},
+    TeamInfo: {screen: TeamInfo},
+    Area: {screen: Area},
+    SurfaceRibScan: {screen: SurfaceRibScan}
+  },
+  {
+    initialRouteName: 'SurfaceRibScan'
+  }
+);
 
 const App = createNavigationContainer(MainNavigator);
 
