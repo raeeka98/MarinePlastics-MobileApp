@@ -12,7 +12,8 @@ export default class SurveyFooter extends Component {
                     <Button 
                         active={this.props.teamInfo === true} 
                         style={this.props.teamInfo === true ? {color: 'skyblue'} : {}} 
-                        onPress={this.props.teamInfo === true ?  () => {} : this.props.moveToTeamInfo}   
+                        onPress={this.props.teamInfo === true ?  () => {} : this.props.moveToTeamInfo} 
+                        info  
                     >
                         <Icon name='person' />
                         <Text style={this.props.teamInfo === true ? {color: 'white'} : {}}>Info</Text>
@@ -21,6 +22,7 @@ export default class SurveyFooter extends Component {
                         active={this.props.area === true} 
                         style={this.props.area === true ? {color: 'skyblue'} : {}} 
                         onPress={this.props.area === true ?() => {} : this.props.moveToArea}    
+                        info
                     >
                         <Icon name='navigate' />
                         <Text style={this.props.area === true ? {color: 'white'} : {}}>Area</Text>
@@ -29,15 +31,16 @@ export default class SurveyFooter extends Component {
                         active={this.props.srs === true} 
                         style={this.props.srs === true ? {color: 'skyblue'} : {}} 
                         onPress={this.props.srs === true ?  () => {} : this.props.moveToSRS} 
+                        info
                     >
                         <Icon name='grid' />
                         <Text >SRS</Text>
                     </Button>
-                    <Button >
+                    <Button info>
                         <Icon name='people' />
                         <Text >AS</Text>
                     </Button>
-                    <Button >
+                    <Button info>
                         <Icon name='search' />
                         <Text >Micro</Text>
                     </Button>

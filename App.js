@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator, createNavigationContainer} from 'react-navigation';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import {Root} from 'native-base'
 
 import HomePage from './screens/HomePage';
 import BoardingPage from './screens/BoardingPage';
@@ -32,21 +33,23 @@ const MainNavigator = createStackNavigator(
   }
 );
 
-const App = createNavigationContainer(MainNavigator);
+const NavigationApp = createNavigationContainer(MainNavigator);
 
-export default App;
+//export default App;
 
-/*
+
 export default class App extends React.Component {
   
 
   render() {
     return (
-      <NavigationApp/>
+      <Root>
+        <NavigationApp/>
+      </Root>
     );
   }
 }
-*/
+
 
 
 
