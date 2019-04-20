@@ -17,7 +17,11 @@ export default class TeamInfo extends Component {
         hours: '00',
         minutes: '00',
         surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
-        srsData: {},
+        SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
+        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') :[],
+        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') :[],
+        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') :[],
+        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') :[],
         asData:{}
     }
     static navigationOptions = {
@@ -63,11 +67,59 @@ export default class TeamInfo extends Component {
     }
 
     moveToArea = () => {
-        this.props.navigation.push('Area', {surveyData: this.state.surveyData});
+        this.props.navigation.push(
+            'Area', 
+            {
+                surveyData: this.state.surveyData, 
+                SRSData: this.state.SRSData,
+                r1Items: this.state.r1Items,
+                r2Items: this.state.r2Items,
+                r3Items: this.state.r3Items,
+                r4Items: this.state.r4Items,
+            }
+        );
     }
 
     moveToSRS = () => {
-        this.props.navigation.push('SurfaceRibScan', {surveyData: this.state.surveyData});
+        this.props.navigation.push(
+            'SurfaceRibScan', 
+            {
+                surveyData: this.state.surveyData, 
+                SRSData: this.state.SRSData,
+                r1Items: this.state.r1Items,
+                r2Items: this.state.r2Items,
+                r3Items: this.state.r3Items,
+                r4Items: this.state.r4Items,
+            }
+        );
+    }
+
+    moveToAS = () => {
+        this.props.navigation.push(
+            'AccumulationSweep', 
+            {
+                surveyData: this.state.surveyData, 
+                SRSData: this.state.SRSData,
+                r1Items: this.state.r1Items,
+                r2Items: this.state.r2Items,
+                r3Items: this.state.r3Items,
+                r4Items: this.state.r4Items,
+            }
+        );
+    }
+
+    moveToMicro = () => {
+        this.props.navigation.push(
+            'MicroDebris', 
+            {
+                surveyData: this.state.surveyData, 
+                SRSData: this.state.SRSData,
+                r1Items: this.state.r1Items,
+                r2Items: this.state.r2Items,
+                r3Items: this.state.r3Items,
+                r4Items: this.state.r4Items,
+            }
+        );
     }
 
     updateSurveyState(refName, e) {
@@ -171,7 +223,13 @@ export default class TeamInfo extends Component {
                         </Item>
                     </View>  
                 </View>
-                <SurveyFooter teamInfo moveToArea={this.moveToArea} moveToSRS={this.moveToSRS}/>
+                <SurveyFooter 
+                    teamInfo 
+                    moveToArea={this.moveToArea} 
+                    moveToSRS={this.moveToSRS}
+                    moveToAS={this.moveToAS}
+                    moveToMicro={this.moveToMicro}
+                />
             </View>  
         )
     }

@@ -13,6 +13,8 @@ import ChooseBeachPage from './screens/ChooseBeachPage';
 import TeamInfo from './screens/survey/TeamInfo'
 import Area from './screens/survey/Area'
 import SurfaceRibScan from './screens/survey/SurfaceRibScan'
+import AccumulationSweep from './screens/survey/AccumulationSweep'
+import MicroDebris from './screens/survey/MicroDebris'
 
 
 const MainNavigator = createStackNavigator(
@@ -26,7 +28,9 @@ const MainNavigator = createStackNavigator(
     ChooseBeach: {screen: ChooseBeachPage},
     TeamInfo: {screen: TeamInfo},
     Area: {screen: Area},
-    SurfaceRibScan: {screen: SurfaceRibScan}
+    SurfaceRibScan: {screen: SurfaceRibScan},
+    MicroDebris: {screen: MicroDebris},
+    AccumulationSweep: {screen: AccumulationSweep}
   },
   {
     initialRouteName: 'SurfaceRibScan'
