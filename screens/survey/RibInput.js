@@ -26,28 +26,12 @@ var BUTTONS = [
 export default class RibInput extends Component {
     state = {
         SRSData: this.props.SRSData,
+        surveyData: this.props.surveyData,
         ribNumber: this.props.ribNumber,
         inputItems: this.props.inputItems,
         selections: BUTTONS
     }
 
-    decrementSRS (refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            prevState.SRSData[key]--;
-            return prevState;
-        })
-    }
-
-    incrementSRS(refName, e){
-        console.log("Incrementing.." + refName)
-        let key = refName;
-        this.setState(prevState => {
-            prevState.SRSData[key]++;
-            return prevState;
-        })
-        console.log(this.state.SRSData)
-    }
 
     renderCategoryInput = ({item}) => {
         const currentItemKey = item.key;
@@ -111,20 +95,29 @@ export default class RibInput extends Component {
     }
 
     render() {
-
+        const ribStart = `rib${this.state.ribNumber}Start`;
+        const ribLength = `rib${this.state.ribNumber}Length`
         return (
             <View>
                 <View style={[{marginTop: 10, marginRight: 10, marginLeft: 10}, styles.inputSingleContainer]}>
                     <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                         <Text style={{fontSize: 20}}>Rib Start:</Text>
                         <Item regular>
-                            <TextInput style={{width: 100, height: 35}}/>
+                            <TextInput 
+                                style={{width: 100, height: 35}}
+                                onChange={this.props.updateSurveyState.bind(this, ribStart)}
+                                value={this.state.surveyData[ribStart]}
+                            />
                         </Item>
                     </View>
                     <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                         <Text style={{fontSize: 20}}>Rib Length:</Text>
                         <Item regular>
-                            <TextInput style={{width: 100, height: 35}}/>
+                            <TextInput 
+                                style={{width: 100, height: 35}}
+                                onChange={this.props.updateSurveyState.bind(this, ribLength)}
+                                value={this.state.surveyData[ribLength]}
+                            />
                         </Item>
                     </View>
                 </View>

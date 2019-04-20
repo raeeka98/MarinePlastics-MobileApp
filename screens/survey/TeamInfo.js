@@ -18,11 +18,12 @@ export default class TeamInfo extends Component {
         minutes: '00',
         surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
         SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
-        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') :[],
-        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') :[],
-        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') :[],
-        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') :[],
-        asData:{}
+        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
+        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
+        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
+        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
+        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
+        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
     }
     static navigationOptions = {
         title: "Team information"
@@ -72,10 +73,12 @@ export default class TeamInfo extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }
@@ -86,10 +89,12 @@ export default class TeamInfo extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }
@@ -100,10 +105,12 @@ export default class TeamInfo extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }
@@ -114,10 +121,12 @@ export default class TeamInfo extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }

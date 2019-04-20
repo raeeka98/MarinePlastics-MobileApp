@@ -31,7 +31,7 @@ export default class SurveyFooter extends Component {
                         onPress={this.props.srs === true ?  () => {} : this.props.moveToSRS} 
                     >
                         <Icon name='grid' />
-                        <Text >SRS</Text>
+                        <Text style={this.props.teamInfo === true ? {color: 'white'} : {}}>SRS</Text>
                     </Button>
                     <Button
                         active={this.props.as === true} 
@@ -39,7 +39,7 @@ export default class SurveyFooter extends Component {
                         onPress={this.props.as === true ?  () => {} : this.props.moveToAS} 
                     >
                         <Icon name='people' />
-                        <Text >AS</Text>
+                        <Text style={this.props.teamInfo === true ? {color: 'white'} : {}}>AS</Text>
                     </Button>
                     <Button
                         active={this.props.micro === true} 
@@ -47,7 +47,7 @@ export default class SurveyFooter extends Component {
                         onPress={this.props.micro === true ?  () => {} : this.props.moveToMicro} 
                     >
                         <Icon name='search' />
-                        <Text >Micro</Text>
+                        <Text style={this.props.teamInfo === true ? {color: 'white'} : {}}>Micro</Text>
                     </Button>
                 </FooterTab>
             </Footer>

@@ -29,10 +29,12 @@ export default class SurfaceRibScan extends Component {
     state = {
         surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
         SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
+        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
         r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
         r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
         r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
         r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
+        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
     }
 
     moveToTeamInfo = () => {
@@ -41,10 +43,12 @@ export default class SurfaceRibScan extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }
@@ -55,10 +59,12 @@ export default class SurfaceRibScan extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }
@@ -69,10 +75,12 @@ export default class SurfaceRibScan extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }
@@ -83,10 +91,12 @@ export default class SurfaceRibScan extends Component {
             {
                 surveyData: this.state.surveyData, 
                 SRSData: this.state.SRSData,
+                ASData: this.state.ASData,
                 r1Items: this.state.r1Items,
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
+                asItems: this.state.asItems
             }
         );
     }
@@ -109,11 +119,23 @@ export default class SurfaceRibScan extends Component {
     }
 
     incrementSRS(refName, e){
+        console.log(this.state.SRSData)
         let key = refName;
         this.setState(prevState => {
             prevState.SRSData[key] = prevState.SRSData[key] ?  prevState.SRSData[key] + 1 : 1;
             return prevState;
         })
+    }
+
+    updateSurveyState(refName, e) {
+        console.log(this.state.surveyData)
+        let key =  refName;//e.target.id;
+        let value = e.nativeEvent.text;
+        this.setState(prevState => {
+            prevState.surveyData[key] = value;
+            return prevState;
+        })
+        
     }
     
 
@@ -126,37 +148,45 @@ export default class SurfaceRibScan extends Component {
                     <Tab heading='Rib 1'>
                         <RibInput 
                             SRSData={this.state.SRSData} 
+                            surveyData={this.state.surveyData}
                             ribNumber={1} 
                             decrementSRS={this.decrementSRS} 
                             incrementSRS={this.incrementSRS}
                             inputItems={this.state.r1Items}
+                            updateSurveyState={this.updateSurveyState}
                         />
                     </Tab>
                     <Tab heading='Rib 2'>
                         <RibInput 
-                            SRSData={this.state.SRSData} 
+                            SRSData={this.state.SRSData}
+                            surveyData={this.state.surveyData} 
                             ribNumber={2} 
                             decrementSRS={this.decrementSRS} 
                             incrementSRS={this.incrementSRS}
                             inputItems={this.state.r2Items}
+                            updateSurveyState={this.updateSurveyState}
                         />
                     </Tab>
                     <Tab heading='Rib 3'>
                         <RibInput 
-                            SRSData={this.state.SRSData} 
+                            SRSData={this.state.SRSData}
+                            surveyData={this.state.surveyData} 
                             ribNumber={3} 
                             decrementSRS={this.decrementSRS} 
                             incrementSRS={this.incrementSRS}
                             inputItems={this.state.r3Items}
+                            updateSurveyState={this.updateSurveyState}
                         />
                     </Tab>
                     <Tab heading='Rib 4'>
                         <RibInput 
-                            SRSData={this.state.SRSData} 
+                            SRSData={this.state.SRSData}
+                            surveyData={this.state.surveyData} 
                             ribNumber={4} 
                             decrementSRS={this.decrementSRS} 
                             incrementSRS={this.incrementSRS}
                             inputItems={this.state.r4Items}
+                            updateSurveyState={this.updateSurveyState}
                         />
                     </Tab>    
                 </Tabs>
