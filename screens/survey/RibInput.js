@@ -6,6 +6,7 @@ import Expo from 'expo'
 import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
+import debrisInfoID from './debrisInfo'
 
 
 var BUTTONS = [
@@ -20,8 +21,12 @@ var BUTTONS = [
     'Other: Plastics',
     'Other: Food / Organics',
     'Other: Cotton / Cloth',
-    'Other: Wood / Paper'
+    'Other: Wood / Paper',
+    'Cancel'
 ]
+
+var CANCEL_INDEX = 12;
+
 
 export default class RibInput extends Component {
     state = {
@@ -34,7 +39,7 @@ export default class RibInput extends Component {
 
 
     renderCategoryInput = ({item}) => {
-        const currentItemKey = item.key;
+        const currentItemKey = debrisInfoID[item.key];
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
         const weatheredKey = `${currentItemKey}__weathered__${this.state.ribNumber}`
         return (
@@ -130,10 +135,15 @@ export default class RibInput extends Component {
                             ActionSheet.show(
                                 {
                                     options: this.state.selections,
-                                    title: "Select a Category"
+                                    title: "Select a Category",
+                                    cancelButtonIndex: CANCEL_INDEX
                                 },
                                 buttonIndex => {
                                     const temp = this.state.selections;
+                                    if(temp[buttonIndex]==='Cancel'){
+                                        ActionSheet.hide();
+                                        return
+                                    }
                                     this.setState(prevState => {
                                         prevState.inputItems.push(
                                             {key: temp[buttonIndex]}
@@ -152,7 +162,12 @@ export default class RibInput extends Component {
                     </Button>
                     
                 </View>
-                <FlatList data={this.state.inputItems} extraData={this.state} renderItem={this.renderCategoryInput}/>
+                <FlatList 
+                    style={{marginLeft:20, marginRight:20}} 
+                    data={this.state.inputItems} 
+                    extraData={this.state} 
+                    renderItem={this.renderCategoryInput}
+                />
             </View>
         )
     }

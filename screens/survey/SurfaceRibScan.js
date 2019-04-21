@@ -8,22 +8,6 @@ import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
 
-var BUTTONS = [
-    'Cigarette Butts', 
-    'Fishing Line / Polypropylene Rope', 
-    'Plastic Straws',
-    'Filmed Plastic',
-    'Plastic Bottles / Plastic Caps',
-    'Aluminum Cans / Foil / Metal',
-    'Glass',
-    'Styofoam / Urethane',
-    'Other: Plastics',
-    'Other: Food / Organics',
-    'Other: Cotton / Cloth',
-    'Other: Wood / Paper'
-]
-var DESTRUCTIVE_INDEX = 12;
-var CANCEL_INDEX = 13;
 
 export default class SurfaceRibScan extends Component {
     state = {
@@ -35,6 +19,7 @@ export default class SurfaceRibScan extends Component {
         r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
         r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
         asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
+        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
     }
 
     moveToTeamInfo = () => {
@@ -48,7 +33,8 @@ export default class SurfaceRibScan extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -64,7 +50,8 @@ export default class SurfaceRibScan extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -80,7 +67,8 @@ export default class SurfaceRibScan extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -96,7 +84,8 @@ export default class SurfaceRibScan extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -119,7 +108,6 @@ export default class SurfaceRibScan extends Component {
     }
 
     incrementSRS(refName, e){
-        console.log(this.state.SRSData)
         let key = refName;
         this.setState(prevState => {
             prevState.SRSData[key] = prevState.SRSData[key] ?  prevState.SRSData[key] + 1 : 1;

@@ -33,7 +33,7 @@ const MainNavigator = createStackNavigator(
     AccumulationSweep: {screen: AccumulationSweep}
   },
   {
-    initialRouteName: 'AccumulationSweep'
+    initialRouteName: 'Boarding'
   }
 );
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {TextInput, View, Text, StyleSheet, ScrollView} from 'react-native'
-import {Item, Footer, FooterTab, Button, Icon, CheckBox} from 'native-base'
+import {Item, Footer, FooterTab, Button, Icon, CheckBox, Picker} from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
 import SurveyFooter from './SurveyFooter'
@@ -24,6 +24,7 @@ export default class Area extends Component{
         r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
         r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
         asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
+        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
         showLastTime: false,
         lastTime: new Date(),
         lastHours: '00',
@@ -41,7 +42,7 @@ export default class Area extends Component{
     displayTimeString = (time) => {
         const tideTime = this.state.surveyData[time]
         if(!tideTime)
-            return "00:00";
+            return "--:--";
         let timeString, hours, hourString, minutes, minutesString;
         hours = tideTime.getHours();
         hourString = hours < 10 ? `0${hours}` : `${hours}`
@@ -103,7 +104,8 @@ export default class Area extends Component{
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -119,7 +121,8 @@ export default class Area extends Component{
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -135,7 +138,8 @@ export default class Area extends Component{
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -151,7 +155,8 @@ export default class Area extends Component{
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -178,6 +183,14 @@ export default class Area extends Component{
         })
         
         console.log("State set: " + JSON.stringify(this.state.surveyData))
+    }
+
+    onTideChange(refName, value) {
+        this.setState(prevState => {
+            prevState.surveyData[refName] = value;
+            console.log(prevState.surveyData)
+            return prevState
+        })
     }
 
     checkedbox(refName, e) {
@@ -348,13 +361,19 @@ export default class Area extends Component{
                     <Text style={{fontSize: 20}}>Last Tide Before Cleanup</Text>
                     <Text style={styles.inputSingle}>Type</Text>
                     <Item regular>
-                        <TextInput
-                            ref = 'tideTypeA' 
-                            placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
-                            onChange={this.updateSurveyState.bind(this, 'tideTypeA')}
-                            value={this.state.surveyData.tideTypeA}
-                        />
+                        <Picker
+                            mode='dropdown'
+                            iosIcon={<Icon name="arrow-down"/>}
+                            placeholder="Please Select"
+                            placeholderStyle={{ color: "#bfc6ea" }}
+                            style={{width: undefined}}
+                            selectedValue={this.state.surveyData.tideTypeA}
+                            onValueChange={this.onTideChange.bind(this, 'tideTypeA' )}
+                        >
+                            <Picker.Item label="High" value="high" />
+                            <Picker.Item label="Low" value='low' />
+                        </Picker>
+                        
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
@@ -371,13 +390,10 @@ export default class Area extends Component{
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={{marginBottom: 5}}>Time</Text>
+                        <Text style={{marginBottom: 5}}>Select Time</Text>
                         <Item regular>
                             <Button onPress={this.onPressLastTime} style={{color: 'gray'}}>
                                 <Icon name='clock'></Icon>
-                                <Text style={{marginRight: 5}}>
-                                    Select Time
-                                </Text>
                             </Button>
                             <DateTimePicker
                                 isVisible={this.state.showLastTime}    
@@ -386,7 +402,11 @@ export default class Area extends Component{
                                 is24Hour={false}   
                                 onCancel={this.onCancelLast}                   
                             />
-                            <Text>{this.displayTimeString('tideTimeA')}</Text>
+                            <TextInput 
+                                editable={false }
+                                style={{width: '70%', textAlign: 'center', fontSize: 17}} 
+                                value={this.displayTimeString('tideTimeA')}
+                            />
                         </Item>
                     </View>
                 </View>
@@ -394,13 +414,18 @@ export default class Area extends Component{
                     <Text style={{fontSize: 20}}>Next Tide After Cleanup</Text>
                     <Text style={styles.inputSingle}>Type</Text>
                     <Item regular>
-                        <TextInput
-                            ref = 'tideTypeB' 
-                            placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
-                            onChange={this.updateSurveyState.bind(this, 'tideTypeB')}
-                            value={this.state.surveyData.tideTypeB}
-                        />
+                        <Picker
+                            mode='dropdown'
+                            iosIcon={<Icon name="arrow-down"/>}
+                            placeholder="Please Select"
+                            placeholderStyle={{ color: "#bfc6ea" }}
+                            style={{width: undefined}}
+                            selectedValue={this.state.surveyData.tideTypeB}
+                            onValueChange={this.onTideChange.bind(this, 'tideTypeB' )}
+                        >
+                            <Picker.Item label="High" value="high" />
+                            <Picker.Item label="Low" value='low' />
+                        </Picker>
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
@@ -417,11 +442,10 @@ export default class Area extends Component{
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={{marginBottom: 5}}>Time</Text>
+                        <Text style={{marginBottom: 5}}>Select Time</Text>
                         <Item regular>
                             <Button onPress={this.onPressNextTime} style={{color: 'gray'}}>
                                 <Icon name='clock'></Icon>
-                                <Text style={{marginRight: 5}}>Select Time</Text>
                             </Button>
                             <DateTimePicker
                                 isVisible={this.state.showNextTime}    
@@ -430,7 +454,11 @@ export default class Area extends Component{
                                 is24Hour={false}   
                                 onCancel={this.onCancelNext}                   
                             />
-                            <Text>{this.displayTimeString('tideTimeB')}</Text>
+                            <TextInput 
+                                editable={false }
+                                style={{width: '70%', textAlign: 'center', fontSize: 17}} 
+                                value={this.displayTimeString('tideTimeB')}
+                            />
                         </Item>
                     </View>
                 </View>

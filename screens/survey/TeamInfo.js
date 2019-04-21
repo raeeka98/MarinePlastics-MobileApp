@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button} from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
@@ -24,6 +24,7 @@ export default class TeamInfo extends Component {
         r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
         r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
         asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
+        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
     }
     static navigationOptions = {
         title: "Team information"
@@ -78,7 +79,8 @@ export default class TeamInfo extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData,
             }
         );
     }
@@ -94,7 +96,8 @@ export default class TeamInfo extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -110,7 +113,8 @@ export default class TeamInfo extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -126,7 +130,8 @@ export default class TeamInfo extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -202,6 +207,7 @@ export default class TeamInfo extends Component {
                         <Text>Date</Text>
                         <Item regular>
                             <DatePicker 
+                                style={{height: '100%', textAlign: 'center'}}
                                 ref='cleanupDate'
                                 onDateChange={this.updateSurveyTime.bind(this, 'cleanupDate')}
                                 maximumDate={new Date()}
@@ -211,13 +217,10 @@ export default class TeamInfo extends Component {
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text>Time</Text>
+                        <Text>Select Time</Text>
                         <Item regular>
-                            <Button onPress={this.onPressTime} style={{color: 'gray'}}>
+                            <Button onPress={this.onPressTime} style={{ color: 'gray'}}>
                                 <Icon name='clock'/>
-                                <Text>
-                                    Select Time
-                                </Text>
                             </Button>
                             <DateTimePicker
                                 ref='cleanupTime'
@@ -228,7 +231,11 @@ export default class TeamInfo extends Component {
                                 maximumDate={new Date()}   
                                 onCancel={this.onCancel}                   
                             />
-                            <Text>{this.displayTimeString()}</Text>
+                            <TextInput 
+                                editable={false }
+                                style={{width: '70%', textAlign: 'center', fontSize: 17}} 
+                                value={this.displayTimeString('cleanupTime')}
+                            />
                         </Item>
                     </View>  
                 </View>

@@ -7,6 +7,7 @@ import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
+import debrisInfoID from './debrisInfo'
 
 var BUTTONS = [
     'Cigarette Butts', 
@@ -20,8 +21,11 @@ var BUTTONS = [
     'Other: Plastics',
     'Other: Food / Organics',
     'Other: Cotton / Cloth',
-    'Other: Wood / Paper'
+    'Other: Wood / Paper',
+    'Cancel'
 ]
+
+var CANCEL_INDEX = 12;
 
 export default class AccumulationSweep extends Component {
     state = {
@@ -33,6 +37,8 @@ export default class AccumulationSweep extends Component {
         r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
         r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
         asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
+        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
+        selections: BUTTONS
     }
 
     static navigationOptions = {
@@ -50,7 +56,8 @@ export default class AccumulationSweep extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -66,7 +73,8 @@ export default class AccumulationSweep extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -82,7 +90,8 @@ export default class AccumulationSweep extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -98,7 +107,8 @@ export default class AccumulationSweep extends Component {
                 r2Items: this.state.r2Items,
                 r3Items: this.state.r3Items,
                 r4Items: this.state.r4Items,
-                asItems: this.state.asItems
+                asItems: this.state.asItems,
+                MicroData: this.state.MicroData
             }
         );
     }
@@ -125,7 +135,7 @@ export default class AccumulationSweep extends Component {
     }
 
     renderCategoryInput = ({item}) => {
-        const currentItemKey = item.key;
+        const currentItemKey = debrisInfoID[item.key];
         const freshKey = `${currentItemKey}__fresh__accumulation`
         const weatheredKey = `${currentItemKey}__weathered__accumulation`
         return (
@@ -195,16 +205,21 @@ export default class AccumulationSweep extends Component {
                         onPress={() => {
                             ActionSheet.show(
                                 {
-                                    options: BUTTONS,
-                                    title: "Select a Category"
+                                    options: this.state.selections,
+                                    title: "Select a Category",
+                                    cancelButtonIndex: CANCEL_INDEX
                                 },
                                 buttonIndex => {
-                                    const temp = BUTTONS;
+                                    const temp = this.state.selections;
+                                    if(temp[buttonIndex] === 'Cancel'){
+                                        ActionSheet.hide()
+                                        return;
+                                    }
                                     this.setState(prevState => {
                                         prevState.asItems.push(
                                             {key: temp[buttonIndex]}
                                         )
-                                        BUTTONS = BUTTONS.filter((category) => category !== BUTTONS[buttonIndex])
+                                        prevState.selections = prevState.selections.filter((category) => category !== BUTTONS[buttonIndex])
                                         return prevState
                                     })
 
@@ -218,7 +233,12 @@ export default class AccumulationSweep extends Component {
                     </Button>
                     
                 </View>
-                <FlatList data={this.state.asItems} extraData={this.state} renderItem={this.renderCategoryInput}/>
+                <FlatList 
+                    style={{marginLeft:20, marginRight:20}} 
+                    data={this.state.asItems} 
+                    extraData={this.state} 
+                    renderItem={this.renderCategoryInput}
+                />
                 <SurveyFooter 
                     as 
                     moveToTeamInfo={this.moveToTeamInfo} 
