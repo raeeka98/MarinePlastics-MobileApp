@@ -27,6 +27,15 @@ const styles = StyleSheet.create({
         height: 25, 
         width: 25
     },
+    checkBoxLarge: {
+        flexDirection: 'row',
+        marginTop: 6
+    },
+    checkBoxLargeInput: {
+        marginRight:10, 
+        height: 35, 
+        width: 35
+    },
     textInput: {
         height: 40,
         fontSize: 16

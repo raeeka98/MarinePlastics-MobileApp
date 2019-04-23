@@ -94,6 +94,11 @@ export default class SurfaceRibScan extends Component {
         title: 'Surface Rib Scan'
     }
 
+    /**
+     * Increment or decrement the given key. When decrementing, the user cannot have a negative
+     * value.
+     */
+
     decrementSRS (refName, e){
         let key = refName;
         this.setState(prevState => {
@@ -126,7 +131,10 @@ export default class SurfaceRibScan extends Component {
         
     }
     
-
+    /**
+     * Here we render the actual input screens within the tabs so that each rib can have its
+     * own input screen dedicated to entering data
+     */
     render() {
         return (
             <View style={styles.container}>

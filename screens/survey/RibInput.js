@@ -8,7 +8,7 @@ import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import debrisInfoID from './debrisInfo'
 
-
+/* These are used to display the options on the modal */
 var BUTTONS = [
     'Cigarette Butts', 
     'Fishing Line / Polypropylene Rope', 
@@ -37,7 +37,12 @@ export default class RibInput extends Component {
         selections: BUTTONS
     }
 
-
+    /*
+     * We need to be able to render each category input individually within a FlatList of items (which dynamically
+     *  re-renders). Each category will have some 'tally' system where users can increment and decrement
+     *  the values. Additionally, the values will fall under some subcategories, including either
+     *  "fresh" or 'weathered'
+     */
     renderCategoryInput = ({item}) => {
         const currentItemKey = debrisInfoID[item.key];
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
@@ -139,6 +144,9 @@ export default class RibInput extends Component {
                                     cancelButtonIndex: CANCEL_INDEX
                                 },
                                 buttonIndex => {
+                                    /* Here we need to add the selected item to the list of input items
+                                       and remove it from the list of button selections
+                                    */
                                     const temp = this.state.selections;
                                     if(temp[buttonIndex]==='Cancel'){
                                         ActionSheet.hide();

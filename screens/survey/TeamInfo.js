@@ -11,6 +11,14 @@ export default class TeamInfo extends Component {
     constructor(props){
         super(props);
     }
+    /*
+     * Setting up the initial state of the app.
+     * Note that here we separate the surveyData, SRS, Micro, and AS in order to keep the functions
+     * for each object separate and independent
+     * 
+     * Note that when we initialize the items, we want to check to see if any existing values that are passed
+     * from a previous screeen 
+     */
     state = {
         showTime: false,
         time: new Date(),
@@ -30,10 +38,13 @@ export default class TeamInfo extends Component {
         title: "Team information"
     }
 
+    /**
+     * Creates the time string to display on the app before and after the user enters a time
+    */
     displayTimeString = () => {
         const {cleanupTime} = this.state.surveyData
         if(!cleanupTime)
-            return "00:00";
+            return "--:--";
         let timeString, hours, hourString, minutes, minutesString;
         hours = cleanupTime.getHours();
         hourString = hours < 10 ? `0${hours}` : `${hours}`
@@ -44,6 +55,9 @@ export default class TeamInfo extends Component {
         return timeString;
     }
 
+    /**
+     * Some navigation for pressing back
+     */
     onPressBack = () => {
         this.props.navigation.pop();
     }
@@ -52,22 +66,15 @@ export default class TeamInfo extends Component {
         this.setState({showTime: true})
     }
 
-    setTime = (time) => {
-        this.setState(
-            {
-                time: time,
-                hours: time.getHours().length < 2 ? `0${time.getHours()}` : time.getHours(),
-                minutes: time.getMinutes().length < 2 ? `0${time.getMinutes()}` : time.getMinutes(),
-                showTime: false
-            }
-        )
-    }
-
     onCancel = () => {
         this.setState({showTime: false})
 
     }
 
+    /**
+     * Navigate to the Area screen. The logic for this function is pretty simple and is reflected across all 
+     * navigation functions: pass the data that we have onto the next screen
+     */
     moveToArea = () => {
         this.props.navigation.push(
             'Area', 
@@ -136,20 +143,27 @@ export default class TeamInfo extends Component {
         );
     }
 
+    /**
+     * This function takes in a reference name and an event to update the state of the survey.
+     * The reference name is the key that will be used to update the variable in surveyData. 
+     * e is used to grab the text from the text input and update the data with the new
+     * value
+     */
     updateSurveyState(refName, e) {
-        console.log(e);
         let key =  refName;//e.target.id;
         let value = e.nativeEvent.text;
-        console.log(`Key: ${key}, value: ${value}`);
         this.setState(prevState => {
             prevState.surveyData[key] = value;
             return prevState;
         })
         if(key === 'cleanupTime')
             this.setState({showTime: false})
-        console.log("State set: " + JSON.stringify(this.state.surveyData))
     }
 
+    /**
+     * A slightly different function has to be done here; e itself is the time that is being
+     * updated, so we use it as the value to update the key
+     */
     updateSurveyTime(refName, e) {
         let key = refName;
         let val = e;
@@ -160,7 +174,16 @@ export default class TeamInfo extends Component {
         })
         
     }
-
+    /**
+     * In the render function, whenever we update the survey state we need to bind the function
+     * using this and the reference name. The reason that we do this is because elements in 
+     * react native don't maintain an id attribute like react does, so we can't simply set
+     * the id in the props. We need to pass the actual reference by binding the function
+     * each time it is called.
+     * 
+     * NOTE: Binding the function each time can lead to a bit of a slow down, but since there's
+     * not really an easier way to do this for now we might need to stick with it.
+     */
     render() {
         return(
             <View style={styles.container}>
