@@ -24,110 +24,18 @@ const microRowIDs = {
 
 export default class MicroDebris extends Component {
     state = {
-        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
-        SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
-        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
-        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
-        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
-        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
-        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
-        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
-        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
+        surveyData: this.props.surveyData ? this.props.surveyData : {},
+        SRSData: this.props.SRSData ? this.props.SRSData : {},
+        ASData: this.props.ASData ? this.props.ASData : {},
+        r1Items: this.props.r1Items ? this.props.r1Items : [],
+        r2Items: this.props.r2Items ? this.props.r2Items : [],
+        r3Items: this.props.r3Items ? this.props.r3Items : [],
+        r4Items: this.props.r4Items ? this.props.r4Items : [],
+        asItems: this.props.asItems ? this.props.asItems : [],
+        MicroData: this.props.MicroData ? this.props.MicroData : {},
         microRowLabels: microRowLabels
     }
-
-    static navigationOptions = {
-        title: 'Micro Debris'
-    }
-
-    moveToTeamInfo = () => {
-        this.props.navigation.push(
-            'TeamInfo', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToArea = () => {
-        this.props.navigation.push(
-            'Area', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToSRS = () => {
-        this.props.navigation.push(
-            'SurfaceRibScan', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToAS = () => {
-        this.props.navigation.push(
-            'AccumulationSweep', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    decrementMicro (refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            const newVal =  prevState.MicroData[key] - 1;
-            if(newVal === undefined)
-                return prevState
-            if(newVal < 0)
-                return prevState
-            prevState.MicroData[key]--; 
-            return prevState;
-        })
-    }
-
-    incrementMicro(refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            prevState.MicroData[key] = prevState.MicroData[key] ?  prevState.MicroData[key] + 1 : 1;
-            return prevState;
-        })
-    }
+   
 
     renderMicroRows = ({item}) => {
         const currentItemKey = microRowIDs[item.key];
@@ -141,7 +49,7 @@ export default class MicroDebris extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <Button 
                             light 
-                            onPress={this.decrementMicro.bind(this, freshKey)}
+                            onPress={this.props.decrementMicro.bind(this, freshKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
@@ -154,7 +62,7 @@ export default class MicroDebris extends Component {
                         </Item>
                         <Button 
                             light
-                            onPress={this.incrementMicro.bind(this, freshKey)}    
+                            onPress={this.props.incrementMicro.bind(this, freshKey)}    
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
@@ -166,7 +74,7 @@ export default class MicroDebris extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <Button 
                             light 
-                            onPress={this.decrementMicro.bind(this, weatheredKey)}
+                            onPress={this.props.decrementMicro.bind(this, weatheredKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
@@ -179,7 +87,7 @@ export default class MicroDebris extends Component {
                         </Item>
                         <Button 
                             light
-                            onPress={this.incrementMicro.bind(this, weatheredKey)}    
+                            onPress={this.props.incrementMicro.bind(this, weatheredKey)}    
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
@@ -200,13 +108,7 @@ export default class MicroDebris extends Component {
                     extraData={this.state} 
                     renderItem={this.renderMicroRows}
                 />
-                <SurveyFooter 
-                    micro 
-                    moveToTeamInfo={this.moveToTeamInfo} 
-                    moveToArea={this.moveToArea}
-                    moveToSRS={this.moveToSRS}
-                    moveToAS={this.moveToAS}
-                />
+                
             </View>
             
         )

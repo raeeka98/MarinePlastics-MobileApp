@@ -29,110 +29,18 @@ var CANCEL_INDEX = 12;
 
 export default class AccumulationSweep extends Component {
     state = {
-        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
-        SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
-        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
-        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
-        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
-        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
-        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
-        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
-        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
+        surveyData: this.props.surveyData ? this.props.surveyData : {},
+        SRSData: this.props.SRSData ? this.props.SRSData : {},
+        ASData: this.props.ASData ? this.props.ASData : {},
+        r1Items: this.props.r1Items ? this.props.r1Items : [],
+        r2Items: this.props.r2Items ? this.props.r2Items : [],
+        r3Items: this.props.r3Items ? this.props.r3Items : [],
+        r4Items: this.props.r4Items ? this.props.r4Items : [],
+        asItems: this.props.asItems ? this.props.asItems : [],
+        MicroData: this.props.MicroData ? this.props.MicroData : {},
         selections: BUTTONS
     }
 
-    static navigationOptions = {
-        title: 'Accumulation Sweep'
-    }
-
-    moveToTeamInfo = () => {
-        this.props.navigation.push(
-            'TeamInfo', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToArea = () => {
-        this.props.navigation.push(
-            'Area', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToSRS = () => {
-        this.props.navigation.push(
-            'SurfaceRibScan', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToMicro = () => {
-        this.props.navigation.push(
-            'MicroDebris', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    decrementAS (refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            const newVal =  prevState.ASData[key] - 1;
-            if(newVal === undefined)
-                return prevState
-            if(newVal < 0)
-                return prevState
-            prevState.ASData[key]--;
-            return prevState;
-        })
-    }
-
-    incrementAS(refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            prevState.ASData[key] = prevState.ASData[key] ?  prevState.ASData[key] + 1 : 1;
-            return prevState;
-        })
-    }
 
     renderCategoryInput = ({item}) => {
         const currentItemKey = debrisInfoID[item.key];
@@ -146,7 +54,7 @@ export default class AccumulationSweep extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <Button 
                             light 
-                            onPress={this.decrementAS.bind(this, freshKey)}
+                            onPress={this.props.decrementAS.bind(this, freshKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
@@ -159,7 +67,7 @@ export default class AccumulationSweep extends Component {
                         </Item>
                         <Button 
                             light
-                            onPress={this.incrementAS.bind(this, freshKey)}    
+                            onPress={this.props.incrementAS.bind(this, freshKey)}    
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
@@ -171,7 +79,7 @@ export default class AccumulationSweep extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <Button 
                             light 
-                            onPress={this.decrementAS.bind(this, weatheredKey)}
+                            onPress={this.props.decrementAS.bind(this, weatheredKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
@@ -184,7 +92,7 @@ export default class AccumulationSweep extends Component {
                         </Item>
                         <Button 
                             light
-                            onPress={this.incrementAS.bind(this, weatheredKey)}    
+                            onPress={this.props.incrementAS.bind(this, weatheredKey)}    
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
@@ -238,13 +146,6 @@ export default class AccumulationSweep extends Component {
                     data={this.state.asItems} 
                     extraData={this.state} 
                     renderItem={this.renderCategoryInput}
-                />
-                <SurveyFooter 
-                    as 
-                    moveToTeamInfo={this.moveToTeamInfo} 
-                    moveToArea={this.moveToArea}
-                    moveToSRS={this.moveToSRS}
-                    moveToMicro={this.moveToMicro}
                 />
             </View>
         

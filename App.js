@@ -15,6 +15,7 @@ import Area from './screens/survey/Area'
 import SurfaceRibScan from './screens/survey/SurfaceRibScan'
 import AccumulationSweep from './screens/survey/AccumulationSweep'
 import MicroDebris from './screens/survey/MicroDebris'
+import SurveyContainer from './screens/survey/SurveyContainer'
 
 
 const MainNavigator = createStackNavigator(
@@ -26,14 +27,10 @@ const MainNavigator = createStackNavigator(
     SurveyEntry: {screen: SurveyPage},
     PublishFinalizeSurvey: {screen: PublishPage},
     ChooseBeach: {screen: ChooseBeachPage},
-    TeamInfo: {screen: TeamInfo},
-    Area: {screen: Area},
-    SurfaceRibScan: {screen: SurfaceRibScan},
-    MicroDebris: {screen: MicroDebris},
-    AccumulationSweep: {screen: AccumulationSweep}
+    SurveyContainer: {screen: SurveyContainer}
   },
   {
-    initialRouteName: 'SurfaceRibScan'
+    initialRouteName: 'SurveyContainer'
   }
 );
 

@@ -17,15 +17,15 @@ const invisiblePlaceholder = "                                                  
 
 export default class Area extends Component{
     state = {
-        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
-        SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
-        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
-        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
-        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
-        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
-        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
-        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
-        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
+        surveyData: this.props.surveyData ? this.props.surveyData : {},
+        SRSData: this.props.SRSData ? this.props.SRSData : {},
+        ASData: this.props.ASData ? this.props.ASData : {},
+        r1Items: this.props.r1Items ? this.props.r1Items : [],
+        r2Items: this.props.r2Items ? this.props.r2Items : [],
+        r3Items: this.props.r3Items ? this.props.r3Items : [],
+        r4Items: this.props.r4Items ? this.props.r4Items : [],
+        asItems: this.props.asItems ? this.props.asItems : [],
+        MicroData: this.props.MicroData ? this.props.MicroData : {},
         showLastTime: false,
         lastTime: new Date(),
         lastHours: '00',
@@ -94,123 +94,6 @@ export default class Area extends Component{
 
     }
 
-    moveToTeamInfo = () => {
-        this.props.navigation.push(
-            'TeamInfo', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToSRS = () => {
-        this.props.navigation.push(
-            'SurfaceRibScan', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToAS = () => {
-        this.props.navigation.push(
-            'AccumulationSweep', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToMicro = () => {
-        this.props.navigation.push(
-            'MicroDebris', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    updateSurveyTime(refName, e) {
-        let key = refName;
-        let val = e;
-
-        this.setState(prevState => {
-            prevState.surveyData[key] = val;
-            return prevState;
-        })
-        
-    }
-
-    updateSurveyState(refName, e) {
-        console.log(e);
-        let key =  refName;//e.target.id;
-        let value = e.nativeEvent.text;
-        console.log(`Key: ${key}, value: ${value}`);
-        this.setState(prevState => {
-            prevState.surveyData[key] = value;
-            return prevState;
-        })
-        
-        console.log("State set: " + JSON.stringify(this.state.surveyData))
-    }
-
-    /**
-     * Here, we need to take the change in the dropdown menu, stored in value, and set 
-     * surveyData[refName] to the new value.
-     */
-    onDropdownChange(refName, value) {
-        this.setState(prevState => {
-            prevState.surveyData[refName] = value;
-            console.log(prevState.surveyData)
-            return prevState
-        })
-    }
-
-    /**
-     * When updating the data, the checked value should be the opposite from what it was
-     * before the user checked the value.
-     */
-    checkedbox(refName, e) {
-        let key = refName;
-        let selection = this.state.surveyData[refName];
-        this.setState(prevState => {
-            prevState.surveyData[key] = !selection;
-            return prevState;
-        })
-    }
-
     /**
      * Here we need to wrap the entire screen in a KeyboardView component, which will 
      * let the user input data without it being obscured by the keyboard
@@ -229,7 +112,7 @@ export default class Area extends Component{
                                 ref = 'beachName' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'beachName')}
+                                onChange={this.props.updateSurveyState.bind(this, 'beachName')}
                                 value={this.state.surveyData.beachName}
                             />
                         </Item>
@@ -240,7 +123,7 @@ export default class Area extends Component{
                                 ref = 'latitude' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'latitude')}
+                                onChange={this.props.updateSurveyState.bind(this, 'latitude')}
                                 value={this.state.surveyData.latitude}
                             />
                         </Item>
@@ -250,7 +133,7 @@ export default class Area extends Component{
                                 ref = 'longitude' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'longitude')}
+                                onChange={this.props.updateSurveyState.bind(this, 'longitude')}
                                 value={this.state.surveyData.longitude}
                             />
                         </Item>
@@ -264,7 +147,7 @@ export default class Area extends Component{
                                 <CheckBox 
                                     style={styles.checkBoxInput} 
                                     isChecked={this.state.surveyData.usageRecreation} 
-                                    onClick={this.checkedbox.bind(this, 'usageRecreation')} 
+                                    onClick={this.props.checkedbox.bind(this, 'usageRecreation')} 
                                 />
                                 <Text style={{marginLeft:5}}>Recreation</Text>
                             </View>
@@ -272,7 +155,7 @@ export default class Area extends Component{
                                 <CheckBox 
                                     style={styles.checkBoxInput} 
                                     isChecked={this.state.surveyData.usageCommercial} 
-                                    onClick={this.checkedbox.bind(this, 'usageCommercial')} 
+                                    onClick={this.props.checkedbox.bind(this, 'usageCommercial')} 
                                 />
                                 <Text style={{marginLeft:5}}>Commercial</Text>
                             </View>
@@ -280,7 +163,7 @@ export default class Area extends Component{
                                 <CheckBox 
                                     style={styles.checkBoxInput} 
                                     isChecked={this.state.surveyData.usageOther} 
-                                    onClick={this.checkedbox.bind(this, 'usageOther')} 
+                                    onClick={this.props.checkedbox.bind(this, 'usageOther')} 
                                 />
                                 <Text style={{marginLeft:5}}>Other</Text>
                             </View>
@@ -300,7 +183,7 @@ export default class Area extends Component{
                                 <CheckBox 
                                     style={styles.checkBoxInput} 
                                     isChecked={this.state.surveyData.locationChoiceProximity} 
-                                    onClick={this.checkedbox.bind(this, 'locationChoiceProximity')} 
+                                    onClick={this.props.checkedbox.bind(this, 'locationChoiceProximity')} 
                                 />
                                 <Text  style={{marginLeft:5}}>Proximity/Convenience</Text>
                             </View>
@@ -308,7 +191,7 @@ export default class Area extends Component{
                                 <CheckBox 
                                     style={styles.checkBoxInput} 
                                     isChecked={this.state.surveyData.locationChoiceDebris} 
-                                    onClick={this.checkedbox.bind(this, 'locationChoiceDebris')} 
+                                    onClick={this.props.checkedbox.bind(this, 'locationChoiceDebris')} 
                                 />
                                 <Text style={{marginLeft:5}}>Known for Debris</Text>
                             </View>
@@ -316,7 +199,7 @@ export default class Area extends Component{
                                 <CheckBox 
                                     style={styles.checkBoxInput} 
                                     isChecked={this.state.surveyData.locationChoiceOther} 
-                                    onClick={this.checkedbox.bind(this, 'locationChoiceOther')} 
+                                    onClick={this.props.checkedbox.bind(this, 'locationChoiceOther')} 
                                 />
                                 <Text style={{marginLeft:5}}>Other</Text>
                             </View>
@@ -336,7 +219,7 @@ export default class Area extends Component{
                                 ref = 'cmpsDir' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'cmpsDir')}
+                                onChange={this.props.updateSurveyState.bind(this, 'cmpsDir')}
                                 value={this.state.surveyData.cmpsDir}
                             />
                         </Item>
@@ -352,7 +235,7 @@ export default class Area extends Component{
                                 ref = 'riverName' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'riverName')}
+                                onChange={this.props.updateSurveyState.bind(this, 'riverName')}
                                 value={this.state.surveyData.riverName}
                             />
                         </Item>
@@ -362,7 +245,7 @@ export default class Area extends Component{
                                 ref = 'riverDistance' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'riverDistance')}
+                                onChange={this.props.updateSurveyState.bind(this, 'riverDistance')}
                                 value={this.state.surveyData.riverDistance}
                             />
                         </Item>
@@ -381,7 +264,7 @@ export default class Area extends Component{
                                 placeholderStyle={{ color: "#bfc6ea" }}
                                 style={{width: undefined}}
                                 selectedValue={this.state.surveyData.tideTypeA}
-                                onValueChange={this.onDropdownChange.bind(this, 'tideTypeA' )}
+                                onValueChange={this.props.onDropdownChange.bind(this, 'tideTypeA' )}
                             >
                                 <Picker.Item label="High" value="high" />
                                 <Picker.Item label="Low" value='low' />
@@ -397,7 +280,7 @@ export default class Area extends Component{
                                 ref = 'tideHeightA' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'tideHeightA')}
+                                onChange={this.props.updateSurveyState.bind(this, 'tideHeightA')}
                                 value={this.state.surveyData.tideHeightA}
                             />
                             </Item>
@@ -411,7 +294,7 @@ export default class Area extends Component{
                                 <DateTimePicker
                                     isVisible={this.state.showLastTime}    
                                     mode={'time'}
-                                    onConfirm={this.updateSurveyTime.bind(this, 'tideTimeA')}
+                                    onConfirm={this.props.updateSurveyTime.bind(this, 'tideTimeA')}
                                     is24Hour={false}   
                                     onCancel={this.onCancelLast}                   
                                 />
@@ -434,7 +317,7 @@ export default class Area extends Component{
                                 placeholderStyle={{ color: "#bfc6ea" }}
                                 style={{width: undefined}}
                                 selectedValue={this.state.surveyData.tideTypeB}
-                                onValueChange={this.onDropdownChange.bind(this, 'tideTypeB' )}
+                                onValueChange={this.props.onDropdownChange.bind(this, 'tideTypeB' )}
                             >
                                 <Picker.Item label="High" value="high" />
                                 <Picker.Item label="Low" value='low' />
@@ -449,7 +332,7 @@ export default class Area extends Component{
                                     ref = 'tideHeightB' 
                                     placeholder={invisiblePlaceholder} 
                                     style={styles.textInput} 
-                                    onChange={this.updateSurveyState.bind(this, 'tideHeightB')}
+                                    onChange={this.props.updateSurveyState.bind(this, 'tideHeightB')}
                                     value={this.state.surveyData.tideHeightB}
                                 />
                             </Item>
@@ -463,7 +346,7 @@ export default class Area extends Component{
                                 <DateTimePicker
                                     isVisible={this.state.showNextTime}    
                                     mode={'time'}
-                                    onConfirm={this.updateSurveyTime.bind(this, 'tideTimeB')}
+                                    onConfirm={this.props.updateSurveyTime.bind(this, 'tideTimeB')}
                                     is24Hour={false}   
                                     onCancel={this.onCancelNext}                   
                                 />
@@ -485,7 +368,7 @@ export default class Area extends Component{
                                 ref = 'windSpeed' 
                                 placeholder={invisiblePlaceholder} 
                                 style={styles.textInput} 
-                                onChange={this.updateSurveyState.bind(this, 'windSpeed')}
+                                onChange={this.props.updateSurveyState.bind(this, 'windSpeed')}
                                 value={this.state.surveyData.windSpeed}
                             />
                         </Item>
@@ -498,7 +381,7 @@ export default class Area extends Component{
                                 placeholderStyle={{ color: "#bfc6ea" }}
                                 style={{width: undefined}}
                                 selectedValue={this.state.surveyData.windDir}
-                                onValueChange={this.onDropdownChange.bind(this, 'windDir' )}
+                                onValueChange={this.props.onDropdownChange.bind(this, 'windDir' )}
                             >
                                 <Picker.Item label="North" value="n" />
                                 <Picker.Item label="Northeast" value='ne' />
@@ -523,7 +406,7 @@ export default class Area extends Component{
                                 placeholderStyle={{ color: "#bfc6ea" }}
                                 style={{width: undefined}}
                                 selectedValue={this.state.surveyData.slope}
-                                onValueChange={this.onDropdownChange.bind(this, 'slope' )}
+                                onValueChange={this.props.onDropdownChange.bind(this, 'slope' )}
                             >
                                 <Picker.Item label="Winter Profile" value="winter" />
                                 <Picker.Item label="Summer Profile" value='summer' />
@@ -540,7 +423,7 @@ export default class Area extends Component{
                             <View style={styles.checkBoxLarge}>
                                 <CheckBox 
                                     isChecked={this.state.surveyData.substrateTypeSand} 
-                                    onClick={this.checkedbox.bind(this, 'substrateTypeSand')} 
+                                    onClick={this.props.checkedbox.bind(this, 'substrateTypeSand')} 
                                     checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                     unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
                                 />
@@ -549,7 +432,7 @@ export default class Area extends Component{
                             <View style={styles.checkBoxLarge}>
                                 <CheckBox 
                                     isChecked={this.state.surveyData.substrateTypePebble} 
-                                    onClick={this.checkedbox.bind(this, 'substrateTypePebble')} 
+                                    onClick={this.props.checkedbox.bind(this, 'substrateTypePebble')} 
                                     checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                     unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
                                 />
@@ -558,7 +441,7 @@ export default class Area extends Component{
                             <View style={styles.checkBoxLarge}>
                                 <CheckBox 
                                     isChecked={this.state.surveyData.substrateTypeRipRap} 
-                                    onClick={this.checkedbox.bind(this, 'substrateTypeRipRap')}
+                                    onClick={this.props.checkedbox.bind(this, 'substrateTypeRipRap')}
                                     checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                     unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}  
                                 />
@@ -567,7 +450,7 @@ export default class Area extends Component{
                             <View style={styles.checkBoxLarge}>
                                 <CheckBox 
                                     isChecked={this.state.surveyData.substrateTypeSeaweed} 
-                                    onClick={this.checkedbox.bind(this, 'substrateTypeSeaweed')} 
+                                    onClick={this.props.checkedbox.bind(this, 'substrateTypeSeaweed')} 
                                     checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                     unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
                                 />
@@ -576,7 +459,7 @@ export default class Area extends Component{
                             <View style={styles.checkBoxLarge}>
                                 <CheckBox 
                                     isChecked={this.state.surveyData.substrateTypeOther} 
-                                    onClick={this.checkedbox.bind(this, 'substrateTypeOther')} 
+                                    onClick={this.props.checkedbox.bind(this, 'substrateTypeOther')} 
                                     checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                     unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
                                 />
@@ -594,13 +477,6 @@ export default class Area extends Component{
                 </ScrollView>
 
                 {/* Render the footer used for navigation */}
-                <SurveyFooter 
-                    area 
-                    moveToTeamInfo={this.moveToTeamInfo} 
-                    moveToSRS={this.moveToSRS}
-                    moveToAS={this.moveToAS}
-                    moveToMicro={this.moveToMicro}
-                />
             </KeyboardView>
         )
     }

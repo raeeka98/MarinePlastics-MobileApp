@@ -5,6 +5,11 @@ import Expo from 'expo'
 
 import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
+import TeamInfo from './TeamInfo'
+import Area from './Area'
+import SurfaceRibScan from './SurfaceRibScan'
+import AccumulationSweep from './AccumulationSweep'
+import MicroDebris from './MicroDebris'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
 import RibEntryModal from './RibEntryModal'
@@ -18,7 +23,7 @@ export default class SurveyContainer extends Component {
     constructor(props) {
         super(props);
 
-        state = {
+        this.state = {
             surveyData: {},
             SRSData: {},
             ASData: {},
@@ -37,6 +42,29 @@ export default class SurveyContainer extends Component {
             },
             currentScreen: "teamInfo"
         }
+        this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
+        this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
+        this.moveToArea=this.moveToArea.bind(this);
+        this.moveToSRS = this.moveToSRS.bind(this);
+        this.moveToAS = this.moveToAS.bind(this);
+        this.moveToMicro = this.moveToMicro.bind(this);
+    }
+
+    static navigationOptions = {
+        header : null 
+    }
+
+    moveToTeamInfo() {
+        this.setState({
+            currentScreen: "teamInfo",
+            shouldRender:{
+                teamInfo: true,
+                area: false,
+                srs: false,
+                as: false,
+                micro: false
+            }
+        })
     }
 
     moveToArea() {
@@ -49,6 +77,170 @@ export default class SurveyContainer extends Component {
                 as: false,
                 micro: false
             }
+        })
+    }
+
+    moveToSRS() {
+        this.setState({
+            currentScreen: "srs",
+            shouldRender:{
+                teamInfo: false,
+                area: false,
+                srs: true,
+                as: false,
+                micro: false
+            }
+        })
+    }
+
+    moveToAS() {
+        this.setState({
+            currentScreen: "as",
+            shouldRender:{
+                teamInfo: false,
+                area: false,
+                srs: false,
+                as: true,
+                micro: false
+            }
+        })
+    }
+
+    moveToMicro() {
+        this.setState({
+            currentScreen: "micro",
+            shouldRender:{
+                teamInfo: false,
+                area: false,
+                srs: false,
+                as: false,
+                micro: true
+            }
+        })
+    }
+
+    /**
+     * This function takes in a reference name and an event to update the state of the survey.
+     * The reference name is the key that will be used to update the variable in surveyData. 
+     * e is used to grab the text from the text input and update the data with the new
+     * value
+     */
+    updateSurveyState(refName, e) {
+        let key =  refName;//e.target.id;
+        let value = e.nativeEvent.text;
+        this.setState(prevState => {
+            prevState.surveyData[key] = value;
+            return prevState;
+        })
+        if(key === 'cleanupTime')
+            this.setState({showTime: false})
+    }
+
+    /**
+     * A slightly different function has to be done here; e itself is the time that is being
+     * updated, so we use it as the value to update the key
+     */
+    updateSurveyTime(refName, e) {
+        let key = refName;
+        let val = e;
+
+        this.setState(prevState => {
+            prevState.surveyData[key] = val;
+            return prevState;
+        })
+        
+    }
+
+    /**
+     * Here, we need to take the change in the dropdown menu, stored in value, and set 
+     * surveyData[refName] to the new value.
+     */
+    onDropdownChange(refName, value) {
+        this.setState(prevState => {
+            prevState.surveyData[refName] = value;
+            console.log(prevState.surveyData)
+            return prevState
+        })
+    }
+
+    /**
+     * When updating the data, the checked value should be the opposite from what it was
+     * before the user checked the value.
+     */
+    checkedbox(refName, e) {
+        let key = refName;
+        let selection = this.state.surveyData[refName];
+        this.setState(prevState => {
+            prevState.surveyData[key] = !selection;
+            return prevState;
+        })
+    }
+
+     /**
+     * Increment or decrement the given key. When decrementing, the user cannot have a negative
+     * value.
+     */
+
+    decrementSRS (refName, e){
+        let key = refName;
+        this.setState(prevState => {
+            const newVal =  prevState.SRSData[key] - 1;
+            if(newVal === undefined)
+                return prevState
+            if(newVal < 0)
+                return prevState
+            prevState.SRSData[key]--;
+            return prevState;
+        })
+    }
+
+    incrementSRS(refName, e){
+        let key = refName;
+        this.setState(prevState => {
+            prevState.SRSData[key] = prevState.SRSData[key] ?  prevState.SRSData[key] + 1 : 1;
+            return prevState;
+        })
+    }
+
+    decrementAS (refName, e){
+        let key = refName;
+        this.setState(prevState => {
+            const newVal =  prevState.ASData[key] - 1;
+            if(newVal === undefined)
+                return prevState
+            if(newVal < 0)
+                return prevState
+            prevState.ASData[key]--;
+            return prevState;
+        })
+    }
+
+    incrementAS(refName, e){
+        let key = refName;
+        this.setState(prevState => {
+            prevState.ASData[key] = prevState.ASData[key] ?  prevState.ASData[key] + 1 : 1;
+            return prevState;
+        })
+    }
+
+    decrementMicro (refName, e){
+        let key = refName;
+        this.setState(prevState => {
+            const newVal =  prevState.MicroData[key] - 1;
+            if(newVal === undefined)
+                return prevState
+            if(newVal < 0)
+                return prevState
+            prevState.MicroData[key]--; 
+            return prevState;
+        })
+    }
+
+    incrementMicro(refName, e){
+        let key = refName;
+        this.setState(prevState => {
+            prevState.MicroData[key] = prevState.MicroData[key] ?  prevState.MicroData[key] + 1 : 1;
+            return prevState;
         })
     }
 
@@ -67,6 +259,8 @@ export default class SurveyContainer extends Component {
                         r4Items={this.state.r4Items}
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
+                        updateSurveyState={this.updateSurveyState}
+                        updateSurveyTime={this.updateSurveyTime}
                     />
                 )
             case "area" : 
@@ -81,6 +275,10 @@ export default class SurveyContainer extends Component {
                         r4Items={this.state.r4Items}
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
+                        checkedbox={this.checkedbox}
+                        onDropdownChange={this.onDropdownChange}
+                        updateSurveyState={this.updateSurveyState}
+                        updateSurveyTime={this.updateSurveyTime}
                     />
                 )
             case "srs" :
@@ -95,6 +293,9 @@ export default class SurveyContainer extends Component {
                         r4Items={this.state.r4Items}
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
+                        updateSurveyState={this.updateSurveyState}
+                        incrementSRS={this.incrementSRS}
+                        decrementSRS={this.decrementSRS}
                     />
                 )
             case "as" : 
@@ -109,6 +310,8 @@ export default class SurveyContainer extends Component {
                         r4Items={this.state.r4Items}
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
+                        incrementAS={this.incrementAS}
+                        decrementAS={this.decrementAS} 
                     />
                 )
             default :
@@ -123,6 +326,8 @@ export default class SurveyContainer extends Component {
                         r4Items={this.state.r4Items}
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
+                        incrementMicro={this.incrementMicro}
+                        decrementMicro={this.decrementMicro}
                     />
                 )
         }
@@ -131,7 +336,7 @@ export default class SurveyContainer extends Component {
     render() {
         const {shouldRender} = this.state;
         return(
-            <View>
+            <View style={styles.container}>
                 {this.renderCurrentScreen()}
                 <SurveyFooter 
                     teamInfo={shouldRender.teamInfo}
@@ -139,6 +344,11 @@ export default class SurveyContainer extends Component {
                     srs={shouldRender.srs}
                     as={shouldRender.as}
                     micro={shouldRender.micro}
+                    moveToTeamInfo={this.moveToTeamInfo}
+                    moveToArea={this.moveToArea}
+                    moveToSRS={this.moveToSRS}
+                    moveToAS={this.moveToAS}
+                    moveToMicro={this.moveToMicro}
                 />
             </View>
         )

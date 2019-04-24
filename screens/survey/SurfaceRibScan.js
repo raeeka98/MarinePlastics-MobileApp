@@ -19,135 +19,35 @@ const tabHeadings = [
 
 export default class SurfaceRibScan extends Component {
     state = {
-        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
-        SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
-        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
-        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
-        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
-        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
-        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
-        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
-        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
+        surveyData: this.props.surveyData ? this.props.surveyData : {},
+        SRSData: this.props.SRSData ? this.props.SRSData : {},
+        ASData: this.props.ASData ? this.props.ASData : {},
+        r1Items: this.props.r1Items ? this.props.r1Items : [],
+        r2Items: this.props.r2Items ? this.props.r2Items : [],
+        r3Items: this.props.r3Items ? this.props.r3Items : [],
+        r4Items: this.props.r4Items ? this.props.r4Items : [],
+        asItems: this.props.asItems ? this.props.asItems : [],
+        MicroData: this.props.MicroData ? this.props.MicroData : {},
         modalVisible: false,
         tabArray: [
             <Tab heading='+ Add Rib'>
                 <RibEntryModal
                 />
             </Tab>
-        ]
+        ],
+        loading: true
     }
 
-    moveToTeamInfo = () => {
-        this.props.navigation.push(
-            'TeamInfo', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToArea = () => {
-        this.props.navigation.push(
-            'Area', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToAS = () => {
-        this.props.navigation.push(
-            'AccumulationSweep', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToMicro = () => {
-        this.props.navigation.push(
-            'MicroDebris', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    static navigationOptions = {
-        title: 'Surface Rib Scan'
-    }
-
-    /**
-     * Increment or decrement the given key. When decrementing, the user cannot have a negative
-     * value.
-     */
-
-    decrementSRS (refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            const newVal =  prevState.SRSData[key] - 1;
-            if(newVal === undefined)
-                return prevState
-            if(newVal < 0)
-                return prevState
-            prevState.SRSData[key]--;
-            return prevState;
-        })
-    }
-
-    incrementSRS(refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            prevState.SRSData[key] = prevState.SRSData[key] ?  prevState.SRSData[key] + 1 : 1;
-            return prevState;
-        })
-    }
-
-    updateSurveyState(refName, e) {
-        console.log(this.state.surveyData)
-        let key =  refName;//e.target.id;
-        let value = e.nativeEvent.text;
-        this.setState(prevState => {
-            prevState.surveyData[key] = value;
-            return prevState;
-        })
-        
-    }
-
-    hideModal = () => {
+    hideModal = () => { 
         this.setState({modalVisible: false})
+    }
+
+    async componentWillMount() { 
+        await Expo.Font.loadAsync({
+          Roboto: require("native-base/Fonts/Roboto.ttf"),
+          Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+        });
+        this.setState({ loading: false });
     }
     
     renderTabs = () => {
@@ -158,10 +58,10 @@ export default class SurfaceRibScan extends Component {
                     SRSData={this.state.SRSData} 
                     surveyData={this.state.surveyData}
                     ribNumber={1} 
-                    decrementSRS={this.decrementSRS} 
-                    incrementSRS={this.incrementSRS}
+                    decrementSRS={this.props.decrementSRS} 
+                    incrementSRS={this.props.incrementSRS}
                     inputItems={this.state.r1Items}
-                    updateSurveyState={this.updateSurveyState}
+                    updateSurveyState={this.props.updateSurveyState}
                 />
             </Tab> 
         )
@@ -171,10 +71,10 @@ export default class SurfaceRibScan extends Component {
                     SRSData={this.state.SRSData}
                     surveyData={this.state.surveyData} 
                     ribNumber={2} 
-                    decrementSRS={this.decrementSRS} 
-                    incrementSRS={this.incrementSRS}
+                    decrementSRS={this.props.decrementSRS} 
+                    incrementSRS={this.props.incrementSRS}
                     inputItems={this.state.r2Items}
-                    updateSurveyState={this.updateSurveyState}
+                    updateSurveyState={this.props.updateSurveyState}
                 />
             </Tab>
         )
@@ -185,10 +85,10 @@ export default class SurfaceRibScan extends Component {
                     SRSData={this.state.SRSData}
                     surveyData={this.state.surveyData} 
                     ribNumber={3} 
-                    decrementSRS={this.decrementSRS} 
-                    incrementSRS={this.incrementSRS}
+                    decrementSRS={this.props.decrementSRS} 
+                    incrementSRS={this.props.incrementSRS}
                     inputItems={this.state.r3Items}
-                    updateSurveyState={this.updateSurveyState}
+                    updateSurveyState={this.props.updateSurveyState}
                 />
             </Tab>
         )
@@ -198,10 +98,10 @@ export default class SurfaceRibScan extends Component {
                     SRSData={this.state.SRSData}
                     surveyData={this.state.surveyData} 
                     ribNumber={4} 
-                    decrementSRS={this.decrementSRS} 
-                    incrementSRS={this.incrementSRS}
+                    decrementSRS={this.props.decrementSRS} 
+                    incrementSRS={this.props.incrementSRS}
                     inputItems={this.state.r4Items}
-                    updateSurveyState={this.updateSurveyState}
+                    updateSurveyState={this.props.updateSurveyState}
                 />
             </Tab> 
         )
@@ -214,20 +114,27 @@ export default class SurfaceRibScan extends Component {
      * own input screen dedicated to entering data
      */
     render() {
+        
         return (
             <View style={styles.container}>
-                <Header hasTabs style={{height: 1}}>
+                <Header hasTabs >
+                        <Left>
+                    <Button transparent>
+                    <Icon name='arrow-back' />
+                    </Button>
+                </Left>
+                <Body>
+                    <Text>Header</Text>
+                </Body>
+                <Right>
+                    <Button transparent>
+                    <Icon name='menu' />
+                    </Button>
+                </Right> 
                 </Header>
                 <Tabs>
                    {this.renderTabs()}  
                 </Tabs>
-                <SurveyFooter 
-                    srs 
-                    moveToTeamInfo={this.moveToTeamInfo} 
-                    moveToArea={this.moveToArea}
-                    moveToAS={this.moveToAS}
-                    moveToMicro={this.moveToMicro}
-                />
                
             </View>
         )
