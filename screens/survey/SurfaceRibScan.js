@@ -7,7 +7,15 @@ import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
+import RibEntryModal from './RibEntryModal'
 
+const tabHeadings = [
+    '+ Add Rib',
+    'Rib 1',
+    'Rib 2',
+    'Rib 3',
+    'Rib 4'
+]
 
 export default class SurfaceRibScan extends Component {
     state = {
@@ -20,6 +28,13 @@ export default class SurfaceRibScan extends Component {
         r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
         asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
         MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
+        modalVisible: false,
+        tabArray: [
+            <Tab heading='+ Add Rib'>
+                <RibEntryModal
+                />
+            </Tab>
+        ]
     }
 
     moveToTeamInfo = () => {
@@ -130,6 +145,69 @@ export default class SurfaceRibScan extends Component {
         })
         
     }
+
+    hideModal = () => {
+        this.setState({modalVisible: false})
+    }
+    
+    renderTabs = () => {
+        let tabArray = [];
+        tabArray.push(
+            <Tab heading={tabHeadings[1]}>
+                <RibInput 
+                    SRSData={this.state.SRSData} 
+                    surveyData={this.state.surveyData}
+                    ribNumber={1} 
+                    decrementSRS={this.decrementSRS} 
+                    incrementSRS={this.incrementSRS}
+                    inputItems={this.state.r1Items}
+                    updateSurveyState={this.updateSurveyState}
+                />
+            </Tab> 
+        )
+        tabArray.push(
+            <Tab heading='Rib 2'>
+                <RibInput 
+                    SRSData={this.state.SRSData}
+                    surveyData={this.state.surveyData} 
+                    ribNumber={2} 
+                    decrementSRS={this.decrementSRS} 
+                    incrementSRS={this.incrementSRS}
+                    inputItems={this.state.r2Items}
+                    updateSurveyState={this.updateSurveyState}
+                />
+            </Tab>
+        )
+
+        tabArray.push(
+            <Tab heading='Rib 3'>
+                <RibInput 
+                    SRSData={this.state.SRSData}
+                    surveyData={this.state.surveyData} 
+                    ribNumber={3} 
+                    decrementSRS={this.decrementSRS} 
+                    incrementSRS={this.incrementSRS}
+                    inputItems={this.state.r3Items}
+                    updateSurveyState={this.updateSurveyState}
+                />
+            </Tab>
+        )
+        tabArray.push(
+            <Tab heading='Rib 4'>
+                <RibInput 
+                    SRSData={this.state.SRSData}
+                    surveyData={this.state.surveyData} 
+                    ribNumber={4} 
+                    decrementSRS={this.decrementSRS} 
+                    incrementSRS={this.incrementSRS}
+                    inputItems={this.state.r4Items}
+                    updateSurveyState={this.updateSurveyState}
+                />
+            </Tab> 
+        )
+        
+        return tabArray
+    }
     
     /**
      * Here we render the actual input screens within the tabs so that each rib can have its
@@ -141,52 +219,8 @@ export default class SurfaceRibScan extends Component {
                 <Header hasTabs style={{height: 1}}>
                 </Header>
                 <Tabs>
-                    <Tab heading='Rib 1'>
-                        <RibInput 
-                            SRSData={this.state.SRSData} 
-                            surveyData={this.state.surveyData}
-                            ribNumber={1} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r1Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>
-                    <Tab heading='Rib 2'>
-                        <RibInput 
-                            SRSData={this.state.SRSData}
-                            surveyData={this.state.surveyData} 
-                            ribNumber={2} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r2Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>
-                    <Tab heading='Rib 3'>
-                        <RibInput 
-                            SRSData={this.state.SRSData}
-                            surveyData={this.state.surveyData} 
-                            ribNumber={3} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r3Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>
-                    <Tab heading='Rib 4'>
-                        <RibInput 
-                            SRSData={this.state.SRSData}
-                            surveyData={this.state.surveyData} 
-                            ribNumber={4} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r4Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>    
+                   {this.renderTabs()}  
                 </Tabs>
-                
                 <SurveyFooter 
                     srs 
                     moveToTeamInfo={this.moveToTeamInfo} 
