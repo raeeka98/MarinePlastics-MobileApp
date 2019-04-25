@@ -10,11 +10,12 @@ import ProfilePage from './screens/ProfilePage';
 import SurveyPage from './screens/SurveyPage';
 import PublishPage from './screens/PublishPage';
 import ChooseBeachPage from './screens/ChooseBeachPage';
-import TeamInfo from './screens/survey/TeamInfo'
-import Area from './screens/survey/Area'
-import SurfaceRibScan from './screens/survey/SurfaceRibScan'
-import AccumulationSweep from './screens/survey/AccumulationSweep'
-import MicroDebris from './screens/survey/MicroDebris'
+import TeamInfo from './screens/survey/TeamInfo';
+import Area from './screens/survey/Area';
+import SurfaceRibScan from './screens/survey/SurfaceRibScan';
+import AccumulationSweep from './screens/survey/AccumulationSweep';
+import MicroDebris from './screens/survey/MicroDebris';
+import Scanner from './screens/Scanner';
 
 
 const MainNavigator = createStackNavigator(
@@ -30,10 +31,11 @@ const MainNavigator = createStackNavigator(
     Area: {screen: Area},
     SurfaceRibScan: {screen: SurfaceRibScan},
     MicroDebris: {screen: MicroDebris},
-    AccumulationSweep: {screen: AccumulationSweep}
+    AccumulationSweep: {screen: AccumulationSweep},
+    Scanner : {screen : Scanner}
   },
   {
-    initialRouteName: 'Area'
+    initialRouteName: 'Boarding'
   }
 );
 
@@ -43,7 +45,7 @@ const NavigationApp = createNavigationContainer(MainNavigator);
 
 
 export default class App extends React.Component {
-  
+
 
   render() {
     return (

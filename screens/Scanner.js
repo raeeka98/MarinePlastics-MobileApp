@@ -6,40 +6,43 @@ import {
   Text,
   TouchableOpacity,
   Linking,
+  View,
 } from 'react-native';
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
+import { BarCodeScanner, Permissions } from 'expo';
 
-// https://www.npmjs.com/package/react-native-qrcode-scanner
-export class Scanner extends Component {
-  constructor(props) {
-      super(props);
+
+export default class Scanner extends Component {
+  state = {
+    hasCameraPermission: null,
   }
 
-  onSuccess(e) {
-    Linking
-      .openURL(e.data)
-      .catch(err => console.error('An error occured', err));
-  }
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
+    }
 
   render() {
-      return (
-        <div>
-            <QRCodeScanner
-              onRead={this.onSuccess.bind(this)}
-              topContent={
-                <Text style={styles.centerText}>
-                    Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and scan the QR code.
-                  </Text>
-                }
-                bottomContent={
-                  <TouchableOpacity style={styles.buttonTouchable}>
-                    <Text style={styles.buttonText}>OK. Got it!</Text>
-                  </TouchableOpacity>
-                }
-            />
-        </div>
-      )
+    const { hasCameraPermission } = this.state;
+
+    if (hasCameraPermission === null) {
+      return <Text>Requesting for camera permission</Text>;
+    }
+    if (hasCameraPermission === false) {
+      return <Text>No access to camera</Text>;
+    }
+    return (
+      <View style={{ flex: 1 }}>
+        <BarCodeScanner
+          onBarCodeScanned={this.handleBarCodeScanned}
+          style={StyleSheet.absoluteFill}
+        />
+      </View>
+    );
+  }
+
+  handleBarCodeScanned = ({ type, data }) => {
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   }
 }
 

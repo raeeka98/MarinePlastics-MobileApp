@@ -17,6 +17,7 @@ class HomePage extends React.Component {
           Published
         </Text>
         <Button onPress={() => this.props.navigation.navigate('SurveyEntry')} title="SurveyPage"/>
+        <Button onPress={() => this.props.navigation.navigate('Scanner')} title="QR Code Scanner"/>
       </View>
     );
   }
@@ -41,4 +42,3 @@ const styles = StyleSheet.create({
     color: "#34495e",
   }
 });
-
