@@ -7,7 +7,7 @@ import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
-import RibEntryModal from './RibEntryModal'
+import RibEntry from './RibEntry'
 
 const tabHeadings = [
     '+ Add Rib',
@@ -29,84 +29,44 @@ export default class SurfaceRibScan extends Component {
         asItems: this.props.asItems ? this.props.asItems : [],
         MicroData: this.props.MicroData ? this.props.MicroData : {},
         modalVisible: false,
-        tabArray: [
-            <Tab heading='+ Add Rib'>
-                <RibEntryModal
-                />
-            </Tab>
-        ],
-        loading: true
+        tabArray: this.props.tabArray ? this.props.tabArray : [],
     }
 
     hideModal = () => { 
         this.setState({modalVisible: false})
     }
 
-    async componentWillMount() { 
-        await Expo.Font.loadAsync({
-          Roboto: require("native-base/Fonts/Roboto.ttf"),
-          Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
-        });
-        this.setState({ loading: false });
+    submitAddRib (ribNumber, ribLength, ribStart) {
+        let ribArrayName = `r${ribNumber}Items`
+        let ribNumLength = `r${ribNumber}Length`
+        let ribNumStart = `r${ribNumber}Start`
+        let newRib = (
+            <Tab heading={`Rib ${ribNumber}`}>
+                <RibInput
+                    SRSData={this.state.SRSData}
+                    surveyData={this.state.surveyData}
+                    ribNumber={ribNumber} 
+                    decrementSRS={this.props.decrementSRS} 
+                    incrementSRS={this.props.incrementSRS}
+                    inputItems={this.state[ribArrayName]}
+                    updateSurveyState={this.props.updateSurveyState}
+                />
+            </Tab>
+        )
+        
+        this.setState(prevState => {
+            prevState.tabArray.push(newRib);
+            prevState.surveyData[ribNumLength] = ribLength;
+            prevState.surveyData[ribNumStart] = ribStart;
+            return prevState
+        })
     }
     
     renderTabs = () => {
-        let tabArray = [];
-        tabArray.push(
-            <Tab heading={tabHeadings[1]}>
-                <RibInput 
-                    SRSData={this.state.SRSData} 
-                    surveyData={this.state.surveyData}
-                    ribNumber={1} 
-                    decrementSRS={this.props.decrementSRS} 
-                    incrementSRS={this.props.incrementSRS}
-                    inputItems={this.state.r1Items}
-                    updateSurveyState={this.props.updateSurveyState}
-                />
-            </Tab> 
-        )
-        tabArray.push(
-            <Tab heading='Rib 2'>
-                <RibInput 
-                    SRSData={this.state.SRSData}
-                    surveyData={this.state.surveyData} 
-                    ribNumber={2} 
-                    decrementSRS={this.props.decrementSRS} 
-                    incrementSRS={this.props.incrementSRS}
-                    inputItems={this.state.r2Items}
-                    updateSurveyState={this.props.updateSurveyState}
-                />
-            </Tab>
-        )
-
-        tabArray.push(
-            <Tab heading='Rib 3'>
-                <RibInput 
-                    SRSData={this.state.SRSData}
-                    surveyData={this.state.surveyData} 
-                    ribNumber={3} 
-                    decrementSRS={this.props.decrementSRS} 
-                    incrementSRS={this.props.incrementSRS}
-                    inputItems={this.state.r3Items}
-                    updateSurveyState={this.props.updateSurveyState}
-                />
-            </Tab>
-        )
-        tabArray.push(
-            <Tab heading='Rib 4'>
-                <RibInput 
-                    SRSData={this.state.SRSData}
-                    surveyData={this.state.surveyData} 
-                    ribNumber={4} 
-                    decrementSRS={this.props.decrementSRS} 
-                    incrementSRS={this.props.incrementSRS}
-                    inputItems={this.state.r4Items}
-                    updateSurveyState={this.props.updateSurveyState}
-                />
-            </Tab> 
-        )
-        
-        return tabArray
+        console.log("Rendereing tgabsf") 
+        this.setState({
+            tabs:'rendered'
+        })
     }
     
     /**
@@ -114,26 +74,31 @@ export default class SurfaceRibScan extends Component {
      * own input screen dedicated to entering data
      */
     render() {
-        
+        console.log("OUTER RENDER" )
         return (
             <View style={styles.container}>
-                <Header hasTabs >
-                        <Left>
-                    <Button transparent>
-                    <Icon name='arrow-back' />
-                    </Button>
-                </Left>
-                <Body>
-                    <Text>Header</Text>
-                </Body>
-                <Right>
-                    <Button transparent>
-                    <Icon name='menu' />
-                    </Button>
-                </Right> 
+                <Header hasTabs style={{height : 75}}>
+                    <Left style={{marginTop: 20}}>
+                        <Button transparent>
+                        <Icon name='arrow-back' />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Header</Text>
+                    </Body>
+                    <Right style={{marginTop: 20}}/>
                 </Header>
                 <Tabs>
-                   {this.renderTabs()}  
+                    <Tab heading='+ Add Rib'>
+                        <RibEntry
+                            updateSurveyState={this.props.updateSurveyState}
+                            surveyData={this.props.surveyData}
+                            submitAddRib={this.submitAddRib}
+                            tabArray={this.state.tabArray}
+                            renderTabs={this.renderTabs}
+                        />
+                    </Tab>
+                   {this.state.tabsArray}  
                 </Tabs>
                
             </View>

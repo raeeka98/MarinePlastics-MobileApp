@@ -12,7 +12,7 @@ import AccumulationSweep from './AccumulationSweep'
 import MicroDebris from './MicroDebris'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
-import RibEntryModal from './RibEntryModal'
+import RibEntryModal from './RibEntry'
 
 /**
  * This class will contain the entire survey within the screen, rendering different 
@@ -33,14 +33,15 @@ export default class SurveyContainer extends Component {
             r4Items: [],
             asItems: [],
             MicroData: {},
+            tabArray : [],
             shouldRender:{
-                teamInfo: true,
+                teamInfo: false,
                 area: false,
-                srs: false,
+                srs: true,
                 as: false,
                 micro: false
             },
-            currentScreen: "teamInfo"
+            currentScreen: "srs"
         }
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
@@ -55,6 +56,7 @@ export default class SurveyContainer extends Component {
     }
 
     moveToTeamInfo() {
+        console.log(this.state )
         this.setState({
             currentScreen: "teamInfo",
             shouldRender:{
@@ -126,6 +128,7 @@ export default class SurveyContainer extends Component {
      * value
      */
     updateSurveyState(refName, e) {
+        console.log(this.state)
         let key =  refName;//e.target.id;
         let value = e.nativeEvent.text;
         this.setState(prevState => {
@@ -259,6 +262,7 @@ export default class SurveyContainer extends Component {
                         r4Items={this.state.r4Items}
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
+                        tabArray={this.state.tabArray}
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
                     />
@@ -293,6 +297,7 @@ export default class SurveyContainer extends Component {
                         r4Items={this.state.r4Items}
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
+                        tabArray={this.state.tabArray}
                         updateSurveyState={this.updateSurveyState}
                         incrementSRS={this.incrementSRS}
                         decrementSRS={this.decrementSRS}
@@ -335,6 +340,7 @@ export default class SurveyContainer extends Component {
 
     render() {
         const {shouldRender} = this.state;
+        console.log("BIG RENDER")
         return(
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
