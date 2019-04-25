@@ -33,6 +33,7 @@ export default class TeamInfo extends Component {
         r4Items: this.props.r4Items ? this.props.r4Items : [],
         asItems: this.props.asItems ? this.props.asItems : [],
         MicroData: this.props.MicroData ? this.props.MicroData : {},
+        tabArray: this.props.tabArray ? this.props.tabArray : []
     }
 
     /**

@@ -36,13 +36,17 @@ export default class SurfaceRibScan extends Component {
         this.setState({modalVisible: false})
     }
 
-    submitAddRib (ribNumber, ribLength, ribStart) {
+    
+
+    submitAddRib = (ribNumber, ribLength, ribStart) => {
+        console.log("Made it")
         let ribArrayName = `r${ribNumber}Items`
         let ribNumLength = `r${ribNumber}Length`
         let ribNumStart = `r${ribNumber}Start`
         let newRib = (
             <Tab heading={`Rib ${ribNumber}`}>
                 <RibInput
+                    key={ribNumber}
                     SRSData={this.state.SRSData}
                     surveyData={this.state.surveyData}
                     ribNumber={ribNumber} 
@@ -58,12 +62,13 @@ export default class SurfaceRibScan extends Component {
             prevState.tabArray.push(newRib);
             prevState.surveyData[ribNumLength] = ribLength;
             prevState.surveyData[ribNumStart] = ribStart;
+            console.log(prevState)
             return prevState
         })
     }
     
-    renderTabs = () => {
-        console.log("Rendereing tgabsf") 
+    renderTabs = (parameter) =>{
+        console.log(`Passed: ${parameter}`)  
         this.setState({
             tabs:'rendered'
         })
@@ -98,7 +103,7 @@ export default class SurfaceRibScan extends Component {
                             renderTabs={this.renderTabs}
                         />
                     </Tab>
-                   {this.state.tabsArray}  
+                   {this.state.tabArray}  
                 </Tabs>
                
             </View>

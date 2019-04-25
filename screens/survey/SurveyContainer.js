@@ -23,7 +23,7 @@ export default class SurveyContainer extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.state = { 
             surveyData: {},
             SRSData: {},
             ASData: {},

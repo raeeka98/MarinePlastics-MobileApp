@@ -105,8 +105,8 @@ export default class RibInput extends Component {
     }
 
     render() {
-        const ribStart = `rib${this.state.ribNumber}Start`;
-        const ribLength = `rib${this.state.ribNumber}Length`
+        const ribStart = `r${this.state.ribNumber}Start`;
+        const ribLength = `r${this.state.ribNumber}Length`
         return (
             <View>
                 <View style={[{marginTop: 10, marginRight: 10, marginLeft: 10}, styles.inputSingleContainer]}>

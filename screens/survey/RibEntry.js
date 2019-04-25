@@ -13,13 +13,37 @@ export default class RibEntry extends Component {
         tabArray: this.props.tabArray
     }
 
-    updateRibNumber(e) {
-        let ribNumber = e.nativeEvent.text;
-        this.setState({
-            ribNumber: ribNumber,
-            canEdit: true
+    updateRibInfo(refName, e) {
+        let newValue = e.nativeEvent.text;
+        let key = refName
+        this.setState(prevState => {
+            if(!prevState.canEdit)
+                prevState.canEdit = true;
+            prevState[key] = newValue;
+            return prevState
         })
     }
+
+    clearInputs =()=>{
+        this.setState({
+            ribNumber: "",
+            ribLength: "",
+            ribStart: "",
+            canEdit: false
+        })
+    }
+
+    async onSubmitEdits () {
+        if(this.state.ribNumber === "" || this.state.ribLength === "" || this.state.ribStart === ""){
+            alert("Please fill out all of the information")
+            return
+        }
+
+        console.log("Submitting")
+        await this.props.submitAddRib(this.state.ribNumber, this.state.ribLength, this.state.ribStart);
+        this.clearInputs();
+        console.log("Done")
+    } 
 
     render() {
         console.log("Render Render")
@@ -30,7 +54,7 @@ export default class RibEntry extends Component {
                     <Item regular>
                         <TextInput 
                             style={{width: 100, height: 35}}
-                            onChange={this.updateRibNumber.bind(this)}
+                            onChange={this.updateRibInfo.bind(this, 'ribNumber')}
                             value={this.state.ribNumber}
                         />
                     </Item>
@@ -41,7 +65,7 @@ export default class RibEntry extends Component {
                         <TextInput 
                             style={{width: 100, height: 35}}
                             editable={this.state.canEdit}
-                            onChange={this.props.updateSurveyState.bind(this, "ribStart")}
+                            onChange={this.updateRibInfo.bind(this, "ribStart")}
                             value={this.state.ribStart}
                         />
                     </Item>
@@ -52,7 +76,7 @@ export default class RibEntry extends Component {
                         <TextInput 
                             style={{width: 100, height: 35}}
                             editable={this.state.canEdit}
-                            onChange={this.props.updateSurveyState.bind(this, "ribLength")}
+                            onChange={this.updateRibInfo.bind(this, "ribLength")}
                             value={this.state.ribLength}
                         />
                     </Item>
@@ -61,7 +85,7 @@ export default class RibEntry extends Component {
                     <Button
                         info
                         style={{alignSelf: 'stretch', justifyContent: 'center'}}
-                        onPress={this.props.renderTabs}
+                        onPress={this.onSubmitEdits.bind(this)}
                     >
                         <Icon type='AntDesign' name='plus'/>
                         <Text style={{color: 'white'}}>Add Rib</Text>
