@@ -13,9 +13,11 @@
     "native-base": "^2.12.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-camera": "^2.6.0",
     "react-native-check-box": "^2.1.7",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-modal-datetime-picker": "^6.1.0",
+    "react-native-qrcode-scanner": "^1.1.2",
     "react-navigation": "^3.7.1",
     "react-navigator": "0.0.0-0",
     "react-time-picker": "^3.5.1"
