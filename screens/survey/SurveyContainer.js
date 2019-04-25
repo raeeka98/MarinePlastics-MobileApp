@@ -340,7 +340,6 @@ export default class SurveyContainer extends Component {
 
     render() {
         const {shouldRender} = this.state;
-        console.log("BIG RENDER")
         return(
             <View style={styles.container}>
                 {this.renderCurrentScreen()}

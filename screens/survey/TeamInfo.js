@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
-import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button} from 'native-base';
+import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button, Header, Right, Left, Body} from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
 import SurveyFooter from './SurveyFooter'
@@ -83,7 +83,17 @@ export default class TeamInfo extends Component {
     render() {
         return(
             <View style={styles.container}>
-                
+                <Header style={{height : 75}}>
+                    <Left style={{marginTop: 20}}>
+                        <Button transparent>
+                        <Icon name='arrow-back' />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Team Information</Text>
+                    </Body>
+                    <Right style={{marginTop: 20}}/>
+                </Header>
                 <View style={styles.inputSingleContainer} >
                     <Text style={styles.inputSingle}>First Name</Text>
                     <Item regular>

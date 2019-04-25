@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {TextInput, View, Text, StyleSheet, ScrollView} from 'react-native'
-import {Item, Footer, FooterTab, Button, Icon, Picker} from 'native-base'
+import {Item, Footer, FooterTab, Button, Icon, Picker, Header, Left, Right, Body} from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import CheckBox from 'react-native-check-box'
 
@@ -101,6 +101,17 @@ export default class Area extends Component{
     render() {
         return(
             <KeyboardView style={styles.container}>
+                <Header hasTabs style={{height : 75}} >
+                    <Left style={{marginTop: 20}}>
+                        <Button transparent>
+                        <Icon name='arrow-back' />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Survey Area</Text>
+                    </Body>
+                    <Right style={{marginTop: 20}}/>
+                </Header>
                 <ScrollView style={{marginBottom:50}}>
 
                     {/* Render the Beach Info */}

@@ -48,6 +48,7 @@ export default class AccumulationSweep extends Component {
         const weatheredKey = `${currentItemKey}__weathered__accumulation`
         return (
             <View style = {{marginBottom: 15}}>
+                
                 <Text style={{fontSize: 19}}>{item.key}</Text>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
@@ -106,6 +107,17 @@ export default class AccumulationSweep extends Component {
     render() {
         return(
             <View style={styles.container}>
+                <Header hasTabs style={{height : 75}}>
+                    <Left style={{marginTop: 20}}>
+                        <Button transparent>
+                        <Icon name='arrow-back' />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Accumulation Sweep</Text>
+                    </Body>
+                    <Right style={{marginTop: 20}}/>
+                </Header>
                  <View style={[styles.inputSingleContainer]}>
                     <Button 
                         info 
