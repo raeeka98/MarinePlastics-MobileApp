@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
+import {Accordion, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
 import Expo from 'expo'
 
 import KeyboardView from '../../components/KeyboardView'
@@ -36,20 +36,32 @@ export default class AccumulationSweep extends Component {
         r2Items: this.props.r2Items ? this.props.r2Items : [],
         r3Items: this.props.r3Items ? this.props.r3Items : [],
         r4Items: this.props.r4Items ? this.props.r4Items : [],
-        asItems: this.props.asItems ? this.props.asItems : [],
+        asItems: [
+            {key: 'Cigarette Butts'},
+            {key: 'Fishing Line / Polypropylene Rope'},
+            {key: 'Plastic Straws'},
+            {key: 'Filmed Plastic'},
+            {key: 'Plastic Bottles / Plastic Caps'},
+            {key: 'Aluminum Cans / Foil / Metal'},
+            {key: 'Glass'},
+            {key: 'Styofoam / Urethane'},
+            {key: 'Other: Plastics'},
+            {key: 'Other: Food / Organics'},
+            {key: 'Other: Cotton / Cloth'},
+            {key: 'Other: Wood / Paper'},
+            
+        ],
         MicroData: this.props.MicroData ? this.props.MicroData : {},
         selections: BUTTONS
     }
 
 
-    renderCategoryInput = ({item}) => {
-        const currentItemKey = debrisInfoID[item.key];
+    renderCategoryInput = (item) => {
+        const currentItemKey = debrisInfoID[item.title];
         const freshKey = `${currentItemKey}__fresh__accumulation`
         const weatheredKey = `${currentItemKey}__weathered__accumulation`
         return (
-            <View style = {{marginBottom: 15}}>
-                
-                <Text style={{fontSize: 19}}>{item.key}</Text>
+            <View style = {{padding: 15}}>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
                     <View style={{flexDirection: 'row'}}>
@@ -99,12 +111,25 @@ export default class AccumulationSweep extends Component {
                         </Button>
                     </View>
                 </View>
-                <View style={styles.segmentSeparator}/>
             </View>
         )
     }
 
     render() {
+        const accordData = [
+            {title: 'Cigarette Butts'},
+            {title: 'Fishing Line / Polypropylene Rope'},
+            {title: 'Plastic Straws'},
+            {title: 'Filmed Plastic'},
+            {title: 'Plastic Bottles / Plastic Caps'},
+            {title: 'Aluminum Cans / Foil / Metal'},
+            {title: 'Glass'},
+            {title: 'Styofoam / Urethane'},
+            {title: 'Other: Plastics'},
+            {title: 'Other: Food / Organics'},
+            {title: 'Other: Cotton / Cloth'},
+            {title: 'Other: Wood / Paper'},
+        ]
         return(
             <View style={styles.container}>
                 <Header hasTabs style={{height : 75}}>
@@ -117,47 +142,9 @@ export default class AccumulationSweep extends Component {
                         <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Accumulation Sweep</Text>
                     </Body>
                     <Right style={{marginTop: 20}}/>
-                </Header>
-                 <View style={[styles.inputSingleContainer]}>
-                    <Button 
-                        info 
-                        style={{alignSelf: 'stretch', justifyContent: 'center'}}
-                        onPress={() => {
-                            ActionSheet.show(
-                                {
-                                    options: this.state.selections,
-                                    title: "Select a Category",
-                                    cancelButtonIndex: CANCEL_INDEX
-                                },
-                                buttonIndex => {
-                                    const temp = this.state.selections;
-                                    if(temp[buttonIndex] === 'Cancel'){
-                                        ActionSheet.hide()
-                                        return;
-                                    }
-                                    this.setState(prevState => {
-                                        prevState.asItems.push(
-                                            {key: temp[buttonIndex]}
-                                        )
-                                        prevState.selections = prevState.selections.filter((category) => category !== BUTTONS[buttonIndex])
-                                        return prevState
-                                    })
-
-                                    
-                                }
-                            )
-                        }}
-                    >
-                        <Icon type='AntDesign' name='plus'/>
-                        <Text style={{color: 'white'}}>Add Category</Text>
-                    </Button>
-                    
-                </View>
-                <FlatList 
-                    style={{marginLeft:20, marginRight:20}} 
-                    data={this.state.asItems} 
-                    extraData={this.state} 
-                    renderItem={this.renderCategoryInput}
+                </Header> 
+                <Accordion 
+                    dataArray={accordData} renderContent={this.renderCategoryInput}
                 />
             </View>
         

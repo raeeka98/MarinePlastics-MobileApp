@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
+import {TextInput, Text, View, ScrollView } from 'react-native'
+import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title, Accordion} from 'native-base'
 import Expo from 'expo'
 
 import KeyboardView from '../../components/KeyboardView'
@@ -33,7 +33,21 @@ export default class RibInput extends Component {
         SRSData: this.props.SRSData,
         surveyData: this.props.surveyData,
         ribNumber: this.props.ribNumber,
-        inputItems: this.props.inputItems,
+        inputItems: [
+            {title: "Cigarette Butts"},
+            {title: 'Fishing Line / Polypropylene Rope'},
+            {title: 'Plastic Straws'},
+            {title: 'Filmed Plastic'},
+            {title: 'Plastic Bottles / Plastic Caps'},
+            {title: 'Aluminum Cans / Foil / Metal'},
+            {title: "Glass"},
+            {title: 'Styofoam / Urethane'},
+            {title: "Other: Plastics"},
+            {title: "Other: Food / Organics"},
+            {title: "Other: Cotton / Cloth"},
+            {title: "Other: Wood / Paper"},
+
+        ],
         selections: BUTTONS
     }
 
@@ -43,13 +57,13 @@ export default class RibInput extends Component {
      *  the values. Additionally, the values will fall under some subcategories, including either
      *  "fresh" or 'weathered'
      */
-    renderCategoryInput = ({item}) => {
-        const currentItemKey = debrisInfoID[item.key];
+    renderCategoryInput = (item) => {
+        const currentItemKey = debrisInfoID[item.title];
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
         const weatheredKey = `${currentItemKey}__weathered__${this.state.ribNumber}`
         return (
-            <View style = {{marginBottom: 15}}>
-                <Text style={{fontSize: 19}}>{item.key}</Text>
+            <View style = {{padding:10}}>
+                <Text style={{fontSize: 19}}>{item.title}</Text>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
                     <View style={{flexDirection: 'row'}}>
@@ -99,7 +113,6 @@ export default class RibInput extends Component {
                         </Button>
                     </View>
                 </View>
-                <View style={styles.segmentSeparator}/>
             </View>
         )
     }
@@ -108,75 +121,19 @@ export default class RibInput extends Component {
         const ribStart = `r${this.state.ribNumber}Start`;
         const ribLength = `r${this.state.ribNumber}Length`
         return (
-            <View>
-                <View style={[{marginTop: 10, marginRight: 10, marginLeft: 10}, styles.inputSingleContainer]}>
-                    <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                        <Text style={{fontSize: 20}}>Rib Start:</Text>
-                        <Item regular>
-                            <TextInput 
-                                style={{width: 100, height: 35}}
-                                onChange={this.props.updateSurveyState.bind(this, ribStart)}
-                                value={this.state.surveyData[ribStart]}
-                            />
-                        </Item>
+            <ScrollView style={{marginBottom: 50}}>
+                    <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly', marginTop: 15}]}>
+                        <Text style={{fontSize: 14}}>Rib Start:</Text>
+                        <Text>{this.state.surveyData[ribStart]}</Text>
+                        <Text style={{fontSize: 14}}>Rib Length:</Text>
+                        <Text>{this.state.surveyData[ribLength]}</Text>
                     </View>
-                    <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                        <Text style={{fontSize: 20}}>Rib Length:</Text>
-                        <Item regular>
-                            <TextInput 
-                                style={{width: 100, height: 35}}
-                                onChange={this.props.updateSurveyState.bind(this, ribLength)}
-                                value={this.state.surveyData[ribLength]}
-                            />
-                        </Item>
-                    </View>
-                </View>
                 <View style={styles.segmentSeparator}/>
-                <View style={[styles.inputSingleContainer]}>
-                    <Button 
-                        info 
-                        style={{alignSelf: 'stretch', justifyContent: 'center'}}
-                        onPress={() => {
-                            ActionSheet.show(
-                                {
-                                    options: this.state.selections,
-                                    title: "Select a Category",
-                                    cancelButtonIndex: CANCEL_INDEX
-                                },
-                                buttonIndex => {
-                                    /* Here we need to add the selected item to the list of input items
-                                       and remove it from the list of button selections
-                                    */
-                                    const temp = this.state.selections;
-                                    if(temp[buttonIndex]==='Cancel'){
-                                        ActionSheet.hide();
-                                        return
-                                    }
-                                    this.setState(prevState => {
-                                        prevState.inputItems.push(
-                                            {key: temp[buttonIndex]}
-                                        )
-                                        prevState.selections = prevState.selections.filter((category) => category !== BUTTONS[buttonIndex])
-                                        return prevState
-                                    })
-
-                                    
-                                }
-                            )
-                        }}
-                    >
-                        <Icon type='AntDesign' name='plus'/>
-                        <Text style={{color: 'white'}}>Add Category</Text>
-                    </Button>
-                    
-                </View>
-                <FlatList 
-                    style={{marginLeft:20, marginRight:20}} 
-                    data={this.state.inputItems} 
-                    extraData={this.state} 
-                    renderItem={this.renderCategoryInput}
-                />
-            </View>
+                    <Accordion 
+                        dataArray={this.state.inputItems} 
+                        renderContent={this.renderCategoryInput}
+                    />
+            </ScrollView>
         )
     }
 }
