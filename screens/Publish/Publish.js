@@ -14,7 +14,12 @@ import {
   AsyncStorage
 } from 'react-native';
 
-function LoadedSurveys(props)
+function LoadedSurveys(props) {
+    const items = props.surveys.map(survey =>
+        <Text>survey</Text>
+    );
+    return items;
+}
 
 
 export default class Publish extends Component {
@@ -52,9 +57,13 @@ export default class Publish extends Component {
         <View style={styles.container}>
             <Button
               title="Import Survey"
-              onPress={() => navigation.navigate('Scanner')}
+              onPress={() => navigation.navigate('Scanner', {
+                  allSurveys : this.state.surveys
+              })}
             />
-          <Text>{this.state.surveys}</Text>
+            <LoadedSurveys
+                surveys={this.state.surveys}
+            />
         </View>
       );
     }

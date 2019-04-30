@@ -20,7 +20,7 @@ export default class Scanner extends Component {
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
-    }
+  }
 
   render() {
     const { hasCameraPermission } = this.state;
@@ -43,8 +43,13 @@ export default class Scanner extends Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     const { navigation } = this.props;
+    let allSurveys = navigation.getParam('allSurveys', 'NONE');
+
     if(type == BarCodeScanner.Constants.BarCodeType.qr) {
-        navigation.navigate("Publish", {newSurvey : data});
+        allSurveys.push(data);
+        navigation.navigate("Publish", {
+          allSurveys : allSurveys
+        });
     }else {
         alert("Not a Valid QR Code!");
     }
