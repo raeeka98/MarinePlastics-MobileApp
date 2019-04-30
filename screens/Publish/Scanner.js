@@ -42,7 +42,12 @@ export default class Scanner extends Component {
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    const { navigation } = this.props;
+    if(type == BarCodeScanner.Constants.BarCodeType.qr) {
+        navigation.navigate("Publish", {newSurvey : data});
+    }else {
+        alert("Not a Valid QR Code!");
+    }
   }
 }
 

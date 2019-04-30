@@ -1,21 +1,25 @@
 import React from 'react';
-import {createStackNavigator, createNavigationContainer} from 'react-navigation';
+import {createStackNavigator, createNavigationContainer, createAppContainer} from 'react-navigation';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import {Root} from 'native-base'
+
+// optimization?
+import { useScreens } from 'react-native-screens';
+useScreens();
 
 import HomePage from './screens/HomePage';
 import BoardingPage from './screens/BoardingPage';
 import LogInPage from './screens/LogInPage';
 import ProfilePage from './screens/ProfilePage';
 import SurveyPage from './screens/SurveyPage';
-import PublishPage from './screens/PublishPage';
+import Publish from './screens/Publish/Publish';
 import ChooseBeachPage from './screens/ChooseBeachPage';
 import TeamInfo from './screens/survey/TeamInfo';
 import Area from './screens/survey/Area';
 import SurfaceRibScan from './screens/survey/SurfaceRibScan';
 import AccumulationSweep from './screens/survey/AccumulationSweep';
 import MicroDebris from './screens/survey/MicroDebris';
-import Scanner from './screens/Scanner';
+import Scanner from './screens/Publish/Scanner';
 
 
 const MainNavigator = createStackNavigator(
@@ -25,7 +29,7 @@ const MainNavigator = createStackNavigator(
     Login: {screen: LogInPage},
     Profile: {screen: ProfilePage},
     SurveyEntry: {screen: SurveyPage},
-    PublishFinalizeSurvey: {screen: PublishPage},
+    Publish: {screen: Publish},
     ChooseBeach: {screen: ChooseBeachPage},
     TeamInfo: {screen: TeamInfo},
     Area: {screen: Area},
@@ -35,11 +39,12 @@ const MainNavigator = createStackNavigator(
     Scanner : {screen : Scanner}
   },
   {
-    initialRouteName: 'Boarding'
+    // First init route is for testing, second init route is for published app
+    initialRouteName: (__DEV__ ? 'Publish' : 'Boarding')
   }
 );
 
-const NavigationApp = createNavigationContainer(MainNavigator);
+const NavigationApp = createAppContainer(MainNavigator);
 
 //export default App;
 

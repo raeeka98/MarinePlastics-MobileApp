@@ -17,7 +17,7 @@ class HomePage extends React.Component {
           Published
         </Text>
         <Button onPress={() => this.props.navigation.navigate('SurveyEntry')} title="SurveyPage"/>
-        <Button onPress={() => this.props.navigation.navigate('Scanner')} title="QR Code Scanner"/>
+        <Button onPress={() => this.props.navigation.navigate('Publish')} title="Publish Survey"/>
       </View>
     );
   }
