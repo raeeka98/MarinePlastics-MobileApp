@@ -13,6 +13,10 @@ import { BarCodeScanner, Permissions } from 'expo';
 
 
 export default class Scanner extends Component {
+  constructor(props) {
+      super(props);
+      this.pushed = false;
+  }
   state = {
     hasCameraPermission: null,
   }
@@ -43,12 +47,15 @@ export default class Scanner extends Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     const { navigation } = this.props;
-    let allSurveys = navigation.getParam('allSurveys', 'NONE');
-
+    let surveys = navigation.getParam('surveys', []);
     if(type == BarCodeScanner.Constants.BarCodeType.qr) {
-        allSurveys.push(data);
+        if(this.pushed == false) {
+          surveys.push(data);
+          this.pushed = true;
+        }
+
         navigation.navigate("Publish", {
-          allSurveys : allSurveys
+          surveys : surveys
         });
     }else {
         alert("Not a Valid QR Code!");

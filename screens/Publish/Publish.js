@@ -15,8 +15,9 @@ import {
 } from 'react-native';
 
 function LoadedSurveys(props) {
+    let i = 0;
     const items = props.surveys.map(survey =>
-        <Text>survey</Text>
+        <Text key={i++}>Survey #{i}: {survey}</Text>
     );
     return items;
 }
@@ -26,28 +27,19 @@ export default class Publish extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading : true
+      loading : true,
+      surveys : []
     };
   }
 
   async componentDidMount() {
-      const { navigation } = this.props;
-
-      const allSurveys = navigation.getParam('allSurveys', 'NONE');
-      const newSurvey = navigation.getParam('newSurvey', 'NO_NEW_SURVEY');
-      let surveys = [];
-      if (allSurveys != 'NONE') {
-          surveys = allSurveys;
-      }
-      if (newSurvey != 'NO_NEW_SURVEY') {
-          surveys.push(newSurvey);
-      }
-      this.setState({ surveys, loading : false });
+      this.setState({ loading : false });
   }
 
   render() {
 
     const { navigation } = this.props;
+    let surveys = navigation.getParam('surveys', []);
 
     if(this.state.loading) {
       return <ActivityIndicator size="large" color="#0000ff" />;
@@ -58,11 +50,11 @@ export default class Publish extends Component {
             <Button
               title="Import Survey"
               onPress={() => navigation.navigate('Scanner', {
-                  allSurveys : this.state.surveys
+                  surveys : surveys
               })}
             />
             <LoadedSurveys
-                surveys={this.state.surveys}
+                surveys={surveys}
             />
         </View>
       );
