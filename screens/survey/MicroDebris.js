@@ -105,15 +105,18 @@ export default class MicroDebris extends Component {
             <View style={styles.container}>
                 <Header hasTabs style={{height : 75}}>
                     <Left style={{marginTop: 20}}>
-                        <Button transparent>
-                        <Icon name='arrow-back' />
-                        </Button>
+                       
                     </Left>
                     <Body>
                         <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Micro Debris</Text>
                     </Body>
-                    <Right style={{marginTop: 20}}/>
+                    <Right style={{marginTop: 25}}>
+                        <Button success>
+                            <Text style={{padding: 5, color: 'white'}}>Finish</Text>
+                        </Button>
+                    </Right>
                 </Header>
+                
                 <FlatList 
                     style={{marginLeft:20, marginRight:20}}
                     data={this.state.microRowLabels} 

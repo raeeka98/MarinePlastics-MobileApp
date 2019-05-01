@@ -85,14 +85,15 @@ export default class TeamInfo extends Component {
             <View style={styles.container}>
                 <Header style={{height : 75}}>
                     <Left style={{marginTop: 20}}>
-                        <Button transparent>
-                        <Icon name='arrow-back' />
-                        </Button>
                     </Left>
                     <Body>
                         <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Team Information</Text>
                     </Body>
-                    <Right style={{marginTop: 20}}/>
+                    <Right style={{marginTop: 25}}>
+                        <Button success>
+                            <Text style={{padding: 5, color: 'white'}}>Finish</Text>
+                        </Button>
+                    </Right>
                 </Header>
                 <View style={styles.inputSingleContainer} >
                     <Text style={styles.inputSingle}>First Name</Text>
@@ -103,7 +104,7 @@ export default class TeamInfo extends Component {
                             onChange={this.props.updateSurveyState.bind(this, 'userFirst')}
                             value={this.state.surveyData.userFirst}
                         />
-                    </Item>
+                    </Item> 
                     <Text style={styles.inputSingle}>Last Name</Text>
                     <Item regular>
                         <Input

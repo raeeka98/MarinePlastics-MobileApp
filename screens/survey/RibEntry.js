@@ -54,16 +54,18 @@ export default class RibEntry extends Component {
                     <Item regular>
                         <TextInput 
                             style={{width: 100, height: 35}}
+                            keyboardType="number-pad"
                             onChange={this.updateRibInfo.bind(this, 'ribNumber')}
                             value={this.state.ribNumber}
                         />
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
-                    <Text style={{fontSize: 20}}>Rib Start:</Text>
+                    <Text style={{fontSize: 20}}>Rib Start (meters):</Text>
                     <Item regular>
                         <TextInput 
                             style={{width: 100, height: 35}}
+                            keyboardType="number-pad"
                             editable={this.state.canEdit}
                             onChange={this.updateRibInfo.bind(this, "ribStart")}
                             value={this.state.ribStart}
@@ -71,10 +73,11 @@ export default class RibEntry extends Component {
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
-                    <Text style={{fontSize: 20}}>Rib Length:</Text>
+                    <Text style={{fontSize: 20}}>Rib Length (meters):</Text>
                     <Item regular>
                         <TextInput 
                             style={{width: 100, height: 35}}
+                            keyboardType="number-pad"
                             editable={this.state.canEdit}
                             onChange={this.updateRibInfo.bind(this, "ribLength")}
                             value={this.state.ribLength}

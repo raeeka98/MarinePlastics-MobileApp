@@ -36,12 +36,12 @@ export default class SurveyContainer extends Component {
             tabArray : [],
             shouldRender:{
                 teamInfo: false,
-                area: true,
+                area: false,
                 srs: false,
-                as: false,
+                as: true,
                 micro: false
             },
-            currentScreen: "area"
+            currentScreen: "as"
         }
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
@@ -55,7 +55,7 @@ export default class SurveyContainer extends Component {
         header : null 
     }
 
-    moveToTeamInfo() {
+    moveToTeamInfo() { 
         console.log(this.state )
         this.setState({
             currentScreen: "teamInfo",

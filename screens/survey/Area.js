@@ -41,6 +41,37 @@ export default class Area extends Component{
         title: "Survey Area"
     }
 
+    renderAccordionHeader = (item, expanded) => {
+        if(expanded) {
+            return (
+                <View 
+                    style={{
+                        flexDirection: "row", 
+                        padding: 10,
+                        justifyContent: "space-between",
+                        alignItems: "center" ,
+                        backgroundColor: "#87cefa" }}
+                >
+                    <Text style={{fontWeight: "500"}}>{" "}{item.title}</Text>
+                    <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
+                </View>
+            )
+        }
+        return (
+            <View 
+                style={{
+                    flexDirection: "row",
+                    padding: 10,
+                    justifyContent: "space-between",
+                    alignItems: "center" ,
+                    backgroundColor: "#3CABFF" }} 
+            >
+                <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
+                <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
+            </View>
+        )
+    }
+
     /**
      * Here we need to wrap the entire screen in a KeyboardView component, which will 
      * let the user input data without it being obscured by the keyboard
@@ -100,18 +131,20 @@ export default class Area extends Component{
             
                 <Header hasTabs style={{height : 75}} >
                     <Left style={{marginTop: 20}}>
-                        <Button transparent>
-                        <Icon name='arrow-back' />
-                        </Button>
+                    
                     </Left>
                     <Body>
                         <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Survey Area</Text>
                     </Body>
-                    <Right style={{marginTop: 20}}/>
+                    <Right style={{marginTop: 25}}>
+                        <Button success>
+                            <Text style={{padding: 5, color: 'white'}}>Finish</Text>
+                        </Button>
+                    </Right>
                 </Header>
 
-                <ScrollView style={{marginBottom:50}}>
-                    <Accordion dataArray={subSections} renderContent={(item) => {return item.content}}/>                       
+                <ScrollView style={{marginBottom:125}}>
+                    <Accordion dataArray={subSections} renderContent={(item) => {return item.content}} renderHeader={this.renderAccordionHeader}/>                       
                 </ScrollView>
 
             </KeyboardView>

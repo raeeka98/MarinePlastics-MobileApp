@@ -63,7 +63,6 @@ export default class RibInput extends Component {
         const weatheredKey = `${currentItemKey}__weathered__${this.state.ribNumber}`
         return (
             <View style = {{padding:10}}>
-                <Text style={{fontSize: 19}}>{item.title}</Text>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
                     <View style={{flexDirection: 'row'}}>
@@ -117,22 +116,54 @@ export default class RibInput extends Component {
         )
     }
 
+    renderAccordionHeader = (item, expanded) => {
+        if(expanded) {
+            return (
+                <View 
+                    style={{
+                        flexDirection: "row", 
+                        padding: 10,
+                        justifyContent: "space-between",
+                        alignItems: "center" ,
+                        backgroundColor: "#87cefa" }}
+                >
+                    <Text style={{fontWeight: "500"}}>{" "}{item.title}</Text>
+                    <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
+                </View>
+            )
+        }
+        return (
+            <View 
+                style={{
+                    flexDirection: "row",
+                    padding: 10,
+                    justifyContent: "space-between",
+                    alignItems: "center" ,
+                    backgroundColor: "#3CABFF" }} 
+            >
+                <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
+                <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
+            </View>
+        )
+    }
+
     render() {
         const ribStart = `r${this.state.ribNumber}Start`;
         const ribLength = `r${this.state.ribNumber}Length`
         return (
             <ScrollView style={{marginBottom: 50}}>
-                    <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly', marginTop: 15}]}>
-                        <Text style={{fontSize: 14}}>Rib Start:</Text>
-                        <Text>{this.state.surveyData[ribStart]}</Text>
-                        <Text style={{fontSize: 14}}>Rib Length:</Text>
-                        <Text>{this.state.surveyData[ribLength]}</Text>
-                    </View>
+                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly', marginTop: 15}]}>
+                    <Text style={{fontSize: 14}}>Rib Start:</Text>
+                    <Text>{this.state.surveyData[ribStart]}</Text>
+                    <Text style={{fontSize: 14}}>Rib Length:</Text>
+                    <Text>{this.state.surveyData[ribLength]}</Text>
+                </View>
                 <View style={styles.segmentSeparator}/>
-                    <Accordion 
-                        dataArray={this.state.inputItems} 
-                        renderContent={this.renderCategoryInput}
-                    />
+                <Accordion 
+                    dataArray={this.state.inputItems} 
+                    renderContent={this.renderCategoryInput}
+                    renderHeader={this.renderAccordionHeader}
+                />
             </ScrollView>
         )
     }
