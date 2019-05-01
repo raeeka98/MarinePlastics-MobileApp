@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
+import {Button, Item} from 'native-base'
+import Modal from 'react-native-modal'
 import Expo from 'expo'
 
 import KeyboardView from '../../components/KeyboardView'
@@ -41,7 +42,9 @@ export default class SurveyContainer extends Component {
                 as: false,
                 micro: false
             },
-            currentScreen: "srs"
+            currentScreen: "srs",
+            surveyName: "",
+            isModalVisible: false
         }
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
@@ -343,12 +346,28 @@ export default class SurveyContainer extends Component {
         }
     }
 
-    onClickFinish() {
+    onClickFinish = () => {
         /**
          * Render a modal/popup that will prompt the user to enter in a user defined name for the survey
          * Once they finish, then the survey will be stored locally and accessed locally 
          */
-        
+        this.setState({isModalVisible:true})
+    }
+
+    onChangeSurveyName = (e) => {
+        let surveyName = e.nativeEvent.text;
+        this.setState({surveyName: surveyName})
+    }
+
+    cancelModal =() => {
+        this.setState({isModalVisible:false, surveyName: ''})
+    }
+
+    saveModal= ()=> {
+        /**
+         * Commit all of the data to local storage
+         */
+        this.setState({isModalVisible:false, surveyName: ''})
     }
 
     render() {
@@ -356,6 +375,30 @@ export default class SurveyContainer extends Component {
         return(
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
+                <Modal isVisible={this.state.isModalVisible}>
+                    <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Enter Survey Name:</Text>
+                        <View style={[styles.inputSingleContainer, {marginBottom: 30}]}>
+                            <Item regular>
+                                <TextInput
+                                    style={{width: '90%', height: 40, fontSize: 18}}
+                                    placeholder="<Survey Name>"
+                                    onChange={this.onChangeSurveyName}
+                                    value={this.state.surveyName}
+                                />
+                            </Item>
+                        </View>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
+                            <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
+                                <Text style={{color: 'white', padding: 8}}>Back</Text>
+                            </Button>
+                            <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
+                                <Text style={{color: 'white', padding: 8}}>Save</Text>
+                            </Button>
+                        </View>
+                    
+                    </View>
+                </Modal>
                 <SurveyFooter 
                     teamInfo={shouldRender.teamInfo}
                     area={shouldRender.area }

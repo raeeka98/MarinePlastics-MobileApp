@@ -170,7 +170,7 @@ export default class AccumulationSweep extends Component {
                         <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Accumulation Sweep</Text>
                     </Body>
                     <Right style={{marginTop: 25}}>
-                        <Button success>
+                        <Button success onPress={this.props.onClickFinish}>
                             <Text style={{padding: 5, color: 'white'}}>Finish</Text>
                         </Button>
                     </Right>

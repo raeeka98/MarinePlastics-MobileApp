@@ -67,8 +67,10 @@ export default class RibInput extends Component {
     saveModal(ribStart, ribLength){
         this.setState(prevState => {
             prevState.isModalVisible = false;
-            prevState.surveyData[ribStart] = prevState.editStart;
-            prevState.surveyData[ribLength] = prevState.editLength;
+            prevState.surveyData[ribStart] = prevState.editStart !== '' ? prevState.editStart : prevState.surveyData[ribStart];
+            prevState.surveyData[ribLength] = prevState.editLength !== '' ? prevState.editLength : prevState.surveyData[ribLength];
+            prevState.editLength = '';
+            prevState.editStart = ''
             return prevState
         })
     }
@@ -193,21 +195,22 @@ export default class RibInput extends Component {
                         ]
                       } 
                 >
-                    <Text style={{fontSize: 14}}>Rib Start:</Text>
-                    <Text>{this.state.surveyData[ribStart]}</Text>
-                    <Text style={{fontSize: 14}}>Rib Length:</Text>
-                    <Text>{this.state.surveyData[ribLength]}</Text>
+                    <Text style={{fontSize: 17}}>Rib Start:</Text>
+                    <Text style={{fontSize: 17}}>{this.state.surveyData[ribStart]}</Text>
+                    <Text style={{fontSize: 17}}>Rib Length:</Text>
+                    <Text style={{fontSize: 17}}>{this.state.surveyData[ribLength]}</Text>
                     <Button info onPress={this.showModal}>
-                        <Text>Edit Rib Info</Text>
+                        <Text style={{padding: 8, color: 'white'}}>Edit Rib Info</Text>
                     </Button>
                 </View>
                 <Accordion 
-                    dataArray={this.state.inputItems} 
+                    style={{marginTop: 20, padding: 10}}
+                    dataArray={this.state.inputItems}
                     renderContent={this.renderCategoryInput}
                     renderHeader={this.renderAccordionHeader}
                 />
                 <Modal isVisible={this.state.isModalVisible}>
-                    <View style={{alignSelf: 'center', width: '90%', height: '30%', backgroundColor: 'white'}} >
+                    <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
                         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Edit rib information</Text>
                         <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 20}]}>
                             <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Start:</Text>
@@ -215,7 +218,7 @@ export default class RibInput extends Component {
                                 <TextInput 
                                     style={{width: 50, height: 35, fontSize: 18}}
                                     keyboardType="number-pad"
-                                    onChange={this.onEditChange.bind(this, ribStart)}
+                                    onChange={this.onEditChange.bind(this, 'editStart')}
                                     value={this.state.editStart}
                                 />
                             </Item>
@@ -226,16 +229,16 @@ export default class RibInput extends Component {
                                 <TextInput 
                                     style={{width: 50, height: 35, fontSize: 18}}
                                     keyboardType="number-pad"
-                                    onChange={this.onEditChange.bind(this, ribLength)}
+                                    onChange={this.onEditChange.bind(this, 'editLength')}
                                     value={this.state.editLength}
                                 />
                             </Item>
                         </View>
                         <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
-                            <Button light onPress={this.cancelModal}>
-                                <Text style={{color: 'white', padding: 8}}>Cancel</Text>
+                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
+                                <Text style={{padding: 8}}>Cancel</Text>
                             </Button>
-                            <Button info onPress={this.saveModal}>
+                            <Button info style={{justifyContent: 'center', width: 100}}onPress={this.saveModal.bind(this, ribStart, ribLength)}>
                                 <Text style={{color: 'white', padding: 8}}>Save</Text>
                             </Button>
                         </View>
