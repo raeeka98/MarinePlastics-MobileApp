@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
+import { TextInput, Text, View, FlatList } from 'react-native'
+import { ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title } from 'native-base'
+import QRCode from 'react-native-qrcode';
 import Expo from 'expo'
 
 import KeyboardView from '../../components/KeyboardView'
@@ -10,8 +11,8 @@ import debrisInfoID from './debrisInfo'
 
 /* These are used to display the options on the modal */
 var BUTTONS = [
-    'Cigarette Butts', 
-    'Fishing Line / Polypropylene Rope', 
+    'Cigarette Butts',
+    'Fishing Line / Polypropylene Rope',
     'Plastic Straws',
     'Filmed Plastic',
     'Plastic Bottles / Plastic Caps',
@@ -34,7 +35,8 @@ export default class RibInput extends Component {
         surveyData: this.props.surveyData,
         ribNumber: this.props.ribNumber,
         inputItems: this.props.inputItems,
-        selections: BUTTONS
+        selections: BUTTONS,
+        encodingText: ""
     }
 
     /*
@@ -43,63 +45,63 @@ export default class RibInput extends Component {
      *  the values. Additionally, the values will fall under some subcategories, including either
      *  "fresh" or 'weathered'
      */
-    renderCategoryInput = ({item}) => {
+    renderCategoryInput = ({ item }) => {
         const currentItemKey = debrisInfoID[item.key];
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
         const weatheredKey = `${currentItemKey}__weathered__${this.state.ribNumber}`
         return (
-            <View style = {{marginBottom: 15}}>
-                <Text style={{fontSize: 19}}>{item.key}</Text>
-                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
-                    <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
+            <View style={{ marginBottom: 15 }}>
+                <Text style={{ fontSize: 19 }}>{item.key}</Text>
+                <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
+                    <Text style={{ fontSize: 18, alignSelf: 'center', justifyContent: 'center' }}>Amount Fresh:</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Button
+                            light
                             onPress={this.props.decrementSRS.bind(this, freshKey)}
                         >
-                            <Icon type='AntDesign' name='minus'/>
+                            <Icon type='AntDesign' name='minus' />
                         </Button>
                         <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
+                            <TextInput
+                                editable={false}
+                                style={{ width: 50, height: 35, textAlign: 'center', fontSize: 18 }}
                                 value={this.state.SRSData[freshKey] ? this.state.SRSData[freshKey] + '' : '0'}
                             />
                         </Item>
-                        <Button 
+                        <Button
                             light
-                            onPress={this.props.incrementSRS.bind(this, freshKey)}    
+                            onPress={this.props.incrementSRS.bind(this, freshKey)}
                         >
-                            <Icon type='AntDesign' name='plus'/>
+                            <Icon type='AntDesign' name='plus' />
                         </Button>
                     </View>
-                    
+
                 </View>
-                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Weathered:</Text>
-                    <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
+                <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
+                    <Text style={{ fontSize: 18, alignSelf: 'center', justifyContent: 'center' }}>Amount Weathered:</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Button
+                            light
                             onPress={this.props.decrementSRS.bind(this, weatheredKey)}
                         >
-                            <Icon type='AntDesign' name='minus'/>
+                            <Icon type='AntDesign' name='minus' />
                         </Button>
                         <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
+                            <TextInput
+                                editable={false}
+                                style={{ width: 50, height: 35, textAlign: 'center', fontSize: 18 }}
                                 value={this.state.SRSData[weatheredKey] ? this.state.SRSData[weatheredKey] + '' : '0'}
                             />
                         </Item>
-                        <Button 
+                        <Button
                             light
-                            onPress={this.props.incrementSRS.bind(this, weatheredKey)}    
+                            onPress={this.props.incrementSRS.bind(this, weatheredKey)}
                         >
-                            <Icon type='AntDesign' name='plus'/>
+                            <Icon type='AntDesign' name='plus' />
                         </Button>
                     </View>
                 </View>
-                <View style={styles.segmentSeparator}/>
+                <View style={styles.segmentSeparator} />
             </View>
         )
     }
@@ -109,33 +111,42 @@ export default class RibInput extends Component {
         const ribLength = `rib${this.state.ribNumber}Length`
         return (
             <View>
-                <View style={[{marginTop: 10, marginRight: 10, marginLeft: 10}, styles.inputSingleContainer]}>
-                    <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                        <Text style={{fontSize: 20}}>Rib Start:</Text>
+                <View style={[{ marginTop: 10, marginRight: 10, marginLeft: 10 }, styles.inputSingleContainer]}>
+                    <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
+                        <Text style={{ fontSize: 20 }}>Rib Start:</Text>
                         <Item regular>
-                            <TextInput 
-                                style={{width: 100, height: 35}}
+                            <TextInput
+                                style={{ width: 100, height: 35 }}
                                 onChange={this.props.updateSurveyState.bind(this, ribStart)}
                                 value={this.state.surveyData[ribStart]}
                             />
                         </Item>
                     </View>
-                    <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                        <Text style={{fontSize: 20}}>Rib Length:</Text>
+                    <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
+                        <Text style={{ fontSize: 20 }}>Rib Length:</Text>
                         <Item regular>
-                            <TextInput 
-                                style={{width: 100, height: 35}}
+                            <TextInput
+                                style={{ width: 100, height: 35 }}
                                 onChange={this.props.updateSurveyState.bind(this, ribLength)}
                                 value={this.state.surveyData[ribLength]}
                             />
                         </Item>
                     </View>
+                    <View style={[styles.inputSingleContainer]}>
+                        <Button
+                            style={{ alignSelf: 'center', justifyContent: 'center' }}
+                            onPress={() => {
+                                this.encodeToText();
+                            }}>
+                            <Text style={{ color: 'black' }}>Generate QR Code</Text>
+                        </Button>
+                    </View>
                 </View>
-                <View style={styles.segmentSeparator}/>
+                <View style={styles.segmentSeparator} />
                 <View style={[styles.inputSingleContainer]}>
-                    <Button 
-                        info 
-                        style={{alignSelf: 'stretch', justifyContent: 'center'}}
+                    <Button
+                        info
+                        style={{ alignSelf: 'stretch', justifyContent: 'center' }}
                         onPress={() => {
                             ActionSheet.show(
                                 {
@@ -148,35 +159,47 @@ export default class RibInput extends Component {
                                        and remove it from the list of button selections
                                     */
                                     const temp = this.state.selections;
-                                    if(temp[buttonIndex]==='Cancel'){
+                                    if (temp[buttonIndex] === 'Cancel') {
                                         ActionSheet.hide();
                                         return
                                     }
                                     this.setState(prevState => {
                                         prevState.inputItems.push(
-                                            {key: temp[buttonIndex]}
+                                            { key: temp[buttonIndex] }
                                         )
                                         prevState.selections = prevState.selections.filter((category) => category !== BUTTONS[buttonIndex])
                                         return prevState
                                     })
 
-                                    
+
                                 }
                             )
                         }}
                     >
-                        <Icon type='AntDesign' name='plus'/>
-                        <Text style={{color: 'white'}}>Add Category</Text>
+                        <Icon type='AntDesign' name='plus' />
+                        <Text style={{ color: 'white' }}>Add Category</Text>
                     </Button>
-                    
+
                 </View>
-                <FlatList 
-                    style={{marginLeft:20, marginRight:20}} 
-                    data={this.state.inputItems} 
-                    extraData={this.state} 
+                <FlatList
+                    style={{ marginLeft: 20, marginRight: 20 }}
+                    data={this.state.inputItems}
+                    extraData={this.state}
                     renderItem={this.renderCategoryInput}
                 />
             </View>
         )
+    }
+
+    encodeToText = () => {
+        encoded = "";
+        encoded += String.fromCharCode(this.state.ribStart);
+        encoded += String.fromCharCode(this.state.ribLength);
+        for (var key in debrisInfoID) {
+            encoded += String.fromCharCode(this.state.SRSData[`${debrisInfoID[key]}__fresh__${this.state.ribNumber}`]);
+            encoded += String.fromCharCode(this.state.SRSData[`${debrisInfoID[key]}__weathered__${this.state.ribNumber}`]);
+        }
+        console.log(encoded);
+        this.state.encodingText = encoded;
     }
 }
