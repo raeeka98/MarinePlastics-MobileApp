@@ -37,11 +37,11 @@ export default class SurveyContainer extends Component {
             shouldRender:{
                 teamInfo: false,
                 area: false,
-                srs: false,
-                as: true,
+                srs: true,
+                as: false,
                 micro: false
             },
-            currentScreen: "as"
+            currentScreen: "srs"
         }
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
@@ -265,6 +265,7 @@ export default class SurveyContainer extends Component {
                         tabArray={this.state.tabArray}
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
+                        onClickFinish={this.onClickFinish}
                     />
                 )
             case "area" : 
@@ -283,6 +284,7 @@ export default class SurveyContainer extends Component {
                         onDropdownChange={this.onDropdownChange}
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
+                        onClickFinish={this.onClickFinish}
                     />
                 )
             case "srs" :
@@ -301,6 +303,7 @@ export default class SurveyContainer extends Component {
                         updateSurveyState={this.updateSurveyState}
                         incrementSRS={this.incrementSRS}
                         decrementSRS={this.decrementSRS}
+                        onClickFinish={this.onClickFinish}
                     />
                 )
             case "as" : 
@@ -316,7 +319,8 @@ export default class SurveyContainer extends Component {
                         asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
                         incrementAS={this.incrementAS}
-                        decrementAS={this.decrementAS} 
+                        decrementAS={this.decrementAS}
+                        onClickFinish={this.onClickFinish} 
                     />
                 )
             default :
@@ -333,9 +337,18 @@ export default class SurveyContainer extends Component {
                         MicroData={this.state.MicroData}
                         incrementMicro={this.incrementMicro}
                         decrementMicro={this.decrementMicro}
+                        onClickFinish={this.onClickFinish}
                     />
                 )
         }
+    }
+
+    onClickFinish() {
+        /**
+         * Render a modal/popup that will prompt the user to enter in a user defined name for the survey
+         * Once they finish, then the survey will be stored locally and accessed locally 
+         */
+        
     }
 
     render() {

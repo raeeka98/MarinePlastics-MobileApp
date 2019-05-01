@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
+import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title, Picker} from 'native-base'
 import Expo from 'expo'
 
 import KeyboardView from '../../components/KeyboardView'
@@ -22,14 +22,16 @@ export default class SurfaceRibScan extends Component {
         surveyData: this.props.surveyData ? this.props.surveyData : {},
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
-        r1Items: this.props.r1Items ? this.props.r1Items : [],
-        r2Items: this.props.r2Items ? this.props.r2Items : [],
-        r3Items: this.props.r3Items ? this.props.r3Items : [],
-        r4Items: this.props.r4Items ? this.props.r4Items : [],
         asItems: this.props.asItems ? this.props.asItems : [],
         MicroData: this.props.MicroData ? this.props.MicroData : {},
         modalVisible: false,
         tabArray: this.props.tabArray ? this.props.tabArray : [],
+        ribsToSelect: [
+            <Picker.Item label="1" value="1" />,
+            <Picker.Item label="2" value="2" />,
+            <Picker.Item label="3" value="3" />,
+            <Picker.Item label="4" value="4" />
+        ]
     }
 
     hideModal = () => { 
@@ -62,6 +64,7 @@ export default class SurfaceRibScan extends Component {
             prevState.tabArray.push(newRib);
             prevState.surveyData[ribNumLength] = ribLength;
             prevState.surveyData[ribNumStart] = ribStart;
+            prevState.ribsToSelect = prevState.ribsToSelect.filter(comp => comp.props.value !== ribNumber)
             console.log(prevState)
             return prevState
         })
@@ -77,6 +80,7 @@ export default class SurfaceRibScan extends Component {
     /**
      * Here we render the actual input screens within the tabs so that each rib can have its
      * own input screen dedicated to entering data
+     * Once we get to 4 ribs, we want to hide the option to add a rib (for now...)
      */
     render() {
         console.log("OUTER RENDER" )
@@ -96,15 +100,20 @@ export default class SurfaceRibScan extends Component {
                     </Right>
                 </Header>
                 <Tabs>
-                    <Tab heading='+ Add Rib'>
-                        <RibEntry
-                            updateSurveyState={this.props.updateSurveyState}
-                            surveyData={this.props.surveyData}
-                            submitAddRib={this.submitAddRib}
-                            tabArray={this.state.tabArray}
-                            renderTabs={this.renderTabs}
-                        />
-                    </Tab>
+                    {
+                        this.state.tabArray.length < 4 ? 
+                            <Tab heading='+ Add Rib'>
+                                <RibEntry
+                                    updateSurveyState={this.props.updateSurveyState}
+                                    surveyData={this.props.surveyData}
+                                    submitAddRib={this.submitAddRib}
+                                    tabArray={this.state.tabArray}
+                                    renderTabs={this.renderTabs}
+                                    ribsToSelect={this.state.ribsToSelect}
+                                />
+                            </Tab>
+                        : null
+                    }
                    {this.state.tabArray}  
                 </Tabs>
                

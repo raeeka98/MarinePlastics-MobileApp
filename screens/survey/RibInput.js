@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import {TextInput, Text, View, ScrollView } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title, Accordion} from 'native-base'
-import Expo from 'expo'
+import {Item, Button, Icon, Accordion} from 'native-base'
+import Modal from 'react-native-modal'
 
-import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
-import SurveyFooter from './SurveyFooter'
 import debrisInfoID from './debrisInfo'
 
 /* These are used to display the options on the modal */
@@ -24,8 +22,6 @@ var BUTTONS = [
     'Other: Wood / Paper',
     'Cancel'
 ]
-
-var CANCEL_INDEX = 12;
 
 
 export default class RibInput extends Component {
@@ -48,7 +44,41 @@ export default class RibInput extends Component {
             {title: "Other: Wood / Paper"},
 
         ],
-        selections: BUTTONS
+        selections: BUTTONS,
+        isModalVisible: false,
+        editLength: "",
+        editStart: ""
+    }
+
+    showModal = () => {
+        this.setState({isModalVisible: true})
+    }
+
+    cancelModal = () => {
+        this.setState(
+            {
+                isModalVisible: false,
+                editLength: "",
+                editStart: ""
+            }
+        )
+    }
+
+    saveModal(ribStart, ribLength){
+        this.setState(prevState => {
+            prevState.isModalVisible = false;
+            prevState.surveyData[ribStart] = prevState.editStart;
+            prevState.surveyData[ribLength] = prevState.editLength;
+            return prevState
+        })
+    }
+    onEditChange(refName, e){
+        let key = refName;
+        let val = e.nativeEvent.text
+        this.setState(prevState => {
+            prevState[key] = val;
+            return prevState
+        }) 
     }
 
     /*
@@ -139,7 +169,7 @@ export default class RibInput extends Component {
                     padding: 10,
                     justifyContent: "space-between",
                     alignItems: "center" ,
-                    backgroundColor: "#3CABFF" }} 
+                    backgroundColor: "#6CB5FF" }} 
             >
                 <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
                 <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
@@ -152,18 +182,66 @@ export default class RibInput extends Component {
         const ribLength = `r${this.state.ribNumber}Length`
         return (
             <ScrollView style={{marginBottom: 50}}>
-                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly', marginTop: 15}]}>
+                <View style={
+                        [
+                            styles.inputDoubleContainer, 
+                            {
+                                alignItems: 'center', 
+                                justifyContent: 'space-evenly', 
+                                marginTop: 15
+                            }
+                        ]
+                      } 
+                >
                     <Text style={{fontSize: 14}}>Rib Start:</Text>
                     <Text>{this.state.surveyData[ribStart]}</Text>
                     <Text style={{fontSize: 14}}>Rib Length:</Text>
                     <Text>{this.state.surveyData[ribLength]}</Text>
+                    <Button info onPress={this.showModal}>
+                        <Text>Edit Rib Info</Text>
+                    </Button>
                 </View>
-                <View style={styles.segmentSeparator}/>
                 <Accordion 
                     dataArray={this.state.inputItems} 
                     renderContent={this.renderCategoryInput}
                     renderHeader={this.renderAccordionHeader}
                 />
+                <Modal isVisible={this.state.isModalVisible}>
+                    <View style={{alignSelf: 'center', width: '90%', height: '30%', backgroundColor: 'white'}} >
+                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Edit rib information</Text>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 20}]}>
+                            <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Start:</Text>
+                            <Item regular style={{marginRight: 10}}>
+                                <TextInput 
+                                    style={{width: 50, height: 35, fontSize: 18}}
+                                    keyboardType="number-pad"
+                                    onChange={this.onEditChange.bind(this, ribStart)}
+                                    value={this.state.editStart}
+                                />
+                            </Item>
+                        </View>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 30}]}>
+                            <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Length:</Text>
+                            <Item regular style={{marginRight: 10}}>
+                                <TextInput 
+                                    style={{width: 50, height: 35, fontSize: 18}}
+                                    keyboardType="number-pad"
+                                    onChange={this.onEditChange.bind(this, ribLength)}
+                                    value={this.state.editLength}
+                                />
+                            </Item>
+                        </View>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
+                            <Button light onPress={this.cancelModal}>
+                                <Text style={{color: 'white', padding: 8}}>Cancel</Text>
+                            </Button>
+                            <Button info onPress={this.saveModal}>
+                                <Text style={{color: 'white', padding: 8}}>Save</Text>
+                            </Button>
+                        </View>
+                        
+                    </View>
+                </Modal>
             </ScrollView>
         )
     }
