@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, } from 'react-native';
-import { Button } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text, AppRegistry } from 'react-native';
+import { Button, Alert } from 'react-native';
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
