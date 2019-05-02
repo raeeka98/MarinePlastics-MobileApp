@@ -91,6 +91,8 @@ class LogInPage extends React.Component {
   }
 }
 
+AppRegistry.registerComponent('LogInPage', () => LogInPage);
+
 export default LogInPage;
 
 // Style variable.
