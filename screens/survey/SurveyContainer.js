@@ -101,13 +101,13 @@ export default class SurveyContainer extends Component {
             MicroData: {},
             tabArray : [],
             shouldRender:{
-                teamInfo: false,
+                teamInfo: true,
                 area: false,
-                srs: true,
+                srs: false,
                 as: false,
                 micro: false
             },
-            currentScreen: "srs",
+            currentScreen: "teamInfo",
             surveyName: "",
             isModalVisible: false
         }
@@ -329,6 +329,7 @@ export default class SurveyContainer extends Component {
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
                         onClickFinish={this.onClickFinish}
+                        navigation={this.props.navigation}
                     />
                 )
             case "area" : 

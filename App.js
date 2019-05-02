@@ -30,7 +30,7 @@ const MainNavigator = createStackNavigator(
     SurveyContainer: {screen: SurveyContainer}
   },
   {
-    initialRouteName: 'SurveyContainer'
+    initialRouteName: 'Home'
   }
 );
 

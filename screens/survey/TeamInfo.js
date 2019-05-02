@@ -52,6 +52,10 @@ export default class TeamInfo extends Component {
      * Some navigation for pressing back
      */
     onPressBack = () => {
+        /**
+         * We may need to have a modal to ask them if they are sure that they want to
+         * leave the survey
+         */
         this.props.navigation.pop();
     }
 
@@ -80,6 +84,9 @@ export default class TeamInfo extends Component {
             <View style={styles.container}>
                 <Header style={{height : 75}}>
                     <Left style={{marginTop: 20}}>
+                        <Button transparent onPress={this.onPressBack}>
+                            <Icon type="AntDesign" name='arrowleft'/>
+                        </Button>
                     </Left>
                     <Body>
                         <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Team Information</Text>
