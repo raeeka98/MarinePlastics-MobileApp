@@ -191,13 +191,35 @@ export default class RibInput extends Component {
         )
     }
 
+
+    //Encode 
     encodeToText = () => {
-        encoded = "";
-        encoded += String.fromCharCode(this.state.ribStart);
-        encoded += String.fromCharCode(this.state.ribLength);
+        var encoded = "";
+
+        //Encode ribStart
+        if(!String.fromCharCode(this.state.ribStart)) 
+            encoded += String.fromCharCode(1+this.state.ribStart);
+        else //If ribStart is undefined
+            encoded += String.fromCharCode(1);
+
+        //Encode ribLength
+        if(!String.fromCharCode(this.state.ribLength)) 
+            encoded += String.fromCharCode(1+this.state.ribLength);
+        else //If ribLength is undefined
+            encoded += String.fromCharCode(1);
+            
+        //Encode fresh and weathered for each category
         for (var key in debrisInfoID) {
-            encoded += String.fromCharCode(this.state.SRSData[`${debrisInfoID[key]}__fresh__${this.state.ribNumber}`]);
-            encoded += String.fromCharCode(this.state.SRSData[`${debrisInfoID[key]}__weathered__${this.state.ribNumber}`]);
+            var add1 = String.fromCharCode(1+this.state.SRSData[`${debrisInfoID[key]}__fresh__${this.state.ribNumber}`]);
+            var add2 = String.fromCharCode(1+this.state.SRSData[`${debrisInfoID[key]}__weathered__${this.state.ribNumber}`]);
+            if(!add1)
+                encoded += add1;
+            else 
+                encoded += String.fromCharCode(1);
+            if(!add2)
+                encoded += add1;
+            else 
+                encoded += String.fromCharCode(1);
         }
         console.log(encoded);
         this.state.encodingText = encoded;
