@@ -22,7 +22,6 @@ export default class SurfaceRibScan extends Component {
         surveyData: this.props.surveyData ? this.props.surveyData : {},
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
-        asItems: this.props.asItems ? this.props.asItems : [],
         MicroData: this.props.MicroData ? this.props.MicroData : {},
         modalVisible: false,
         tabArray: this.props.tabArray ? this.props.tabArray : [],
@@ -61,13 +60,6 @@ export default class SurfaceRibScan extends Component {
             prevState.ribsToSelect = prevState.ribsToSelect.filter(comp => comp.props.value !== ribNumber)
             console.log(prevState)
             return prevState
-        })
-    }
-    
-    renderTabs = (parameter) =>{
-        console.log(`Passed: ${parameter}`)  
-        this.setState({
-            tabs:'rendered'
         })
     }
     

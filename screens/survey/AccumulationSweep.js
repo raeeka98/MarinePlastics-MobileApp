@@ -32,10 +32,6 @@ export default class AccumulationSweep extends Component {
         surveyData: this.props.surveyData ? this.props.surveyData : {},
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
-        r1Items: this.props.r1Items ? this.props.r1Items : [],
-        r2Items: this.props.r2Items ? this.props.r2Items : [],
-        r3Items: this.props.r3Items ? this.props.r3Items : [],
-        r4Items: this.props.r4Items ? this.props.r4Items : [],
         asItems: [
             {key: 'Cigarette Butts'},
             {key: 'Fishing Line / Polypropylene Rope'},

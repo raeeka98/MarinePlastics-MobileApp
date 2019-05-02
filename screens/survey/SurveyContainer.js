@@ -20,6 +20,76 @@ import RibEntryModal from './RibEntry'
  * sections of the survey within one page
  */
 
+/**
+ * Here's how the data will be stored in each object:
+ * surveyData: {
+ *   userFirst: String,
+ *   userLast: String,
+ *   orgName: String,
+ *   orgLoc: String,
+ *   cleanupDate: Date,
+ *   cleanupTime: Date,  
+ *   beachName: String,
+ *   latitude: Number (?),
+ *   longitude: Number,
+ *   usageRecreation: Boolean,
+ *   usageCommercial: Boolean,
+ *   usageOther: Boolean/String,
+ *   locationChoiceProximity: boolean,
+ *   locationChoiceDebris: Boolean,
+ *   locationChoiceOther: Boolean/String,
+ *   cmpsDir: String,
+ *   riverName: String,
+ *   riverDistance: String,
+ *   tideTypeA: String,
+ *   tideHeightA: String,
+ *   tideTimeA: Date,
+ *   tideTypeB: String,
+ *   tideHeightB: String,
+ *   tideTimeB: Date,
+ *   windSpeed: String,
+ *   windDir: String,
+ *   slope: String,
+ *   substrateTypeSand: Boolean,
+ *   substrateTypePebble: Boolean,
+ *   subastrateTypeRipRap: Boolean,
+ *   substrateTypeSeaweed: Boolean,
+ *   subStrateTypeOther: Boolean/String,
+ *   r1Length: String/Number,
+ *   r1Start: String/Number,
+ *   r2Length: String/Number,
+ *   r2Start: String/Number,
+ *   r3Length: String/Number,
+ *   r3Start: String/Number,
+ *   r4Length: String/Number,
+ *   r4Start: String/Number,
+ * },
+ * 
+ * SRSData: {
+ *   ITEMNAME__fresh__RIBNUMBER: Number,
+ *   ITEMNAME__weathered__RIBNUMBER: Number
+ *   (Example)
+ *   plasticStraws__fresh__1: 9,
+ *   plasticStraws__weathered__1: 14
+ *   :
+ *   :
+ * }
+ * 
+ * ASData: {
+ *   ITEMNAME__fresh__accumulation: NUMBER
+ *   ITEMNAME__weathered__accumulation: NUMBER
+ * }
+ * 
+ * MicroData: {
+ *   rib1__fresh__micro: Number,
+ *   rib1__weathered__micro: Number
+ *   :
+ *   :
+ *   rib4__weathered__micro: Number
+ * }
+ * 
+ */
+
 export default class SurveyContainer extends Component {
     constructor(props) {
         super(props);
@@ -28,11 +98,6 @@ export default class SurveyContainer extends Component {
             surveyData: {},
             SRSData: {},
             ASData: {},
-            r1Items: [],
-            r2Items:  [],
-            r3Items:  [],
-            r4Items: [],
-            asItems: [],
             MicroData: {},
             tabArray : [],
             shouldRender:{
@@ -259,11 +324,6 @@ export default class SurveyContainer extends Component {
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
-                        r1Items={this.state.r1Items}
-                        r2Items={this.state.r2Items}
-                        r3Items={this.state.r3Items}
-                        r4Items={this.state.r4Items}
-                        asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
                         tabArray={this.state.tabArray}
                         updateSurveyState={this.updateSurveyState}
@@ -277,11 +337,6 @@ export default class SurveyContainer extends Component {
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
-                        r1Items={this.state.r1Items}
-                        r2Items={this.state.r2Items}
-                        r3Items={this.state.r3Items}
-                        r4Items={this.state.r4Items}
-                        asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
                         checkedbox={this.checkedbox}
                         onDropdownChange={this.onDropdownChange}
@@ -296,11 +351,6 @@ export default class SurveyContainer extends Component {
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
-                        r1Items={this.state.r1Items}
-                        r2Items={this.state.r2Items}
-                        r3Items={this.state.r3Items}
-                        r4Items={this.state.r4Items}
-                        asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
                         tabArray={this.state.tabArray}
                         updateSurveyState={this.updateSurveyState}
@@ -315,11 +365,6 @@ export default class SurveyContainer extends Component {
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
-                        r1Items={this.state.r1Items}
-                        r2Items={this.state.r2Items}
-                        r3Items={this.state.r3Items}
-                        r4Items={this.state.r4Items}
-                        asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
@@ -332,11 +377,6 @@ export default class SurveyContainer extends Component {
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
-                        r1Items={this.state.r1Items}
-                        r2Items={this.state.r2Items}
-                        r3Items={this.state.r3Items}
-                        r4Items={this.state.r4Items}
-                        asItems={this.state.asItems}
                         MicroData={this.state.MicroData}
                         incrementMicro={this.incrementMicro}
                         decrementMicro={this.decrementMicro}

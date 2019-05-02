@@ -21,11 +21,6 @@ export default class Area extends Component{
         surveyData: this.props.surveyData ? this.props.surveyData : {},
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
-        r1Items: this.props.r1Items ? this.props.r1Items : [],
-        r2Items: this.props.r2Items ? this.props.r2Items : [],
-        r3Items: this.props.r3Items ? this.props.r3Items : [],
-        r4Items: this.props.r4Items ? this.props.r4Items : [],
-        asItems: this.props.asItems ? this.props.asItems : [],
         MicroData: this.props.MicroData ? this.props.MicroData : {},
         showLastTime: false,
         lastTime: new Date(),
@@ -420,12 +415,13 @@ class TideInfo extends Component {
                         <Text style={styles.inputDouble}>Height (ft.)</Text>
                         <Item regular>
                             <TextInput
-                            ref = 'tideHeightA' 
-                            placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
-                            onChange={this.props.updateSurveyState.bind(this, 'tideHeightA')}
-                            value={this.state.surveyData.tideHeightA}
-                        />
+                                ref = 'tideHeightA' 
+                                keyboardType="number-pad"
+                                placeholder={invisiblePlaceholder} 
+                                style={styles.textInput} 
+                                onChange={this.props.updateSurveyState.bind(this, 'tideHeightA')}
+                                value={this.state.surveyData.tideHeightA}
+                            />
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
@@ -474,6 +470,7 @@ class TideInfo extends Component {
                             <TextInput
                                 ref = 'tideHeightB' 
                                 placeholder={invisiblePlaceholder} 
+                                keyboardType="number-pad"
                                 style={styles.textInput} 
                                 onChange={this.props.updateSurveyState.bind(this, 'tideHeightB')}
                                 value={this.state.surveyData.tideHeightB}
@@ -522,7 +519,8 @@ class WindInfo extends Component {
                     <Text style={styles.inputSingle}>Speed (knots):</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'windSpeed' 
+                            ref = 'windSpeed'
+                            keyboardType="number-pad" 
                             placeholder={invisiblePlaceholder} 
                             style={styles.textInput} 
                             onChange={this.props.updateSurveyState.bind(this, 'windSpeed')}
