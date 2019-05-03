@@ -14,10 +14,12 @@ import {
   AsyncStorage
 } from 'react-native';
 
+import ImportView from './ImportView';
+
 function LoadedSurveys(props) {
     let i = 0;
     const items = props.surveys.map(survey =>
-        <Text key={i++}>Survey #{i}: {survey}</Text>
+        <ImportView key={i++} name={survey}/>
     );
     return items;
 }
@@ -30,10 +32,17 @@ export default class Publish extends Component {
       loading : true,
       surveys : []
     };
+
+    // bind methods
+    this.removeSurvey = this.removeSurvey.bind(this);
   }
 
   async componentDidMount() {
       this.setState({ loading : false });
+  }
+
+  removeSurvey() {
+
   }
 
   render() {
@@ -55,7 +64,9 @@ export default class Publish extends Component {
             />
             <LoadedSurveys
                 surveys={surveys}
+                removeSurvey={this.removeSurvey}
             />
+          <ImportView name="test1"/>
         </View>
       );
     }

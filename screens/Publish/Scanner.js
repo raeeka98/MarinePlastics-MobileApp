@@ -53,11 +53,11 @@ export default class Scanner extends Component {
           surveys.push(data);
           this.pushed = true;
         }
-
         navigation.navigate("Publish", {
           surveys : surveys
         });
-    }else {
+    }
+    else {
         alert("Not a Valid QR Code!");
     }
   }
