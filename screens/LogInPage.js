@@ -67,9 +67,9 @@ class LogInPage extends React.Component {
     console.log("Response recorded " + JSON.stringify(response)) 
     const jwtToken = response.id_token; 
     const decoded = jwtDecode(jwtToken);
-
-    const { name } = decoded;
-    this.setState({name});
+    console.log(decoded);
+    const { sub } = decoded;
+    this.setState({accessToken: sub});
   };
 
 
