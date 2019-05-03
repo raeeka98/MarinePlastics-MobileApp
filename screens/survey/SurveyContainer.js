@@ -4,7 +4,6 @@ import {Button, Item} from 'native-base'
 import Modal from 'react-native-modal'
 import Expo from 'expo'
 
-import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import TeamInfo from './TeamInfo'
 import Area from './Area'
@@ -12,8 +11,8 @@ import SurfaceRibScan from './SurfaceRibScan'
 import AccumulationSweep from './AccumulationSweep'
 import MicroDebris from './MicroDebris'
 import SurveyFooter from './SurveyFooter'
-import RibInput from './RibInput'
-import RibEntryModal from './RibEntry'
+import surveyDB from '../../storage/mongoStorage'
+
 
 /**
  * This class will contain the entire survey within the screen, rendering different 
@@ -404,10 +403,27 @@ export default class SurveyContainer extends Component {
         this.setState({isModalVisible:false, surveyName: ''})
     }
 
-    saveModal= ()=> {
+    saveModal = ()=> {
         /**
          * Commit all of the data to local storage
          */
+        const {surveyName, surveyData, SRSData, ASData, MicroData} = this.state;
+        const survStoreData = {
+            surveyName, 
+            surveyData,
+            SRSData,
+            ASData,
+            MicroData,
+            /* Possibly store user credentials here too */
+        }
+        surveyDB.insert(survStoreData, (err, newDoc) => {
+            if(err){
+                alert(`Error saving the document: ${err}`)
+                return;
+            }
+            console.log(`New document created! \n ${newDoc}`)
+            return;
+        })
         this.setState({isModalVisible:false, surveyName: ''})
     }
 
