@@ -60,11 +60,12 @@ class LogInPage extends React.Component {
 
   handleResponse = (response) => {
     if (response.error) {
+      console.log("Uh oh")
       Alert('Authentication error', response.error_description || 'something went wrong');
       return;
     }
-
-    const jwtToken = response.id_token;
+    console.log("Response recorded " + JSON.stringify(response)) 
+    const jwtToken = response.id_token; 
     const decoded = jwtDecode(jwtToken);
 
     const { name } = decoded;
@@ -74,7 +75,7 @@ class LogInPage extends React.Component {
 
   render() {
     const {navigate} = this.props.navigation;
-    let loggedIn = this.state.accessToken === null ? false : true;
+    let loggedIn = this.state.accessToken === null ? false : true; 
     return(
       <View style={styles.container}>
         <Text style={styles.header}>Log in with Auth0</Text>
