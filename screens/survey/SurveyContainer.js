@@ -93,11 +93,14 @@ export default class SurveyContainer extends Component {
     constructor(props) {
         super(props);
 
+        //We may have props passed to this now: the data from a previous/inprogress
+        //survey.
+        const nav = this.props.navigation
         this.state = { 
-            surveyData: {},
-            SRSData: {},
-            ASData: {},
-            MicroData: {},
+            surveyData: nav.getParam('surveyData') ? nav.getParam('surveyData') : {},
+            SRSData: nav.getParam('SRSData') ? nav.getParam('SRSData') :  {},
+            ASData: nav.getParam('ASData') ? nav.getParam('ASData') : {},
+            MicroData: nav.getParam('MicroData') ? nav.getParam('MicroData') : {},
             tabArray : [],
             shouldRender:{
                 teamInfo: true,
@@ -211,6 +214,7 @@ export default class SurveyContainer extends Component {
      * updated, so we use it as the value to update the key
      */
     updateSurveyTime(refName, e) {
+        console.log(e);
         let key = refName;
         let val = e;
 
@@ -408,6 +412,7 @@ export default class SurveyContainer extends Component {
          * Commit all of the data to local storage
          */
         const {surveyName, surveyData, SRSData, ASData, MicroData} = this.state;
+        console.log(this.state)
         const survStoreData = {
             surveyName, 
             surveyData,

@@ -143,7 +143,7 @@ export default class TeamInfo extends Component {
                                 ref='cleanupDate'
                                 onDateChange={this.props.updateSurveyTime.bind(this, 'cleanupDate')}
                                 maximumDate={new Date()}
-                                defaultDate = {new Date()}
+                                defaultDate = {this.state.surveyData.cleanupDate}
                                 locale={'en-us'}
                             />
                         </Item>
