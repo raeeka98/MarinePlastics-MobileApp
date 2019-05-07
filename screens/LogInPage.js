@@ -7,10 +7,11 @@ import Auth0 from 'react-native-auth0';
 import { AuthSession } from 'expo';
 
 
+// Load necessary credentials to a new Auth0 variable.
 var credentials = require('./auth0-credentials');
 const auth0 = new Auth0(credentials);
 
-
+// Map parameters to a query string.
 function toQueryString(params) {
   return '?' + Object.entries(params)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
@@ -23,6 +24,7 @@ class LogInPage extends React.Component {
     this.state = { accessToken: null };
   }
 
+  // Log out by setting the accessToken to null.
   _onlogout = () => {
     if (Platform.OS === 'android'){
       this.setState({ accessToken: null });
@@ -37,6 +39,7 @@ class LogInPage extends React.Component {
     }
   };
 
+  // Log into Auth0.
   _loginV3 = async () => {
     const redirectUrl = AuthSession.getRedirectUrl();
     console.log(`Redirect URL: ${redirectUrl}`);
@@ -58,6 +61,7 @@ class LogInPage extends React.Component {
     }
   };
 
+  // Handle response from auth0 login.
   handleResponse = (response) => {
     if (response.error) {
       console.log("Uh oh")
