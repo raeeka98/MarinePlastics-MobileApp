@@ -1,199 +1,131 @@
 import React, { Component } from 'react'
 import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
+import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title, Picker} from 'native-base'
 import Expo from 'expo'
 
 import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
+import RibEntry from './RibEntry'
 
+const tabHeadings = [
+    '+ Add Rib',
+    'Rib 1',
+    'Rib 2',
+    'Rib 3',
+    'Rib 4'
+]
 
 export default class SurfaceRibScan extends Component {
     state = {
-        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
-        SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
-        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
-        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
-        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
-        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
-        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
-        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
-        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
+        surveyData: this.props.surveyData ? this.props.surveyData : {},
+        SRSData: this.props.SRSData ? this.props.SRSData : {},
+        ASData: this.props.ASData ? this.props.ASData : {},
+        MicroData: this.props.MicroData ? this.props.MicroData : {},
+        modalVisible: false,
+        tabArray: this.props.tabArray ? this.props.tabArray : [],
+        ribsToSelect: [
+            <Picker.Item key='1' label="1" value="1" />,
+            <Picker.Item key='2' label="2" value="2" />,
+            <Picker.Item key='3' label="3" value="3" />,
+            <Picker.Item key='4' label="4" value="4" />
+        ]
     }
 
-    moveToTeamInfo = () => {
-        this.props.navigation.push(
-            'TeamInfo', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
+    submitAddRib = (ribNumber, ribLength, ribStart) => {
+        console.log("Made it")
+        let ribArrayName = `r${ribNumber}Items`
+        let ribNumLength = `r${ribNumber}Length`
+        let ribNumStart = `r${ribNumber}Start`
+        let newRib = (
+            <Tab key={ribNumber} heading={`Rib ${ribNumber}`}>
+                <RibInput
+                    id={ribNumber}
+                    SRSData={this.state.SRSData}
+                    surveyData={this.state.surveyData}
+                    ribNumber={ribNumber} 
+                    decrementSRS={this.props.decrementSRS} 
+                    incrementSRS={this.props.incrementSRS}
+                    inputItems={this.state[ribArrayName]}
+                    updateSurveyState={this.props.updateSurveyState}
+                />
+            </Tab>
+        )
+        
+        this.setState(prevState => {
+            prevState.tabArray.push(newRib);
+            prevState.surveyData[ribNumLength] = ribLength;
+            prevState.surveyData[ribNumStart] = ribStart;
+            prevState.ribsToSelect = prevState.ribsToSelect.filter(comp => comp.props.value !== ribNumber)
+            console.log(prevState)
+            return prevState
+        })
     }
 
-    moveToArea = () => {
-        this.props.navigation.push(
-            'Area', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToAS = () => {
-        this.props.navigation.push(
-            'AccumulationSweep', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToMicro = () => {
-        this.props.navigation.push(
-            'MicroDebris', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    static navigationOptions = {
-        title: 'Surface Rib Scan'
+    remakeTabs = () => {
+        const {surveyData} = this.state;
+        if(surveyData.r1Start !== undefined){
+            this.submitAddRib('1', surveyData.r1Length, surveyData.r1Start);
+        }
+        if(surveyData.r2Start !== undefined){
+            this.submitAddRib('2', surveyData.r2Length, surveyData.r2Start);
+        }
+        if(surveyData.r3Start !== undefined){
+            this.submitAddRib('3', surveyData.r3Length, surveyData.r3Start);
+        }
+        if(surveyData.r4Start !== undefined){
+            this.submitAddRib('4', surveyData.r4Length, surveyData.r4Start);
+        }
     }
 
     /**
-     * Increment or decrement the given key. When decrementing, the user cannot have a negative
-     * value.
+     * We need to check to see if we're editing a pre-existing survey. If so, 
+     * we have to reconstruct the tabs
      */
-
-    decrementSRS (refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            const newVal =  prevState.SRSData[key] - 1;
-            if(newVal === undefined)
-                return prevState
-            if(newVal < 0)
-                return prevState
-            prevState.SRSData[key]--;
-            return prevState;
-        })
-    }
-
-    incrementSRS(refName, e){
-        let key = refName;
-        this.setState(prevState => {
-            prevState.SRSData[key] = prevState.SRSData[key] ?  prevState.SRSData[key] + 1 : 1;
-            return prevState;
-        })
-    }
-
-    updateSurveyState(refName, e) {
-        console.log(this.state.surveyData)
-        let key =  refName;//e.target.id;
-        let value = e.nativeEvent.text;
-        this.setState(prevState => {
-            prevState.surveyData[key] = value;
-            return prevState;
-        })
-        
+    componentWillMount(){
+        this.remakeTabs()
     }
     
     /**
      * Here we render the actual input screens within the tabs so that each rib can have its
      * own input screen dedicated to entering data
+     * Once we get to 4 ribs, we want to hide the option to add a rib (for now...)
      */
     render() {
+        console.log("OUTER RENDER" )
         return (
             <View style={styles.container}>
-                <Header hasTabs style={{height: 1}}>
+                <Header hasTabs style={{height : 75}}>
+                    <Left style={{marginTop: 20}}>
+                        
+                    </Left>
+                    <Body>
+                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Header</Text>
+                    </Body>
+                    <Right style={{marginTop: 25}}>
+                        <Button success onPress={this.props.onClickFinish}>
+                            <Text style={{padding: 5, color: 'white'}}>Finish</Text>
+                        </Button>
+                    </Right>
                 </Header>
                 <Tabs>
-                    <Tab heading='Rib 1'>
-                        <RibInput 
-                            SRSData={this.state.SRSData} 
-                            surveyData={this.state.surveyData}
-                            ribNumber={1} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r1Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>
-                    <Tab heading='Rib 2'>
-                        <RibInput 
-                            SRSData={this.state.SRSData}
-                            surveyData={this.state.surveyData} 
-                            ribNumber={2} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r2Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>
-                    <Tab heading='Rib 3'>
-                        <RibInput 
-                            SRSData={this.state.SRSData}
-                            surveyData={this.state.surveyData} 
-                            ribNumber={3} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r3Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>
-                    <Tab heading='Rib 4'>
-                        <RibInput 
-                            SRSData={this.state.SRSData}
-                            surveyData={this.state.surveyData} 
-                            ribNumber={4} 
-                            decrementSRS={this.decrementSRS} 
-                            incrementSRS={this.incrementSRS}
-                            inputItems={this.state.r4Items}
-                            updateSurveyState={this.updateSurveyState}
-                        />
-                    </Tab>    
+                    {
+                        this.state.tabArray.length < 4 ? 
+                            <Tab heading='+ Add Rib'>
+                                <RibEntry
+                                    updateSurveyState={this.props.updateSurveyState}
+                                    surveyData={this.props.surveyData}
+                                    submitAddRib={this.submitAddRib}
+                                    tabArray={this.state.tabArray}
+                                    renderTabs={this.renderTabs}
+                                    ribsToSelect={this.state.ribsToSelect}
+                                />
+                            </Tab>
+                        : null
+                    }
+                   {this.state.tabArray}  
                 </Tabs>
-                
-                <SurveyFooter 
-                    srs 
-                    moveToTeamInfo={this.moveToTeamInfo} 
-                    moveToArea={this.moveToArea}
-                    moveToAS={this.moveToAS}
-                    moveToMicro={this.moveToMicro}
-                />
                
             </View>
         )

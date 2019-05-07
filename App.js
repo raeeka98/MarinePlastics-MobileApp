@@ -1,5 +1,7 @@
 import React from 'react';
+
 import {createStackNavigator, createNavigationContainer, createAppContainer} from 'react-navigation';
+
 import { StyleSheet, Text, View, Button } from 'react-native';
 import {Root} from 'native-base'
 
@@ -20,6 +22,8 @@ import SurfaceRibScan from './screens/survey/SurfaceRibScan';
 import AccumulationSweep from './screens/survey/AccumulationSweep';
 import MicroDebris from './screens/survey/MicroDebris';
 import Scanner from './screens/Publish/Scanner';
+import SurveyContainer from './screens/survey/SurveyContainer'
+
 
 
 const MainNavigator = createStackNavigator(
@@ -31,16 +35,13 @@ const MainNavigator = createStackNavigator(
     SurveyEntry: {screen: SurveyPage},
     Publish: {screen: Publish},
     ChooseBeach: {screen: ChooseBeachPage},
-    TeamInfo: {screen: TeamInfo},
-    Area: {screen: Area},
-    SurfaceRibScan: {screen: SurfaceRibScan},
-    MicroDebris: {screen: MicroDebris},
-    AccumulationSweep: {screen: AccumulationSweep},
+    SurveyContainer: {screen: SurveyContainer},
     Scanner : {screen : Scanner}
   },
   {
     // First init route is for testing, second init route is for published app
-    initialRouteName: (__DEV__ ? 'Publish' : 'Boarding')
+    initialRouteName: (__DEV__ ? 'Home' : 'Boarding')
+
   }
 );
 

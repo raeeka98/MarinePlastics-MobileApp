@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
-import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button} from 'native-base';
+import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button, Header, Right, Left, Body} from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
 import SurveyFooter from './SurveyFooter'
@@ -24,18 +24,11 @@ export default class TeamInfo extends Component {
         time: new Date(),
         hours: '00',
         minutes: '00',
-        surveyData: this.props.navigation.getParam('surveyData') ? this.props.navigation.getParam('surveyData') : {},
-        SRSData: this.props.navigation.getParam('SRSData') ? this.props.navigation.getParam('SRSData') : {},
-        ASData: this.props.navigation.getParam('ASData') ? this.props.navigation.getParam('ASData') : {},
-        r1Items: this.props.navigation.getParam('r1Items') ? this.props.navigation.getParam('r1Items') : [],
-        r2Items: this.props.navigation.getParam('r2Items') ? this.props.navigation.getParam('r2Items') : [],
-        r3Items: this.props.navigation.getParam('r3Items') ? this.props.navigation.getParam('r3Items') : [],
-        r4Items: this.props.navigation.getParam('r4Items') ? this.props.navigation.getParam('r4Items') : [],
-        asItems: this.props.navigation.getParam('asItems') ? this.props.navigation.getParam('asItems') : [],
-        MicroData: this.props.navigation.getParam('MicroData') ? this.props.navigation.getParam('MicroData') : {},
-    }
-    static navigationOptions = {
-        title: "Team information"
+        surveyData: this.props.surveyData ? this.props.surveyData : {},
+        SRSData: this.props.SRSData ? this.props.SRSData : {},
+        ASData: this.props.ASData ? this.props.ASData : {},
+        MicroData: this.props.MicroData ? this.props.MicroData : {},
+        tabArray: this.props.tabArray ? this.props.tabArray : []
     }
 
     /**
@@ -59,6 +52,10 @@ export default class TeamInfo extends Component {
      * Some navigation for pressing back
      */
     onPressBack = () => {
+        /**
+         * We may need to have a modal to ask them if they are sure that they want to
+         * leave the survey
+         */
         this.props.navigation.pop();
     }
 
@@ -71,109 +68,7 @@ export default class TeamInfo extends Component {
 
     }
 
-    /**
-     * Navigate to the Area screen. The logic for this function is pretty simple and is reflected across all 
-     * navigation functions: pass the data that we have onto the next screen
-     */
-    moveToArea = () => {
-        this.props.navigation.push(
-            'Area', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData,
-            }
-        );
-    }
-
-    moveToSRS = () => {
-        this.props.navigation.push(
-            'SurfaceRibScan', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToAS = () => {
-        this.props.navigation.push(
-            'AccumulationSweep', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    moveToMicro = () => {
-        this.props.navigation.push(
-            'MicroDebris', 
-            {
-                surveyData: this.state.surveyData, 
-                SRSData: this.state.SRSData,
-                ASData: this.state.ASData,
-                r1Items: this.state.r1Items,
-                r2Items: this.state.r2Items,
-                r3Items: this.state.r3Items,
-                r4Items: this.state.r4Items,
-                asItems: this.state.asItems,
-                MicroData: this.state.MicroData
-            }
-        );
-    }
-
-    /**
-     * This function takes in a reference name and an event to update the state of the survey.
-     * The reference name is the key that will be used to update the variable in surveyData. 
-     * e is used to grab the text from the text input and update the data with the new
-     * value
-     */
-    updateSurveyState(refName, e) {
-        let key =  refName;//e.target.id;
-        let value = e.nativeEvent.text;
-        this.setState(prevState => {
-            prevState.surveyData[key] = value;
-            return prevState;
-        })
-        if(key === 'cleanupTime')
-            this.setState({showTime: false})
-    }
-
-    /**
-     * A slightly different function has to be done here; e itself is the time that is being
-     * updated, so we use it as the value to update the key
-     */
-    updateSurveyTime(refName, e) {
-        let key = refName;
-        let val = e;
-
-        this.setState(prevState => {
-            prevState.surveyData[key] = val;
-            return prevState;
-        })
-        
-    }
+    
     /**
      * In the render function, whenever we update the survey state we need to bind the function
      * using this and the reference name. The reason that we do this is because elements in 
@@ -187,22 +82,36 @@ export default class TeamInfo extends Component {
     render() {
         return(
             <View style={styles.container}>
-                
+                <Header style={{height : 75}}>
+                    <Left style={{marginTop: 20}}>
+                        <Button transparent onPress={this.onPressBack}>
+                            <Icon type="AntDesign" name='arrowleft'/>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Team Information</Text>
+                    </Body>
+                    <Right style={{marginTop: 25}}>
+                        <Button success onPress={this.props.onClickFinish}>
+                            <Text style={{padding: 5, color: 'white'}}>Finish</Text>
+                        </Button>
+                    </Right>
+                </Header>
                 <View style={styles.inputSingleContainer} >
                     <Text style={styles.inputSingle}>First Name</Text>
                     <Item regular>
                         <Input 
                             editable={true}
                             ref='userFirst'
-                            onChange={this.updateSurveyState.bind(this, 'userFirst')}
+                            onChange={this.props.updateSurveyState.bind(this, 'userFirst')}
                             value={this.state.surveyData.userFirst}
                         />
-                    </Item>
+                    </Item> 
                     <Text style={styles.inputSingle}>Last Name</Text>
                     <Item regular>
                         <Input
                             ref='userLast'
-                            onChange={this.updateSurveyState.bind(this, 'userLast')}
+                            onChange={this.props.updateSurveyState.bind(this, 'userLast')}
                             value={this.state.surveyData.userLast}
                         />
                     </Item>
@@ -210,7 +119,7 @@ export default class TeamInfo extends Component {
                     <Item regular>
                         <Input
                             ref='orgName'
-                            onChange={this.updateSurveyState.bind(this, 'orgName')}
+                            onChange={this.props.updateSurveyState.bind(this, 'orgName')}
                             value={this.state.surveyData.orgName}
                         />
                     </Item>
@@ -218,7 +127,7 @@ export default class TeamInfo extends Component {
                     <Item regular>
                         <Input
                             ref='orgLoc'
-                            onChange={this.updateSurveyState.bind(this, 'orgLoc')}
+                            onChange={this.props.updateSurveyState.bind(this, 'orgLoc')}
                             value={this.state.surveyData.orgLoc}
                         />
                     </Item>
@@ -232,9 +141,9 @@ export default class TeamInfo extends Component {
                             <DatePicker 
                                 style={{height: '100%', textAlign: 'center'}}
                                 ref='cleanupDate'
-                                onDateChange={this.updateSurveyTime.bind(this, 'cleanupDate')}
+                                onDateChange={this.props.updateSurveyTime.bind(this, 'cleanupDate')}
                                 maximumDate={new Date()}
-                                defaultDate = {new Date()}
+                                defaultDate = {this.state.surveyData.cleanupDate}
                                 locale={'en-us'}
                             />
                         </Item>
@@ -249,7 +158,7 @@ export default class TeamInfo extends Component {
                                 ref='cleanupTime'
                                 isVisible={this.state.showTime}    
                                 mode={'time'}
-                                onConfirm={this.updateSurveyTime.bind(this, 'cleanupTime')}
+                                onConfirm={this.props.updateSurveyTime.bind(this, 'cleanupTime')}
                                 is24Hour={false}
                                 maximumDate={new Date()}   
                                 onCancel={this.onCancel}                   
@@ -262,13 +171,6 @@ export default class TeamInfo extends Component {
                         </Item>
                     </View>  
                 </View>
-                <SurveyFooter 
-                    teamInfo 
-                    moveToArea={this.moveToArea} 
-                    moveToSRS={this.moveToSRS}
-                    moveToAS={this.moveToAS}
-                    moveToMicro={this.moveToMicro}
-                />
             </View>  
         )
     }
