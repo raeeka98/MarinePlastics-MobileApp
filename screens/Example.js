@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
-export default class ImportView extends Component {
+
+// this is a test page for testing style before implementation
+export default class Example extends Component {
   render() {
     return (
+      <Container>
+        <Header />
+        <Content>
           <Card>
             <CardItem>
               <Left>
@@ -35,6 +40,8 @@ export default class ImportView extends Component {
               </Right>
             </CardItem>
           </Card>
+        </Content>
+      </Container>
     );
   }
 }

@@ -5,23 +5,37 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text,
   ActivityIndicator
 } from 'react-native';
 
 import {
-  Button,
+
   AsyncStorage
 } from 'react-native';
 
+import {
+  Button,
+  Text,
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+} from 'native-base';
+
 import ImportView from './ImportView';
 
+// props: "surveys", removeSurvey()
 function LoadedSurveys(props) {
     let i = 0;
     const items = props.surveys.map(survey =>
         <ImportView key={i++} name={survey}/>
     );
-    return items;
+    return (
+        <Container>
+            {items}
+        </Container>
+    );
 }
 
 
@@ -55,19 +69,21 @@ export default class Publish extends Component {
     }
     else {
       return(
-        <View style={styles.container}>
-            <Button
-              title="Import Survey"
-              onPress={() => navigation.navigate('Scanner', {
-                  surveys : surveys
-              })}
-            />
-            <LoadedSurveys
+        <Container>
+            <Content>
+              <Button
+                onPress={() => navigation.navigate('Scanner', {
+                    surveys : surveys
+                })}>
+                <Text>
+                    Scan a Survey
+                </Text>
+              </Button>
+              <LoadedSurveys
                 surveys={surveys}
-                removeSurvey={this.removeSurvey}
-            />
-          <ImportView name="test1"/>
-        </View>
+              />
+            </Content>
+        </Container>
       );
     }
   }
