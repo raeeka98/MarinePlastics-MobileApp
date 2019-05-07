@@ -4,7 +4,6 @@ import {Button, Item} from 'native-base'
 import Modal from 'react-native-modal'
 import Expo from 'expo'
 
-import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import TeamInfo from './TeamInfo'
 import Area from './Area'
@@ -12,8 +11,8 @@ import SurfaceRibScan from './SurfaceRibScan'
 import AccumulationSweep from './AccumulationSweep'
 import MicroDebris from './MicroDebris'
 import SurveyFooter from './SurveyFooter'
-import RibInput from './RibInput'
-import RibEntryModal from './RibEntry'
+import surveyDB from '../../storage/mongoStorage'
+
 
 /**
  * This class will contain the entire survey within the screen, rendering different 
@@ -94,11 +93,14 @@ export default class SurveyContainer extends Component {
     constructor(props) {
         super(props);
 
+        //We may have props passed to this now: the data from a previous/inprogress
+        //survey.
+        const nav = this.props.navigation
         this.state = { 
-            surveyData: {},
-            SRSData: {},
-            ASData: {},
-            MicroData: {},
+            surveyData: nav.getParam('surveyData') ? nav.getParam('surveyData') : {},
+            SRSData: nav.getParam('SRSData') ? nav.getParam('SRSData') :  {},
+            ASData: nav.getParam('ASData') ? nav.getParam('ASData') : {},
+            MicroData: nav.getParam('MicroData') ? nav.getParam('MicroData') : {},
             tabArray : [],
             shouldRender:{
                 teamInfo: true,
@@ -108,7 +110,7 @@ export default class SurveyContainer extends Component {
                 micro: false
             },
             currentScreen: "teamInfo",
-            surveyName: "",
+            surveyName: nav.getParam('surveyName') ? nav.getParam('surveyName') : "",
             isModalVisible: false
         }
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
@@ -212,6 +214,7 @@ export default class SurveyContainer extends Component {
      * updated, so we use it as the value to update the key
      */
     updateSurveyTime(refName, e) {
+        console.log(e);
         let key = refName;
         let val = e;
 
@@ -401,19 +404,52 @@ export default class SurveyContainer extends Component {
     }
 
     cancelModal =() => {
-        this.setState({isModalVisible:false, surveyName: ''})
+        this.setState({isModalVisible:false})
     }
 
-    saveModal= ()=> {
+     saveModal = async  () => {
         /**
          * Commit all of the data to local storage
          */
-        this.setState({isModalVisible:false, surveyName: ''})
+        const {surveyName, surveyData, SRSData, ASData, MicroData} = this.state;
+        const survStoreData = {
+            surveyName, 
+            surveyData,
+            SRSData,
+            ASData,
+            MicroData,
+            /* Possibly store user credentials here too */
+        }
+        if(this.props.navigation.getParam('inProgress') !== undefined){
+            /* This survey just needs an update */
+            let survID = this.props.navigation.getParam('inProgress');
+            surveyDB.update({_id: survID}, survStoreData, {}, (err, res) => {
+                if(err){
+                    alert(`Error update the survey: ${err}`)
+                    return;
+                }
+                console.log("Document updated!")
+                return;
+            })
+        } else {
+            surveyDB.insert(survStoreData, (err, newDoc) => {
+                if(err){
+                    alert(`Error saving the document: ${err}`)
+                    return;
+                }
+                console.log(`New document created!`)
+                return;
+            })
+            
+        }
+        /* Navigate back to the home page */
+        await this.setState({isModalVisible:false, surveyName: ''})
+        this.props.navigation.navigate('Home');
     }
 
     render() {
         const {shouldRender} = this.state;
-        return(
+        return( 
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
                 <Modal isVisible={this.state.isModalVisible}>

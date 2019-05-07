@@ -62,6 +62,30 @@ export default class SurfaceRibScan extends Component {
             return prevState
         })
     }
+
+    remakeTabs = () => {
+        const {surveyData} = this.state;
+        if(surveyData.r1Start !== undefined){
+            this.submitAddRib('1', surveyData.r1Length, surveyData.r1Start);
+        }
+        if(surveyData.r2Start !== undefined){
+            this.submitAddRib('2', surveyData.r2Length, surveyData.r2Start);
+        }
+        if(surveyData.r3Start !== undefined){
+            this.submitAddRib('3', surveyData.r3Length, surveyData.r3Start);
+        }
+        if(surveyData.r4Start !== undefined){
+            this.submitAddRib('4', surveyData.r4Length, surveyData.r4Start);
+        }
+    }
+
+    /**
+     * We need to check to see if we're editing a pre-existing survey. If so, 
+     * we have to reconstruct the tabs
+     */
+    componentWillMount(){
+        this.remakeTabs()
+    }
     
     /**
      * Here we render the actual input screens within the tabs so that each rib can have its

@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator, createNavigationContainer} from 'react-navigation';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import {Root} from 'native-base'
 
@@ -30,11 +30,11 @@ const MainNavigator = createStackNavigator(
     SurveyContainer: {screen: SurveyContainer}
   },
   {
-    initialRouteName: 'Boarding'
+    initialRouteName: 'Home'
   }
 );
 
-const NavigationApp = createNavigationContainer(MainNavigator);
+const NavigationApp = createAppContainer(MainNavigator);
 
 //export default App;
 
