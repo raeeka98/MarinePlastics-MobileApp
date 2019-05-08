@@ -64,7 +64,7 @@ export default class Publish extends Component {
   }
 
   async loadSurveys() {
-    let responseSurveys = await surveyDB.getNameDate();
+    let responseSurveys = await surveyDB.get();
     this.setState({surveys: responseSurveys})
   }
 
@@ -81,11 +81,39 @@ export default class Publish extends Component {
 
   }
 
+  convertSurvey(index) {
+    console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
+    let currentSurvey = this.state.surveys[index];
+    let surveyData = currentSurvey.surveyData
+    const form = {
+      survData: {
+        user: {
+          f: surveyData.userFirst ? surveyData.userFirst : "",
+          l: surveyData.userLast ? surveyData.userLast : "",
+        },
+        email: /* Email from the preserved data that Diego has */"",
+        userID: /* AsyncStorage call to get the sub of the user ID */ "",
+        org: surveyData.orgName ? surveyData.orgName : "",
+        reason: /* Call a function to get the string  */"",
+        survDate: /* Need to combine the date and time from the survey */"",
+        st: /* similar string stuff for substrate type */"0",
+        slope: surveyData.slope ? surveyData.slope : "",
+        cmpsDir: surveyData.cmpsDir ? surveyData.cmpsDir : 0,
+        lastTide : {
+          type: surveyData.tideTypeB ? surveyData.tideTypeB : "",
+          time: surveyData.tideTimeB ? surveyData.tideTimeB : "",
+          height: surveyData.tideHeightB ? surveyData.tideHeightB: ""
+        }
+
+      }
+    }
+  }
+
   render() {
 
     const { navigation } = this.props;
     let surveys = this.state.surveys
-
+    console.log(surveys)
     if(this.state.loading) {
       return  <ActivityIndicator size="large" color="#0000ff" />;
     }

@@ -12,12 +12,16 @@ export default class ImportView extends Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
   }
+
+
   render() {
     return (
       <Card>
         <CardItem>
           <Left>
-            <Text>{this.props.name}</Text>
+            <Button transparent onPress={this.props.convertSurvey(this.props.index)}>
+              <Text>{this.props.name}</Text>
+            </Button>
           </Left>
           <Right>
               <Button danger
