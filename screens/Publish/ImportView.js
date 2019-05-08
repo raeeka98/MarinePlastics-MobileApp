@@ -1,28 +1,8 @@
 import React, { Component } from 'react';
 import {Font} from 'expo'
+import { Image } from 'react-native';
+import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  View,
-  ActivityIndicator
-} from 'react-native';
-
-import {
-  Container,
-  Header,
-  Content,
-  Card,
-  CardItem,
-  Thumbnail,
-  Text,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body
-} from 'native-base'
 
 export default class ImportView extends Component {
 
@@ -32,36 +12,23 @@ export default class ImportView extends Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
   }
-
-    render() {
-      console.log(this.props.name)
-        return (
-          <View>
-            <Container>
-              <Header/>
-              <Content>
-                <Card style={{flex:1}}>
-                    <CardItem>
-                      <Left>
-                        <Body>
-                            <Text>{this.props.name}</Text>
-                        </Body>
-                      </Left>
-                      <Right>
-                          <Body>
-                            <Button iconLeft light>
-                              <Icon name='arrow-back' />
-                              <Text>Back</Text>
-                            </Button>
-                          </Body>
-                      </Right>
-                    </CardItem>
-                   
-                </Card>
-              </Content>
-            </Container>
-          </View>
-
-        );
-    }
+  render() {
+    return (
+      <Card>
+        <CardItem>
+          <Left>
+            <Text>{this.props.name}</Text>
+          </Left>
+          <Right>
+              <Button danger
+                id={this.props.index}
+                onPress={() => this.props.removeSurvey(this.props.index)}
+                >
+                <Icon name="trash" />
+              </Button>
+          </Right>
+        </CardItem>
+      </Card>
+    );
+  }
 }

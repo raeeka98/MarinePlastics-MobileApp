@@ -23,6 +23,7 @@ import AccumulationSweep from './screens/survey/AccumulationSweep';
 import MicroDebris from './screens/survey/MicroDebris';
 import Scanner from './screens/Publish/Scanner';
 import SurveyContainer from './screens/survey/SurveyContainer'
+import Example from './screens/Example';
 
 
 
@@ -36,7 +37,9 @@ const MainNavigator = createStackNavigator(
     Publish: {screen: Publish},
     ChooseBeach: {screen: ChooseBeachPage},
     SurveyContainer: {screen: SurveyContainer},
-    Scanner : {screen : Scanner}
+    Scanner : {screen : Scanner},
+    Example : {screen: Example}
+
   },
   {
     // First init route is for testing, second init route is for published app

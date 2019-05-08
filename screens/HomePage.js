@@ -10,7 +10,7 @@ class HomePage extends React.Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       inProgress: [],
       isModalVisble: false,
@@ -92,7 +92,7 @@ class HomePage extends React.Component {
     this.setState({isModalVisble: true, chosenSurvey: chosenSurvey})
   }
 
-  
+
 
   renderInProgress(){
     const {inProgress} = this.state;
@@ -101,68 +101,68 @@ class HomePage extends React.Component {
     for(var i = 0; i < inProgress.length; i++){
       let survComponent = (
         <View style={{flex: 1, padding: 10, height: '15%'}}>
-          <TouchableOpacity 
-            onPress={this.showSurveyModal.bind(this, inProgress[i])} 
+          <TouchableOpacity
+            onPress={this.showSurveyModal.bind(this, inProgress[i])}
             style={
               {
                 height: 35,
-                borderRadius: 5, 
-                padding: 10, 
+                borderRadius: 5,
+                padding: 10,
                 backgroundColor: 'lightblue',
                 borderColor: 'black',
                 borderWidth: 1
               }
             }
           >
-            <Text 
+            <Text
               style={
                 {
-                  position: 'absolute',  
-                  marginTop: '1%', 
-                  width:"50%", 
-                  textAlign:'right', 
-                  paddingRight: '5%', 
-                  fontSize: 16, 
+                  position: 'absolute',
+                  marginTop: '1%',
+                  width:"50%",
+                  textAlign:'right',
+                  paddingRight: '5%',
+                  fontSize: 16,
                   fontWeight:'bold'
                 }
               }
             >
               {inProgress[i].surveyName.length <= 15 ? inProgress[i].surveyName : inProgress[i].surveyName.substr(0, 13) + "..."}
             </Text>
-            <Icon 
+            <Icon
               style={
                 {
-                  position: 'absolute', 
+                  position: 'absolute',
                   marginTop: '1%',
-                  marginHorizontal: '46%', 
-                  alignSelf: 'center' 
+                  marginHorizontal: '46%',
+                  alignSelf: 'center'
                 }
               }
-              type="AntDesign" 
+              type="AntDesign"
               name="pause"
             />
             <View style={
                   {
-                    position: 'absolute', 
+                    position: 'absolute',
                     marginTop: '1%',
                     paddingLeft: '66%',
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                   }
                 }>
-              <Text 
-                style={{fontSize: 17, 
+              <Text
+                style={{fontSize: 17,
                   fontStyle: 'italic'}}
               >
                 {
-                  (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/" 
+                  (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
                   + inProgress[i].surveyData.cleanupDate.getDate() + "/"
                   + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100)
                 }
               </Text>
               <Icon type='Entypo' name='dots-three-horizontal'/>
             </View>
-            
+
           </TouchableOpacity>
         </View>
       )
@@ -170,7 +170,7 @@ class HomePage extends React.Component {
     }
     return <FlatList data={surveyArray} extraData={this.state} renderItem={({item}) => {return item.val}} />
   }
-  
+
   render() {
     return(
       <View style={styles.container}>
@@ -189,11 +189,11 @@ class HomePage extends React.Component {
           </Text>
           {this.renderPublished()}
         </View>
-        
+
         <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
         </Button>
-        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishFinalizeSurvey')}>
+        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Publish')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Publish A Survey</Text>
         </Button>
         <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Profile')}>
@@ -251,5 +251,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e",
-  } 
+  }
 });

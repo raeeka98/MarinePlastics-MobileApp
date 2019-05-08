@@ -5,26 +5,41 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text,
   ActivityIndicator
 } from 'react-native';
 
 import {
-  Button,
+
   AsyncStorage
 } from 'react-native';
+
+import {
+  Button,
+  Text,
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+} from 'native-base';
 
 import ImportView from './ImportView';
 import surveyDB from '../../storage/mongoStorage'
 
+// props: "surveys", removeSurvey()
 function LoadedSurveys(props) {
-  console.log(props.surveys)
+  console.log(props.surveys) 
     let i = 0;
-    const items = props.surveys.map(survey =>
-        <ImportView key={i++} name={survey.surveyName}/>
+    const items = props.surveys.map(survey => {
+        const item = <ImportView key={i} index={i} name={survey.surveyName} removeSurvey={props.removeSurvey}/>;
+        i++;
+        return item;
+    });
+    return (
+        <Container>
+            {items}
+        </Container>
     );
-    console.log(items)
-    return items;
 }
 
 
@@ -57,7 +72,12 @@ export default class Publish extends Component {
     this.loadSurveys()
   }
 
-  removeSurvey() {
+  removeSurvey(index) {
+      console.log(index);
+      this.setState(prevState => {
+          prevState.surveys.splice(index, 1);
+          return prevState;
+      });
 
   }
 
@@ -67,23 +87,36 @@ export default class Publish extends Component {
     let surveys = this.state.surveys
 
     if(this.state.loading) {
-      return null// <ActivityIndicator size="large" color="#0000ff" />;
+      return  <ActivityIndicator size="large" color="#0000ff" />;
     }
     else {
       return(
-        <View style={styles.container}>
-            <Button
-              title="Import Survey"
-              onPress={() => navigation.navigate('Scanner', {
-                  surveys : surveys
-              })}
-            />
-            <LoadedSurveys
+        <Container>
+            <Content padder>
+              <Button
+                onPress={() => navigation.navigate('Scanner', {
+                    surveys : surveys
+                })}>
+                <Text>
+                    Scan a Survey
+                </Text>
+              </Button>
+              <LoadedSurveys
                 surveys={surveys}
                 removeSurvey={this.removeSurvey}
-            />
-          <ImportView name="test1"/>
-        </View>
+              />
+              {surveys.length > 1
+                ?
+                  <Button>
+                      <Text>Compile</Text>
+                  </Button>
+                :
+                  <Button>
+                      <Text>Next</Text>
+                  </Button>
+              }
+            </Content>
+        </Container>
       );
     }
   }
