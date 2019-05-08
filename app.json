@@ -23,8 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist" : {
+          "NSCameraUsageDescription" : "Allow Marine Plastics to Access Your Camera"
+      }
     }
-    
+
   }
 }

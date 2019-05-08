@@ -174,6 +174,7 @@ class HomePage extends React.Component {
   render() {
     return(
       <View style={styles.container}>
+
         <View style={{marginBottom: 50}}>
           <Text style={[styles.paragraph]}>
             In Progress
@@ -252,4 +253,3 @@ const styles = StyleSheet.create({
     color: "#34495e",
   } 
 });
-
