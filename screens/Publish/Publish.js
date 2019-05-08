@@ -28,9 +28,11 @@ import ImportView from './ImportView';
 // props: "surveys", removeSurvey()
 function LoadedSurveys(props) {
     let i = 0;
-    const items = props.surveys.map(survey =>
-        <ImportView key={i++} name={survey}/>
-    );
+    const items = props.surveys.map(survey => {
+        const item = <ImportView key={i} index={i} name={survey} removeSurvey={props.removeSurvey}/>;
+        i++;
+        return item;
+    });
     return (
         <Container>
             {items}
@@ -55,7 +57,12 @@ export default class Publish extends Component {
       this.setState({ loading : false });
   }
 
-  removeSurvey() {
+  removeSurvey(index) {
+      console.log(index);
+      this.setState(prevState => {
+          prevState.surveys.splice(index, 1);
+          return prevState;
+      });
 
   }
 
@@ -70,7 +77,7 @@ export default class Publish extends Component {
     else {
       return(
         <Container>
-            <Content>
+            <Content padder>
               <Button
                 onPress={() => navigation.navigate('Scanner', {
                     surveys : surveys
@@ -81,7 +88,18 @@ export default class Publish extends Component {
               </Button>
               <LoadedSurveys
                 surveys={surveys}
+                removeSurvey={this.removeSurvey}
               />
+              {surveys.length > 1
+                ?
+                  <Button>
+                      <Text>Compile</Text>
+                  </Button>
+                :
+                  <Button>
+                      <Text>Next</Text>
+                  </Button>
+              }
             </Content>
         </Container>
       );

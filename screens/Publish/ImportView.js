@@ -4,37 +4,21 @@ import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Ic
 export default class ImportView extends Component {
   render() {
     return (
-          <Card>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{uri: 'Image URL'}} />
-                <Body>
-                  <Text>NativeBase</Text>
-                  <Text note>GeekyAnts</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem cardBody>
-              <Image source={{uri: 'Image URL'}} style={{height: 200, width: null, flex: 1}}/>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>12 Likes</Text>
-                </Button>
-              </Left>
-              <Body>
-                <Button transparent>
-                  <Icon active name="chatbubbles" />
-                  <Text>4 Comments</Text>
-                </Button>
-              </Body>
-              <Right>
-                <Text>11h ago</Text>
-              </Right>
-            </CardItem>
-          </Card>
+      <Card>
+        <CardItem>
+          <Left>
+            <Text>{this.props.name}</Text>
+          </Left>
+          <Right>
+              <Button danger
+                id={this.props.index}
+                onPress={() => this.props.removeSurvey(this.props.index)}
+                >
+                <Icon name="trash" />
+              </Button>
+          </Right>
+        </CardItem>
+      </Card>
     );
   }
 }
