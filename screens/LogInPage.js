@@ -29,22 +29,9 @@ class LogInPage extends React.Component {
     this._retrieveAccessToken();
   };
 
-  // Get the accessToken from AsyncStorage.
-  _retrieveAccessToken = async() => {
-    try {
-      const value = await AsyncStorage.getItem('accessToken');
-      if (value !== null) {
-        this.setState({ accessToken: value });
-      } else {
-        this.setState({ accessToken: null });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // Log out by setting the accessToken to null.
   _onlogout = () => {
+    console.log('Setting accessToken to Null for LogOut');
     if (Platform.OS === 'android'){
       this.setState({ accessToken: null });
       this._storeAccessToken();
@@ -96,6 +83,7 @@ class LogInPage extends React.Component {
     const { sub } = decoded;
     this.setState({accessToken: sub});
 
+    console.log('Storing Access Token for LogIn')
     this._storeAccessToken();
   };
 
@@ -105,11 +93,28 @@ class LogInPage extends React.Component {
       let value = this.state.accessToken;
       //console.log(value);
       if (value === null){
-        console.log('Value is Null on storeAccesToken')
+        console.log('Value is Null on storeAccesToken');
         await AsyncStorage.removeItem('accessToken');
       }
       else {
+        console.log('Value is not Null on storeAccessToken');
+        console.log('value', value);
+        //console.log(value);
         await AsyncStorage.setItem('accessToken', value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+ 
+  // Get the accessToken from AsyncStorage.
+  _retrieveAccessToken = async() => {
+    try {
+      const value = await AsyncStorage.getItem('accessToken');
+      if (value !== null) {
+        this.setState({ accessToken: value });
+      } else {
+        this.setState({ accessToken: null });
       }
     } catch (error) {
       console.log(error);
