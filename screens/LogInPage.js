@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, AppRegistry } from 'react-native';
-import { Button, Alert } from 'react-native';
+import { Button, Alert, AsyncStorage } from 'react-native';
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -22,18 +22,39 @@ class LogInPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { accessToken: null };
+    //this._retrieveAccessToken();
   }
+
+  componentWillMount() {
+    this._retrieveAccessToken();
+  };
+
+  // Get the accessToken from AsyncStorage.
+  _retrieveAccessToken = async() => {
+    try {
+      const value = await AsyncStorage.getItem('accessToken');
+      if (value !== null) {
+        this.setState({ accessToken: value });
+      } else {
+        this.setState({ accessToken: null });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Log out by setting the accessToken to null.
   _onlogout = () => {
     if (Platform.OS === 'android'){
       this.setState({ accessToken: null });
+      this._storeAccessToken();
     }
     else {
       auth0.webAuth
         .clearSession({})
         .then(success => {
           this.setState({ accessToken: null });
+          this._storeAccessToken();
         })
         .catch(error => console.log(error));
     }
@@ -74,6 +95,25 @@ class LogInPage extends React.Component {
     console.log(decoded);
     const { sub } = decoded;
     this.setState({accessToken: sub});
+
+    this._storeAccessToken();
+  };
+
+  // Persist the data with AsyncStorage.
+  _storeAccessToken = async () => {
+    try {
+      let value = this.state.accessToken;
+      //console.log(value);
+      if (value === null){
+        console.log('Value is Null on storeAccesToken')
+        await AsyncStorage.removeItem('accessToken');
+      }
+      else {
+        await AsyncStorage.setItem('accessToken', value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
@@ -89,8 +129,13 @@ class LogInPage extends React.Component {
         <Button
           //onPress={loggedIn ? this._onlogout : this._onlogin}
           //onPress={loggedIn ? this._onlogout : this._loginInWAuth0}
-          onPress={loggedIn ? this._onlogout : this._loginV3}
-          title = {loggedIn ? 'log out' : 'log in'}/>
+          //onPress={loggedIn ? this._onlogout : this._loginV3}
+          //title = {loggedIn ? 'log out' : 'log in'}/>
+          onPress={this._loginV3}
+          title={'log in'}/>
+        <Button 
+          onPress={this._onlogout}
+          title={'log out'}/>
       </View>
     );
   }
