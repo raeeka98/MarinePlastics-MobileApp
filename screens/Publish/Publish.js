@@ -15,12 +15,15 @@ import {
 } from 'react-native';
 
 import ImportView from './ImportView';
+import surveyDB from '../../storage/mongoStorage'
 
 function LoadedSurveys(props) {
+  console.log(props.surveys)
     let i = 0;
     const items = props.surveys.map(survey =>
-        <ImportView key={i++} name={survey}/>
+        <ImportView key={i++} name={survey.surveyName}/>
     );
+    console.log(items)
     return items;
 }
 
@@ -45,6 +48,15 @@ export default class Publish extends Component {
     this.setState({ loading : false });
   }
 
+  async loadSurveys() {
+    let responseSurveys = await surveyDB.getNameDate();
+    this.setState({surveys: responseSurveys})
+  }
+
+  componentWillMount() {
+    this.loadSurveys()
+  }
+
   removeSurvey() {
 
   }
@@ -52,7 +64,7 @@ export default class Publish extends Component {
   render() {
 
     const { navigation } = this.props;
-    let surveys = navigation.getParam('surveys', []);
+    let surveys = this.state.surveys
 
     if(this.state.loading) {
       return null// <ActivityIndicator size="large" color="#0000ff" />;

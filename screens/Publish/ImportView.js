@@ -34,12 +34,13 @@ export default class ImportView extends Component {
   }
 
     render() {
+      console.log(this.props.name)
         return (
           <View>
             <Container>
               <Header/>
               <Content>
-                <Card style={{flex:0}}>
+                <Card style={{flex:1}}>
                     <CardItem>
                       <Left>
                         <Body>
