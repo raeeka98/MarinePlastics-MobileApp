@@ -21,13 +21,15 @@ function toQueryString(params) {
 class LogInPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { accessToken: null };
+    //this.state = { accessToken: null };
     //this._retrieveAccessToken();
+    this.state = { accessToken: this._retrieveAccessToken()};
   }
 
+  /*
   componentWillMount() {
     this._retrieveAccessToken();
-  };
+  };*/
 
   // Log out by setting the accessToken to null.
   _onlogout = () => {
@@ -95,11 +97,11 @@ class LogInPage extends React.Component {
       if (value === null){
         console.log('Value is Null on storeAccesToken');
         await AsyncStorage.removeItem('accessToken');
+        console.log('Current val: ', await AsyncStorage.getItem('accessToken'))
       }
       else {
         console.log('Value is not Null on storeAccessToken');
         console.log('value', value);
-        //console.log(value);
         await AsyncStorage.setItem('accessToken', value);
       }
     } catch (error) {
@@ -132,9 +134,6 @@ class LogInPage extends React.Component {
           You are {loggedIn ? '' : 'not'} logged in.
         </Text>
         <Button
-          //onPress={loggedIn ? this._onlogout : this._onlogin}
-          //onPress={loggedIn ? this._onlogout : this._loginInWAuth0}
-          //onPress={loggedIn ? this._onlogout : this._loginV3}
           //title = {loggedIn ? 'log out' : 'log in'}/>
           onPress={this._loginV3}
           title={'log in'}/>
