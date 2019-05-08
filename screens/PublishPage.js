@@ -1,9 +1,29 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, } from 'react-native';
+import { Platform, StatusBar, TouchableOpacity, StyleSheet, View, Text, } from 'react-native';
 import { Button } from 'react-native';
+
+import surveyDB from '../storage/mongoStorage'
 
 
 class PublishPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      localSurveys: {},
+
+    }
+
+    this.retrieveSurveys = this.retrieveSurveys.bind(this)
+  }
+
+  retrieveSurveys() {
+    surveyDB.getNameDate();
+  }
+
+  componentWillMount(){
+    this.retrieveSurveys();
+  }
+
   render() {
     const {navigate} = this.props.navigation;
     return(
