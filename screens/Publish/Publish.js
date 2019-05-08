@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {Font} from 'expo'
 import {
   Platform,
   StatusBar,
@@ -38,7 +38,11 @@ export default class Publish extends Component {
   }
 
   async componentDidMount() {
-      this.setState({ loading : false });
+    await Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    })
+    this.setState({ loading : false });
   }
 
   removeSurvey() {
@@ -51,7 +55,7 @@ export default class Publish extends Component {
     let surveys = navigation.getParam('surveys', []);
 
     if(this.state.loading) {
-      return <ActivityIndicator size="large" color="#0000ff" />;
+      return null// <ActivityIndicator size="large" color="#0000ff" />;
     }
     else {
       return(
