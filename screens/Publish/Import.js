@@ -34,14 +34,15 @@ function LoadedSurveys(props) {
         return item;
     });
     return (
-        <Container>
-            {items}
-        </Container>
+      <View>
+        {items}
+      </View>
+
     );
 }
 
 
-export default class Publish extends Component {
+export default class Import extends Component {
   constructor(props) {
     super(props);
 
@@ -60,8 +61,7 @@ export default class Publish extends Component {
                 surveys={this.props.surveys}
                 removeSurvey={this.props.removeSurvey}
               />
-              {this.props.surveys.length > 1
-                ?
+              {this.props.surveys.length > 1 ?
                   <Button>
                       <Text>Compile</Text>
                   </Button>
@@ -75,20 +75,3 @@ export default class Publish extends Component {
       );
     }
 }
-
-// Style variable.
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: "#ffffff",
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#34495e",
-  }
-});

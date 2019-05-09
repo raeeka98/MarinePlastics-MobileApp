@@ -40,6 +40,7 @@ export default class Publish extends Component {
     this.toScanner = this.toScanner.bind(this);
     this.toImport = this.toImport.bind(this);
     this.removeSurvey = this.removeSurvey.bind(this);
+    this.addSurvey = this.addSurvey.bind(this);
   }
 
   async componentDidMount() {
@@ -51,11 +52,17 @@ export default class Publish extends Component {
           prevState.surveys.splice(index, 1);
           return prevState;
       });
-
+  }
+  addSurvey(data) {
+      this.setState(prevState => {
+          prevState.surveys.push(data);
+          prevState.isScanning = false;
+          return prevState;
+      });
   }
 
-  toScanner() { this.setState({ isScanning = true  }); }
-  toImport () { this.setState({ isScanning = false }); }
+  toScanner() { this.setState({ isScanning : true  }); }
+  toImport () { this.setState({ isScanning : false }); }
 
   render() {
 
@@ -69,9 +76,15 @@ export default class Publish extends Component {
       return(
         <Container>
             {this.state.isScanning ?
-                <Scanner surveys={this.state.surveys} toImport={this.toImport}/>
+                <Scanner
+                  surveys={this.state.surveys}
+                  addSurvey={this.addSurvey}
+                  toImport={this.toImport}/>
             :
-                <Import surveys={this.state.surveys} removeSurvey={this.removeSurvey} toScanner={this.toScanner}/>
+                <Import
+                  surveys={this.state.surveys}
+                  removeSurvey={this.removeSurvey}
+                  toScanner={this.toScanner}/>
             }
         </Container>
       );
