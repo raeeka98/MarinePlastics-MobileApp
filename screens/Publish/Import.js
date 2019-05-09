@@ -44,53 +44,23 @@ function LoadedSurveys(props) {
 export default class Publish extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading : true,
-      surveys : []
-    };
-
-    // bind methods
-    this.removeSurvey = this.removeSurvey.bind(this);
-  }
-
-  async componentDidMount() {
-      this.setState({ loading : false });
-  }
-
-  removeSurvey(index) {
-      console.log(index);
-      this.setState(prevState => {
-          prevState.surveys.splice(index, 1);
-          return prevState;
-      });
 
   }
 
   render() {
-
-    const { navigation } = this.props;
-    let surveys = navigation.getParam('surveys', []);
-
-    if(this.state.loading) {
-      return <ActivityIndicator size="large" color="#0000ff" />;
-    }
-    else {
       return(
         <Container>
             <Content padder>
-              <Button
-                onPress={() => navigation.navigate('Scanner', {
-                    surveys : surveys
-                })}>
+              <Button onPress={this.props.toScanner}>
                 <Text>
                     Scan a Survey
                 </Text>
               </Button>
               <LoadedSurveys
-                surveys={surveys}
-                removeSurvey={this.removeSurvey}
+                surveys={this.props.surveys}
+                removeSurvey={this.props.removeSurvey}
               />
-              {surveys.length > 1
+              {this.props.surveys.length > 1
                 ?
                   <Button>
                       <Text>Compile</Text>
@@ -104,7 +74,6 @@ export default class Publish extends Component {
         </Container>
       );
     }
-  }
 }
 
 // Style variable.

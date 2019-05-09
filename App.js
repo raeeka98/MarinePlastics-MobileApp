@@ -37,7 +37,6 @@ const MainNavigator = createStackNavigator(
     Publish: {screen: Publish},
     ChooseBeach: {screen: ChooseBeachPage},
     SurveyContainer: {screen: SurveyContainer},
-    Scanner : {screen : Scanner},
     Example : {screen: Example}
 
   },
