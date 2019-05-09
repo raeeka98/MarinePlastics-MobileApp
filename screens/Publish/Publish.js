@@ -31,7 +31,12 @@ function LoadedSurveys(props) {
   console.log(props.surveys) 
     let i = 0;
     const items = props.surveys.map(survey => {
-        const item = <ImportView key={i} index={i} name={survey.surveyName} removeSurvey={props.removeSurvey}/>;
+        const item = <ImportView 
+                      key={i} 
+                      index={i} 
+                      name={survey.surveyName} 
+                      removeSurvey={props.removeSurvey}  
+                      convertSurvey={props.convertSurvey}/>;
         i++;
         return item;
     });
@@ -53,6 +58,7 @@ export default class Publish extends Component {
 
     // bind methods
     this.removeSurvey = this.removeSurvey.bind(this);
+    this.convertSurvey = this.convertSurvey.bind(this);
   }
 
   async componentDidMount() {
@@ -79,7 +85,52 @@ export default class Publish extends Component {
           return prevState;
       });
 
+  } 
+
+  calculateTotals(index, type) {
+    let currentSurvey = this.state.surveys[index]
+    let totals = {};
+    let totalsArray = [];
+    const data;
+    switch(type){
+      case 'SRS':
+        data = currentSurvey.SRSData;
+        break;
+      default: 
+        data = currentSurvey.ASData;
+    }
+
+    for (const id in data) {
+      const noRib = id.replace(/__[1-4]/, '');
+      const trashName = noRib.replace(/__\w+/, '');
+      const freshWeath = noRib.replace(/\w+__/, '');
+      if(totals[trashName] === undefined) {
+        totals[trashName] = {
+            fresh: 0,
+            weathered: 0
+        }
+      }
+      if(freshWeath === 'weathered') {
+        totals[trashName].weathered += data[id];
+        if(isNaN(totals[trashName].weathered)) {
+          totals[trashName].weathered = 0;
+        }
+      } else {
+        totals[trashName].fresh += data[id];
+        if(isNaN(totals[trashName].fresh)) {
+          totals[trashName].fresh = 0;
+        }
+      }
+    }
+    for (const id in totals) {
+      totalsArray.push([
+        id,
+        {fresh: totals[id].fresh, weathered: totals[id].weathered}
+      ])
+    }
+    return totalsArray
   }
+
 
   convertSurvey(index) {
     console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
@@ -103,10 +154,30 @@ export default class Publish extends Component {
           type: surveyData.tideTypeB ? surveyData.tideTypeB : "",
           time: surveyData.tideTimeB ? surveyData.tideTimeB : "",
           height: surveyData.tideHeightB ? surveyData.tideHeightB: ""
-        }
-
+        },
+        nextTide: {
+          type: surveyData.tideTypeA ? surveyData.tideTypeA : "",
+          time: surveyData.tideTimeA ? surveyData.tideTimeA : "",
+          height: surveyData.tideHeightA ? surveyData.tideHeightA : ""
+        },
+        wind: {
+          dir: surveyData.windDir? surveyData.windDir : "",
+          spd: surveyData.windSpeed ? surveyData.windSpeed : ""
+        },
+        majorUse: /* String stuff for this nibba */ "" ,
+        SRSDebris: /* Calculate SRS function */[],
+        ASDebris: /* calculate AS function */ []
+      },
+      bID: /* This may need to be figured out in the backend */ 123,
+      beachData: {
+        n: surveyData.beachName,
+        nroName: surveyData.riverName,
+        lat: /* Something given */ 123,
+        lon: 123,
+        nroDist: surveyData.riverDistance
       }
     }
+    console.log(form);
   }
 
   render() {
@@ -132,6 +203,7 @@ export default class Publish extends Component {
               <LoadedSurveys
                 surveys={surveys}
                 removeSurvey={this.removeSurvey}
+                convertSurvey={this.convertSurvey}
               />
               {surveys.length > 1
                 ?
