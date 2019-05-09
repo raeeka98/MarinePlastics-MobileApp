@@ -91,7 +91,6 @@ class LogInPage extends React.Component {
 
   // Persist the data with AsyncStorage.
   _storeAccessToken = async () => {
-  //_storeAccessToken = () => {
     try {
       let value = this.state.accessToken;
       //console.log(value);
@@ -100,7 +99,6 @@ class LogInPage extends React.Component {
       if (value === null){
         console.log('Value is Null on storeAccesToken');
         await AsyncStorage.removeItem('accessToken');
-        //AsyncStorage.removeItem('accessToken');
         console.log('Current val: ', await AsyncStorage.getItem('accessToken'))
       }
       // Otherwise, we're overriding the accesstoken with another value.
@@ -108,7 +106,6 @@ class LogInPage extends React.Component {
         console.log('Value is not Null on storeAccessToken');
         console.log('value', value);
         await AsyncStorage.setItem('accessToken', value);
-        //AsyncStorage.setItem('accessToken', value);
       }
     } catch (error) {
       console.log(error);
@@ -117,10 +114,8 @@ class LogInPage extends React.Component {
  
   // Get the accessToken from AsyncStorage.
   _retrieveAccessToken = async() => {
-  //_retrieveAccessToken = () => {
     try {
       const value = await AsyncStorage.getItem('accessToken');
-      //const value = AsyncStorage.getItem('accessToken');
       if (value !== null) {
         this.setState({ accessToken: value });
       } else {
