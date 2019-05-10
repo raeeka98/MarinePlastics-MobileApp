@@ -5,24 +5,26 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text,
   ActivityIndicator
 } from 'react-native';
 
 import {
-  Button,
+
   AsyncStorage
 } from 'react-native';
 
-import ImportView from './ImportView';
+import {
+  Button,
+  Text,
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+} from 'native-base';
 
-function LoadedSurveys(props) {
-    let i = 0;
-    const items = props.surveys.map(survey =>
-        <ImportView key={i++} name={survey}/>
-    );
-    return items;
-}
+import Scanner from "./Scanner";
+import Import from "./Import";
 
 
 export default class Publish extends Component {
@@ -30,62 +32,55 @@ export default class Publish extends Component {
     super(props);
     this.state = {
       loading : true,
+      isScanning : false,
       surveys : []
     };
 
     // bind methods
+    this.toScanner = this.toScanner.bind(this);
     this.removeSurvey = this.removeSurvey.bind(this);
+    this.addSurvey = this.addSurvey.bind(this);
   }
 
   async componentDidMount() {
       this.setState({ loading : false });
   }
 
-  removeSurvey() {
-
+  removeSurvey(index) {
+      this.setState(prevState => {
+          prevState.surveys.splice(index, 1);
+          return prevState;
+      });
+  }
+  addSurvey(data) {
+      this.setState(prevState => {
+          prevState.surveys.push(data);
+          prevState.isScanning = false;
+          return prevState;
+      });
   }
 
+  toScanner() { this.setState({ isScanning : true  }); }
+
   render() {
-
-    const { navigation } = this.props;
-    let surveys = navigation.getParam('surveys', []);
-
     if(this.state.loading) {
       return <ActivityIndicator size="large" color="#0000ff" />;
     }
     else {
       return(
-        <View style={styles.container}>
-            <Button
-              title="Import Survey"
-              onPress={() => navigation.navigate('Scanner', {
-                  surveys : surveys
-              })}
-            />
-            <LoadedSurveys
-                surveys={surveys}
-                removeSurvey={this.removeSurvey}
-            />
-          <ImportView name="test1"/>
-        </View>
+        <Container>
+            {this.state.isScanning ?
+                <Scanner
+                  surveys={this.state.surveys}
+                  addSurvey={this.addSurvey}/>
+            :
+                <Import
+                  surveys={this.state.surveys}
+                  removeSurvey={this.removeSurvey}
+                  toScanner={this.toScanner}/>
+            }
+        </Container>
       );
     }
   }
 }
-
-// Style variable.
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: "#ffffff",
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#34495e",
-  }
-});
