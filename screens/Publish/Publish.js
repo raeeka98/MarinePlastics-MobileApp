@@ -131,6 +131,15 @@ export default class Publish extends Component {
     return totalsArray
   }
 
+  combineDateTime(index) {
+    let currentSurveyData = this.state.surveys[index].surveyData;
+    let currentDate = currentSurveyData.cleanupDate.toISOString();
+    let dateOnly = currentDate.split('T')[0];
+    let currentTime = currentSurveyData.cleanupTime.toISOString();; 
+    let timeOnly= currentTime.split('T')[1];
+    let returnDate = new Date(dateOnly + 'T' + timeOnly)
+    return returnDate
+  }
 
   convertSurvey(index) {
     console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
@@ -151,7 +160,7 @@ export default class Publish extends Component {
           prox: surveyData.locationChoiceProximity ? surveyData.locationChoiceProximity : undefined,
           other: surveyData.locationChoiceOther ? surveyData.locationChoiceOther : undefined
         },
-        survDate: /* Need to combine the date and time from the survey */"",
+        survDate: this.combineDateTime(index),
         st: { 
           s: surveyData.substrateTypeSand ? surveyData.substrateTypeSand : undefined,
           p: surveyData.substrateTypePebble ? surveyData.substrateTypePebble : undefined,
