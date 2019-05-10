@@ -38,7 +38,6 @@ export default class Publish extends Component {
 
     // bind methods
     this.toScanner = this.toScanner.bind(this);
-    this.toImport = this.toImport.bind(this);
     this.removeSurvey = this.removeSurvey.bind(this);
     this.addSurvey = this.addSurvey.bind(this);
   }
@@ -62,13 +61,8 @@ export default class Publish extends Component {
   }
 
   toScanner() { this.setState({ isScanning : true  }); }
-  toImport () { this.setState({ isScanning : false }); }
 
   render() {
-
-    const { navigation } = this.props;
-    let surveys = navigation.getParam('surveys', []);
-
     if(this.state.loading) {
       return <ActivityIndicator size="large" color="#0000ff" />;
     }
@@ -78,8 +72,7 @@ export default class Publish extends Component {
             {this.state.isScanning ?
                 <Scanner
                   surveys={this.state.surveys}
-                  addSurvey={this.addSurvey}
-                  toImport={this.toImport}/>
+                  addSurvey={this.addSurvey}/>
             :
                 <Import
                   surveys={this.state.surveys}
