@@ -217,16 +217,18 @@ class BeachInfo extends Component {
                         <View style={styles.checkBox}>
                             <CheckBox 
                                 style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.usageOther} 
-                                onClick={this.props.checkedbox.bind(this, 'usageOther')} 
+                                isChecked={this.state.surveyData.otherChecked} 
+                                onClick={this.props.checkedbox.bind(this, 'otherChecked')} 
                             />
                             <Text style={{marginLeft:5}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
-                                editable={this.state.surveyData.usageOther === true} 
+                                editable={this.state.surveyData.otherChecked === true} 
                                 placeholder={invisiblePlaceholder} 
                                 style={{height: 30}}
+                                onChange={this.props.updateSurveyState(this, 'usageOther')}
+                                value={this.state.surveyData.usageOther}
                             />
                         </Item>
                     </View>
@@ -253,16 +255,18 @@ class BeachInfo extends Component {
                         <View style={styles.checkBox}>
                             <CheckBox 
                                 style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.locationChoiceOther} 
-                                onClick={this.props.checkedbox.bind(this, 'locationChoiceOther')} 
+                                isChecked={this.state.surveyData.lcOtherChecked} 
+                                onClick={this.props.checkedbox.bind(this, 'lcOtherChecked')} 
                             />
                             <Text style={{marginLeft:5}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
-                                editable={this.state.surveyData.locationChoiceOther === true} 
+                                editable={this.state.surveyData.lcOtherChecked === true} 
                                 placeholder={invisiblePlaceholder} 
                                 style={{height: 30}}
+                                onChange={this.props.updateSurveyState.bind(this, 'locationChoiceOther')}
+                                value={this.state.surveyData.locationChoiceOther}
                             />
                         </Item>
                     </View>
@@ -627,8 +631,8 @@ class SlopeSubstrate extends Component {
                         </View>
                         <View style={styles.checkBoxLarge}>
                             <CheckBox 
-                                isChecked={this.state.surveyData.substrateTypeOther} 
-                                onClick={this.props.checkedbox.bind(this, 'substrateTypeOther')} 
+                                isChecked={this.state.surveyData.stOther} 
+                                onClick={this.props.checkedbox.bind(this, 'stOther')} 
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
                             />
@@ -636,9 +640,11 @@ class SlopeSubstrate extends Component {
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
-                                editable={this.state.surveyData.locationChoiceOther === true} 
+                                editable={this.state.surveyData.stOther === true} 
                                 placeholder={invisiblePlaceholder} 
                                 style={{height: 30}}
+                                onChange={this.props.updateSurveyState.bind(this, 'substrateTypeOther')}
+                                value={this.state.surveyData.substrateTypeOther}
                             />
                         </Item>
                     </View>

@@ -91,7 +91,7 @@ export default class Publish extends Component {
     let currentSurvey = this.state.surveys[index]
     let totals = {};
     let totalsArray = [];
-    const data;
+    let data;
     switch(type){
       case 'SRS':
         data = currentSurvey.SRSData;
@@ -101,9 +101,9 @@ export default class Publish extends Component {
     }
 
     for (const id in data) {
-      const noRib = id.replace(/__[1-4]/, '');
-      const trashName = noRib.replace(/__\w+/, '');
-      const freshWeath = noRib.replace(/\w+__/, '');
+      const noSuffix = type === 'SRS' ? id.replace(/__[1-4]/, '') : id.replace(/__accumulation/, '');
+      const trashName = noSuffix.replace(/__\w+/, '');
+      const freshWeath = noSuffix.replace(/\w+__/, '');
       if(totals[trashName] === undefined) {
         totals[trashName] = {
             fresh: 0,
@@ -135,7 +135,8 @@ export default class Publish extends Component {
   convertSurvey(index) {
     console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
     let currentSurvey = this.state.surveys[index];
-    let surveyData = currentSurvey.surveyData
+    let surveyData = currentSurvey.surveyData;
+    
     const form = {
       survData: {
         user: {
@@ -145,9 +146,19 @@ export default class Publish extends Component {
         email: /* Email from the preserved data that Diego has */"",
         userID: /* AsyncStorage call to get the sub of the user ID */ "",
         org: surveyData.orgName ? surveyData.orgName : "",
-        reason: /* Call a function to get the string  */"",
+        reason: {
+          debris: surveyData.locationChoiceDebris ? surveyData.locationChoiceDebris : undefined,
+          prox: surveyData.locationChoiceProximity ? surveyData.locationChoiceProximity : undefined,
+          other: surveyData.locationChoiceOther ? surveyData.locationChoiceOther : undefined
+        },
         survDate: /* Need to combine the date and time from the survey */"",
-        st: /* similar string stuff for substrate type */"0",
+        st: { 
+          s: surveyData.substrateTypeSand ? surveyData.substrateTypeSand : undefined,
+          p: surveyData.substrateTypePebble ? surveyData.substrateTypePebble : undefined,
+          rr: surveyData.substrateTypeRipRap ? surveyData.substrateTypeRipRap : undefined,
+          sea: surveyData.substrateTypeSeaweed ? surveyData.substrateTypeSeaweed : undefined,
+          other: surveyData.substrateTypeOther ? surveyData.substrateTypeOther : undefined
+        },
         slope: surveyData.slope ? surveyData.slope : "",
         cmpsDir: surveyData.cmpsDir ? surveyData.cmpsDir : 0,
         lastTide : {
@@ -164,9 +175,13 @@ export default class Publish extends Component {
           dir: surveyData.windDir? surveyData.windDir : "",
           spd: surveyData.windSpeed ? surveyData.windSpeed : ""
         },
-        majorUse: /* String stuff for this nibba */ "" ,
-        SRSDebris: /* Calculate SRS function */[],
-        ASDebris: /* calculate AS function */ []
+        majorUse: {
+          rec: surveyData.usageRecreation ? surveyData.usageRecreation : undefined,
+          com: surveyData.usageCommercial ? surveyData.usageCommercial : undefined,
+          other: surveyData.usageOther ? surveyData.usageOther : undefined
+        } ,
+        SRSDebris: this.calculateTotals(index, 'SRS'),
+        ASDebris: this.calculateTotals(index, 'AS')
       },
       bID: /* This may need to be figured out in the backend */ 123,
       beachData: {
