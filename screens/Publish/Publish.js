@@ -22,6 +22,7 @@ import {
   Card,
   CardItem,
 } from 'native-base';
+import Modal from 'react-native-modal'
 
 import ImportView from './ImportView';
 import surveyDB from '../../storage/mongoStorage'
@@ -32,11 +33,11 @@ function LoadedSurveys(props) {
     let i = 0;
     const items = props.surveys.map(survey => {
         const item = <ImportView 
-                      key={i} 
-                      index={i} 
-                      name={survey.surveyName} 
-                      removeSurvey={props.removeSurvey}  
-                      convertSurvey={props.convertSurvey}/>;
+                        key={i} 
+                        index={i} 
+                        name={survey.surveyName} 
+                        removeSurvey={props.removeSurvey}  
+                        convertSurvey={props.convertSurvey}/>;
         i++;
         return item;
     });
@@ -53,7 +54,10 @@ export default class Publish extends Component {
     super(props);
     this.state = {
       loading : true,
-      surveys : []
+      surveys : [],
+      selectedName: '',
+      selectedIndex: 0,
+      isSubmitModalVisible: false
     };
 
     // bind methods
@@ -76,6 +80,50 @@ export default class Publish extends Component {
 
   componentWillMount() {
     this.loadSurveys()
+  }
+
+  isSurveyValid(){
+    let {selectedIndex} = this.state;
+    let survey = this.state.survey[selectedIndex]
+    let invalid = [];
+
+    const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
+        'cleanUpTime', 'cleanUpDate', 'beachName', 'compassDegrees', 'riverName',
+        'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
+        'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
+        'latitude', 'longitude'
+    ];
+
+    for(const id in requiredIDs) {
+      if(survey.surveyData[id] === undefined) {
+        invalid.push(id);
+      }
+    }
+
+    if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
+        && !survey.surveyData.locationChoiceProximity)
+        invalid.push('locChoice')
+    
+    if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
+        && !survey.surveyData.usageOther)
+        invalid.push('usage')
+
+    if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
+        && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
+        invalid.push('subType');
+  }
+
+  onPressSubmit(){
+    let invalidArray = this.isSurveyValid();
+    if(invalidArray.length > 0){
+      /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
+    } else {
+      /* Call the function to check if the beach name matches a name in the database */
+      /* If it returns true, then submit the survey to the database using the beach data stored in the db */
+      /* Else, check beaches within a 5 mile radius (Maybe use Connor's haversine formula? */
+        /* If the user selects a beach on there (ie the name of the beach they intended to submit under), submit using that data */
+        /* Otherwise, create a new beach in the database */
+    }
   }
 
   removeSurvey(index) {
@@ -132,11 +180,11 @@ export default class Publish extends Component {
   }
 
   combineDateTime(index) {
-    let currentSurveyData = this.state.surveys[index].surveyData;
-    let currentDate = currentSurveyData.cleanupDate.toISOString();
-    let dateOnly = currentDate.split('T')[0];
-    let currentTime = currentSurveyData.cleanupTime.toISOString();; 
-    let timeOnly= currentTime.split('T')[1];
+    let currentSurveyData = this.state.surveys[index].surveyData,
+    currentDate = currentSurveyData.cleanupDate.toISOString(),
+    dateOnly = currentDate.split('T')[0],
+    currentTime = currentSurveyData.cleanupTime.toISOString(),
+    timeOnly= currentTime.split('T')[1];
     let returnDate = new Date(dateOnly + 'T' + timeOnly)
     return returnDate
   }
@@ -202,6 +250,8 @@ export default class Publish extends Component {
       }
     }
     console.log(form);
+    this.setState({formToSubmit: form, isSubmitModalVisible: true, selectedName: currentSurvey.surveyName});
+    // Then we should validate the form
   }
 
   render() {
@@ -239,7 +289,21 @@ export default class Publish extends Component {
                       <Text>Next</Text>
                   </Button>
               }
+             
             </Content>
+            <Modal isVisible={this.state.isSubmitModalVisible}>
+                <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+                  <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Submit {this.state.selectedName}?</Text>
+                  <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
+                    <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isSubmitModalVisible: false})}>
+                      <Text>Cancel</Text>
+                    </Button>
+                    <Button success style={{alignSelf: 'center'}} onPress={() => this.setState({isSubmitModalVisible: false})}>
+                      <Text>Submit</Text>
+                    </Button>
+                  </View>
+                </View>
+              </Modal> 
         </Container>
       );
     }

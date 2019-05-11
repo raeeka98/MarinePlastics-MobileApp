@@ -101,6 +101,7 @@ export default class TeamInfo extends Component {
                     <Text style={styles.inputSingle}>First Name</Text>
                     <Item regular>
                         <Input 
+                            style={{borderWidth: 2, borderColor: 'red'}}
                             editable={true}
                             ref='userFirst'
                             onChange={this.props.updateSurveyState.bind(this, 'userFirst')}

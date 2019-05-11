@@ -227,7 +227,7 @@ class BeachInfo extends Component {
                                 editable={this.state.surveyData.otherChecked === true} 
                                 placeholder={invisiblePlaceholder} 
                                 style={{height: 30}}
-                                onChange={this.props.updateSurveyState(this, 'usageOther')}
+                                onChange={this.props.updateSurveyState.bind(this, 'usageOther')}
                                 value={this.state.surveyData.usageOther}
                             />
                         </Item>
