@@ -19,7 +19,7 @@ export default class ImportView extends Component {
       <Card>
         <CardItem>
           <Left>
-            <Button transparent onPress={() => this.props.convertSurvey(this.props.index)}>
+            <Button transparent onPress={() => this.props.openPublishModal(this.props.index)}>
               <Text>{this.props.name}</Text>
             </Button>
           </Left>

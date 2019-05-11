@@ -111,8 +111,10 @@ export default class SurveyContainer extends Component {
             },
             currentScreen: "teamInfo",
             surveyName: nav.getParam('surveyName') ? nav.getParam('surveyName') : "",
-            isModalVisible: false
-        }
+            isModalVisible: false,
+            invalidFields: nav.getParam('invalidArray') ? nav.getParam('invalidArray') : [],
+            fromPublish: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false
+         }
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
         this.moveToArea=this.moveToArea.bind(this);
@@ -332,7 +334,9 @@ export default class SurveyContainer extends Component {
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
                         navigation={this.props.navigation}
+                        invalidFields={this.state.invalidFields}
                     />
                 )
             case "area" : 
@@ -347,6 +351,8 @@ export default class SurveyContainer extends Component {
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
+                        invalidFields={this.state.invalidFields}
                     />
                 )
             case "srs" :
@@ -361,6 +367,7 @@ export default class SurveyContainer extends Component {
                         incrementSRS={this.incrementSRS}
                         decrementSRS={this.decrementSRS}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
                     />
                 )
             case "as" : 
@@ -372,7 +379,8 @@ export default class SurveyContainer extends Component {
                         MicroData={this.state.MicroData}
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
-                        onClickFinish={this.onClickFinish} 
+                        onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish} 
                     />
                 )
             default :
@@ -385,6 +393,7 @@ export default class SurveyContainer extends Component {
                         incrementMicro={this.incrementMicro}
                         decrementMicro={this.decrementMicro}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
                     />
                 )
         }
@@ -454,9 +463,16 @@ export default class SurveyContainer extends Component {
                             <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
                                 <Text style={{color: 'white', padding: 8}}>Back</Text>
                             </Button>
-                            <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
-                                <Text style={{color: 'white', padding: 8}}>Save</Text>
-                            </Button>
+                            {
+                                this.state.fromPublish ? 
+                                    <Button success style={{justifyContent: 'center', width: 100}} onPress={this.verifyModal}>
+                                        <Text style={{color: 'white', padding: 8}}>Submit</Text>
+                                    </Button> :
+                                    <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
+                                        <Text style={{color: 'white', padding: 8}}>Save</Text>
+                                    </Button>
+                            }
+                            
                         </View>
                     
                     </View>

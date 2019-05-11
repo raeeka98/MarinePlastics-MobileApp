@@ -101,7 +101,7 @@ export default class TeamInfo extends Component {
                     <Text style={styles.inputSingle}>First Name</Text>
                     <Item regular>
                         <Input 
-                            style={{borderWidth: 2, borderColor: 'red'}}
+                            style={this.props.invalidFields.includes('userFirst') ? {borderWidth: 2, borderColor: 'red'} : {}}
                             editable={true}
                             ref='userFirst'
                             onChange={this.props.updateSurveyState.bind(this, 'userFirst')}
@@ -111,6 +111,7 @@ export default class TeamInfo extends Component {
                     <Text style={styles.inputSingle}>Last Name</Text>
                     <Item regular>
                         <Input
+                            style={this.props.invalidFields.includes('userLast') ? {borderWidth: 2, borderColor: 'red'} : {}}
                             ref='userLast'
                             onChange={this.props.updateSurveyState.bind(this, 'userLast')}
                             value={this.state.surveyData.userLast}
@@ -119,6 +120,7 @@ export default class TeamInfo extends Component {
                     <Text style={styles.inputSingle}>Organization Name</Text>
                     <Item regular>
                         <Input
+                            style={this.props.invalidFields.includes('orgName') ? {borderWidth: 2, borderColor: 'red'} : {}}
                             ref='orgName'
                             onChange={this.props.updateSurveyState.bind(this, 'orgName')}
                             value={this.state.surveyData.orgName}
@@ -140,7 +142,18 @@ export default class TeamInfo extends Component {
                         <Text>Date</Text>
                         <Item regular>
                             <DatePicker 
-                                style={{height: '100%', textAlign: 'center'}}
+                                style={this.props.invalidFields.includes('cleanupDate') ? 
+                                        { 
+                                            borderWidth: 2, 
+                                            borderColor: 'red',
+                                            height: '100%', 
+                                            textAlign: 'center'
+                                        } : 
+                                        {
+                                            height: '100%', 
+                                            textAlign: 'center'
+                                        }
+                                      }
                                 ref='cleanupDate'
                                 onDateChange={this.props.updateSurveyTime.bind(this, 'cleanupDate')}
                                 maximumDate={new Date()}
@@ -166,7 +179,20 @@ export default class TeamInfo extends Component {
                             />
                             <TextInput 
                                 editable={false }
-                                style={{width: '70%', textAlign: 'center', fontSize: 17}} 
+                                style={this.props.invalidFields.includes('cleanupTime') ? 
+                                        {
+                                            borderColor: 'red',
+                                            borderWidth: 2,
+                                            width: '70%',
+                                            textAlign: 'center',
+                                            fontSize: 17
+                                        } :
+                                        {
+                                            width: '70%', 
+                                            textAlign: 'center', 
+                                            fontSize: 17
+                                        }
+                                    } 
                                 value={this.displayTimeString('cleanupTime')}
                             />
                         </Item>

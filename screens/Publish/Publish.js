@@ -37,7 +37,7 @@ function LoadedSurveys(props) {
                         index={i} 
                         name={survey.surveyName} 
                         removeSurvey={props.removeSurvey}  
-                        convertSurvey={props.convertSurvey}/>;
+                        openPublishModal={props.openPublishModal}/>;
         i++;
         return item;
     });
@@ -63,6 +63,7 @@ export default class Publish extends Component {
     // bind methods
     this.removeSurvey = this.removeSurvey.bind(this);
     this.convertSurvey = this.convertSurvey.bind(this);
+    this.openPublishModal = this.openPublishModal.bind(this);
   }
 
   async componentDidMount() {
@@ -88,7 +89,7 @@ export default class Publish extends Component {
     let invalid = [];
 
     const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
-        'cleanUpTime', 'cleanUpDate', 'beachName', 'compassDegrees', 'riverName',
+        'cleanUpTime', 'cleanUpDate', 'beachName', 'cmpsDir', 'riverName',
         'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
         'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
         'latitude', 'longitude'
@@ -114,9 +115,21 @@ export default class Publish extends Component {
   }
 
   onPressSubmit(){
+    const {selectedIndex} = this.state;
+    const currentSurvey = this.state.surveys[selectedIndex]
     let invalidArray = this.isSurveyValid();
     if(invalidArray.length > 0){
       /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
+      this.props.navigation.navigate('SurveyContainer', {
+        surveyName: currentSurvey.surveyName,
+        surveyData: currentSurvey.surveyData,
+        SRSData: currentSurvey.SRSData,
+        ASData: currentSurvey.ASData,
+        MicroData: currentSurvey.MicroData,
+        inProgress: currentSurvey._id,
+        invalidArray: invalidArray,
+        fromPublish: true,
+      })
     } else {
       /* Call the function to check if the beach name matches a name in the database */
       /* If it returns true, then submit the survey to the database using the beach data stored in the db */
@@ -187,6 +200,15 @@ export default class Publish extends Component {
     timeOnly= currentTime.split('T')[1];
     let returnDate = new Date(dateOnly + 'T' + timeOnly)
     return returnDate
+  }
+
+  openPublishModal(index){
+    const {surveyName} = this.state.surveys[index]
+    this.setState({
+      isSubmitModalVisible: true,
+      selectedName: surveyName,
+      selectedIndex: index
+    })
   }
 
   convertSurvey(index) {
@@ -277,7 +299,7 @@ export default class Publish extends Component {
               <LoadedSurveys
                 surveys={surveys}
                 removeSurvey={this.removeSurvey}
-                convertSurvey={this.convertSurvey}
+                openPublishModal={this.openPublishModal}
               />
               {surveys.length > 1
                 ?
