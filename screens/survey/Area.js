@@ -82,7 +82,8 @@ export default class Area extends Component{
                 title: "Beach Info",
                 content: <BeachInfo 
                             surveyData={this.props.surveyData} 
-                            updateSurveyState={this.props.updateSurveyState} 
+                            updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields} 
                             checkedbox={this.props.checkedbox} 
                         />  
             },
@@ -91,6 +92,7 @@ export default class Area extends Component{
                 content: <NRO 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                          />
             },
             {
@@ -98,6 +100,7 @@ export default class Area extends Component{
                 content: <TideInfo 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                             updateSurveyTime={this.props.updateSurveyTime}
                             onDropdownChange={this.props.onDropdownChange}
 
@@ -108,6 +111,7 @@ export default class Area extends Component{
                 content: <WindInfo 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                             onDropdownChange={this.props.onDropdownChange}
                          />
             },
@@ -116,6 +120,7 @@ export default class Area extends Component{
                 content: <SlopeSubstrate 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                             onDropdownChange={this.props.onDropdownChange}
                             checkedbox={this.props.checkedbox}
                          />
@@ -203,13 +208,13 @@ class BeachInfo extends Component {
                     </Item>
                 </View>
                 <View style={styles.inputDoubleContainer}>
-                    <View style={styles.inputDouble}>
+                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('usage') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {})]} >
                         <Text>
                             Major Usage:
                         </Text> 
                         <View 
-                            style={[styles.checkBox, (this.props.invalidFields.includes('usage') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {})]} 
+                            style={styles.checkBox} 
                         >
                             <CheckBox 
                                 style={styles.checkBoxInput} 
@@ -244,13 +249,13 @@ class BeachInfo extends Component {
                             />
                         </Item>
                     </View>
-                    <View style={styles.inputDouble}>
+                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('locChoice') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {})]}>
                         <Text>
                             Reason For Beach Choice:
                         </Text>
                         <View 
-                            style={[styles.checkBox, (this.props.invalidFields.includes('locChoice') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {})]} 
+                            style={[styles.checkBox]} 
                         >
                             <CheckBox 
                                 style={styles.checkBoxInput} 
@@ -548,7 +553,7 @@ class WindInfo extends Component {
                             ref = 'windSpeed'
                             keyboardType="number-pad" 
                             placeholder={invisiblePlaceholder} 
-                            style={[styles.textInput, (this.props.invalidFields.includes('windeSpeed') ? 
+                            style={[styles.textInput, (this.props.invalidFields.includes('windSpeed') ? 
                                         {borderColor: 'red', borderWidth: 2} : {})]} 
                             onChange={this.props.updateSurveyState.bind(this, 'windSpeed')}
                             value={this.state.surveyData.windSpeed}

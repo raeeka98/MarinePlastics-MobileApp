@@ -113,8 +113,11 @@ export default class SurveyContainer extends Component {
             surveyName: nav.getParam('surveyName') ? nav.getParam('surveyName') : "",
             isModalVisible: false,
             invalidFields: nav.getParam('invalidArray') ? nav.getParam('invalidArray') : [],
-            fromPublish: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false
-         }
+            fromPublish: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false,
+            remade: false,
+        }
+        console.log("------STATE------")
+        console.log(this.state)
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
         this.moveToArea=this.moveToArea.bind(this);
@@ -368,6 +371,8 @@ export default class SurveyContainer extends Component {
                         decrementSRS={this.decrementSRS}
                         onClickFinish={this.onClickFinish}
                         fromPublish={this.state.fromPublish}
+                        setRemade={this.setRemade}
+                        remade={this.state.remade}
                     />
                 )
             case "as" : 
@@ -397,6 +402,10 @@ export default class SurveyContainer extends Component {
                     />
                 )
         }
+    }
+
+    setRemade =() => {
+        this.setState({remade: true})
     }
 
     onClickFinish = () => {
@@ -440,6 +449,37 @@ export default class SurveyContainer extends Component {
         await this.setState({isModalVisible:false, surveyName: ''})
         this.props.navigation.navigate('Home');
     }
+
+    verifyModal = () => {
+        /* Here we'll need to verify the new survey information */
+        const survey = this.state;
+        let invalid = [];
+        const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
+            'cleanUpTime', 'cleanUpDate', 'beachName', 'cmpsDir', 'riverName',
+            'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
+            'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
+            'latitude', 'longitude'
+        ];
+
+        for(const id in requiredIDs) {
+            if(survey.surveyData[id] === undefined) {
+                invalid.push(id);
+            }
+        }
+
+        if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
+            && !survey.surveyData.locationChoiceProximity)
+            invalid.push('locChoice')
+        
+        if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
+            && !survey.surveyData.usageOther)
+            invalid.push('usage')
+
+        if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
+            && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
+            invalid.push('subType');
+    }
+
 
     render() {
         const {shouldRender} = this.state;

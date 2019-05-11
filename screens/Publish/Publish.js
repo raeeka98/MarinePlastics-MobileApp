@@ -64,6 +64,7 @@ export default class Publish extends Component {
     this.removeSurvey = this.removeSurvey.bind(this);
     this.convertSurvey = this.convertSurvey.bind(this);
     this.openPublishModal = this.openPublishModal.bind(this);
+    this.onPressSubmit = this.onPressSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -76,6 +77,7 @@ export default class Publish extends Component {
 
   async loadSurveys() {
     let responseSurveys = await surveyDB.get();
+    console.log("Response = " + responseSurveys)
     this.setState({surveys: responseSurveys})
   }
 
@@ -85,7 +87,9 @@ export default class Publish extends Component {
 
   isSurveyValid(){
     let {selectedIndex} = this.state;
-    let survey = this.state.survey[selectedIndex]
+    let survey = this.state.surveys[selectedIndex]
+    console.log("-----SURVEY-----")
+    console.log(survey)
     let invalid = [];
 
     const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
@@ -96,8 +100,8 @@ export default class Publish extends Component {
     ];
 
     for(const id in requiredIDs) {
-      if(survey.surveyData[id] === undefined) {
-        invalid.push(id);
+      if(survey.surveyData[requiredIDs[id]] === undefined) {
+        invalid.push(requiredIDs[id]);
       }
     }
 
@@ -112,6 +116,8 @@ export default class Publish extends Component {
     if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
         && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
         invalid.push('subType');
+
+    return invalid
   }
 
   onPressSubmit(){
@@ -120,6 +126,8 @@ export default class Publish extends Component {
     let invalidArray = this.isSurveyValid();
     if(invalidArray.length > 0){
       /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
+      this.setState({isSubmitModalVisible: false});
+
       this.props.navigation.navigate('SurveyContainer', {
         surveyName: currentSurvey.surveyName,
         surveyData: currentSurvey.surveyData,
@@ -320,7 +328,7 @@ export default class Publish extends Component {
                     <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isSubmitModalVisible: false})}>
                       <Text>Cancel</Text>
                     </Button>
-                    <Button success style={{alignSelf: 'center'}} onPress={() => this.setState({isSubmitModalVisible: false})}>
+                    <Button success style={{alignSelf: 'center'}} onPress={this.onPressSubmit}>
                       <Text>Submit</Text>
                     </Button>
                   </View>

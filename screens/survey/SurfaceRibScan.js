@@ -30,7 +30,8 @@ export default class SurfaceRibScan extends Component {
             <Picker.Item key='2' label="2" value="2" />,
             <Picker.Item key='3' label="3" value="3" />,
             <Picker.Item key='4' label="4" value="4" />
-        ]
+        ],
+        remade: this.props.remade ? this.props.remade : false
     }
 
     submitAddRib = (ribNumber, ribLength, ribStart) => {
@@ -77,6 +78,7 @@ export default class SurfaceRibScan extends Component {
         if(surveyData.r4Start !== undefined){
             this.submitAddRib('4', surveyData.r4Length, surveyData.r4Start);
         }
+        this.props.setRemade();
     }
 
     /**
@@ -84,7 +86,8 @@ export default class SurfaceRibScan extends Component {
      * we have to reconstruct the tabs
      */
     componentWillMount(){
-        this.remakeTabs()
+        if(!this.state.remade)
+            this.remakeTabs()
     }
     
     /**

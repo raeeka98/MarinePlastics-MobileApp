@@ -3,17 +3,15 @@ var Datastore = require('react-native-local-mongodb');
 var db = new Datastore({filename: 'asyncUserSurveys', autoload: true});
 
 let surveyDB = {
-    get: async () => {
+    get:  () => {
         /* Get all of the surveys stored in the database */
-        let surveys;
-        await db.find({}, (err, res) => {
+        let surveys = [];
+        return db.find({}).exec ((err, res) => {
             if(err){
                 return (`Error retrieving surveys: ${err}`);
             }
-            surveys = res;
-
+            return res;
         })
-        return surveys
     }, 
     getNameDate: () => {
         /* Get only the names and date of the survey (stored in surveyData) */
