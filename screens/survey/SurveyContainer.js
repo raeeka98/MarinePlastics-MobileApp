@@ -112,6 +112,7 @@ export default class SurveyContainer extends Component {
             currentScreen: "teamInfo",
             surveyName: nav.getParam('surveyName') ? nav.getParam('surveyName') : "",
             isModalVisible: false,
+            isValidVisible: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false,
             invalidFields: nav.getParam('invalidArray') ? nav.getParam('invalidArray') : [],
             fromPublish: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false,
             remade: false,
@@ -450,6 +451,19 @@ export default class SurveyContainer extends Component {
         this.props.navigation.navigate('Home');
     }
 
+    onPressSubmit = () => {
+        let invalidArray = this.verifyModal();
+        if(invalidArray.length > 0){
+            /* Let the user know that they ain't done yet */
+            this.setState({invalidFields: invalidArray, isModalVisible: false, isValidVisible: true})
+        } else {
+            /* Save the survey, move back to publish */
+            let survID = this.props.navigation.getParam('inProgress');
+            surveyDB.updateSurvey(survID, survStoreData);
+            this.props.navigation.navigate('Publish',{})
+        }
+    }
+
     verifyModal = () => {
         /* Here we'll need to verify the new survey information */
         const survey = this.state;
@@ -462,8 +476,8 @@ export default class SurveyContainer extends Component {
         ];
 
         for(const id in requiredIDs) {
-            if(survey.surveyData[id] === undefined) {
-                invalid.push(id);
+            if(survey.surveyData[requiredIDs[id]] === undefined) {
+                invalid.push(requiredIDs[id]);
             }
         }
 
@@ -478,11 +492,17 @@ export default class SurveyContainer extends Component {
         if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
             && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
             invalid.push('subType');
+
+        return invalid
     }
 
+    cancelValidModal = () => {
+        this.setState({isValidVisible: false})
+    }
 
     render() {
         const {shouldRender} = this.state;
+        console.log("Rendering")
         return( 
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
@@ -505,7 +525,7 @@ export default class SurveyContainer extends Component {
                             </Button>
                             {
                                 this.state.fromPublish ? 
-                                    <Button success style={{justifyContent: 'center', width: 100}} onPress={this.verifyModal}>
+                                    <Button success style={{justifyContent: 'center', width: 100}} onPress={this.onPressSubmit}>
                                         <Text style={{color: 'white', padding: 8}}>Submit</Text>
                                     </Button> :
                                     <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
@@ -516,6 +536,19 @@ export default class SurveyContainer extends Component {
                         </View>
                     
                     </View>
+                </Modal>
+                {/* Modal to tell the user that their survey is invalid */}
+                <Modal isVisible={this.state.isValidVisible}>
+                    <View style={{alignSelf: 'center', justifyContent:'center', alignItems: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
+                            Please fill out the required fields, highlighted in red.
+                        </Text>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
+                            <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelValidModal}>
+                                <Text style={{color: 'white', padding: 8}}>Continue</Text>
+                            </Button>
+                        </View>  
+                    </View>                
                 </Modal>
                 <SurveyFooter 
                     teamInfo={shouldRender.teamInfo}
