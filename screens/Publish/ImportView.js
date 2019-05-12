@@ -18,8 +18,11 @@ export default class ImportView extends Component {
     let { survey, index } = this.props;
     const s = JSON.parse(survey);
     return (
-      <Card>
-        <CardItem>
+      <Card style={{ borderRadius:10 }}>
+        <CardItem bordered style={{
+            borderRadius: 10,
+            height: 100
+          }}>
           <Left>
             <Text>{s.surveyName ? s.surveyName : "NO NAME"}</Text>
           </Left>
@@ -27,11 +30,11 @@ export default class ImportView extends Component {
               {index == 0 ?
                 <Text>[MASTER]</Text>
                 :
-                <Button danger
+                <Button danger large
                   id={index}
                   onPress={() => this.props.removeSurvey(index)}
                   >
-                  <Icon name="trash" />
+                  <Icon name="trash" style={{ fontSize: 40 }} />
                 </Button>
               }
 

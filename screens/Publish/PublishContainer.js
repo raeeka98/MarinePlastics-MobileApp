@@ -43,12 +43,9 @@ export default class PublishContainer extends Component {
       this.setState({ loading : false });
   }
 
-  removeSurvey = (index) => {
-      this.setState(prevState => {
-          prevState.surveys.splice(index, 1);
-          return prevState;
-      });
-  }
+
+
+  // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
 
   addSurvey = (data) => {
       this.setState(prevState => {
@@ -60,7 +57,17 @@ export default class PublishContainer extends Component {
       });
   }
 
+  removeSurvey = (index) => {
+      this.setState(prevState => {
+          prevState.surveys.splice(index, 1);
+          return prevState;
+      });
+  }
+
+  // MERGE AND PUBLISH SURVEY ==================================================
+
   publishSurvey = () => {
+      const { surveys } = this.state;
 
   }
 

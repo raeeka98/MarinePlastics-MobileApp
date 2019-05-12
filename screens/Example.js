@@ -1,47 +1,60 @@
-import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
-
-// this is a test page for testing style before implementation
+import React, { Component } from "react";
+import { Container, Header, Title, Content, Button, Icon, Card, CardItem, Text, Body, Left, Right, IconNB, View } from "native-base";
 export default class Example extends Component {
   render() {
     return (
       <Container>
-        <Header />
-        <Content>
-          <Card>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{uri: 'Image URL'}} />
-                <Body>
-                  <Text>NativeBase</Text>
-                  <Text note>GeekyAnts</Text>
-                </Body>
-              </Left>
+        <Header>
+          <Left>
+            <Button transparent>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Header</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content padder>
+          <Card style={{ borderRadius: 8 }}>
+            <CardItem header bordered style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+              <Text>NativeBase</Text>
             </CardItem>
-            <CardItem cardBody>
-              <Image source={{uri: 'Image URL'}} style={{height: 200, width: null, flex: 1}}/>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>12 Likes</Text>
-                </Button>
-              </Left>
+            <CardItem bordered>
               <Body>
-                <Button transparent>
-                  <Icon active name="chatbubbles" />
-                  <Text>4 Comments</Text>
-                </Button>
+                <Text>
+                  NativeBase is a free and open source framework that enable
+                  developers to build
+                  high-quality mobile apps using React Native iOS and Android
+                  apps
+                  with a fusion of ES6.
+                </Text>
               </Body>
-              <Right>
-                <Text>11h ago</Text>
-              </Right>
+            </CardItem>
+            <CardItem bordered>
+              <Body>
+                <Text>
+                  NativeBase builds a layer on top of React Native that provides
+                  you with
+                  basic set of components for mobile application development.
+                </Text>
+              </Body>
+            </CardItem>
+            <CardItem bordered>
+              <Body>
+                <Text>
+                  Get on the mobile fast track with NativeBase, the
+                  fastest-growing platform
+                  and tool set for iOS and Android development.
+                </Text>
+              </Body>
+            </CardItem>
+            <CardItem footer bordered style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+              <Text>GeekyAnts</Text>
             </CardItem>
           </Card>
         </Content>
-      </Container>
+      </Container >
     );
   }
 }
