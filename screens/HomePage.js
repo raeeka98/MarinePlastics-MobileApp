@@ -169,10 +169,11 @@ class HomePage extends React.Component {
                 style={{fontSize: 17,
                   fontStyle: 'italic'}}
               >
-                {
-                  (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
+                {inProgress[i].surveyData.cleanupDate ?
+                  ((inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
                   + inProgress[i].surveyData.cleanupDate.getDate() + "/"
-                  + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100)
+                  + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100))
+                  : null
                 }
               </Text>
               <Icon type='Entypo' name='dots-three-horizontal'/>
