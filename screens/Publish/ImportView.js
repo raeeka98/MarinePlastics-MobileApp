@@ -14,16 +14,18 @@ import {
 
 export default class ImportView extends Component {
   render() {
+    let { survey, index } = this.props;
+    const s = JSON.parse(survey);
     return (
       <Card>
         <CardItem>
           <Left>
-            <Text>{this.props.name}</Text>
+            <Text>{s.surveyName ? s.surveyName : "NO NAME"}</Text>
           </Left>
           <Right>
               <Button danger
-                id={this.props.index}
-                onPress={() => this.props.removeSurvey(this.props.index)}
+                id={index}
+                onPress={() => this.props.removeSurvey(index)}
                 >
                 <Icon name="trash" />
               </Button>

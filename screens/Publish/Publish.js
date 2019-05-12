@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  ActivityIndicator
 } from 'react-native';
 
 import {
@@ -14,6 +13,7 @@ import {
 } from 'react-native';
 
 import {
+  Spinner,
   Button,
   Text,
   Container,
@@ -35,49 +35,61 @@ export default class Publish extends Component {
       isScanning : false,
       surveys : []
     };
-
-    // bind methods
-    this.toScanner = this.toScanner.bind(this);
-    this.removeSurvey = this.removeSurvey.bind(this);
-    this.addSurvey = this.addSurvey.bind(this);
   }
 
   async componentDidMount() {
       this.setState({ loading : false });
   }
 
-  removeSurvey(index) {
+  removeSurvey = (index) => {
       this.setState(prevState => {
           prevState.surveys.splice(index, 1);
           return prevState;
       });
   }
-  addSurvey(data) {
+  addSurvey = (data) => {
       this.setState(prevState => {
           prevState.surveys.push(data);
           prevState.isScanning = false;
+          prevState.isImporting = true;
+          prevState.isPublished = false;
           return prevState;
       });
   }
 
-  toScanner() { this.setState({ isScanning : true  }); }
+  publishSurvey = () => {
+
+  }
+
+  toScanner = () => {
+    this.setState({
+      isScanning : true,
+      isImporting : false,
+      isPublished : false
+    });
+  }
 
   render() {
     if(this.state.loading) {
-      return <ActivityIndicator size="large" color="#0000ff" />;
+      return <Spinner color='green'/>;
     }
     else {
       return(
         <Container>
-            {this.state.isScanning ?
+            {this.state.isScanning &&
                 <Scanner
                   surveys={this.state.surveys}
                   addSurvey={this.addSurvey}/>
-            :
+            }
+            {this.state.isImporting &&
                 <Import
                   surveys={this.state.surveys}
+                  publishSurvey={this.publishSurvey}
                   removeSurvey={this.removeSurvey}
                   toScanner={this.toScanner}/>
+            }
+            {this.state.isPublished &&
+                <Text>Published Page!</Text>
             }
         </Container>
       );

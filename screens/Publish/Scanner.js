@@ -6,8 +6,13 @@ import {
   Text,
   TouchableOpacity,
   Linking,
+  ActivityIndicator,
   View,
 } from 'react-native';
+
+import {
+  Spinner
+} from 'native-base';
 
 import { BarCodeScanner, Permissions } from 'expo';
 
@@ -30,7 +35,7 @@ export default class Scanner extends Component {
     const { hasCameraPermission } = this.state;
 
     if (hasCameraPermission === null) {
-      return <Text>Requesting for camera permission</Text>;
+      return <Spinner color='green'/>;
     }
     if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;

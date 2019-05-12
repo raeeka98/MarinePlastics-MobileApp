@@ -29,7 +29,7 @@ import ImportView from './ImportView';
 function LoadedSurveys(props) {
     let i = 0;
     const items = props.surveys.map(survey => {
-        const item = <ImportView key={i} index={i} name={survey} removeSurvey={props.removeSurvey}/>;
+        const item = <ImportView key={i} index={i} survey={survey} removeSurvey={props.removeSurvey}/>;
         i++;
         return item;
     });
@@ -61,15 +61,12 @@ export default class Import extends Component {
                 surveys={this.props.surveys}
                 removeSurvey={this.props.removeSurvey}
               />
-              {this.props.surveys.length > 1 ?
-                  <Button>
-                      <Text>Compile</Text>
-                  </Button>
-                :
-                  <Button>
-                      <Text>Next</Text>
-                  </Button>
-              }
+              <Button
+                onPress={this.props.publishSurvey}>
+                  <Text>
+                    {this.props.surveys.length > 1 ? "Merge Surveys" : "Next"}
+                  </Text>
+              </Button>
             </Content>
         </Container>
       );
