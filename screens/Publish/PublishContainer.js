@@ -27,12 +27,14 @@ import Scanner from "./Scanner";
 import Import from "./Import";
 
 
-export default class Publish extends Component {
+export default class PublishContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading : true,
+      isImporting : true,
       isScanning : false,
+      isPublished : false,
       surveys : []
     };
   }
@@ -47,6 +49,7 @@ export default class Publish extends Component {
           return prevState;
       });
   }
+
   addSurvey = (data) => {
       this.setState(prevState => {
           prevState.surveys.push(data);
@@ -89,7 +92,7 @@ export default class Publish extends Component {
                   toScanner={this.toScanner}/>
             }
             {this.state.isPublished &&
-                <Text>Published Page!</Text>
+                <Published/>
             }
         </Container>
       );

@@ -209,7 +209,7 @@ class HomePage extends React.Component {
         <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
         </Button>
-        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Publish')}>
+        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Publish A Survey</Text>
         </Button>
         <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Profile')}>

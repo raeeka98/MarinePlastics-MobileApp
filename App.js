@@ -14,7 +14,7 @@ import BoardingPage from './screens/BoardingPage';
 import LogInPage from './screens/LogInPage';
 import ProfilePage from './screens/ProfilePage';
 import SurveyPage from './screens/SurveyPage';
-import Publish from './screens/Publish/Publish';
+import PublishContainer from './screens/Publish/PublishContainer';
 import ChooseBeachPage from './screens/ChooseBeachPage';
 import TeamInfo from './screens/survey/TeamInfo';
 import Area from './screens/survey/Area';
@@ -34,7 +34,7 @@ const MainNavigator = createStackNavigator(
     Login: {screen: LogInPage},
     Profile: {screen: ProfilePage},
     SurveyEntry: {screen: SurveyPage},
-    Publish: {screen: Publish},
+    PublishContainer: {screen: PublishContainer},
     ChooseBeach: {screen: ChooseBeachPage},
     SurveyContainer: {screen: SurveyContainer},
     Example : {screen: Example}

@@ -9,6 +9,7 @@ import {
   Button,
   Icon,
   Left,
+  Body,
   Right
 } from 'native-base';
 
@@ -23,12 +24,17 @@ export default class ImportView extends Component {
             <Text>{s.surveyName ? s.surveyName : "NO NAME"}</Text>
           </Left>
           <Right>
-              <Button danger
-                id={index}
-                onPress={() => this.props.removeSurvey(index)}
-                >
-                <Icon name="trash" />
-              </Button>
+              {index == 0 ?
+                <Text>[MASTER]</Text>
+                :
+                <Button danger
+                  id={index}
+                  onPress={() => this.props.removeSurvey(index)}
+                  >
+                  <Icon name="trash" />
+                </Button>
+              }
+
           </Right>
         </CardItem>
       </Card>
