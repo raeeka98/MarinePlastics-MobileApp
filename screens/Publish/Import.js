@@ -4,12 +4,10 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
-  View,
   ActivityIndicator
 } from 'react-native';
 
 import {
-
   AsyncStorage
 } from 'react-native';
 
@@ -20,8 +18,13 @@ import {
   Header,
   Content,
   Card,
+  Icon,
   CardItem,
+  Fab,
+  View
 } from 'native-base';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import ImportView from './ImportView';
 
@@ -29,7 +32,7 @@ import ImportView from './ImportView';
 function LoadedSurveys(props) {
     let i = 0;
     const items = props.surveys.map(survey => {
-        const item = <ImportView key={i} index={i} name={survey} removeSurvey={props.removeSurvey}/>;
+        const item = <ImportView key={i} index={i} survey={survey} removeSurvey={props.removeSurvey}/>;
         i++;
         return item;
     });
@@ -51,26 +54,27 @@ export default class Import extends Component {
   render() {
       return(
         <Container>
-            <Content padder>
-              <Button onPress={this.props.toScanner}>
-                <Text>
-                    Scan a Survey
-                </Text>
-              </Button>
+            <View style={{ flex: 1}}>
+              <Fab
+                direction="up"
+                containerStyle={{ }}
+                style={{ backgroundColor: '#5067FF' }}
+                position="bottomLeft"
+                onPress={this.props.toScanner}>
+                <Icon name="camera" />
+              </Fab>
+              <Fab
+                containerStyle={{ }}
+                style={{ backgroundColor: '#5ce090' }}
+                position="bottomRight"
+                onPress={this.props.publishSurvey}>
+                <Icon name="md-checkmark"/>
+              </Fab>
               <LoadedSurveys
                 surveys={this.props.surveys}
                 removeSurvey={this.props.removeSurvey}
               />
-              {this.props.surveys.length > 1 ?
-                  <Button>
-                      <Text>Compile</Text>
-                  </Button>
-                :
-                  <Button>
-                      <Text>Next</Text>
-                  </Button>
-              }
-            </Content>
+            </View>
         </Container>
       );
     }

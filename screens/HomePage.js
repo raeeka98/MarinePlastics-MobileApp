@@ -169,10 +169,11 @@ class HomePage extends React.Component {
                 style={{fontSize: 17,
                   fontStyle: 'italic'}}
               >
-                {
-                  (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
+                {inProgress[i].surveyData.cleanupDate ?
+                  ((inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
                   + inProgress[i].surveyData.cleanupDate.getDate() + "/"
-                  + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100)
+                  + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100))
+                  : null
                 }
               </Text>
               <Icon type='Entypo' name='dots-three-horizontal'/>
@@ -208,7 +209,7 @@ class HomePage extends React.Component {
         <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
         </Button>
-        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Publish')}>
+        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Publish A Survey</Text>
         </Button>
         <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Profile')}>
