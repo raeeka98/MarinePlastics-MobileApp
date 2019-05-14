@@ -61,6 +61,7 @@ export default class Publish extends Component {
       selectedIndex: 0,
       isSubmitModalVisible: false,
       isLoginModalVisible: false,
+      isLoadingModalVisible: false,
     };
 
     // bind methods
@@ -69,6 +70,7 @@ export default class Publish extends Component {
     this.openPublishModal = this.openPublishModal.bind(this);
     this.onPressSubmit = this.onPressSubmit.bind(this);
     this.openBeachModal = this.openBeachModal.bind(this);
+    this.renderBeachItem = this.renderBeachItem.bind(this);
   }
 
   async componentDidMount() {
@@ -84,13 +86,21 @@ export default class Publish extends Component {
     this.setState({surveys: responseSurveys})
   }
 
-  async openBeachModal() {
+  async openBeachModal(beachName) {
     // Here's where we'll do a special query for the beaches that reside in a certain location
     await axios.get('https://marineplastics.herokuapp.com/beaches')
       .then(res => {
-        this.setState({isBeachModalVisible: true, beachList: res.data})
+        this.setState({beachName: beachName, isBeachModalVisible: true, isLoadingModalVisible: false, beachList: res.data})
       })
     
+  }
+
+  onPressBeach(beachName) {
+    this.setState({isConfirmModalVisible: true, match: true, confirmBeach: beachName});
+  }
+
+  onPressNoMatch(beachName) {
+    this.setState({isConfirmModalVisible: true, match: false, confirmBeach: beachName})
   }
 
   async checkIfBeachExists(survey){
@@ -118,7 +128,7 @@ export default class Publish extends Component {
     } else {
       //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
       console.log(`The beach ${beachName} does not exist`);
-      this.openBeachModal();
+      this.openBeachModal(beachName);
     }
   }
 
@@ -204,6 +214,7 @@ export default class Publish extends Component {
     } else {
       /* Call the function to check if the beach name matches a name in the database */
       console.log("Survey is valid");
+      this.setState({isSubmitModalVisible: false, isLoadingModalVisible: true})
       this.checkIfBeachExists(currentSurvey);
       /* If it returns true, then submit the survey to the database using the beach data stored in the db */
       /* Else, check beaches within a 5 mile radius (Maybe use Connor's haversine formula? */
@@ -349,6 +360,14 @@ export default class Publish extends Component {
     // Then we should validate the form
   }
 
+  renderBeachItem({item}) {
+    return (
+      <Button transparent key={item.n} onPress={()=>{this.onPressBeach(item.n)}}>
+        <Text>{item.n}</Text>
+      </Button>
+    )
+  }
+
   render() {
 
     const { navigation } = this.props;
@@ -386,7 +405,7 @@ export default class Publish extends Component {
              
             </Content>
             <Modal isVisible={this.state.isSubmitModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+              <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Submit {this.state.selectedName}?</Text>
                 <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
                   <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isSubmitModalVisible: false})}>
@@ -412,15 +431,50 @@ export default class Publish extends Component {
             <Modal isVisible={this.state.isBeachModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white'}}>
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Whoops!</Text>
-                <Text style={{padding: 8, fontSize: 15}}>It looks like the beach {this.state.selectedName} is not in our database! We may actually have it stored, just under a different name. Here's a list of the closest beaches based on your survey's coordinates</Text>
-                <Text style={{padding:8, fontSize: 15, fontWeight: 'bold'}}>If you see your beach here, select it by tapping on the name. Otherwise, tap 'No match' so that we can add it to the database for you!</Text>
-                <FlatList data={this.state.beachList} extraData={this.state} renderItem={({item}) => {return <Text>{item.n}</Text>}} />
+                <Text style={{padding: 8, fontSize: 15}}>
+                  It looks like the beach "{this.state.beachName}" is not in our database! We may actually have it stored, just under a different name. 
+                  Here's a list of the closest beaches based on your survey's coordinates.
+                </Text>
+                <Text style={{padding:8, fontSize: 15, fontWeight: 'bold'}}>
+                  If you see your beach here, select it by tapping on the name. 
+                  Otherwise, tap 'No match' so that we can add it to the database for you!
+                </Text>
+                <FlatList 
+                  style={{backgroundColor: 'lightgray', padding: 8}} 
+                  data={this.state.beachList} extraData={this.state} 
+                  renderItem={this.renderBeachItem} 
+                />
                 <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end', marginBottom: 5}}>
                   <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isBeachModalVisible: false})}>
                     <Text>Cancel</Text>
                   </Button>
-                  <Button success style={{alignSelf: 'center'}} onPress={()=>console.log("Nothing yet bro")}>
+                  <Button success style={{alignSelf: 'center'}} onPress={()=>this.onPressBeach(this.state.beachName)}>
                     <Text>No match</Text>
+                  </Button>
+                </View>
+              </View>
+            </Modal>
+            <Modal isVisible={this.state.isLoadingModalVisible}>
+              <View style={{alignSelf: 'center', width: '90%', height: '20%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'space-around', flexDirection:'row'}}>
+                <ActivityIndicator size="large" color="#0000ff" />
+                <Text style={{fontSize: 17}}>Loading ...</Text>
+              </View>
+            </Modal>
+            <Modal isVisible={this.state.isConfirmModalVisible}>
+              <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
+                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
+                  {
+                    this.state.match ? 
+                      `Submit under beach \"${this.state.confirmBeach}\"?` :
+                      `Create a new beach \"${this.state.confirmBeach}\"?`
+                  }
+                  </Text>
+                <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
+                  <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isConfirmModalVisible: false})}>
+                    <Text>No</Text>
+                  </Button>
+                  <Button success style={{alignSelf: 'center'}} onPress={() => console.log("Submitted!")}>
+                    <Text>Yes</Text>
                   </Button>
                 </View>
               </View>
