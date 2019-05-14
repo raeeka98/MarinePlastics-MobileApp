@@ -44,7 +44,6 @@ export default class PublishContainer extends Component {
   }
 
 
-
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
 
   addSurvey = (data) => {
@@ -68,7 +67,7 @@ export default class PublishContainer extends Component {
 
   publishSurvey = () => {
       const { surveys } = this.state;
-
+      
   }
 
   toScanner = () => {
