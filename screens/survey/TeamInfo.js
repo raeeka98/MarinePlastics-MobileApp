@@ -141,15 +141,16 @@ export default class TeamInfo extends Component {
                     <View style={styles.inputDouble}>
                         
                         <Text>Date</Text>
-                        <Item regular>
-                            <DatePicker 
-                                style={this.props.invalidFields.includes('cleanupDate') ? 
+                        <Item regular style={this.props.invalidFields.includes('cleanupDate') ? 
                                         { 
-                                            borderWidth: 2, 
+                                            borderWidth: 4, 
                                             borderColor: 'red',
-                                            height: '100%', 
                                             textAlign: 'center'
                                         } : 
+                                        {}
+                                      }>
+                            <DatePicker 
+                                style={
                                         {
                                             height: '100%', 
                                             textAlign: 'center'

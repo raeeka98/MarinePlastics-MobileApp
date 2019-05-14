@@ -458,9 +458,8 @@ export default class SurveyContainer extends Component {
 
     onPressVerify = () => {
         let invalidArray = this.verifyModal();
-        if(invalidArray.length < 0){
+        if(invalidArray.length > 0){
             /* Let the user know that they ain't done yet */
-            console.log(invalidArray)
             this.setState({invalidFields: invalidArray, isModalVisible: false, isValidVisible: true})
         } else {
             /* Save the survey, move back to publish */

@@ -51,7 +51,7 @@ class HomePage extends React.Component {
   async openSurvey(){
     this.cancelModal();
     let survey;
-    let survID = this.state.chosenSurvey.surveyName
+    let survID = this.state.chosenSurvey._id
     survey = await surveyDB.getSurvey(survID);
     console.log("SURVEY:")
     console.log(survey);
@@ -198,8 +198,8 @@ class HomePage extends React.Component {
         <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Publish')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Publish A Survey</Text>
         </Button>
-        <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Profile')}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>View Profile</Text>
+        <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
         </Button>
 
         <Modal isVisible={this.state.isModalVisble}>
