@@ -28,7 +28,7 @@ import Example from './screens/Example';
 
 
 const MainNavigator = createStackNavigator(
-  {
+  { 
     Boarding: {screen: BoardingPage},
     Home: {screen: HomePage},
     Login: {screen: LogInPage},
@@ -43,7 +43,7 @@ const MainNavigator = createStackNavigator(
   },
   {
     // First init route is for testing, second init route is for published app
-    initialRouteName: (__DEV__ ? 'Publish' : 'Boarding')
+    initialRouteName: (__DEV__ ? 'Home' : 'Boarding')
 
   }
 );

@@ -97,7 +97,12 @@ export default class SurveyContainer extends Component {
         //survey.
         const nav = this.props.navigation
         this.state = { 
-            surveyData: nav.getParam('surveyData') ? nav.getParam('surveyData') : {},
+            surveyData: nav.getParam('surveyData') ? nav.getParam('surveyData') : {
+                windDir: 'n',
+                tideTypeA: 'high',
+                tideTypeB: 'high',
+                slope: 'winter'
+            },
             SRSData: nav.getParam('SRSData') ? nav.getParam('SRSData') :  {},
             ASData: nav.getParam('ASData') ? nav.getParam('ASData') : {},
             MicroData: nav.getParam('MicroData') ? nav.getParam('MicroData') : {},
@@ -451,16 +456,38 @@ export default class SurveyContainer extends Component {
         this.props.navigation.navigate('Home');
     }
 
-    onPressSubmit = () => {
+    onPressVerify = () => {
         let invalidArray = this.verifyModal();
-        if(invalidArray.length > 0){
+        if(invalidArray.length < 0){
             /* Let the user know that they ain't done yet */
+            console.log(invalidArray)
             this.setState({invalidFields: invalidArray, isModalVisible: false, isValidVisible: true})
         } else {
             /* Save the survey, move back to publish */
             let survID = this.props.navigation.getParam('inProgress');
+            const {surveyName, surveyData, SRSData, ASData, MicroData} = this.state;
+            const survStoreData = {
+                surveyName, 
+                surveyData,
+                SRSData,
+                ASData,
+                MicroData,
+                /* Possibly store user credentials here too */
+            }
             surveyDB.updateSurvey(survID, survStoreData);
-            this.props.navigation.navigate('Publish',{})
+            /* We need to indicate that we're coming back from the validation process so that we can 
+               perform the following:
+                - Query the website's database to see if the beach already exists
+            */
+            this.props.navigation.navigate('Publish', {
+                isVerified: true,
+                verifyID: survID
+            })/*
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'Publish', params: {isVerified: true, verifyID: survID} })],
+              });
+              this.props.navigation.dispatch(resetAction);*/
         }
     }
 
@@ -469,7 +496,7 @@ export default class SurveyContainer extends Component {
         const survey = this.state;
         let invalid = [];
         const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
-            'cleanUpTime', 'cleanUpDate', 'beachName', 'cmpsDir', 'riverName',
+            'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
             'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
             'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
             'latitude', 'longitude'
@@ -525,8 +552,8 @@ export default class SurveyContainer extends Component {
                             </Button>
                             {
                                 this.state.fromPublish ? 
-                                    <Button success style={{justifyContent: 'center', width: 100}} onPress={this.onPressSubmit}>
-                                        <Text style={{color: 'white', padding: 8}}>Submit</Text>
+                                    <Button success style={{justifyContent: 'center', width: 100}} onPress={this.onPressVerify}>
+                                        <Text style={{color: 'white', padding: 8}}>Verify</Text>
                                     </Button> :
                                     <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
                                         <Text style={{color: 'white', padding: 8}}>Save</Text>

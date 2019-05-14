@@ -120,7 +120,7 @@ class HomePage extends React.Component {
                   position: 'absolute',
                   marginTop: '1%',
                   width:"50%",
-                  textAlign:'right',
+                  textAlign:'center',
                   paddingRight: '5%',
                   fontSize: 16,
                   fontWeight:'bold'
@@ -155,9 +155,11 @@ class HomePage extends React.Component {
                   fontStyle: 'italic'}}
               >
                 {
-                  (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
-                  + inProgress[i].surveyData.cleanupDate.getDate() + "/"
-                  + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100)
+                  inProgress[i].surveyData.cleanupDate ? 
+                    (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
+                    + inProgress[i].surveyData.cleanupDate.getDate() + "/"
+                    + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100) :
+                    "No Date"
                 }
               </Text>
               <Icon type='Entypo' name='dots-three-horizontal'/>

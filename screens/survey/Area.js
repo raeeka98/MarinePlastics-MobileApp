@@ -568,6 +568,7 @@ class WindInfo extends Component {
                             placeholderStyle={{ color: "#bfc6ea" }}
                             style={{width: undefined}}
                             selectedValue={this.state.surveyData.windDir}
+                            
                             onValueChange={this.props.onDropdownChange.bind(this, 'windDir' )}
                         >
                             <Picker.Item label="North" value="n" />

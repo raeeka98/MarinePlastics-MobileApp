@@ -23,13 +23,13 @@ import {
   CardItem,
 } from 'native-base';
 import Modal from 'react-native-modal'
+import axios from 'axios'
 
 import ImportView from './ImportView';
 import surveyDB from '../../storage/mongoStorage'
 
 // props: "surveys", removeSurvey()
 function LoadedSurveys(props) {
-  console.log(props.surveys) 
     let i = 0;
     const items = props.surveys.map(survey => {
         const item = <ImportView 
@@ -52,12 +52,13 @@ function LoadedSurveys(props) {
 export default class Publish extends Component {
   constructor(props) {
     super(props);
+    const nav = this.props.navigation;
     this.state = {
       loading : true,
       surveys : [],
       selectedName: '',
       selectedIndex: 0,
-      isSubmitModalVisible: false
+      isSubmitModalVisible: false,
     };
 
     // bind methods
@@ -77,15 +78,56 @@ export default class Publish extends Component {
 
   async loadSurveys() {
     let responseSurveys = await surveyDB.get();
-    console.log("Response = " + responseSurveys)
     this.setState({surveys: responseSurveys})
   }
 
-  componentWillMount() {
+  async checkIfBeachExists(survey){
+    console.log("Hello")
+    const beachName = survey.surveyData.beachName;
+    //Use the beach name to query the server's database
+    const exists = await axios.get('https://marineplastics.herokuapp.com/beaches/search', {params: {q: beachName}})
+      .then(res => {
+        console.log(res.data)
+        if(res.data.length === 0){
+          return false;
+        } else {
+          console.log(res.data) 
+          return true;
+        }
+      })
+      .catch(err => {
+        console.log(`EERROORRR\n${err}`);
+        return false;
+      })
+    if(exists){
+      //If its true, then complete the submission!
+      console.log(`The beach ${beachName} exists in the database`);
+    } else {
+      //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
+      console.log(`The beach ${beachName} does not exist`);
+    }
+  }
+
+  async componentWillReceiveProps(props) {
+    if(props.navigation.getParam('isVerified')){
+      /* If we're coming from the edit, we should call the function that checks
+       * to see if the given survey's beach name exists in the survey
+       */
+      console.log("Verified")
+      let verifyID = props.navigation.getParam('verifyID');
+      const survey = await surveyDB.getSurvey(verifyID)
+      console.log(survey);
+      this.checkIfBeachExists(survey); 
+    }
+  }
+
+  async componentWillMount() {
+    console.log("Not verified")
     this.loadSurveys()
   }
 
   isSurveyValid(){
+    //We should also check to see if the user is logged in
     let {selectedIndex} = this.state;
     let survey = this.state.surveys[selectedIndex]
     console.log("-----SURVEY-----")
@@ -93,7 +135,7 @@ export default class Publish extends Component {
     let invalid = [];
 
     const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
-        'cleanUpTime', 'cleanUpDate', 'beachName', 'cmpsDir', 'riverName',
+        'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
         'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
         'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
         'latitude', 'longitude'
@@ -136,10 +178,12 @@ export default class Publish extends Component {
         MicroData: currentSurvey.MicroData,
         inProgress: currentSurvey._id,
         invalidArray: invalidArray,
-        fromPublish: true,
+        fromPublish: true
       })
     } else {
       /* Call the function to check if the beach name matches a name in the database */
+      console.log("Survey is valid");
+      this.checkIfBeachExists(currentSurvey);
       /* If it returns true, then submit the survey to the database using the beach data stored in the db */
       /* Else, check beaches within a 5 mile radius (Maybe use Connor's haversine formula? */
         /* If the user selects a beach on there (ie the name of the beach they intended to submit under), submit using that data */
@@ -288,7 +332,6 @@ export default class Publish extends Component {
 
     const { navigation } = this.props;
     let surveys = this.state.surveys
-    console.log(surveys)
     if(this.state.loading) {
       return  <ActivityIndicator size="large" color="#0000ff" />;
     }

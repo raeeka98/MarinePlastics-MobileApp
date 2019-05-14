@@ -129,6 +129,7 @@ export default class TeamInfo extends Component {
                     <Text style={styles.inputSingle}>Organization Location</Text>
                     <Item regular>
                         <Input
+                            style={this.props.invalidFields.includes('orgLoc') ? {borderWidth: 2, borderColor: 'red'} : {}}
                             ref='orgLoc'
                             onChange={this.props.updateSurveyState.bind(this, 'orgLoc')}
                             value={this.state.surveyData.orgLoc}
