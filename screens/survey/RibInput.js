@@ -135,9 +135,9 @@ export default class RibInput extends Component {
                     <View style={[styles.inputSingleContainer]}>
                         <Button
                             style={{ alignSelf: 'center', justifyContent: 'center' }}
-                            onPress={() => {
-                                this.encodeToText();
-                            }}>
+                            onPress={
+                                this.encodeToText
+                            }>
                             <Text style={{ color: 'black' }}>Generate QR Code</Text>
                         </Button>
                     </View>
@@ -194,34 +194,51 @@ export default class RibInput extends Component {
 
     //Encode 
     encodeToText = () => {
-        var encoded = "";
+        var binstring = "";
+        var ribStart = this.state.surveyData[`rib${this.state.ribNumber}Start`];
+        var ribLength = this.state.surveyData[`rib${this.state.ribNumber}Length`];
+        console.log(ribStart, ribLength);
+        console.log(ribStart.toString(2));
+        console.log(ribLength.toString(2));
 
         //Encode ribStart
-        if(!String.fromCharCode(this.state.ribStart)) 
-            encoded += String.fromCharCode(1+this.state.ribStart);
-        else //If ribStart is undefined
-            encoded += String.fromCharCode(1);
-
+        if(ribStart === undefined) ribStart = 0;
+        binstring += ("00000000" + (Number(ribStart).toString(2))).slice(-8);
         //Encode ribLength
-        if(!String.fromCharCode(this.state.ribLength)) 
-            encoded += String.fromCharCode(1+this.state.ribLength);
-        else //If ribLength is undefined
-            encoded += String.fromCharCode(1);
-            
+        if(ribLength === undefined) ribLength = 0;
+        binstring += ("00000000" + (Number(ribLength).toString(2))).slice(-8);
+
         //Encode fresh and weathered for each category
-        for (var key in debrisInfoID) {
-            var add1 = String.fromCharCode(1+this.state.SRSData[`${debrisInfoID[key]}__fresh__${this.state.ribNumber}`]);
-            var add2 = String.fromCharCode(1+this.state.SRSData[`${debrisInfoID[key]}__weathered__${this.state.ribNumber}`]);
-            if(!add1)
-                encoded += add1;
-            else 
-                encoded += String.fromCharCode(1);
-            if(!add2)
-                encoded += add1;
-            else 
-                encoded += String.fromCharCode(1);
+        for(var key in debrisInfoID) {
+            var fresh = this.state.SRSData[`${debrisInfoID[key]}__fresh__${this.state.ribNumber}`];
+            var weathered = this.state.SRSData[`${debrisInfoID[key]}__weathered__${this.state.ribNumber}`];
+
+            //encode fresh and weathered debris to binary and add to the binary string
+            if (fresh === undefined) fresh = 0;
+            binstring += ("00000000" + Number(fresh).toString(2)).slice(-8);
+            if (weathered === undefined) weathered = 0;
+            binstring += ("00000000" + Number(weathered).toString(2)).slice(-8);
         }
+        console.log(binstring);
+        var encoded = this.binToEncode(binstring);
         console.log(encoded);
-        this.state.encodingText = encoded;
+        return encoded;
     }
+
+    //Binary to Encoded (using an encoding style similar to base64)
+    binToEncode(binstring) {
+        var encoded = "";
+        while (binstring.length >= 6) {
+            var substr = binstring.substr(0, 6);
+            binstring = binstring.substr(6, binstring.length - 6);
+            var dec = parseInt(substr, 2);
+            var charrep = String.fromCharCode(48 + dec);
+            encoded += charrep;
+        }
+        if (binstring.length != 0) {
+            encoded += '!';
+            encoded += binstring;
+        }
+        return encoded;
+     }
 }
