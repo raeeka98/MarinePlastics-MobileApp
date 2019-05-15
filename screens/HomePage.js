@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import {Icon, Footer, Button} from 'native-base'
+import {Icon, Footer, Button, Toast} from 'native-base'
 import Modal from 'react-native-modal'
 
 import surveyDB from '../storage/mongoStorage'
@@ -52,28 +52,64 @@ class HomePage extends React.Component {
     this.setState({isDeleteVisible: false})
   }
 
+  // grabs survey data by name
+  async getSurveyData(survName) {
+      await surveyDB.find({surveyName: survName}, (err, res) => {
+        if(err){
+          console.log(err);
+          return "EMPTY";
+        }
+        return res[0];
+      });
+  }
+
   async openSurvey(){
     this.cancelModal();
-    let survey;
-    let survName = this.state.chosenSurvey.surveyName
-    await surveyDB.find({surveyName: survName}, (err, res) => {
-      if(err){
-        console.log(err);
-        return
-      }
-      survey = res[0];
-    });
-    console.log(survey._id);
-    this.props.navigation.navigate('SurveyContainer',
-      {
-        surveyData: survey.surveyData,
-        surveyName: survName,
-        SRSData: survey.SRSData,
-        ASData: survey.ASData,
-        MicroData: survey.MicroData,
-        inProgress: survey._id,
-      }
-    );
+    let survName = this.state.chosenSurvey.surveyName;
+    let survey = this.getSurveyData(survName);
+    if(survey !== "EMPTY") {
+      this.props.navigation.navigate('SurveyContainer',
+        {
+          surveyData: survey.surveyData,
+          surveyName: survName,
+          SRSData: survey.SRSData,
+          ASData: survey.ASData,
+          MicroData: survey.MicroData,
+          inProgress: survey._id,
+        }
+      );
+    } else {
+      Toast.show({
+          text: "Not a valid survey!",
+          buttonText: 'Okay'
+      });
+    }
+  }
+
+  async navToPublish() {
+    this.cancelModal();
+    let survName = this.state.chosenSurvey.surveyName;
+    let survey = this.getSurveyData(survName);
+    if(survey !== "EMPTY") {
+      this.props.navigation.navigate('PublishContainer',
+        {
+          initSurvey : {
+            surveyData: survey.surveyData,
+            surveyName: survName,
+            SRSData: survey.SRSData,
+            ASData: survey.ASData,
+            MicroData: survey.MicroData,
+            inProgress: survey._id,
+          }
+        }
+      );
+    } else {
+      Toast.show({
+          text: "Not a valid survey!",
+          buttonText: 'Okay'
+      });
+    }
+
   }
 
   endModals(){
@@ -106,6 +142,8 @@ class HomePage extends React.Component {
   showSurveyModal(chosenSurvey){
     this.setState({isModalVisble: true, chosenSurvey: chosenSurvey})
   }
+
+
 
 
 
