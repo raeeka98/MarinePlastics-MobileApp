@@ -423,24 +423,9 @@ export default class SurveyContainer extends Component {
         if(this.props.navigation.getParam('inProgress') !== undefined){
             /* This survey just needs an update */
             let survID = this.props.navigation.getParam('inProgress');
-            surveyDB.update({_id: survID}, survStoreData, {}, (err, res) => {
-                if(err){
-                    alert(`Error update the survey: ${err}`)
-                    return;
-                }
-                console.log("Document updated!")
-                return;
-            })
+            await surveyDB.updateSurvey(survID, survStoreData);
         } else {
-            surveyDB.insert(survStoreData, (err, newDoc) => {
-                if(err){
-                    alert(`Error saving the document: ${err}`)
-                    return;
-                }
-                console.log(`New document created!`)
-                return;
-            })
-            
+            await surveyDB.addSurvey(survStoreData)
         }
         /* Navigate back to the home page */
         await this.setState({isModalVisible:false, surveyName: ''})
