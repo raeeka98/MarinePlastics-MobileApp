@@ -30,10 +30,18 @@ class LogInPage extends React.Component {
   _onlogout = () => {
     console.log('Setting AccessToken to Null for LogOut');
     if (Platform.OS === 'android'){
-      this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
+      console.log('Logging out of Android');
+      auth0.webAuth
+        .logout({returnTo: `${credentials.domain}/v2/logout`})
+        .then(success => {
+          this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
+      })
+      .catch(error => console.log(error));
+      //this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
       //this._storeAccessToken();
     }
     else {
+      console.log('Logging out');
       auth0.webAuth
         .clearSession({})
         .then(success => {
@@ -172,6 +180,9 @@ class LogInPage extends React.Component {
         <Button 
           onPress={this._onlogout}
           title={'log out'}/>
+        <Text style={styles.container}>
+          {loggedIn ? 'Welcome back '+this.state.email : 'You are now a Guest'}
+        </Text>
       </View>
     );
   }
