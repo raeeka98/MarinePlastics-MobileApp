@@ -226,10 +226,16 @@ class HomePage extends React.Component {
               <Button light  style={{justifyContent: 'center', width: 100}}onPress={this.openSurvey} title='Edit'>
                 <Text>Edit</Text>
               </Button>
-              <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.onPressDeleteSurvey} title='Edit'>
+              <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.onPressDeleteSurvey} title='Delete'>
                 <Text>Delete</Text>
               </Button>
             </View>
+            <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              <Button primary style={{justifyContent: 'center',width: 100}} onPress={this.navToPublish}>
+                <Text>Publish</Text>
+              </Button>
+            </View>
+
           </View>
         </Modal>
         <Modal isVisible={this.state.isDeleteVisible}>
