@@ -30,14 +30,9 @@ class HomePage extends React.Component {
   }
 
   async retrieveInProgress() {
-    surveyDB.find({}).projection({_id: 1, surveyName: 1, surveyData: 1}).exec((err, res) => {
-      if(err){
-        alert(err);
-        return
-      }
+    let res = await surveyDB.getNameDate()
       console.log(res)
       this.setState({inProgress: res})
-    })
   }
 
   componentWillMount(){
@@ -55,14 +50,8 @@ class HomePage extends React.Component {
   async openSurvey(){
     this.cancelModal();
     let survey;
-    let survName = this.state.chosenSurvey.surveyName
-    await surveyDB.find({surveyName: survName}, (err, res) => {
-      if(err){
-        console.log(err);
-        return
-      }
-      survey = res[0];
-    });
+    let survID = this.state.chosenSurvey._id
+    survey = await surveyDB.getSurvey(survID);
     console.log(survey._id);
     this.props.navigation.navigate('SurveyContainer',
       {
@@ -85,13 +74,7 @@ class HomePage extends React.Component {
   }
 
   async deleteSurvey(){
-    await surveyDB.remove({_id: this.state.chosenSurvey._id}, {}, (err, res) => {
-      if(err){
-        alert(err)
-        return
-      }
-      console.log(`Removed ${res} successfully.`)
-    })
+    await surveyDB.deleteSurvey(this.state.chosenSurvey._id);
 
     this.endModals();
     this.retrieveInProgress();
