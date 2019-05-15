@@ -369,7 +369,7 @@ export default class Publish extends Component {
   }
 
   render() {
-
+    
     const { navigation } = this.props;
     let surveys = this.state.surveys
     if(this.state.loading) {
