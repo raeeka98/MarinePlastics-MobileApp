@@ -88,9 +88,24 @@ export default class Publish extends Component {
 
   async openBeachModal(beachName) {
     // Here's where we'll do a special query for the beaches that reside in a certain location
-    await axios.get('https://marineplastics.herokuapp.com/beaches')
+    await axios.get('http://169.233.235.63:3001/beaches/search/closest', 
+      {
+        params: {
+          coords: {
+            lat: 36.971528,
+            lon: -121.951204
+          }
+        }
+      }
+    )
       .then(res => {
+        console.log(res.data)
         this.setState({beachName: beachName, isBeachModalVisible: true, isLoadingModalVisible: false, beachList: res.data})
+      })
+      .catch(err => {
+        console.log("COORDS ERROR")
+        console.log(err);
+        this.setState({isLoadingModalVisible: false});
       })
     
   }
