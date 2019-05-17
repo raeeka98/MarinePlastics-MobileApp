@@ -220,6 +220,22 @@ export default class SurveyContainer extends Component {
             this.setState({showTime: false})
     }
 
+    updateSurveyLocation = () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState(prevState => {
+                    prevState.surveyData.latitude = position.coords.latitude;
+                    prevState.surveyData.longitude = position.coords.longitude;
+                    prevState.error = null;
+                    return prevState;
+
+                })
+            },
+            (error) => this.setState({ error: error.message }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        )
+    }
+
     /**
      * A slightly different function has to be done here; e itself is the time that is being
      * updated, so we use it as the value to update the key
@@ -362,6 +378,7 @@ export default class SurveyContainer extends Component {
                         onClickFinish={this.onClickFinish}
                         fromPublish={this.state.fromPublish}
                         invalidFields={this.state.invalidFields}
+                        updateSurveyLocation={this.updateSurveyLocation}
                     />
                 )
             case "srs" :

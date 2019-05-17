@@ -85,6 +85,7 @@ export default class Area extends Component{
                             updateSurveyState={this.props.updateSurveyState}
                             invalidFields={this.props.invalidFields} 
                             checkedbox={this.props.checkedbox} 
+                            updateSurveyLocation={this.props.updateSurveyLocation}
                         />  
             },
             {
@@ -180,7 +181,10 @@ class BeachInfo extends Component {
                         />
                     </Item>
 
-                    <Text style={styles.inputSingle}>Latitude (Link to GPS stuff here)</Text>
+                    <Button light full style={{padding: 8, marginTop: 8}}onPress={this.props.updateSurveyLocation}>
+                        <Text>Get Coordinates</Text>
+                    </Button>
+                    <Text style={styles.inputSingle}>Latitude</Text>
                     <Item regular>
                         <TextInput
                             ref = 'latitude' 
@@ -190,10 +194,10 @@ class BeachInfo extends Component {
                                     {borderColor: 'red', borderWidth: 2} : {}
                             )]}  
                             onChange={this.props.updateSurveyState.bind(this, 'latitude')}
-                            value={this.state.surveyData.latitude}
+                            value={this.state.surveyData.latitude ? this.state.surveyData.latitude + "" : ""}
                         />
                     </Item>
-                    <Text style={styles.inputSingle}>Longitude (Link to GPS stuff here)</Text>
+                    <Text style={styles.inputSingle}>Longitude</Text>
                     <Item regular>
                         <TextInput
                             ref = 'longitude' 
@@ -203,7 +207,7 @@ class BeachInfo extends Component {
                                     {borderColor: 'red', borderWidth: 2} : {}
                             )]} 
                             onChange={this.props.updateSurveyState.bind(this, 'longitude')}
-                            value={this.state.surveyData.longitude}
+                            value={this.state.surveyData.longitude ? this.state.surveyData.longitude + "" : ""}
                         />
                     </Item>
                 </View>
