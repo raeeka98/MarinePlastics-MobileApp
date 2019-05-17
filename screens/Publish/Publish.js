@@ -88,7 +88,7 @@ export default class Publish extends Component {
 
   async openBeachModal(beachName) {
     // Here's where we'll do a special query for the beaches that reside in a certain location
-    await axios.get('http://169.233.235.63:3001/beaches/search/closest', 
+    await axios.get('http://10.0.0.79:3001/beaches/search/closest', 
       {
         params: {
           coords: {
@@ -110,12 +110,14 @@ export default class Publish extends Component {
     
   }
 
-  onPressBeach(beachName) {
-    this.setState({isConfirmModalVisible: true, match: true, confirmBeach: beachName});
+  onPressBeach(beachName, beachID) {
+
+    this.setState({isConfirmModalVisible: true, match: beachID, confirmBeach: beachName});
   }
 
   onPressNoMatch(beachName) {
-    this.setState({isConfirmModalVisible: true, match: false, confirmBeach: beachName})
+
+    this.setState({isConfirmModalVisible: true, match: null, confirmBeach: beachName})
   }
 
   async checkIfBeachExists(survey){
@@ -310,19 +312,20 @@ export default class Publish extends Component {
     })
   }
 
-  convertSurvey(index) {
+  async convertSurvey(index) {
     console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
     let currentSurvey = this.state.surveys[index];
     let surveyData = currentSurvey.surveyData;
-    
+    let userID = await AsyncStorage.getItem('accessToken');
+    let userEmail = await AsyncStorage.getItem('email');
     const form = {
       survData: {
         user: {
           f: surveyData.userFirst ? surveyData.userFirst : "",
           l: surveyData.userLast ? surveyData.userLast : "",
         },
-        email: /* Email from the preserved data that Diego has */"",
-        userID: /* AsyncStorage call to get the sub of the user ID */ "",
+        email: userEmail,
+        userID: userID,
         org: surveyData.orgName ? surveyData.orgName : "",
         reason: {
           debris: surveyData.locationChoiceDebris ? surveyData.locationChoiceDebris : undefined,
@@ -361,8 +364,8 @@ export default class Publish extends Component {
         SRSDebris: this.calculateTotals(index, 'SRS'),
         ASDebris: this.calculateTotals(index, 'AS')
       },
-      bID: /* This may need to be figured out in the backend */ 123,
-      beachData: {
+      bID: this.state.match ? this.state.match : undefined,
+      beachData: this.state.match ? undefined : {
         n: surveyData.beachName,
         nroName: surveyData.riverName,
         lat: /* Something given */ 123,
@@ -370,14 +373,30 @@ export default class Publish extends Component {
         nroDist: surveyData.riverDistance
       }
     }
-    console.log(form);
-    this.setState({formToSubmit: form, isSubmitModalVisible: true, selectedName: currentSurvey.surveyName});
+    return form;
     // Then we should validate the form
+  }
+
+  finalBeachSubmit() {
+    const formToSubmit = this.convertSurvey(this.state.selectedIndex);
+    if(this.state.match){
+      //If there is a beach ID, then we can just sumbit the survey under that beach
+      axios.post('https://marineplastics.herokuapp.com/surveys', formToSubmit)
+        .then(res => {
+          if(res.data.survID){
+            this.setState({
+              isConfirmModalVisible: false
+            })
+            console.log("Survey Submitted!!!")
+          }
+        })
+    }
+
   }
 
   renderBeachItem({item}) {
     return (
-      <Button transparent key={item.n} onPress={()=>{this.onPressBeach(item.n)}}>
+      <Button transparent key={item.n} onPress={()=>{this.onPressBeach(item.n, item._id)}}>
         <Text>{item.n}</Text>
       </Button>
     )
@@ -455,7 +474,7 @@ export default class Publish extends Component {
                   Otherwise, tap 'No match' so that we can add it to the database for you!
                 </Text>
                 <FlatList 
-                  style={{backgroundColor: 'lightgray', padding: 8}} 
+                  style={{backgroundColor: 'ghostwhite', padding: 8}} 
                   data={this.state.beachList} extraData={this.state} 
                   renderItem={this.renderBeachItem} 
                 />
@@ -488,7 +507,7 @@ export default class Publish extends Component {
                   <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isConfirmModalVisible: false})}>
                     <Text>No</Text>
                   </Button>
-                  <Button success style={{alignSelf: 'center'}} onPress={() => console.log("Submitted!")}>
+                  <Button success style={{alignSelf: 'center'}} onPress={this.finalBeachSubmit}>
                     <Text>Yes</Text>
                   </Button>
                 </View>
