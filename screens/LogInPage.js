@@ -37,6 +37,12 @@ class LogInPage extends React.Component {
           error => console.log(error));
       */
 
+      /*
+      await AuthSession.dismiss().then(success => {
+        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
+          error => console.log(error));
+      */
+
       Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
         this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
           error => console.log(error));
@@ -183,7 +189,7 @@ class LogInPage extends React.Component {
       <View style={styles.container}>
         <Text style={styles.header}>Log in with Auth0</Text>
         <Text>
-          You are {loggedIn ? '' : 'not'} logged in.
+          You are {loggedIn ? '' : 'not '}logged in.
         </Text>
         <Button
           //title = {loggedIn ? 'log out' : 'log in'}/>
