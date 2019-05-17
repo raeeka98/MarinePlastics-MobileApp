@@ -62,6 +62,7 @@ export default class Publish extends Component {
       isSubmitModalVisible: false,
       isLoginModalVisible: false,
       isLoadingModalVisible: false,
+      isFinishedVisible: false
     };
 
     // bind methods
@@ -71,6 +72,7 @@ export default class Publish extends Component {
     this.onPressSubmit = this.onPressSubmit.bind(this);
     this.openBeachModal = this.openBeachModal.bind(this);
     this.renderBeachItem = this.renderBeachItem.bind(this);
+    this.finalBeachSubmit = this.finalBeachSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -88,7 +90,7 @@ export default class Publish extends Component {
 
   async openBeachModal(beachName) {
     // Here's where we'll do a special query for the beaches that reside in a certain location
-    await axios.get('http://10.0.0.79:3001/beaches/search/closest', 
+    await axios.get('http://169.233.235.63:3001/beaches/search/closest', 
       {
         params: {
           coords: {
@@ -131,6 +133,7 @@ export default class Publish extends Component {
           return false;
         } else {
           console.log(res.data) 
+          this.setState({match: res.data[0]._id})
           return true;
         }
       })
@@ -142,6 +145,7 @@ export default class Publish extends Component {
       //If its true, then complete the submission!
       console.log(`The beach ${beachName} exists in the database`);
       //Here's where we'll submit the survey to the database
+      this.setState({isConfirmModalVisible: true, isLoadingModalVisible: false, confirmBeach: beachName})
     } else {
       //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
       console.log(`The beach ${beachName} does not exist`);
@@ -190,7 +194,7 @@ export default class Publish extends Component {
     for(const id in requiredIDs) {
       if(survey.surveyData[requiredIDs[id]] === undefined) {
         invalid.push(requiredIDs[id]);
-      }
+      } 
     }
 
     if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
@@ -312,12 +316,21 @@ export default class Publish extends Component {
     })
   }
 
+  convertTimeString(time){
+    let timeString = "";
+    timeString = time.toString().split(/ /)[4].substring(0, 5);
+    console.log(timeString)
+    return timeString;
+  }
+
   async convertSurvey(index) {
     console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
     let currentSurvey = this.state.surveys[index];
     let surveyData = currentSurvey.surveyData;
     let userID = await AsyncStorage.getItem('accessToken');
+    userID = userID.split("|")[1];
     let userEmail = await AsyncStorage.getItem('email');
+    console.log("Got my shit back cuz");
     const form = {
       survData: {
         user: {
@@ -344,12 +357,12 @@ export default class Publish extends Component {
         cmpsDir: surveyData.cmpsDir ? surveyData.cmpsDir : 0,
         lastTide : {
           type: surveyData.tideTypeB ? surveyData.tideTypeB : "",
-          time: surveyData.tideTimeB ? surveyData.tideTimeB : "",
+          time: surveyData.tideTimeB ? this.convertTimeString(surveyData.tideTimeB) : "",
           height: surveyData.tideHeightB ? surveyData.tideHeightB: ""
         },
         nextTide: {
           type: surveyData.tideTypeA ? surveyData.tideTypeA : "",
-          time: surveyData.tideTimeA ? surveyData.tideTimeA : "",
+          time: surveyData.tideTimeA ? this.convertTimeString(surveyData.tideTimeA) : "",
           height: surveyData.tideHeightA ? surveyData.tideHeightA : ""
         },
         wind: {
@@ -362,35 +375,39 @@ export default class Publish extends Component {
           other: surveyData.usageOther ? surveyData.usageOther : undefined
         } ,
         SRSDebris: this.calculateTotals(index, 'SRS'),
-        ASDebris: this.calculateTotals(index, 'AS')
+        ASDebris: this.calculateTotals(index, 'AS'),
+        numOfP: 0
       },
       bID: this.state.match ? this.state.match : undefined,
       beachData: this.state.match ? undefined : {
-        n: surveyData.beachName,
-        nroName: surveyData.riverName,
-        lat: /* Something given */ 123,
-        lon: 123,
+        n: surveyData.beachName.replace(/\s/g, "_"),
+        nroName: surveyData.riverName.replace(/\s/g, "_"),
+        lat: /* Something given */ 80,
+        lon: 69,
         nroDist: surveyData.riverDistance
       }
     }
     return form;
-    // Then we should validate the form
   }
 
-  finalBeachSubmit() {
-    const formToSubmit = this.convertSurvey(this.state.selectedIndex);
-    if(this.state.match){
+  async finalBeachSubmit() {
+    const formToSubmit = await this.convertSurvey(this.state.selectedIndex);
+    console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
-      axios.post('https://marineplastics.herokuapp.com/surveys', formToSubmit)
-        .then(res => {
-          if(res.data.survID){
-            this.setState({
-              isConfirmModalVisible: false
-            })
-            console.log("Survey Submitted!!!")
-          }
-        })
-    }
+    axios.post('http://169.233.235.63:3001/beaches/surveys', formToSubmit)
+      .then(res => {
+        if(res.data.survID){
+          this.setState({
+            isConfirmModalVisible: false
+          })
+          this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
+        }
+      })
+      .catch(err => {
+        this.setState({isConfirmModalVisible: false})
+        console.log("Error submitting form:")
+        console.log(err)
+      })
 
   }
 
@@ -512,6 +529,15 @@ export default class Publish extends Component {
                   </Button>
                 </View>
               </View>
+            </Modal>
+            <Modal isVisible={this.state.isFinishedVisible}>
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '90%', height: "20%", backgroundColor: 'white'}}>
+                  <Text style={{alignSelf: 'center', textAlign: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Your survey has been successfully submitted!</Text>
+                  <Button style={{alignSelf: 'center'}}light onPress={()=>this.setState({isFinishedVisible: false})}>
+                    <Text>OK</Text>
+                  </Button>
+              </View>
+
             </Modal>
         </Container>
       );
