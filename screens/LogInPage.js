@@ -27,13 +27,20 @@ class LogInPage extends React.Component {
   }
 
   // Log out by setting the accessToken to null then storing that null to AsyncStorage.
-  _onlogout = () => {
+  _onlogout = async () => {
     console.log('Setting AccessToken to Null for Logout');
     if (Platform.OS === 'android'){
       console.log('Logging out of Android');
+      /*
+      await AuthSession.startAsync(`${credentials.domain}/v2/logout`).then(success => {
+        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
+          error => console.log(error));
+      */
+
       Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
         this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
           error => console.log(error));
+
       /*
       auth0.webAuth
         .logout({returnTo: `${credentials.domain}/v2/logout`})
