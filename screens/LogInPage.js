@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, AppRegistry } from 'react-native';
-import { Button, Alert, AsyncStorage, Linking } from 'react-native';
+import { Button, Alert, AsyncStorage, Linking, Image } from 'react-native';
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -23,7 +23,8 @@ class LogInPage extends React.Component {
     super(props);
     //this.state = { accessToken: null };
     //this._retrieveAccessToken();
-    this.state = { accessToken: this._retrieveAccessToken(), email: this._retrieveEmail()};
+    this.state = { accessToken: this._retrieveAccessToken(), email: this._retrieveEmail(),
+        name: this._retrieveNickname(), picture: this._retrievePicture()};
   }
 
   // Log out by setting the accessToken to null then storing that null to AsyncStorage.
@@ -55,7 +56,7 @@ class LogInPage extends React.Component {
       .catch(error => console.log(error));*/
 
       Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
-        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
+        this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
           error => console.log(error));
     }
     else {
@@ -106,7 +107,9 @@ class LogInPage extends React.Component {
     console.log(decoded);
     const { sub } = decoded;
     const { name } = decoded;
-    this.setState({accessToken: sub, email: name}, () => {this._storeAccessToken()});
+    const { nickname } = decoded;
+    const { picture } = decoded;
+    this.setState({accessToken: sub, email: name, name: nickname, picture: picture}, () => {this._storeAccessToken()});
 
     console.log('Storing AccessToken for LogIn');
     //this._storeAccessToken();
@@ -117,6 +120,8 @@ class LogInPage extends React.Component {
     try {
       let value = this.state.accessToken;
       let emailValue = this.state.email;
+      let nameValue = this.state.name;
+      let pictureValue = this.state.picture;
       // If the value we're storing is null then we're erasing the accesstoken.
       if (value === null){
         //console.log('Value is Null on storeAccesToken');
@@ -148,6 +153,34 @@ class LogInPage extends React.Component {
         await AsyncStorage.setItem('email', emailValue);
         console.log('Overwritten');
         console.log('Current email stored: ', await AsyncStorage.getItem('email'));
+      }
+
+      if (nameValue === null){
+        //console.log('Name value is Null on Name');
+        console.log('Clearing Name in AsyncStorage');
+        await AsyncStorage.removeItem('name');
+        console.log('Cleared');
+        console.log('Current name stored: ', await AsyncStorage.getItem('name'));
+      }else {
+        //console.log('Name value is not Null on Name');
+        console.log('Overriding Name in AsyncStorage');
+        await AsyncStorage.setItem('name', pictureValue);
+        console.log('Overwritten');
+        console.log('Current name stored: ', await AsyncStorage.getItem('name'));
+      }
+
+      if (pictureValue === null){
+        //console.log('Picture value is Null on Picture');
+        console.log('Clearing Picture in AsyncStorage');
+        await AsyncStorage.removeItem('picture');
+        console.log('Cleared');
+        console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
+      }else {
+        //console.log('Picture value is not Null on Picture');
+        console.log('Overriding Picture in AsyncStorage');
+        await AsyncStorage.setItem('picture', pictureValue);
+        console.log('Overwritten');
+        console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
       }
     } catch (error) {
       console.log(error);
@@ -182,6 +215,34 @@ class LogInPage extends React.Component {
     }
   };
 
+  // Get the name from AsyncStorage.
+  _retrieveNickname = async() => {
+    try {
+      const nameValue = await AsyncStorage.getItem('name');
+      if (nameValue !== null) {
+        this.setState({ name: nameValue });
+      } else {
+        this.setState({ name: null });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Get the picture from AsyncStorage.
+  _retrievePicture = async() => {
+    try {
+      const pictureValue = await AsyncStorage.getItem('picture');
+      if (pictureValue !== null) {
+        this.setState({ picture: pictureValue });
+      } else {
+        this.setState({ picture: null });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   render() {
     const {navigate} = this.props.navigation;
@@ -200,12 +261,21 @@ class LogInPage extends React.Component {
           onPress={this._onlogout}
           title={'log out'}/>
         <Text style={styles.container}>
-          {loggedIn ? 'Welcome back '+this.state.email : 'You are now a Guest'}
+          {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
         </Text>
+        <Text style={styles.container}>
+          Email: {loggedIn ? this.state.email : ''}
+        </Text>
+        
       </View>
     );
   }
 }
+
+/* <Image
+          style={{width:50, height: 50}}
+          source={loggedIn ? this.state.picture : '/blank-profile-picture.png'}
+        />*/
 
 AppRegistry.registerComponent('LogInPage', () => LogInPage);
 
