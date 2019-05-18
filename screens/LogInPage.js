@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, AppRegistry } from 'react-native';
-import { Button, Alert, AsyncStorage } from 'react-native';
+import { Button, Alert, AsyncStorage, Linking } from 'react-native';
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -27,13 +27,38 @@ class LogInPage extends React.Component {
   }
 
   // Log out by setting the accessToken to null then storing that null to AsyncStorage.
-  _onlogout = () => {
-    console.log('Setting AccessToken to Null for LogOut');
+  _onlogout = async () => {
+    console.log('Setting AccessToken to Null for Logout');
     if (Platform.OS === 'android'){
-      this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
+      console.log('Logging out of Android');
+      /*
+      await AuthSession.startAsync(`${credentials.domain}/v2/logout`).then(success => {
+        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
+          error => console.log(error));
+      */
+
+      /*
+      await AuthSession.dismiss().then(success => {
+        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
+          error => console.log(error));
+      */
+
+      Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
+        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
+          error => console.log(error));
+
+      /*
+      auth0.webAuth
+        .logout({returnTo: `${credentials.domain}/v2/logout`})
+        .then(success => {
+          this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
+      })
+      .catch(error => console.log(error));*/
+      //this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
       //this._storeAccessToken();
     }
     else {
+      console.log('Logging out');
       auth0.webAuth
         .clearSession({})
         .then(success => {
@@ -42,6 +67,7 @@ class LogInPage extends React.Component {
         })
         .catch(error => console.log(error));
     }
+    console.log('Successful Logout');
   };
 
   // Log into Auth0 then store the token to AsyncStorage.
@@ -163,7 +189,7 @@ class LogInPage extends React.Component {
       <View style={styles.container}>
         <Text style={styles.header}>Log in with Auth0</Text>
         <Text>
-          You are {loggedIn ? '' : 'not'} logged in.
+          You are {loggedIn ? '' : 'not '}logged in.
         </Text>
         <Button
           //title = {loggedIn ? 'log out' : 'log in'}/>
@@ -172,6 +198,9 @@ class LogInPage extends React.Component {
         <Button 
           onPress={this._onlogout}
           title={'log out'}/>
+        <Text style={styles.container}>
+          {loggedIn ? 'Welcome back '+this.state.email : 'You are now a Guest'}
+        </Text>
       </View>
     );
   }

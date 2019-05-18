@@ -42,7 +42,7 @@ const MainNavigator = createStackNavigator(
   },
   {
     // First init route is for testing, second init route is for published app
-    initialRouteName: (__DEV__ ? 'Boarding' : 'Boarding')
+    initialRouteName: (__DEV__ ? 'Home' : 'Boarding')
 
   }
 );

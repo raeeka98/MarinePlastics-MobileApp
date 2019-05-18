@@ -31,14 +31,9 @@ class HomePage extends React.Component {
   }
 
   async retrieveInProgress() {
-    surveyDB.find({}).projection({_id: 1, surveyName: 1, surveyData: 1}).exec((err, res) => {
-      if(err){
-        alert(err);
-        return
-      }
-      console.log(res)
-      this.setState({inProgress: res})
-    })
+    let surveys =  await surveyDB.getNameDate();
+    console.log(`Retrieved: ${surveys}`)
+    this.setState({inProgress: surveys})
   }
 
   componentWillMount(){
@@ -53,64 +48,40 @@ class HomePage extends React.Component {
     this.setState({isDeleteVisible: false})
   }
 
-  // grabs survey data by name
-  async getSurveyData(survName) {
-      await surveyDB.find({surveyName: survName}, (err, res) => {
-        if(err){
-          console.log(err);
-          return "EMPTY";
-        }
-        return res[0];
-      });
-  }
 
   async openSurvey(){
     this.cancelModal();
+    let survID = this.state.chosenSurvey._id
     let survName = this.state.chosenSurvey.surveyName;
-    let survey = this.getSurveyData(survName);
-    if(survey !== "EMPTY") {
-      this.props.navigation.navigate('SurveyContainer',
-        {
-          surveyData: survey.surveyData,
-          surveyName: survName,
-          SRSData: survey.SRSData,
-          ASData: survey.ASData,
-          MicroData: survey.MicroData,
-          inProgress: survey._id,
-        }
-      );
-    } else {
-      Toast.show({
-          text: "Not a valid survey!",
-          buttonText: 'Okay'
-      });
-    }
+    let survey = await surveyDB.getSurvey(survID);
+    this.props.navigation.navigate('SurveyContainer',
+      {
+        surveyData: survey.surveyData,
+        surveyName: survName,
+        SRSData: survey.SRSData,
+        ASData: survey.ASData,
+        MicroData: survey.MicroData,
+        inProgress: survey._id,
+      })
   }
 
   async navToPublish() {
     this.cancelModal();
     let survName = this.state.chosenSurvey.surveyName;
-    let survey = this.getSurveyData(survName);
-    if(survey !== "EMPTY") {
-      this.props.navigation.navigate('PublishContainer',
-        {
-          initSurvey : {
-            surveyData: survey.surveyData,
-            surveyName: survName,
-            SRSData: survey.SRSData,
-            ASData: survey.ASData,
-            MicroData: survey.MicroData,
-            inProgress: survey._id,
-          }
-        }
-      );
-    } else {
-      Toast.show({
-          text: "Not a valid survey!",
-          buttonText: 'Okay'
-      });
-    }
-
+    let survey;
+    let survID = this.state.chosenSurvey._id
+    survey = await surveyDB.getSurvey(survID);
+    console.log(survey._id);
+    this.props.navigation.navigate('PublishContainer',
+      {initSurvey : {
+        surveyData: survey.surveyData,
+        surveyName: survName,
+        SRSData: survey.SRSData,
+        ASData: survey.ASData,
+        MicroData: survey.MicroData,
+        inProgress: survey._id,
+      }}
+    );
   }
 
   endModals(){
@@ -122,13 +93,7 @@ class HomePage extends React.Component {
   }
 
   async deleteSurvey(){
-    await surveyDB.remove({_id: this.state.chosenSurvey._id}, {}, (err, res) => {
-      if(err){
-        alert(err)
-        return
-      }
-      console.log(`Removed ${res} successfully.`)
-    })
+        await surveyDB.deleteSurvey(this.state.chosenSurvey._id);
 
     this.endModals();
     this.retrieveInProgress();
