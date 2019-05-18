@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 
 import {
-  Spinner,
   Button,
   Text,
   Container,
@@ -25,33 +24,55 @@ import {
 } from 'native-base';
 import Modal from 'react-native-modal'
 import axios from 'axios'
+
+import ImportView from './ImportView';
+import surveyDB from '../../storage/mongoStorage'
 import { FlatList } from 'react-native-gesture-handler';
 
-import Scanner from "./Scanner";
-import Import from "./Import";
-import surveyDB from '../../storage/mongoStorage'
+// props: "surveys", removeSurvey()
+function LoadedSurveys(props) {
+    let i = 0;
+    const items = props.surveys.map(survey => {
+        const item = <ImportView 
+                        key={i} 
+                        index={i} 
+                        name={survey.surveyName} 
+                        removeSurvey={props.removeSurvey}  
+                        openPublishModal={props.openPublishModal}/>;
+        i++;
+        return item;
+    });
+    return (
+        <Container>
+            {items}
+        </Container>
+    );
+}
 
 
-export default class PublishContainer extends Component {
+export default class Publish extends Component {
   constructor(props) {
     super(props);
+    const nav = this.props.navigation;
     this.state = {
       loading : true,
-      isImporting : true,
-      isScanning : false,
-      isPublished : false,
-      surveys : [
-        (this.props.navigation.getParam('initSurvey') ? this.props.navigation.getParam('initSurvey') : {})
-      ]
+      surveys : [],
+      selectedName: '',
+      selectedIndex: 0,
+      isSubmitModalVisible: false,
+      isLoginModalVisible: false,
+      isLoadingModalVisible: false,
+      isFinishedVisible: false
     };
-     // bind methods
-     this.removeSurvey = this.removeSurvey.bind(this);
-     this.convertSurvey = this.convertSurvey.bind(this);
-     this.openPublishModal = this.openPublishModal.bind(this);
-     this.onPressSubmit = this.onPressSubmit.bind(this);
-     this.openBeachModal = this.openBeachModal.bind(this);
-     this.renderBeachItem = this.renderBeachItem.bind(this);
-     this.finalBeachSubmit = this.finalBeachSubmit.bind(this);
+
+    // bind methods
+    this.removeSurvey = this.removeSurvey.bind(this);
+    this.convertSurvey = this.convertSurvey.bind(this);
+    this.openPublishModal = this.openPublishModal.bind(this);
+    this.onPressSubmit = this.onPressSubmit.bind(this);
+    this.openBeachModal = this.openBeachModal.bind(this);
+    this.renderBeachItem = this.renderBeachItem.bind(this);
+    this.finalBeachSubmit = this.finalBeachSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -60,6 +81,76 @@ export default class PublishContainer extends Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
     this.setState({ loading : false });
+  }
+
+  async loadSurveys() {
+    let responseSurveys = await surveyDB.get();
+    this.setState({surveys: responseSurveys})
+  }
+
+  async openBeachModal(beachName) {
+    // Here's where we'll do a special query for the beaches that reside in a certain location
+    await axios.get('http://169.233.235.63:3001/beaches/search/closest', 
+      {
+        params: {
+          coords: {
+            lat: 36.971528,
+            lon: -121.951204
+          }
+        }
+      }
+    )
+      .then(res => {
+        console.log(res.data)
+        this.setState({beachName: beachName, isBeachModalVisible: true, isLoadingModalVisible: false, beachList: res.data})
+      })
+      .catch(err => {
+        console.log("COORDS ERROR")
+        console.log(err);
+        this.setState({isLoadingModalVisible: false});
+      })
+    
+  }
+
+  onPressBeach(beachName, beachID) {
+
+    this.setState({isConfirmModalVisible: true, match: beachID, confirmBeach: beachName});
+  }
+
+  onPressNoMatch(beachName) {
+
+    this.setState({isConfirmModalVisible: true, match: null, confirmBeach: beachName})
+  }
+
+  async checkIfBeachExists(survey){
+    console.log("Hello")
+    const beachName = survey.surveyData.beachName;
+    //Use the beach name to query the server's database
+    const exists = await axios.get('https://marineplastics.herokuapp.com/beaches/search', {params: {q: beachName}})
+      .then(res => {
+        console.log(res.data)
+        if(res.data.length === 0){
+          return false;
+        } else {
+          console.log(res.data) 
+          this.setState({match: res.data[0]._id})
+          return true;
+        }
+      })
+      .catch(err => {
+        console.log(`EERROORRR\n${err}`);
+        return false;
+      })
+    if(exists){
+      //If its true, then complete the submission!
+      console.log(`The beach ${beachName} exists in the database`);
+      //Here's where we'll submit the survey to the database
+      this.setState({isConfirmModalVisible: true, isLoadingModalVisible: false, confirmBeach: beachName})
+    } else {
+      //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
+      console.log(`The beach ${beachName} does not exist`);
+      this.openBeachModal(beachName);
+    }
   }
 
   async componentWillReceiveProps(props) {
@@ -71,26 +162,99 @@ export default class PublishContainer extends Component {
       let verifyID = props.navigation.getParam('verifyID');
       const survey = await surveyDB.getSurvey(verifyID)
       console.log(survey);
-      this.setState({mergedSurvey: survey})
       this.checkIfBeachExists(survey); 
     }
   }
 
-
-  // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
-
-  addSurvey = (data) => {
-      this.setState(prevState => {
-          prevState.surveys.push(data);
-          prevState.isScanning = false;
-          prevState.isImporting = true;
-          prevState.isPublished = false;
-          return prevState;
-      });
+  async componentWillMount() {
+    console.log("Not verified")
+    this.loadSurveys()
   }
 
-  calculateTotals(type) {
-    let currentSurvey = this.state.mergedSurvey
+  async isSurveyValid(){ 
+    //We should also check to see if the user is logged in
+    if(await AsyncStorage.getItem('accessToken') === null){
+     // Use another modal to alert the user that they must log in
+     this.setState({isSubmitModalVisible: false, isLoginModalVisible: true});
+     return false
+    }
+    let {selectedIndex} = this.state;
+    let survey = this.state.surveys[selectedIndex]
+    console.log("-----SURVEY-----")
+    console.log(survey)
+    let invalid = [];
+
+    const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
+        'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
+        'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
+        'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
+        'latitude', 'longitude'
+    ];
+
+    for(const id in requiredIDs) {
+      if(survey.surveyData[requiredIDs[id]] === undefined) {
+        invalid.push(requiredIDs[id]);
+      } 
+    }
+
+    if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
+        && !survey.surveyData.locationChoiceProximity)
+        invalid.push('locChoice')
+    
+    if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
+        && !survey.surveyData.usageOther)
+        invalid.push('usage')
+
+    if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
+        && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
+        invalid.push('subType');
+
+    return invalid
+  }
+
+  async onPressSubmit(){
+    const {selectedIndex} = this.state;
+    const currentSurvey = this.state.surveys[selectedIndex]
+    let invalidArray = await this.isSurveyValid();
+    if(!invalidArray)
+      return
+    if(invalidArray.length > 0){
+      /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
+      this.setState({isSubmitModalVisible: false});
+
+      this.props.navigation.navigate('SurveyContainer', {
+        surveyName: currentSurvey.surveyName,
+        surveyData: currentSurvey.surveyData,
+        SRSData: currentSurvey.SRSData,
+        ASData: currentSurvey.ASData,
+        MicroData: currentSurvey.MicroData,
+        inProgress: currentSurvey._id,
+        invalidArray: invalidArray,
+        fromPublish: true
+      })
+    } else {
+      /* Call the function to check if the beach name matches a name in the database */
+      console.log("Survey is valid");
+      this.setState({isSubmitModalVisible: false, isLoadingModalVisible: true})
+      this.checkIfBeachExists(currentSurvey);
+      /* If it returns true, then submit the survey to the database using the beach data stored in the db */
+      /* Else, check beaches within a 5 mile radius (Maybe use Connor's haversine formula? */
+        /* If the user selects a beach on there (ie the name of the beach they intended to submit under), submit using that data */
+        /* Otherwise, create a new beach in the database */
+    }
+  }
+
+  removeSurvey(index) {
+      console.log(index);
+      this.setState(prevState => {
+          prevState.surveys.splice(index, 1);
+          return prevState;
+      });
+
+  } 
+
+  calculateTotals(index, type) {
+    let currentSurvey = this.state.surveys[index]
     let totals = {};
     let totalsArray = [];
     let data;
@@ -133,39 +297,8 @@ export default class PublishContainer extends Component {
     return totalsArray
   }
 
-  async checkIfBeachExists(survey){
-    console.log("Hello")
-    const beachName = survey.surveyData.beachName;
-    //Use the beach name to query the server's database
-    const exists = await axios.get('https://marineplastics.herokuapp.com/beaches/search', {params: {q: beachName}})
-      .then(res => {
-        console.log(res.data)
-        if(res.data.length === 0){
-          return false;
-        } else {
-          console.log(res.data) 
-          this.setState({match: res.data[0]._id})
-          return true;
-        }
-      })
-      .catch(err => {
-        console.log(`EERROORRR\n${err}`);
-        return false;
-      })
-    if(exists){
-      //If its true, then complete the submission!
-      console.log(`The beach ${beachName} exists in the database`);
-      //Here's where we'll submit the survey to the database
-      this.setState({isConfirmModalVisible: true, isLoadingModalVisible: false, confirmBeach: beachName})
-    } else {
-      //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
-      console.log(`The beach ${beachName} does not exist`);
-      this.openBeachModal(beachName);
-    }
-  }
-
-  combineDateTime() {
-    let currentSurveyData = this.state.mergedSurvey.surveyData,
+  combineDateTime(index) {
+    let currentSurveyData = this.state.surveys[index].surveyData,
     currentDate = currentSurveyData.cleanupDate.toISOString(),
     dateOnly = currentDate.split('T')[0],
     currentTime = currentSurveyData.cleanupTime.toISOString(),
@@ -174,9 +307,25 @@ export default class PublishContainer extends Component {
     return returnDate
   }
 
+  openPublishModal(index){
+    const {surveyName} = this.state.surveys[index]
+    this.setState({
+      isSubmitModalVisible: true,
+      selectedName: surveyName,
+      selectedIndex: index
+    })
+  }
+
+  convertTimeString(time){
+    let timeString = "";
+    timeString = time.toString().split(/ /)[4].substring(0, 5);
+    console.log(timeString)
+    return timeString;
+  }
+
   async convertSurvey(index) {
     console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
-    let currentSurvey = this.state.mergedSurvey;
+    let currentSurvey = this.state.surveys[index];
     let surveyData = currentSurvey.surveyData;
     let userID = await AsyncStorage.getItem('accessToken');
     userID = userID.split("|")[1];
@@ -196,7 +345,7 @@ export default class PublishContainer extends Component {
           prox: surveyData.locationChoiceProximity ? surveyData.locationChoiceProximity : undefined,
           other: surveyData.locationChoiceOther ? surveyData.locationChoiceOther : undefined
         },
-        survDate: this.combineDateTime(),
+        survDate: this.combineDateTime(index),
         st: { 
           s: surveyData.substrateTypeSand ? surveyData.substrateTypeSand : undefined,
           p: surveyData.substrateTypePebble ? surveyData.substrateTypePebble : undefined,
@@ -225,31 +374,24 @@ export default class PublishContainer extends Component {
           com: surveyData.usageCommercial ? surveyData.usageCommercial : undefined,
           other: surveyData.usageOther ? surveyData.usageOther : undefined
         } ,
-        SRSDebris: this.calculateTotals('SRS'),
-        ASDebris: this.calculateTotals('AS'),
+        SRSDebris: this.calculateTotals(index, 'SRS'),
+        ASDebris: this.calculateTotals(index, 'AS'),
         numOfP: 0
       },
       bID: this.state.match ? this.state.match : undefined,
       beachData: this.state.match ? undefined : {
         n: surveyData.beachName.replace(/\s/g, "_"),
         nroName: surveyData.riverName.replace(/\s/g, "_"),
-        lat: surveyData.latitude,
-        lon: surveyData.longitude,
+        lat: /* Something given */ 80,
+        lon: 69,
         nroDist: surveyData.riverDistance
       }
     }
     return form;
   }
 
-  convertTimeString(time){
-    let timeString = "";
-    timeString = time.toString().split(/ /)[4].substring(0, 5);
-    console.log(timeString)
-    return timeString;
-  }
-
   async finalBeachSubmit() {
-    const formToSubmit = await this.convertSurvey();
+    const formToSubmit = await this.convertSurvey(this.state.selectedIndex);
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
     axios.post('http://169.233.235.63:3001/beaches/surveys', formToSubmit)
@@ -269,132 +411,6 @@ export default class PublishContainer extends Component {
 
   }
 
-  async isSurveyValid() {
-    //We should also check to see if the user is logged in
-    if(await AsyncStorage.getItem('accessToken') === null){
-      // Use another modal to alert the user that they must log in
-      this.setState({isSubmitModalVisible: false, isLoginModalVisible: true});
-      return false
-     }
-     let survey = this.state.mergedSurvey
-     console.log("-----SURVEY-----")
-     console.log(survey)
-     let invalid = [];
- 
-     const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
-         'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
-         'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
-         'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
-         'latitude', 'longitude'
-     ];
- 
-     for(const id in requiredIDs) {
-       if(survey.surveyData[requiredIDs[id]] === undefined) {
-         invalid.push(requiredIDs[id]);
-       } 
-     }
- 
-     if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
-         && !survey.surveyData.locationChoiceProximity)
-         invalid.push('locChoice')
-     
-     if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
-         && !survey.surveyData.usageOther)
-         invalid.push('usage')
- 
-     if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
-         && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
-         invalid.push('subType');
- 
-     return invalid
-  }
-
-  removeSurvey = (index) => {
-      this.setState(prevState => {
-          prevState.surveys.splice(index, 1);
-          return prevState;
-      });
-  }
-
-  async openBeachModal(beachName) {
-    // Here's where we'll do a special query for the beaches that reside in a certain location
-    await axios.get('http://169.233.235.63:3001/beaches/search/closest', 
-      {
-        params: {
-          coords: {
-            lat: this.state.mergedSurvey.surveyData.latitude,
-            lon: this.state.mergedSurvey.surveyData.longitude
-          }
-        }
-      }
-    )
-      .then(res => {
-        console.log(res.data)
-        this.setState({beachName: beachName, isBeachModalVisible: true, isLoadingModalVisible: false, beachList: res.data})
-      })
-      .catch(err => {
-        console.log("COORDS ERROR")
-        console.log(err);
-        this.setState({isLoadingModalVisible: false});
-      })
-    
-  }
-
-  openPublishModal(survey) {
-    const {surveyName} = survey;
-    this.setState({
-      isSubmitModalVisible: true,
-      selectedName: surveyName,
-      mergedSurvey: survey
-    })
-  }
-
-  onPressBeach(beachName, beachID) {
-    this.setState({isConfirmModalVisible: true, match: beachID, confirmBeach: beachName});
-  }
-
-  onPressNoMatch(beachName) {
-    this.setState({isConfirmModalVisible: true, match: null, confirmBeach: beachName})
-  }
-
-  async onPressSubmit(){
-    const currentSurvey = this.state.mergedSurvey;
-    let invalidArray = await this.isSurveyValid();
-    if(invalidArray.length > 0){
-      /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
-      this.setState({isSubmitModalVisible: false});
-
-      this.props.navigation.navigate('SurveyContainer', {
-        surveyName: currentSurvey.surveyName,
-        surveyData: currentSurvey.surveyData,
-        SRSData: currentSurvey.SRSData,
-        ASData: currentSurvey.ASData,
-        MicroData: currentSurvey.MicroData,
-        inProgress: currentSurvey._id,
-        invalidArray: invalidArray,
-        fromPublish: true
-      })
-    } else {
-      /* Call the function to check if the beach name matches a name in the database */
-      console.log("Survey is valid");
-      this.setState({isSubmitModalVisible: false, isLoadingModalVisible: true})
-      this.checkIfBeachExists(currentSurvey);
-      /* If it returns true, then submit the survey to the database using the beach data stored in the db */
-      /* Else, check beaches within a 5 mile radius (Maybe use Connor's haversine formula? */
-        /* If the user selects a beach on there (ie the name of the beach they intended to submit under), submit using that data */
-        /* Otherwise, create a new beach in the database */
-    }
-  }
-
-  // MERGE AND PUBLISH SURVEY ==================================================
-
-  publishSurvey = () => {
-      const { surveys } = this.state;
-      // Here we have the merged survey
-      const mergedSurvey = this.state.surveys[0];
-      this.openPublishModal(mergedSurvey);
-  }
-
   renderBeachItem({item}) {
     return (
       <Button transparent key={item.n} onPress={()=>{this.onPressBeach(item.n, item._id)}}>
@@ -403,36 +419,42 @@ export default class PublishContainer extends Component {
     )
   }
 
-  toScanner = () => {
-    this.setState({
-      isScanning : true,
-      isImporting : false,
-      isPublished : false
-    });
-  }
-
   render() {
+    
+    const { navigation } = this.props;
+    let surveys = this.state.surveys
     if(this.state.loading) {
-      return <Spinner color='green'/>;
+      return  <ActivityIndicator size="large" color="#0000ff" />;
     }
     else {
       return(
         <Container>
-            {this.state.isScanning &&
-                <Scanner
-                  surveys={this.state.surveys}
-                  addSurvey={this.addSurvey}/>
-            }
-            {this.state.isImporting &&
-                <Import
-                  surveys={this.state.surveys}
-                  publishSurvey={this.publishSurvey}
-                  removeSurvey={this.removeSurvey}
-                  toScanner={this.toScanner}/>
-            }
-            {this.state.isPublished &&
-                <Published/>
-            }
+            <Content padder>
+              <Button
+                onPress={() => navigation.navigate('Scanner', {
+                    surveys : surveys
+                })}>
+                <Text>
+                    Scan a Survey
+                </Text>
+              </Button>
+              <LoadedSurveys
+                surveys={surveys}
+                removeSurvey={this.removeSurvey}
+                openPublishModal={this.openPublishModal}
+              />
+              {surveys.length > 1
+                ?
+                  <Button>
+                      <Text>Compile</Text>
+                  </Button>
+                :
+                  <Button>
+                      <Text>Next</Text>
+                  </Button>
+              }
+             
+            </Content>
             <Modal isVisible={this.state.isSubmitModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Submit {this.state.selectedName}?</Text>
@@ -455,12 +477,6 @@ export default class PublishContainer extends Component {
                     <Text>OK</Text>
                   </Button>
                 </View>
-              </View>
-            </Modal>
-            <Modal isVisible={this.state.isLoadingModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: '20%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'space-around', flexDirection:'row'}}>
-                <ActivityIndicator size="large" color="#0000ff" />
-                <Text style={{fontSize: 17}}>Loading ...</Text>
               </View>
             </Modal> 
             <Modal isVisible={this.state.isBeachModalVisible}>
@@ -487,6 +503,12 @@ export default class PublishContainer extends Component {
                     <Text>No match</Text>
                   </Button>
                 </View>
+              </View>
+            </Modal>
+            <Modal isVisible={this.state.isLoadingModalVisible}>
+              <View style={{alignSelf: 'center', width: '90%', height: '20%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'space-around', flexDirection:'row'}}>
+                <ActivityIndicator size="large" color="#0000ff" />
+                <Text style={{fontSize: 17}}>Loading ...</Text>
               </View>
             </Modal>
             <Modal isVisible={this.state.isConfirmModalVisible}>
@@ -522,3 +544,20 @@ export default class PublishContainer extends Component {
     }
   }
 }
+
+// Style variable.
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: "#ffffff",
+  },
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#34495e",
+  }
+});

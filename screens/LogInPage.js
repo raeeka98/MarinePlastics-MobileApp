@@ -226,4 +226,3 @@ const styles = StyleSheet.create({
     color: "#34495e",
   }
 });
-

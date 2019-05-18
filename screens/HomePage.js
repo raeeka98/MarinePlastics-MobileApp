@@ -44,22 +44,24 @@ class HomePage extends React.Component {
     this.setState({isModalVisble: false, chosenSurvey: ""})
   }
 
-  cancelDelete = () => {
+  cancelDelete = () => { 
     this.setState({isDeleteVisible: false})
   }
 
 
   async openSurvey(){
     this.cancelModal();
+    let survey;
     let survID = this.state.chosenSurvey._id
-    let survName = this.state.chosenSurvey.surveyName;
-    let survey = await surveyDB.getSurvey(survID);
-    this.props.navigation.navigate('SurveyContainer',
+    survey = await surveyDB.getSurvey(survID);
+    console.log("SURVEY:")
+    console.log(survey);
+    this.props.navigation.navigate('SurveyContainer', 
       {
-        surveyData: survey.surveyData,
-        surveyName: survName,
-        SRSData: survey.SRSData,
-        ASData: survey.ASData,
+        surveyData: survey.surveyData, 
+        surveyName: survey.surveyName, 
+        SRSData: survey.SRSData, 
+        ASData: survey.ASData, 
         MicroData: survey.MicroData,
         inProgress: survey._id,
       })
@@ -93,7 +95,7 @@ class HomePage extends React.Component {
   }
 
   async deleteSurvey(){
-        await surveyDB.deleteSurvey(this.state.chosenSurvey._id);
+    await surveyDB.deleteSurvey(this.state.chosenSurvey._id);
 
     this.endModals();
     this.retrieveInProgress();
@@ -139,7 +141,7 @@ class HomePage extends React.Component {
                   position: 'absolute',
                   marginTop: '1%',
                   width:"50%",
-                  textAlign:'right',
+                  textAlign:'center',
                   paddingRight: '5%',
                   fontSize: 16,
                   fontWeight:'bold'
@@ -173,11 +175,12 @@ class HomePage extends React.Component {
                 style={{fontSize: 17,
                   fontStyle: 'italic'}}
               >
-                {inProgress[i].surveyData.cleanupDate ?
-                  ((inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
-                  + inProgress[i].surveyData.cleanupDate.getDate() + "/"
-                  + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100))
-                  : null
+                {
+                  inProgress[i].surveyData.cleanupDate ? 
+                    (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
+                    + inProgress[i].surveyData.cleanupDate.getDate() + "/"
+                    + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100) :
+                    "No Date"
                 }
               </Text>
               <Icon type='Entypo' name='dots-three-horizontal'/>
@@ -216,8 +219,8 @@ class HomePage extends React.Component {
         <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Publish A Survey</Text>
         </Button>
-        <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Profile')}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>View Profile</Text>
+        <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
         </Button>
 
         <Modal isVisible={this.state.isModalVisble}>
