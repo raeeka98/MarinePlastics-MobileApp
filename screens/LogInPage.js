@@ -31,6 +31,9 @@ class LogInPage extends React.Component {
     console.log('Setting AccessToken to Null for Logout');
     if (Platform.OS === 'android'){
       console.log('Logging out of Android');
+      //this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
+      //this._storeAccessToken();
+
       /*
       await AuthSession.startAsync(`${credentials.domain}/v2/logout`).then(success => {
         this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
@@ -43,10 +46,6 @@ class LogInPage extends React.Component {
           error => console.log(error));
       */
 
-      Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
-        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
-          error => console.log(error));
-
       /*
       auth0.webAuth
         .logout({returnTo: `${credentials.domain}/v2/logout`})
@@ -54,8 +53,10 @@ class LogInPage extends React.Component {
           this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
       })
       .catch(error => console.log(error));*/
-      //this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-      //this._storeAccessToken();
+
+      Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
+        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
+          error => console.log(error));
     }
     else {
       console.log('Logging out');
