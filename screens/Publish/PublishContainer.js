@@ -35,7 +35,9 @@ export default class PublishContainer extends Component {
       isImporting : true,
       isScanning : false,
       isPublished : false,
-      surveys : []
+      surveys : [
+        (this.props.navigation.getParam('initSurvey') ? this.props.navigation.getParam('initSurvey') : {})
+      ]
     };
   }
 

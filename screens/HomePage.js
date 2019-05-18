@@ -19,6 +19,7 @@ class HomePage extends React.Component {
     }
 
     this.renderInProgress = this.renderInProgress.bind(this);
+    this.navToPublish = this.navToPublish.bind(this);
     this.openSurvey=this.openSurvey.bind(this)
     this.onPressDeleteSurvey=this.onPressDeleteSurvey.bind(this);
     this.deleteSurvey=this.deleteSurvey.bind(this);
