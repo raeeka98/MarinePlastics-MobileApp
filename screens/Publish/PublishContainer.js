@@ -26,10 +26,11 @@ import {
 import Modal from 'react-native-modal'
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler';
-
+ 
 import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
+import toExport from './env.js'
 
 
 export default class PublishContainer extends Component {
@@ -52,6 +53,7 @@ export default class PublishContainer extends Component {
      this.openBeachModal = this.openBeachModal.bind(this);
      this.renderBeachItem = this.renderBeachItem.bind(this);
      this.finalBeachSubmit = this.finalBeachSubmit.bind(this);
+     console.log(toExport.SERVER_URL)
   }
 
   async componentDidMount() {
@@ -137,7 +139,7 @@ export default class PublishContainer extends Component {
     console.log("Hello")
     const beachName = survey.surveyData.beachName;
     //Use the beach name to query the server's database
-    const exists = await axios.get('https://marineplastics.herokuapp.com/beaches/search', {params: {q: beachName}})
+    const exists = await axios.get(`${toExport.SERVER_URL}/beaches/search`, {params: {q: beachName}})
       .then(res => {
         console.log(res.data)
         if(res.data.length === 0){
@@ -252,7 +254,7 @@ export default class PublishContainer extends Component {
     const formToSubmit = await this.convertSurvey();
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
-    axios.post('http://169.233.235.63:3001/beaches/surveys', formToSubmit)
+    axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
           this.setState({
@@ -318,7 +320,7 @@ export default class PublishContainer extends Component {
 
   async openBeachModal(beachName) {
     // Here's where we'll do a special query for the beaches that reside in a certain location
-    await axios.get('http://169.233.235.63:3001/beaches/search/closest', 
+    await axios.get(`${toExport.SERVER_URL}/beaches/search/closest`, 
       {
         params: {
           coords: {
