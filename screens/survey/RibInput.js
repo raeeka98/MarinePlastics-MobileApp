@@ -192,24 +192,24 @@ export default class RibInput extends Component {
     }
 
 
-    //Encode 
+    // Encode the text entry box data into a string of printable characters recognizable for a QR code
+    // Takes the rib start, rib length, fresh and weathered values. 
+    // Converts these to 8-bit binary and adds them to a binary string (binstring)
+    // The binToEncoded then translates this to a string using ascii values in the range 48-112
     encodeToText = () => {
         var binstring = "";
         var ribStart = this.state.surveyData[`rib${this.state.ribNumber}Start`];
         var ribLength = this.state.surveyData[`rib${this.state.ribNumber}Length`];
-        console.log(ribStart, ribLength);
-        console.log(ribStart.toString(2));
-        console.log(ribLength.toString(2));
 
         //Encode ribStart
-        if(ribStart === undefined) ribStart = 0;
+        if (ribStart === undefined) ribStart = 0;
         binstring += ("00000000" + (Number(ribStart).toString(2))).slice(-8);
         //Encode ribLength
-        if(ribLength === undefined) ribLength = 0;
+        if (ribLength === undefined) ribLength = 0;
         binstring += ("00000000" + (Number(ribLength).toString(2))).slice(-8);
 
         //Encode fresh and weathered for each category
-        for(var key in debrisInfoID) {
+        for (var key in debrisInfoID) {
             var fresh = this.state.SRSData[`${debrisInfoID[key]}__fresh__${this.state.ribNumber}`];
             var weathered = this.state.SRSData[`${debrisInfoID[key]}__weathered__${this.state.ribNumber}`];
 
@@ -219,18 +219,21 @@ export default class RibInput extends Component {
             if (weathered === undefined) weathered = 0;
             binstring += ("00000000" + Number(weathered).toString(2)).slice(-8);
         }
-        console.log(binstring);
-        var encoded = this.binToEncode(binstring);
-        console.log(encoded);
+        var encoded = this.binToEncoded(binstring);
+        var decoded = this.decodeText(encoded);
         return encoded;
     }
 
-    //Binary to Encoded (using an encoding style similar to base64)
-    binToEncode(binstring) {
+    // Binary to Encoded (using an encoding style similar to base64)
+    // This method takes a binary string and encodes it into printable ascii chars
+    // It does this by popping the six front-most bits and mapping the decimal value of this into the range
+    // of 48-112, which are all printable ascii value. If the binstring is not divisible by 6
+    // the remainder will be encoded after a ! in plain binary (min of 2 max of 6 extra chars)
+    binToEncoded(binstring) {
         var encoded = "";
         while (binstring.length >= 6) {
             var substr = binstring.substr(0, 6);
-            binstring = binstring.substr(6, binstring.length - 6);
+            binstring = binstring.substr(6);
             var dec = parseInt(substr, 2);
             var charrep = String.fromCharCode(48 + dec);
             encoded += charrep;
@@ -240,5 +243,33 @@ export default class RibInput extends Component {
             encoded += binstring;
         }
         return encoded;
-     }
+    }
+
+    decodeText(encoded) {
+        var binstring = this.encodedToBin(encoded);
+        var decoded = "";
+        while (binstring.length >= 8) {
+            var substr = binstring.substr(0, 8);
+            binstring = binstring.substr(8);
+            var dec = parseInt(substr, 2);
+            decoded += dec;
+        }
+        return decoded;
+    }
+
+    encodedToBin(encoded) {
+        var binstring = "";
+        for (var i = 0; i < encoded.length; i++) {
+            if (encoded.charAt(i) !== "!") {
+                var dec = encoded.charCodeAt(i) - 48;
+                binstring += ("000000" + (Number(dec).toString(2))).slice(-6);
+            }
+            else{
+                binstring += encoded.substr(i+1);
+                i = encoded.length;
+            }
+        }
+        return binstring;
+
+    }
 }
