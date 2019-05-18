@@ -30,7 +30,7 @@ class SurveyPage extends React.Component {
         <Text style={styles.paragraph}>
           Survey Page
         </Text>
-        <Button onPress={() => this.props.navigation.navigate("TeamInfo")} title="Click Me!"/>
+        <Button onPress={() => this.props.navigation.navigate("SurveyContainer")} title="Click Me!"/>
         <Button onPress={this.retrieveSurveys} title="connect to database"/>
         <Text>{JSON.stringify(this.state.webData)}</Text>
       </View>
@@ -56,4 +56,3 @@ const styles = StyleSheet.create({
     color: "#34495e",
   }
 });
-

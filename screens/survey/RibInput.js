@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { TextInput, Text, View, FlatList } from 'react-native'
-import { ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title } from 'native-base'
+import {TextInput, Text, View, ScrollView } from 'react-native'
+import {Item, Button, Icon, Accordion} from 'native-base'
+import Modal from 'react-native-modal'
 import QRCode from 'react-native-qrcode';
-import Expo from 'expo'
 
-import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
-import SurveyFooter from './SurveyFooter'
 import debrisInfoID from './debrisInfo'
 
 /* These are used to display the options on the modal */
@@ -26,17 +24,64 @@ var BUTTONS = [
     'Cancel'
 ]
 
-var CANCEL_INDEX = 12;
-
 
 export default class RibInput extends Component {
     state = {
         SRSData: this.props.SRSData,
         surveyData: this.props.surveyData,
         ribNumber: this.props.ribNumber,
-        inputItems: this.props.inputItems,
+        inputItems: [
+            {title: "Cigarette Butts"},
+            {title: 'Fishing Line / Polypropylene Rope'},
+            {title: 'Plastic Straws'},
+            {title: 'Filmed Plastic'},
+            {title: 'Plastic Bottles / Plastic Caps'},
+            {title: 'Aluminum Cans / Foil / Metal'},
+            {title: "Glass"},
+            {title: 'Styofoam / Urethane'},
+            {title: "Other: Plastics"},
+            {title: "Other: Food / Organics"},
+            {title: "Other: Cotton / Cloth"},
+            {title: "Other: Wood / Paper"},
+
+        ],
         selections: BUTTONS,
-        encodingText: ""
+        isModalVisible: false,
+        editLength: "",
+        editStart: ""
+    }
+
+    showModal = () => {
+        this.setState({isModalVisible: true})
+    }
+
+    cancelModal = () => {
+        this.setState(
+            {
+                isModalVisible: false,
+                editLength: "",
+                editStart: ""
+            }
+        )
+    }
+
+    saveModal(ribStart, ribLength){
+        this.setState(prevState => {
+            prevState.isModalVisible = false;
+            prevState.surveyData[ribStart] = prevState.editStart !== '' ? prevState.editStart : prevState.surveyData[ribStart];
+            prevState.surveyData[ribLength] = prevState.editLength !== '' ? prevState.editLength : prevState.surveyData[ribLength];
+            prevState.editLength = '';
+            prevState.editStart = ''
+            return prevState
+        })
+    }
+    onEditChange(refName, e){
+        let key = refName;
+        let val = e.nativeEvent.text
+        this.setState(prevState => {
+            prevState[key] = val;
+            return prevState
+        }) 
     }
 
     /*
@@ -45,18 +90,17 @@ export default class RibInput extends Component {
      *  the values. Additionally, the values will fall under some subcategories, including either
      *  "fresh" or 'weathered'
      */
-    renderCategoryInput = ({ item }) => {
-        const currentItemKey = debrisInfoID[item.key];
+    renderCategoryInput = (item) => {
+        const currentItemKey = debrisInfoID[item.title];
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
         const weatheredKey = `${currentItemKey}__weathered__${this.state.ribNumber}`
         return (
-            <View style={{ marginBottom: 15 }}>
-                <Text style={{ fontSize: 19 }}>{item.key}</Text>
-                <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
-                    <Text style={{ fontSize: 18, alignSelf: 'center', justifyContent: 'center' }}>Amount Fresh:</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Button
-                            light
+            <View style = {{padding:10}}>
+                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
+                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Button 
+                            light 
                             onPress={this.props.decrementSRS.bind(this, freshKey)}
                         >
                             <Icon type='AntDesign' name='minus' />
@@ -101,93 +145,108 @@ export default class RibInput extends Component {
                         </Button>
                     </View>
                 </View>
-                <View style={styles.segmentSeparator} />
+            </View>
+        )
+    }
+
+    renderAccordionHeader = (item, expanded) => {
+        if(expanded) {
+            return (
+                <View 
+                    style={{
+                        flexDirection: "row", 
+                        padding: 10,
+                        justifyContent: "space-between",
+                        alignItems: "center" ,
+                        backgroundColor: "#87cefa" }}
+                >
+                    <Text style={{fontWeight: "500"}}>{" "}{item.title}</Text>
+                    <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
+                </View>
+            )
+        }
+        return (
+            <View 
+                style={{
+                    flexDirection: "row",
+                    padding: 10,
+                    justifyContent: "space-between",
+                    alignItems: "center" ,
+                    backgroundColor: "#6CB5FF" }} 
+            >
+                <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
+                <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
             </View>
         )
     }
 
     render() {
-        const ribStart = `rib${this.state.ribNumber}Start`;
-        const ribLength = `rib${this.state.ribNumber}Length`
+        const ribStart = `r${this.state.ribNumber}Start`;
+        const ribLength = `r${this.state.ribNumber}Length`
         return (
-            <View>
-                <View style={[{ marginTop: 10, marginRight: 10, marginLeft: 10 }, styles.inputSingleContainer]}>
-                    <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
-                        <Text style={{ fontSize: 20 }}>Rib Start:</Text>
-                        <Item regular>
-                            <TextInput
-                                style={{ width: 100, height: 35 }}
-                                onChange={this.props.updateSurveyState.bind(this, ribStart)}
-                                value={this.state.surveyData[ribStart]}
-                            />
-                        </Item>
-                    </View>
-                    <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
-                        <Text style={{ fontSize: 20 }}>Rib Length:</Text>
-                        <Item regular>
-                            <TextInput
-                                style={{ width: 100, height: 35 }}
-                                onChange={this.props.updateSurveyState.bind(this, ribLength)}
-                                value={this.state.surveyData[ribLength]}
-                            />
-                        </Item>
-                    </View>
-                    <View style={[styles.inputSingleContainer]}>
-                        <Button
-                            style={{ alignSelf: 'center', justifyContent: 'center' }}
-                            onPress={
-                                this.encodeToText
-                            }>
-                            <Text style={{ color: 'black' }}>Generate QR Code</Text>
-                        </Button>
-                    </View>
-                </View>
-                <View style={styles.segmentSeparator} />
-                <View style={[styles.inputSingleContainer]}>
-                    <Button
-                        info
-                        style={{ alignSelf: 'stretch', justifyContent: 'center' }}
-                        onPress={() => {
-                            ActionSheet.show(
-                                {
-                                    options: this.state.selections,
-                                    title: "Select a Category",
-                                    cancelButtonIndex: CANCEL_INDEX
-                                },
-                                buttonIndex => {
-                                    /* Here we need to add the selected item to the list of input items
-                                       and remove it from the list of button selections
-                                    */
-                                    const temp = this.state.selections;
-                                    if (temp[buttonIndex] === 'Cancel') {
-                                        ActionSheet.hide();
-                                        return
-                                    }
-                                    this.setState(prevState => {
-                                        prevState.inputItems.push(
-                                            { key: temp[buttonIndex] }
-                                        )
-                                        prevState.selections = prevState.selections.filter((category) => category !== BUTTONS[buttonIndex])
-                                        return prevState
-                                    })
-
-
-                                }
-                            )
-                        }}
-                    >
-                        <Icon type='AntDesign' name='plus' />
-                        <Text style={{ color: 'white' }}>Add Category</Text>
+            <ScrollView style={{marginBottom: 50}}>
+                <View style={
+                        [
+                            styles.inputDoubleContainer, 
+                            {
+                                alignItems: 'center', 
+                                justifyContent: 'space-evenly', 
+                                marginTop: 15
+                            }
+                        ]
+                      } 
+                >
+                    <Text style={{fontSize: 17}}>Rib Start:</Text>
+                    <Text style={{fontSize: 17}}>{this.state.surveyData[ribStart]}</Text>
+                    <Text style={{fontSize: 17}}>Rib Length:</Text>
+                    <Text style={{fontSize: 17}}>{this.state.surveyData[ribLength]}</Text>
+                    <Button info onPress={this.showModal}>
+                        <Text style={{padding: 8, color: 'white'}}>Edit Rib Info</Text>
                     </Button>
-
                 </View>
-                <FlatList
-                    style={{ marginLeft: 20, marginRight: 20 }}
-                    data={this.state.inputItems}
-                    extraData={this.state}
-                    renderItem={this.renderCategoryInput}
+                <Accordion 
+                    style={{marginTop: 20, padding: 10}}
+                    dataArray={this.state.inputItems}
+                    renderContent={this.renderCategoryInput}
+                    renderHeader={this.renderAccordionHeader}
                 />
-            </View>
+                <Modal isVisible={this.state.isModalVisible}>
+                    <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Edit rib information</Text>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 20}]}>
+                            <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Start:</Text>
+                            <Item regular style={{marginRight: 10}}>
+                                <TextInput 
+                                    style={{width: 50, height: 35, fontSize: 18}}
+                                    keyboardType="number-pad"
+                                    onChange={this.onEditChange.bind(this, 'editStart')}
+                                    value={this.state.editStart}
+                                />
+                            </Item>
+                        </View>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 30}]}>
+                            <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Length:</Text>
+                            <Item regular style={{marginRight: 10}}>
+                                <TextInput 
+                                    style={{width: 50, height: 35, fontSize: 18}}
+                                    keyboardType="number-pad"
+                                    onChange={this.onEditChange.bind(this, 'editLength')}
+                                    value={this.state.editLength}
+                                />
+                            </Item>
+                        </View>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
+                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
+                                <Text style={{padding: 8}}>Cancel</Text>
+                            </Button>
+                            <Button info style={{justifyContent: 'center', width: 100}}onPress={this.saveModal.bind(this, ribStart, ribLength)}>
+                                <Text style={{color: 'white', padding: 8}}>Save</Text>
+                            </Button>
+                        </View>
+                        
+                    </View>
+                </Modal>
+            </ScrollView>
         )
     }
 
