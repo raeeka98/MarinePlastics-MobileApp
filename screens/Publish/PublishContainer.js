@@ -30,6 +30,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
+import {test1, test2, test3} from '../../__tests__/testJSON/testSurveys';
 
 
 export default class PublishContainer extends Component {

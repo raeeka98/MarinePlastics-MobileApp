@@ -44,7 +44,7 @@ class HomePage extends React.Component {
     this.setState({isModalVisble: false, chosenSurvey: ""})
   }
 
-  cancelDelete = () => { 
+  cancelDelete = () => {
     this.setState({isDeleteVisible: false})
   }
 
@@ -56,12 +56,12 @@ class HomePage extends React.Component {
     survey = await surveyDB.getSurvey(survID);
     console.log("SURVEY:")
     console.log(survey);
-    this.props.navigation.navigate('SurveyContainer', 
+    this.props.navigation.navigate('SurveyContainer',
       {
-        surveyData: survey.surveyData, 
-        surveyName: survey.surveyName, 
-        SRSData: survey.SRSData, 
-        ASData: survey.ASData, 
+        surveyData: survey.surveyData,
+        surveyName: survey.surveyName,
+        SRSData: survey.SRSData,
+        ASData: survey.ASData,
         MicroData: survey.MicroData,
         inProgress: survey._id,
       })
@@ -176,7 +176,7 @@ class HomePage extends React.Component {
                   fontStyle: 'italic'}}
               >
                 {
-                  inProgress[i].surveyData.cleanupDate ? 
+                  inProgress[i].surveyData.cleanupDate ?
                     (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
                     + inProgress[i].surveyData.cleanupDate.getDate() + "/"
                     + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100) :
@@ -216,9 +216,11 @@ class HomePage extends React.Component {
         <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
         </Button>
-        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>Publish A Survey</Text>
-        </Button>
+        {__DEV__ &&
+            <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
+              <Text style={{fontWeight: 'bold', color: 'white'}}>Test Survey Merging and Publishing</Text>
+            </Button>
+        }
         <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
         </Button>
