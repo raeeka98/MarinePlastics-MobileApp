@@ -24,7 +24,7 @@ export default class ImportView extends Component {
           }}>
           <Left>
             <Button transparent onPress={() => {}}>
-              <Text>{name ? name : "NO NAME"}</Text>
+              <Text>{name}</Text>
             </Button>
           </Left>
           <Right>

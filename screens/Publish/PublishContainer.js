@@ -30,7 +30,9 @@ import { FlatList } from 'react-native-gesture-handler';
 import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
-import {test1, test2, test3} from '../../testJSON/testSurveys';
+import testSurveys from '../../testJSON/testSurveys';
+
+import { SubmitModal } from './PublishModals';
 
 
 export default class PublishContainer extends Component {
@@ -43,8 +45,9 @@ export default class PublishContainer extends Component {
       isPublished : false,
       surveys : []
     };
-    if(this.props.navigation.getParam('initSurvey')) {
-      this.state.surveys.push(this.props.navigation.getParam('initSurvey'));
+    const initSurvey = this.props.navigation.getParam('initSurvey');
+    if(initSurvey) {
+        this.state.surveys.push(initSurvey);
     }
      // bind methods
      this.removeSurvey = this.removeSurvey.bind(this);
@@ -66,9 +69,9 @@ export default class PublishContainer extends Component {
     });
     if(__DEV__) {
       this.setState(prevState => {
-          prevState.surveys.push(test1);
-          prevState.surveys.push(test2);
-          prevState.surveys.push(test3);
+          prevState.surveys.push(testSurveys.test1);
+          prevState.surveys.push(testSurveys.test2);
+          prevState.surveys.push(testSurveys.test3);
           return prevState;
       })
     }
@@ -87,6 +90,8 @@ export default class PublishContainer extends Component {
       this.checkIfBeachExists(survey);
     }
   }
+
+  closeSubmitModal = () => this.setState({isSubmitModalVisible: false});
 
 
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
@@ -445,19 +450,12 @@ export default class PublishContainer extends Component {
             {this.state.isPublished &&
                 <Published/>
             }
-            <Modal isVisible={this.state.isSubmitModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Submit {this.state.selectedName}?</Text>
-                <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
-                  <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isSubmitModalVisible: false})}>
-                    <Text>Cancel</Text>
-                  </Button>
-                  <Button success style={{alignSelf: 'center'}} onPress={this.onPressSubmit}>
-                    <Text>Submit</Text>
-                  </Button>
-                </View>
-              </View>
-            </Modal>
+            <SubmitModal
+              isSubmitModalVisible={this.state.isSubmitModalVisible}
+              selectedName={this.state.selectedName}
+              onPressSubmit={this.onPressSubmit}
+              closeSubmitModal={this.closeSubmitModal}
+              />
             <Modal isVisible={this.state.isLoginModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Attention!</Text>

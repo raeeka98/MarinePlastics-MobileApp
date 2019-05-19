@@ -54,7 +54,6 @@ export default {
         "aluminumCans__fresh__accumulation" : 10
     }
   },
-
   "test2" : {
       "surveyName" : "test2",
       "ribData" : {
@@ -80,7 +79,6 @@ export default {
           "rib2__weathered__micro" : 20
       }
   },
-
   "test3" : {
       "surveyName" : "test3",
       "ribData" : {
@@ -107,5 +105,4 @@ export default {
           "rib3__weathered__micro" : 8
       }
   }
-
 }

@@ -32,7 +32,8 @@ import ImportView from './ImportView';
 function LoadedSurveys(props) {
     let i = 0;
     const items = props.surveys.map(survey => {
-        const item = <ImportView key={i} index={i} survey={survey} removeSurvey={props.removeSurvey}/>;
+        const surveyName = survey.surveyName ? survey.surveyName : "NO NAME";
+        const item = <ImportView key={i} index={i} name={surveyName} removeSurvey={props.removeSurvey}/>;
         i++;
         return item;
     });
