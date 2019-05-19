@@ -45,6 +45,7 @@ import { mergeSurveys } from './MergeSurveys';
 export default class PublishContainer extends Component {
   constructor(props) {
     super(props);
+    this.baseURL = 'http://169.233.235.63:3001'
     this.state = {
       loading : true,
       isImporting : true,
@@ -74,7 +75,7 @@ export default class PublishContainer extends Component {
     this.setState({
       loading : false
     });
-    /*
+
     // for testing merging functionality
     if(__DEV__) {
 
@@ -85,7 +86,7 @@ export default class PublishContainer extends Component {
           return prevState;
       })
     }
-    */
+
   }
 
   async componentWillReceiveProps(props) {
@@ -167,7 +168,7 @@ export default class PublishContainer extends Component {
     console.log("Hello")
     const beachName = survey.surveyData.beachName;
     //Use the beach name to query the server's database
-    const exists = await axios.get('https://marineplastics.herokuapp.com/beaches/search', {params: {q: beachName}})
+    const exists = await axios.get(this.baseURL + '/beaches/search', {params: {q: beachName}})
       .then(res => {
         console.log(res.data)
         if(res.data.length === 0){
@@ -186,7 +187,11 @@ export default class PublishContainer extends Component {
       //If its true, then complete the submission!
       console.log(`The beach ${beachName} exists in the database`);
       //Here's where we'll submit the survey to the database
-      this.setState({isConfirmModalVisible: true, isLoadingModalVisible: false, confirmBeach: beachName})
+      this.setState({
+        isConfirmModalVisible: true,
+        isLoadingModalVisible: false,
+        confirmBeach: beachName
+      })
     } else {
       //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
       console.log(`The beach ${beachName} does not exist`);
@@ -195,13 +200,13 @@ export default class PublishContainer extends Component {
   }
 
   combineDateTime() {
-    let currentSurveyData = this.state.mergedSurvey.surveyData,
-    currentDate = currentSurveyData.cleanupDate.toISOString(),
-    dateOnly = currentDate.split('T')[0],
-    currentTime = currentSurveyData.cleanupTime.toISOString(),
-    timeOnly= currentTime.split('T')[1];
-    let returnDate = new Date(dateOnly + 'T' + timeOnly)
-    return returnDate
+    const currentSurveyData = this.state.mergedSurvey.surveyData;
+    let currentDate = currentSurveyData.cleanupDate.toISOString();
+    const dateOnly = currentDate.split('T')[0];
+    let currentTime = currentSurveyData.cleanupTime.toISOString();
+    const timeOnly= currentTime.split('T')[1];
+    let returnDate = new Date(dateOnly + 'T' + timeOnly);
+    return returnDate;
   }
 
   async convertSurvey(index) {
@@ -211,7 +216,7 @@ export default class PublishContainer extends Component {
     let userID = await AsyncStorage.getItem('accessToken');
     userID = userID.split("|")[1];
     let userEmail = await AsyncStorage.getItem('email');
-    console.log("Got my shit back cuz");
+    console.log("==============" + userEmail);
     const form = {
       survData: {
         user: {
@@ -273,6 +278,7 @@ export default class PublishContainer extends Component {
 
   convertTimeString(time){
     let timeString = "";
+    console.log(time);
     timeString = time.toString().split(/ /)[4].substring(0, 5);
     console.log(timeString)
     return timeString;
@@ -282,12 +288,9 @@ export default class PublishContainer extends Component {
     const formToSubmit = await this.convertSurvey();
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
-    axios.post('http://169.233.235.63:3001/beaches/surveys', formToSubmit)
+    axios.post(this.baseURL + '/beaches/surveys', formToSubmit)
       .then(res => {
         if(res.data.survID){
-          this.setState({
-            isConfirmModalVisible: false
-          })
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
         }
       })

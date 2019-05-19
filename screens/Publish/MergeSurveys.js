@@ -10,7 +10,6 @@ export function mergeSurveys(surveys) {
     finalSurvey["ASData"] = mergeAS(surveys);
     finalSurvey["MicroData"] = mergeMicro(surveys);
     finalSurvey["ribData"] = mergeRib(surveys);
-    console.log(finalSurvey);
     return finalSurvey;
 }
 
