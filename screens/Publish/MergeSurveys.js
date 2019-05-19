@@ -9,44 +9,70 @@ export function mergeSurveys(surveys) {
     finalSurvey["SRSData"] = mergeSRS(surveys);
     finalSurvey["ASData"] = mergeAS(surveys);
     finalSurvey["MicroData"] = mergeMicro(surveys);
-    finalSurvey["RibData"] = mergeRib(surveys);
+    finalSurvey["ribData"] = mergeRib(surveys);
+    console.log(finalSurvey);
     return finalSurvey;
 }
 
 function mergeSRS(surveys) {
     let finalSRS = {};
     surveys.forEach(survey => {
-          for (const debris of survey) {
-              if(debris in finalSRS) {
-                  finalSRS[debris] += survey[debris];
+        if(survey.hasOwnProperty("SRSData")){
+          for (const debris in survey.SRSData) {
+              if(finalSRS.hasOwnProperty(debris)) {
+                  finalSRS[debris] += survey.SRSData[debris];
               }
               else {
-                  finalSRS[debris] = 0;
+                  finalSRS[debris] = survey.SRSData[debris];
               }
-
           }
+        }
     });
-
     return finalSRS;
 }
 
 function mergeAS(surveys) {
     let finalAS = {};
-
-
+    surveys.forEach(survey => {
+        if(survey.hasOwnProperty("ASData")){
+          for (const debris in survey.ASData) {
+              if(finalAS.hasOwnProperty(debris)) {
+                  finalAS[debris] += survey.ASData[debris];
+              }
+              else {
+                  finalAS[debris] = survey.ASData[debris];
+              }
+          }
+        }
+    });
     return finalAS;
 }
 
 function mergeMicro(surveys) {
     let finalMicro = {};
-
-
+    surveys.forEach(survey => {
+        if(survey.hasOwnProperty("MicroData")){
+          for (const debris in survey.MicroData) {
+              if(finalMicro.hasOwnProperty(debris)) {
+                  finalMicro[debris] += survey.MicroData[debris];
+              }
+              else {
+                  finalMicro[debris] = survey.MicroData[debris];
+              }
+          }
+        }
+    });
     return finalMicro;
 }
 
 function mergeRib(surveys) {
     let finalRib = {};
-
-
+    surveys.forEach(survey => {
+        if(survey.hasOwnProperty("ribData")){
+          for (const ribInfo in survey.ribData) {
+              finalRib[ribInfo] = survey.ribData[ribInfo];
+          }
+        }
+    });
     return finalRib;
 }

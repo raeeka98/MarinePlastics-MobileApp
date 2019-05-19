@@ -74,7 +74,10 @@ export default class PublishContainer extends Component {
     this.setState({
       loading : false
     });
+    /*
+    // for testing merging functionality
     if(__DEV__) {
+
       this.setState(prevState => {
           prevState.surveys.push(testSurveys.test1);
           prevState.surveys.push(testSurveys.test2);
@@ -82,6 +85,7 @@ export default class PublishContainer extends Component {
           return prevState;
       })
     }
+    */
   }
 
   async componentWillReceiveProps(props) {
@@ -416,9 +420,7 @@ export default class PublishContainer extends Component {
 
   publishSurvey = () => {
       const { surveys } = this.state;
-      const merged = mergeSurveys(surveys);
-      console.log(merged);
-      const mergedSurvey = this.state.surveys[0];
+      const mergedSurvey = mergeSurveys(surveys);
       this.openPublishModal(mergedSurvey);
   }
 
