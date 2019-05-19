@@ -30,7 +30,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
-import {test1, test2, test3} from '../../__tests__/testJSON/testSurveys';
+import {test1, test2, test3} from '../../testJSON/testSurveys';
 
 
 export default class PublishContainer extends Component {
@@ -41,10 +41,11 @@ export default class PublishContainer extends Component {
       isImporting : true,
       isScanning : false,
       isPublished : false,
-      surveys : [
-        (this.props.navigation.getParam('initSurvey') ? this.props.navigation.getParam('initSurvey') : {})
-      ]
+      surveys : []
     };
+    if(this.props.navigation.getParam('initSurvey')) {
+      this.state.surveys.push(this.props.navigation.getParam('initSurvey'));
+    }
      // bind methods
      this.removeSurvey = this.removeSurvey.bind(this);
      this.convertSurvey = this.convertSurvey.bind(this);
@@ -60,7 +61,17 @@ export default class PublishContainer extends Component {
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
-    this.setState({ loading : false });
+    this.setState({
+      loading : false
+    });
+    if(__DEV__) {
+      this.setState(prevState => {
+          prevState.surveys.push(test1);
+          prevState.surveys.push(test2);
+          prevState.surveys.push(test3);
+          return prevState;
+      })
+    }
   }
 
   async componentWillReceiveProps(props) {

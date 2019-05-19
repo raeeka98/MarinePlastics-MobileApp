@@ -1,5 +1,6 @@
 export default {
   "test1" : {
+    "surveyName" : "test1",
     "surveyData": {
         "userFirst" : "Franky",
         "userLast" : "Kohn",
@@ -55,6 +56,7 @@ export default {
   },
 
   "test2" : {
+      "surveyName" : "test2",
       "ribData" : {
         "r2Length" : 20,
         "r2Start" : 30
@@ -80,7 +82,7 @@ export default {
   },
 
   "test3" : {
-
+      "surveyName" : "test3",
       "ribData" : {
         "r3Length" : 19,
         "r3Start" : 70
