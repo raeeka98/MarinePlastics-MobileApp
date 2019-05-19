@@ -273,7 +273,10 @@ class LogInPage extends React.Component {
         <Text style={styles.container}>
           Email: {loggedIn ? this.state.email : ''}
         </Text>
-        
+        <Image
+          style={{width:50, height: 50}}
+          source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+        />
       </View>
     );
   }
