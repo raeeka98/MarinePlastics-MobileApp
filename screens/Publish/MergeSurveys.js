@@ -15,28 +15,30 @@ export function mergeSurveys(surveys) {
 
 function mergeSRS(surveys) {
     let finalSRS = {};
+    surveys.forEach(survey => {
 
+    });
 
     return finalSRS;
 }
 
 function mergeAS(surveys) {
-  let finalAS = {};
+    let finalAS = {};
 
 
-  return finalAS;
+    return finalAS;
 }
 
 function mergeMicro(surveys) {
-  let finalMicro = {};
+    let finalMicro = {};
 
 
-  return finalMicro;
+    return finalMicro;
 }
 
 function mergeRib(surveys) {
-  let finalRib = {};
+    let finalRib = {};
 
 
-  return finalRib;
+    return finalRib;
 }
