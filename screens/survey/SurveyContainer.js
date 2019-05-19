@@ -53,7 +53,10 @@ import surveyDB from '../../storage/mongoStorage'
  *   substrateTypePebble: Boolean,
  *   subastrateTypeRipRap: Boolean,
  *   substrateTypeSeaweed: Boolean,
- *   subStrateTypeOther: Boolean/String,
+ *   subStrateTypeOther: Boolean/String
+ * },
+ * 
+ * ribData: {
  *   r1Length: String/Number,
  *   r1Start: String/Number,
  *   r2Length: String/Number,
@@ -62,7 +65,7 @@ import surveyDB from '../../storage/mongoStorage'
  *   r3Start: String/Number,
  *   r4Length: String/Number,
  *   r4Start: String/Number,
- * },
+ * ,}
  * 
  * SRSData: {
  *   ITEMNAME__fresh__RIBNUMBER: Number,
@@ -106,7 +109,9 @@ export default class SurveyContainer extends Component {
             SRSData: nav.getParam('SRSData') ? nav.getParam('SRSData') :  {},
             ASData: nav.getParam('ASData') ? nav.getParam('ASData') : {},
             MicroData: nav.getParam('MicroData') ? nav.getParam('MicroData') : {},
+            ribData: nav.getParam('ribData') ? nav.getParam('ribData') : {},
             tabArray : [],
+            ribsToSelect: undefined,
             shouldRender:{
                 teamInfo: true,
                 area: false,
@@ -218,6 +223,15 @@ export default class SurveyContainer extends Component {
         })
         if(key === 'cleanupTime')
             this.setState({showTime: false})
+    }
+
+    updateRibData(refName, e) {
+        let key = refName;
+        let val = e.nativeEvent.text;
+        this.setState(prevState => {
+            prevState.ribData[key] = value;
+            return prevState;
+        })
     }
 
     updateSurveyLocation = () => {
@@ -355,7 +369,9 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
                         onClickFinish={this.onClickFinish}
@@ -371,6 +387,9 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
+                        tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                         checkedbox={this.checkedbox}
                         onDropdownChange={this.onDropdownChange}
                         updateSurveyState={this.updateSurveyState}
@@ -388,8 +407,11 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                         updateSurveyState={this.updateSurveyState}
+                        updateRibData={this.updateRibData}
                         incrementSRS={this.incrementSRS}
                         decrementSRS={this.decrementSRS}
                         onClickFinish={this.onClickFinish}
@@ -405,10 +427,13 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
                         onClickFinish={this.onClickFinish}
                         fromPublish={this.state.fromPublish} 
+                        tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                     />
                 )
             default :
@@ -418,10 +443,13 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         incrementMicro={this.incrementMicro}
                         decrementMicro={this.decrementMicro}
                         onClickFinish={this.onClickFinish}
                         fromPublish={this.state.fromPublish}
+                        tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                     />
                 )
         }
@@ -452,13 +480,14 @@ export default class SurveyContainer extends Component {
         /**
          * Commit all of the data to local storage
          */
-        const {surveyName, surveyData, SRSData, ASData, MicroData} = this.state;
+        const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
         const survStoreData = {
             surveyName, 
             surveyData,
             SRSData,
             ASData,
             MicroData,
+            ribData,
             /* Possibly store user credentials here too */
         }
         if(this.props.navigation.getParam('inProgress') !== undefined){
@@ -481,13 +510,14 @@ export default class SurveyContainer extends Component {
         } else {
             /* Save the survey, move back to publish */
             let survID = this.props.navigation.getParam('inProgress');
-            const {surveyName, surveyData, SRSData, ASData, MicroData} = this.state;
+            const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
             const survStoreData = {
                 surveyName, 
                 surveyData,
                 SRSData,
                 ASData,
                 MicroData,
+                ribData
                 /* Possibly store user credentials here too */
             }
             surveyDB.updateSurvey(survID, survStoreData);

@@ -48,6 +48,7 @@ export default class AccumulationSweep extends Component {
             
         ],
         MicroData: this.props.MicroData ? this.props.MicroData : {},
+        ribData: this.props.ribData ? this.props.ribData : {},
         selections: BUTTONS
     }
 

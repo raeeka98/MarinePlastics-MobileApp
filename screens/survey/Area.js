@@ -22,6 +22,7 @@ export default class Area extends Component{
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
         MicroData: this.props.MicroData ? this.props.MicroData : {},
+        ribData: this.props.ribData ? this.props.ribData : {},
         showLastTime: false,
         lastTime: new Date(),
         lastHours: '00',

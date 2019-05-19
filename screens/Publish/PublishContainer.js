@@ -368,6 +368,7 @@ export default class PublishContainer extends Component {
 
       this.props.navigation.navigate('SurveyContainer', {
         surveyName: currentSurvey.surveyName,
+        ribData: currentSurvey.ribData,
         surveyData: currentSurvey.surveyData,
         SRSData: currentSurvey.SRSData,
         ASData: currentSurvey.ASData,
