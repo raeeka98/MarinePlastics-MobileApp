@@ -44,4 +44,20 @@ function SubmitModal(props) {
     );
 }
 
-export {SubmitModal}
+function LoginModal(props) {
+  return(
+    <Modal isVisible={props.isLoginModalVisible}>
+      <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
+        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Attention!</Text>
+        <Text style={{alignSelf: 'center', padding: 8, fontSize: 15,}}>You must be logged in to submit a survey!</Text>
+        <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
+          <Button light style={{alignSelf: 'center'}} onPress={props.closeLoginModal}>
+            <Text>OK</Text>
+          </Button>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+export { SubmitModal, LoginModal }

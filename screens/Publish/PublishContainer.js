@@ -32,7 +32,10 @@ import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
 import testSurveys from '../../testJSON/testSurveys';
 
-import { SubmitModal } from './PublishModals';
+import {
+  SubmitModal,
+  LoginModal
+} from './PublishModals';
 
 
 export default class PublishContainer extends Component {
@@ -92,6 +95,7 @@ export default class PublishContainer extends Component {
   }
 
   closeSubmitModal = () => this.setState({isSubmitModalVisible: false});
+  closeLoginModal = () => this.setState({isLoginModalVisible: false});
 
 
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
@@ -456,17 +460,11 @@ export default class PublishContainer extends Component {
               onPressSubmit={this.onPressSubmit}
               closeSubmitModal={this.closeSubmitModal}
               />
-            <Modal isVisible={this.state.isLoginModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Attention!</Text>
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 15,}}>You must be logged in to submit a survey!</Text>
-                <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
-                  <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isLoginModalVisible: false})}>
-                    <Text>OK</Text>
-                  </Button>
-                </View>
-              </View>
-            </Modal>
+            <LoginModal
+              isLoginModalVisible={this.state.isLoginModalVisible}
+              closeLoginModal={this.closeLoginModal}
+              />
+
             <Modal isVisible={this.state.isLoadingModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: '20%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'space-around', flexDirection:'row'}}>
                 <ActivityIndicator size="large" color="#0000ff" />
