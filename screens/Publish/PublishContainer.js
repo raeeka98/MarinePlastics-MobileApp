@@ -39,6 +39,8 @@ import {
   FinishedModal
 } from './PublishModals';
 
+import { mergeSurveys } from './MergeSurveys';
+
 
 export default class PublishContainer extends Component {
   constructor(props) {
@@ -414,7 +416,8 @@ export default class PublishContainer extends Component {
 
   publishSurvey = () => {
       const { surveys } = this.state;
-      // Here we have the merged survey
+      const merged = mergeSurveys(surveys);
+      console.log(merged);
       const mergedSurvey = this.state.surveys[0];
       this.openPublishModal(mergedSurvey);
   }
