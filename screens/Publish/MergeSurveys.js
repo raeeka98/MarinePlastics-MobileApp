@@ -16,7 +16,15 @@ export function mergeSurveys(surveys) {
 function mergeSRS(surveys) {
     let finalSRS = {};
     surveys.forEach(survey => {
+          for (const debris of survey) {
+              if(debris in finalSRS) {
+                  finalSRS[debris] += survey[debris];
+              }
+              else {
+                  finalSRS[debris] = 0;
+              }
 
+          }
     });
 
     return finalSRS;
