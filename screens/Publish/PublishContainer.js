@@ -34,7 +34,9 @@ import testSurveys from '../../testJSON/testSurveys';
 
 import {
   SubmitModal,
-  LoginModal
+  LoginModal,
+  LoadingModal,
+  FinishedModal
 } from './PublishModals';
 
 
@@ -96,6 +98,7 @@ export default class PublishContainer extends Component {
 
   closeSubmitModal = () => this.setState({isSubmitModalVisible: false});
   closeLoginModal = () => this.setState({isLoginModalVisible: false});
+  closeFinishedModal = () => this.setState({isFinishedVisible: false});
 
 
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
@@ -464,13 +467,11 @@ export default class PublishContainer extends Component {
               isLoginModalVisible={this.state.isLoginModalVisible}
               closeLoginModal={this.closeLoginModal}
               />
+            <LoadingModal
+              isLoadingModalVisible={this.state.isLoadingModalVisible}
+              />
 
-            <Modal isVisible={this.state.isLoadingModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: '20%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'space-around', flexDirection:'row'}}>
-                <ActivityIndicator size="large" color="#0000ff" />
-                <Text style={{fontSize: 17}}>Loading ...</Text>
-              </View>
-            </Modal>
+
             <Modal isVisible={this.state.isBeachModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white'}}>
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Whoops!</Text>
@@ -516,14 +517,10 @@ export default class PublishContainer extends Component {
                 </View>
               </View>
             </Modal>
-            <Modal isVisible={this.state.isFinishedVisible}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '90%', height: "20%", backgroundColor: 'white'}}>
-                  <Text style={{alignSelf: 'center', textAlign: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Your survey has been successfully submitted!</Text>
-                  <Button style={{alignSelf: 'center'}}light onPress={()=>this.setState({isFinishedVisible: false})}>
-                    <Text>OK</Text>
-                  </Button>
-              </View>
-            </Modal>
+            <FinishedModal
+              isFinishedVisible={this.state.isFinishedVisible}
+              closeFinishedModal={this.closeFinishedModal}
+              />
         </Container>
       );
     }
