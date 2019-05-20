@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     footer: {
         position: 'absolute',
         bottom: 0,
-        backgroundColor: 'yellow',
         justifyContent: 'center'
     }
 })
