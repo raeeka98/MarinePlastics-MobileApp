@@ -25,6 +25,8 @@ import {
 } from 'native-base';
 import Modal from 'react-native-modal'
 
+import { FlatList } from 'react-native-gesture-handler';
+
 // props: isSubmitModalVisible, selectedName, onPressSubmit
 function SubmitModal(props) {
     return(
@@ -84,4 +86,29 @@ function FinishedModal(props) {
   );
 }
 
-export { SubmitModal, LoginModal, LoadingModal, FinishedModal }
+function ConfirmModal(props) {
+  const { isConfirmModalVisible, match, confirmBeach, closeConfirmModal, finalBeachSubmit } = props;
+  return(
+    <Modal isVisible={isConfirmModalVisible}>
+      <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
+        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
+          {
+            match ?
+              `Submit under beach \"${confirmBeach}\"?` :
+              `Create a new beach \"${confirmBeach}\"?`
+          }
+          </Text>
+        <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
+          <Button light style={{alignSelf: 'center'}} onPress={closeConfirmModal}>
+            <Text>No</Text>
+          </Button>
+          <Button success style={{alignSelf: 'center'}} onPress={finalBeachSubmit}>
+            <Text>Yes</Text>
+          </Button>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+export { SubmitModal, LoginModal, LoadingModal, FinishedModal, ConfirmModal }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, FlatList, TouchableOpacity, AsyncStorage } from 'react-native';
-import {Icon, Footer, Button, Toast} from 'native-base'
+import { Platform, StatusBar, StyleSheet, View, FlatList, TouchableOpacity, AsyncStorage } from 'react-native';
+
+import {Icon, Footer, Button, Toast, Text} from 'native-base'
 import Modal from 'react-native-modal'
 
 import surveyDB from '../storage/mongoStorage'
@@ -21,9 +22,7 @@ class HomePage extends React.Component {
     this.renderInProgress = this.renderInProgress.bind(this);
     this.navToPublish = this.navToPublish.bind(this);
     this.openSurvey=this.openSurvey.bind(this)
-    this.onPressDeleteSurvey=this.onPressDeleteSurvey.bind(this);
     this.deleteSurvey=this.deleteSurvey.bind(this);
-    this.endModals=this.endModals.bind(this)
   }
 
   static navigationOptions = {
@@ -88,11 +87,11 @@ class HomePage extends React.Component {
     );
   }
 
-  endModals(){
+  endModals = () => {
     this.setState({isDeleteVisible: false, isModalVisble: false})
   }
 
-  onPressDeleteSurvey(){
+  onPressDeleteSurvey = () => {
     this.setState({isDeleteVisible: true})
   }
 
