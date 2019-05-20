@@ -30,21 +30,34 @@ import { FlatList } from 'react-native-gesture-handler';
 import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
+import testSurveys from '../../testJSON/testSurveys';
+
+import {
+  SubmitModal,
+  LoginModal,
+  LoadingModal,
+  FinishedModal
+} from './PublishModals';
+
+import { mergeSurveys } from './MergeSurveys';
 import toExport from './env.js'
 
 
 export default class PublishContainer extends Component {
   constructor(props) {
     super(props);
+    this.baseURL = 'http://169.233.235.63:3001'
     this.state = {
       loading : true,
       isImporting : true,
       isScanning : false,
       isPublished : false,
-      surveys : [
-        (this.props.navigation.getParam('initSurvey') ? this.props.navigation.getParam('initSurvey') : {})
-      ]
+      surveys : []
     };
+    const initSurvey = this.props.navigation.getParam('initSurvey');
+    if(initSurvey) {
+        this.state.surveys.push(initSurvey);
+    }
      // bind methods
      this.removeSurvey = this.removeSurvey.bind(this);
      this.convertSurvey = this.convertSurvey.bind(this);
@@ -61,7 +74,21 @@ export default class PublishContainer extends Component {
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
-    this.setState({ loading : false });
+    this.setState({
+      loading : false
+    });
+
+    // for testing merging functionality
+    if(__DEV__) {
+
+      this.setState(prevState => {
+          prevState.surveys.push(testSurveys.test1);
+          prevState.surveys.push(testSurveys.test2);
+          prevState.surveys.push(testSurveys.test3);
+          return prevState;
+      })
+    }
+
   }
 
   async componentWillReceiveProps(props) {
@@ -74,9 +101,13 @@ export default class PublishContainer extends Component {
       const survey = await surveyDB.getSurvey(verifyID)
       console.log(survey);
       this.setState({mergedSurvey: survey})
-      this.checkIfBeachExists(survey); 
+      this.checkIfBeachExists(survey);
     }
   }
+
+  closeSubmitModal = () => this.setState({isSubmitModalVisible: false});
+  closeLoginModal = () => this.setState({isLoginModalVisible: false});
+  closeFinishedModal = () => this.setState({isFinishedVisible: false});
 
 
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
@@ -100,7 +131,7 @@ export default class PublishContainer extends Component {
       case 'SRS':
         data = currentSurvey.SRSData;
         break;
-      default: 
+      default:
         data = currentSurvey.ASData;
     }
 
@@ -145,7 +176,7 @@ export default class PublishContainer extends Component {
         if(res.data.length === 0){
           return false;
         } else {
-          console.log(res.data) 
+          console.log(res.data)
           this.setState({match: res.data[0]._id})
           return true;
         }
@@ -158,7 +189,11 @@ export default class PublishContainer extends Component {
       //If its true, then complete the submission!
       console.log(`The beach ${beachName} exists in the database`);
       //Here's where we'll submit the survey to the database
-      this.setState({isConfirmModalVisible: true, isLoadingModalVisible: false, confirmBeach: beachName})
+      this.setState({
+        isConfirmModalVisible: true,
+        isLoadingModalVisible: false,
+        confirmBeach: beachName
+      })
     } else {
       //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
       console.log(`The beach ${beachName} does not exist`);
@@ -167,13 +202,13 @@ export default class PublishContainer extends Component {
   }
 
   combineDateTime() {
-    let currentSurveyData = this.state.mergedSurvey.surveyData,
-    currentDate = currentSurveyData.cleanupDate.toISOString(),
-    dateOnly = currentDate.split('T')[0],
-    currentTime = currentSurveyData.cleanupTime.toISOString(),
-    timeOnly= currentTime.split('T')[1];
-    let returnDate = new Date(dateOnly + 'T' + timeOnly)
-    return returnDate
+    const currentSurveyData = this.state.mergedSurvey.surveyData;
+    let currentDate = currentSurveyData.cleanupDate.toISOString();
+    const dateOnly = currentDate.split('T')[0];
+    let currentTime = currentSurveyData.cleanupTime.toISOString();
+    const timeOnly= currentTime.split('T')[1];
+    let returnDate = new Date(dateOnly + 'T' + timeOnly);
+    return returnDate;
   }
 
   async convertSurvey(index) {
@@ -183,7 +218,7 @@ export default class PublishContainer extends Component {
     let userID = await AsyncStorage.getItem('accessToken');
     userID = userID.split("|")[1];
     let userEmail = await AsyncStorage.getItem('email');
-    console.log("Got my shit back cuz");
+    console.log("==============" + userEmail);
     const form = {
       survData: {
         user: {
@@ -199,7 +234,7 @@ export default class PublishContainer extends Component {
           other: surveyData.locationChoiceOther ? surveyData.locationChoiceOther : undefined
         },
         survDate: this.combineDateTime(),
-        st: { 
+        st: {
           s: surveyData.substrateTypeSand ? surveyData.substrateTypeSand : undefined,
           p: surveyData.substrateTypePebble ? surveyData.substrateTypePebble : undefined,
           rr: surveyData.substrateTypeRipRap ? surveyData.substrateTypeRipRap : undefined,
@@ -245,6 +280,7 @@ export default class PublishContainer extends Component {
 
   convertTimeString(time){
     let timeString = "";
+    console.log(time);
     timeString = time.toString().split(/ /)[4].substring(0, 5);
     console.log(timeString)
     return timeString;
@@ -254,12 +290,10 @@ export default class PublishContainer extends Component {
     const formToSubmit = await this.convertSurvey();
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
+
     axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
-          this.setState({
-            isConfirmModalVisible: false
-          })
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
         }
       })
@@ -282,32 +316,32 @@ export default class PublishContainer extends Component {
      console.log("-----SURVEY-----")
      console.log(survey)
      let invalid = [];
- 
+
      const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
          'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
          'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
          'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
          'latitude', 'longitude'
      ];
- 
+
      for(const id in requiredIDs) {
        if(survey.surveyData[requiredIDs[id]] === undefined) {
          invalid.push(requiredIDs[id]);
-       } 
+       }
      }
- 
-     if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
+
+     if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther
          && !survey.surveyData.locationChoiceProximity)
          invalid.push('locChoice')
-     
+
      if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
          && !survey.surveyData.usageOther)
          invalid.push('usage')
- 
+
      if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
          && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
          invalid.push('subType');
- 
+
      return invalid
   }
 
@@ -339,7 +373,7 @@ export default class PublishContainer extends Component {
         console.log(err);
         this.setState({isLoadingModalVisible: false});
       })
-    
+
   }
 
   openPublishModal(survey) {
@@ -393,8 +427,7 @@ export default class PublishContainer extends Component {
 
   publishSurvey = () => {
       const { surveys } = this.state;
-      // Here we have the merged survey
-      const mergedSurvey = this.state.surveys[0];
+      const mergedSurvey = mergeSurveys(surveys);
       this.openPublishModal(mergedSurvey);
   }
 
@@ -436,51 +469,36 @@ export default class PublishContainer extends Component {
             {this.state.isPublished &&
                 <Published/>
             }
-            <Modal isVisible={this.state.isSubmitModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Submit {this.state.selectedName}?</Text>
-                <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
-                  <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isSubmitModalVisible: false})}>
-                    <Text>Cancel</Text>
-                  </Button>
-                  <Button success style={{alignSelf: 'center'}} onPress={this.onPressSubmit}>
-                    <Text>Submit</Text>
-                  </Button>
-                </View>
-              </View>
-            </Modal> 
-            <Modal isVisible={this.state.isLoginModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Attention!</Text>
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 15,}}>You must be logged in to submit a survey!</Text>
-                <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
-                  <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isLoginModalVisible: false})}>
-                    <Text>OK</Text>
-                  </Button>
-                </View>
-              </View>
-            </Modal>
-            <Modal isVisible={this.state.isLoadingModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: '20%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'space-around', flexDirection:'row'}}>
-                <ActivityIndicator size="large" color="#0000ff" />
-                <Text style={{fontSize: 17}}>Loading ...</Text>
-              </View>
-            </Modal> 
+            <SubmitModal
+              isSubmitModalVisible={this.state.isSubmitModalVisible}
+              selectedName={this.state.selectedName}
+              onPressSubmit={this.onPressSubmit}
+              closeSubmitModal={this.closeSubmitModal}
+              />
+            <LoginModal
+              isLoginModalVisible={this.state.isLoginModalVisible}
+              closeLoginModal={this.closeLoginModal}
+              />
+            <LoadingModal
+              isLoadingModalVisible={this.state.isLoadingModalVisible}
+              />
+
+
             <Modal isVisible={this.state.isBeachModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white'}}>
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Whoops!</Text>
                 <Text style={{padding: 8, fontSize: 15}}>
-                  It looks like the beach "{this.state.beachName}" is not in our database! We may actually have it stored, just under a different name. 
+                  It looks like the beach "{this.state.beachName}" is not in our database! We may actually have it stored, just under a different name.
                   Here's a list of the closest beaches based on your survey's coordinates.
                 </Text>
                 <Text style={{padding:8, fontSize: 15, fontWeight: 'bold'}}>
-                  If you see your beach here, select it by tapping on the name. 
+                  If you see your beach here, select it by tapping on the name.
                   Otherwise, tap 'No match' so that we can add it to the database for you!
                 </Text>
-                <FlatList 
-                  style={{backgroundColor: 'ghostwhite', padding: 8}} 
-                  data={this.state.beachList} extraData={this.state} 
-                  renderItem={this.renderBeachItem} 
+                <FlatList
+                  style={{backgroundColor: 'ghostwhite', padding: 8}}
+                  data={this.state.beachList} extraData={this.state}
+                  renderItem={this.renderBeachItem}
                 />
                 <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end', marginBottom: 5}}>
                   <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isBeachModalVisible: false})}>
@@ -496,7 +514,7 @@ export default class PublishContainer extends Component {
               <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
                   {
-                    this.state.match ? 
+                    this.state.match ?
                       `Submit under beach \"${this.state.confirmBeach}\"?` :
                       `Create a new beach \"${this.state.confirmBeach}\"?`
                   }
@@ -511,15 +529,10 @@ export default class PublishContainer extends Component {
                 </View>
               </View>
             </Modal>
-            <Modal isVisible={this.state.isFinishedVisible}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '90%', height: "20%", backgroundColor: 'white'}}>
-                  <Text style={{alignSelf: 'center', textAlign: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Your survey has been successfully submitted!</Text>
-                  <Button style={{alignSelf: 'center'}}light onPress={()=>this.setState({isFinishedVisible: false})}>
-                    <Text>OK</Text>
-                  </Button>
-              </View>
-
-            </Modal>
+            <FinishedModal
+              isFinishedVisible={this.state.isFinishedVisible}
+              closeFinishedModal={this.closeFinishedModal}
+              />
         </Container>
       );
     }

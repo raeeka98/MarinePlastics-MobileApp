@@ -15,7 +15,7 @@ export default class ImportView extends Component {
 
 
   render() {
-    let { survey, index } = this.props;
+    let { index, name } = this.props;
     return (
       <Card style={{ borderRadius:10 }}>
         <CardItem bordered style={{
@@ -24,7 +24,7 @@ export default class ImportView extends Component {
           }}>
           <Left>
             <Button transparent onPress={() => {}}>
-              <Text>{this.props.survey.surveyName}</Text>
+              <Text>{name}</Text>
             </Button>
           </Left>
           <Right>
