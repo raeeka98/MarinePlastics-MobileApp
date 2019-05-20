@@ -52,6 +52,7 @@ export default class Scanner extends Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     if(type == BarCodeScanner.Constants.BarCodeType.qr) {
+      console.log(data)
         this.props.addSurvey(data);
     }
     else {

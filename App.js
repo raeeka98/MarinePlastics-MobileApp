@@ -28,7 +28,7 @@ import Example from './screens/Example';
 
 
 const MainNavigator = createStackNavigator(
-  {
+  { 
     Boarding: {screen: BoardingPage},
     Home: {screen: HomePage},
     Login: {screen: LogInPage},

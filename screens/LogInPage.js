@@ -23,8 +23,15 @@ class LogInPage extends React.Component {
     super(props);
     //this.state = { accessToken: null };
     //this._retrieveAccessToken();
-    this.state = { accessToken: this._retrieveAccessToken(), email: this._retrieveEmail(),
-        name: this._retrieveNickname(), picture: this._retrievePicture()};
+    this.state = { accessToken: null, email: null, name: null, picture: null};
+  }
+
+  componentWillMount() {
+    this._retrieveAccessToken()
+    this._retrieveEmail()
+    this._retrieveNickname()
+    this._retrievePicture()
+    
   }
 
   // Log out by setting the accessToken to null then storing that null to AsyncStorage.
@@ -266,7 +273,10 @@ class LogInPage extends React.Component {
         <Text style={styles.container}>
           Email: {loggedIn ? this.state.email : ''}
         </Text>
-        
+        <Image
+          style={{width:50, height: 50}}
+          source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+        />
       </View>
     );
   }

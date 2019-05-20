@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import {Icon, Footer, Button} from 'native-base'
+import {Icon, Footer, Button, Toast} from 'native-base'
 import Modal from 'react-native-modal'
 
 import surveyDB from '../storage/mongoStorage'
@@ -19,6 +19,7 @@ class HomePage extends React.Component {
     }
 
     this.renderInProgress = this.renderInProgress.bind(this);
+    this.navToPublish = this.navToPublish.bind(this);
     this.openSurvey=this.openSurvey.bind(this)
     this.onPressDeleteSurvey=this.onPressDeleteSurvey.bind(this);
     this.deleteSurvey=this.deleteSurvey.bind(this);
@@ -30,9 +31,9 @@ class HomePage extends React.Component {
   }
 
   async retrieveInProgress() {
-    let res = await surveyDB.getNameDate()
-      console.log(res)
-      this.setState({inProgress: res})
+    let surveys =  await surveyDB.getNameDate();
+    console.log(`Retrieved: ${surveys}`)
+    this.setState({inProgress: surveys})
   }
 
   componentWillMount(){
@@ -43,25 +44,47 @@ class HomePage extends React.Component {
     this.setState({isModalVisble: false, chosenSurvey: ""})
   }
 
-  cancelDelete = () => {
+  cancelDelete = () => { 
     this.setState({isDeleteVisible: false})
   }
+
 
   async openSurvey(){
     this.cancelModal();
     let survey;
     let survID = this.state.chosenSurvey._id
     survey = await surveyDB.getSurvey(survID);
-    console.log(survey._id);
-    this.props.navigation.navigate('SurveyContainer',
+    console.log("SURVEY:")
+    console.log(survey);
+    this.props.navigation.navigate('SurveyContainer', 
       {
         surveyData: survey.surveyData,
+        ribData: survey.ribData, 
+        surveyName: survey.surveyName, 
+        SRSData: survey.SRSData, 
+        ASData: survey.ASData, 
+        MicroData: survey.MicroData,
+        inProgress: survey._id,
+      })
+  }
+
+  async navToPublish() {
+    this.cancelModal();
+    let survName = this.state.chosenSurvey.surveyName;
+    let survey;
+    let survID = this.state.chosenSurvey._id
+    survey = await surveyDB.getSurvey(survID);
+    console.log(survey._id);
+    this.props.navigation.navigate('PublishContainer',
+      {initSurvey : {
+        surveyData: survey.surveyData,
+        ribData: survey.ribData,
         surveyName: survName,
         SRSData: survey.SRSData,
         ASData: survey.ASData,
         MicroData: survey.MicroData,
         inProgress: survey._id,
-      }
+      }}
     );
   }
 
@@ -92,6 +115,8 @@ class HomePage extends React.Component {
 
 
 
+
+
   renderInProgress(){
     const {inProgress} = this.state;
     let surveyArray = [];
@@ -118,7 +143,7 @@ class HomePage extends React.Component {
                   position: 'absolute',
                   marginTop: '1%',
                   width:"50%",
-                  textAlign:'right',
+                  textAlign:'center',
                   paddingRight: '5%',
                   fontSize: 16,
                   fontWeight:'bold'
@@ -152,11 +177,12 @@ class HomePage extends React.Component {
                 style={{fontSize: 17,
                   fontStyle: 'italic'}}
               >
-                {inProgress[i].surveyData.cleanupDate ?
-                  ((inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
-                  + inProgress[i].surveyData.cleanupDate.getDate() + "/"
-                  + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100))
-                  : null
+                {
+                  inProgress[i].surveyData.cleanupDate ? 
+                    (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
+                    + inProgress[i].surveyData.cleanupDate.getDate() + "/"
+                    + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100) :
+                    "No Date"
                 }
               </Text>
               <Icon type='Entypo' name='dots-three-horizontal'/>
@@ -195,8 +221,8 @@ class HomePage extends React.Component {
         <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
           <Text style={{fontWeight: 'bold', color: 'white'}}>Publish A Survey</Text>
         </Button>
-        <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Profile')}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>View Profile</Text>
+        <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
         </Button>
 
         <Modal isVisible={this.state.isModalVisble}>
@@ -209,10 +235,16 @@ class HomePage extends React.Component {
               <Button light  style={{justifyContent: 'center', width: 100}}onPress={this.openSurvey} title='Edit'>
                 <Text>Edit</Text>
               </Button>
-              <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.onPressDeleteSurvey} title='Edit'>
+              <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.onPressDeleteSurvey} title='Delete'>
                 <Text>Delete</Text>
               </Button>
             </View>
+            <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              <Button primary style={{justifyContent: 'center',width: 100}} onPress={this.navToPublish}>
+                <Text>Publish</Text>
+              </Button>
+            </View>
+
           </View>
         </Modal>
         <Modal isVisible={this.state.isDeleteVisible}>

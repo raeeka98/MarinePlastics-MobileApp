@@ -53,7 +53,10 @@ import surveyDB from '../../storage/mongoStorage'
  *   substrateTypePebble: Boolean,
  *   subastrateTypeRipRap: Boolean,
  *   substrateTypeSeaweed: Boolean,
- *   subStrateTypeOther: Boolean/String,
+ *   subStrateTypeOther: Boolean/String
+ * },
+ * 
+ * ribData: {
  *   r1Length: String/Number,
  *   r1Start: String/Number,
  *   r2Length: String/Number,
@@ -62,7 +65,7 @@ import surveyDB from '../../storage/mongoStorage'
  *   r3Start: String/Number,
  *   r4Length: String/Number,
  *   r4Start: String/Number,
- * },
+ * ,}
  * 
  * SRSData: {
  *   ITEMNAME__fresh__RIBNUMBER: Number,
@@ -97,11 +100,18 @@ export default class SurveyContainer extends Component {
         //survey.
         const nav = this.props.navigation
         this.state = { 
-            surveyData: nav.getParam('surveyData') ? nav.getParam('surveyData') : {},
+            surveyData: nav.getParam('surveyData') ? nav.getParam('surveyData') : {
+                windDir: 'n',
+                tideTypeA: 'high',
+                tideTypeB: 'high',
+                slope: 'winter'
+            },
             SRSData: nav.getParam('SRSData') ? nav.getParam('SRSData') :  {},
             ASData: nav.getParam('ASData') ? nav.getParam('ASData') : {},
             MicroData: nav.getParam('MicroData') ? nav.getParam('MicroData') : {},
+            ribData: nav.getParam('ribData') ? nav.getParam('ribData') : {},
             tabArray : [],
+            ribsToSelect: undefined,
             shouldRender:{
                 teamInfo: true,
                 area: false,
@@ -111,8 +121,14 @@ export default class SurveyContainer extends Component {
             },
             currentScreen: "teamInfo",
             surveyName: nav.getParam('surveyName') ? nav.getParam('surveyName') : "",
-            isModalVisible: false
+            isModalVisible: false,
+            isValidVisible: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false,
+            invalidFields: nav.getParam('invalidArray') ? nav.getParam('invalidArray') : [],
+            fromPublish: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false,
+            remade: false,
         }
+        console.log("------STATE------")
+        console.log(this.state)
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
         this.moveToArea=this.moveToArea.bind(this);
@@ -207,6 +223,31 @@ export default class SurveyContainer extends Component {
         })
         if(key === 'cleanupTime')
             this.setState({showTime: false})
+    }
+
+    updateRibData(refName, e) {
+        let key = refName;
+        let val = e.nativeEvent.text;
+        this.setState(prevState => {
+            prevState.ribData[key] = value;
+            return prevState;
+        })
+    }
+
+    updateSurveyLocation = () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState(prevState => {
+                    prevState.surveyData.latitude = position.coords.latitude;
+                    prevState.surveyData.longitude = position.coords.longitude;
+                    prevState.error = null;
+                    return prevState;
+
+                })
+            },
+            (error) => this.setState({ error: error.message }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        )
     }
 
     /**
@@ -328,11 +369,15 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
                         navigation={this.props.navigation}
+                        invalidFields={this.state.invalidFields}
                     />
                 )
             case "area" : 
@@ -342,11 +387,17 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
+                        tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                         checkedbox={this.checkedbox}
                         onDropdownChange={this.onDropdownChange}
                         updateSurveyState={this.updateSurveyState}
                         updateSurveyTime={this.updateSurveyTime}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
+                        invalidFields={this.state.invalidFields}
+                        updateSurveyLocation={this.updateSurveyLocation}
                     />
                 )
             case "srs" :
@@ -356,11 +407,17 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                         updateSurveyState={this.updateSurveyState}
+                        updateRibData={this.updateRibData}
                         incrementSRS={this.incrementSRS}
                         decrementSRS={this.decrementSRS}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
+                        setRemade={this.setRemade}
+                        remade={this.state.remade}
                     />
                 )
             case "as" : 
@@ -370,9 +427,13 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
-                        onClickFinish={this.onClickFinish} 
+                        onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish} 
+                        tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                     />
                 )
             default :
@@ -382,12 +443,20 @@ export default class SurveyContainer extends Component {
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
+                        ribData={this.state.ribData}
                         incrementMicro={this.incrementMicro}
                         decrementMicro={this.decrementMicro}
                         onClickFinish={this.onClickFinish}
+                        fromPublish={this.state.fromPublish}
+                        tabArray={this.state.tabArray}
+                        ribsToSelect={this.state.ribsToSelect}
                     />
                 )
         }
+    }
+
+    setRemade =() => {
+        this.setState({remade: true})
     }
 
     onClickFinish = () => {
@@ -411,13 +480,14 @@ export default class SurveyContainer extends Component {
         /**
          * Commit all of the data to local storage
          */
-        const {surveyName, surveyData, SRSData, ASData, MicroData} = this.state;
+        const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
         const survStoreData = {
             surveyName, 
             surveyData,
             SRSData,
             ASData,
             MicroData,
+            ribData,
             /* Possibly store user credentials here too */
         }
         if(this.props.navigation.getParam('inProgress') !== undefined){
@@ -425,15 +495,87 @@ export default class SurveyContainer extends Component {
             let survID = this.props.navigation.getParam('inProgress');
             await surveyDB.updateSurvey(survID, survStoreData);
         } else {
-            await surveyDB.addSurvey(survStoreData)
+            await surveyDB.addSurvey(survStoreData);
         }
         /* Navigate back to the home page */
         await this.setState({isModalVisible:false, surveyName: ''})
         this.props.navigation.navigate('Home');
     }
 
+    onPressVerify = () => {
+        let invalidArray = this.verifyModal();
+        if(invalidArray.length > 0){
+            /* Let the user know that they ain't done yet */
+            this.setState({invalidFields: invalidArray, isModalVisible: false, isValidVisible: true})
+        } else {
+            /* Save the survey, move back to publish */
+            let survID = this.props.navigation.getParam('inProgress');
+            const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
+            const survStoreData = {
+                surveyName, 
+                surveyData,
+                SRSData,
+                ASData,
+                MicroData,
+                ribData
+                /* Possibly store user credentials here too */
+            }
+            surveyDB.updateSurvey(survID, survStoreData);
+            /* We need to indicate that we're coming back from the validation process so that we can 
+               perform the following:
+                - Query the website's database to see if the beach already exists
+            */
+            this.props.navigation.navigate('Publish', {
+                isVerified: true,
+                verifyID: survID
+            })/*
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'Publish', params: {isVerified: true, verifyID: survID} })],
+              });
+              this.props.navigation.dispatch(resetAction);*/
+        }
+    }
+
+    verifyModal = () => {
+        /* Here we'll need to verify the new survey information */
+        const survey = this.state;
+        let invalid = [];
+        const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
+            'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
+            'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
+            'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
+            'latitude', 'longitude'
+        ];
+
+        for(const id in requiredIDs) {
+            if(survey.surveyData[requiredIDs[id]] === undefined) {
+                invalid.push(requiredIDs[id]);
+            }
+        }
+
+        if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
+            && !survey.surveyData.locationChoiceProximity)
+            invalid.push('locChoice')
+        
+        if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
+            && !survey.surveyData.usageOther)
+            invalid.push('usage')
+
+        if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
+            && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
+            invalid.push('subType');
+
+        return invalid
+    }
+
+    cancelValidModal = () => {
+        this.setState({isValidVisible: false})
+    }
+
     render() {
         const {shouldRender} = this.state;
+        console.log("Rendering")
         return( 
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
@@ -454,12 +596,32 @@ export default class SurveyContainer extends Component {
                             <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
                                 <Text style={{color: 'white', padding: 8}}>Back</Text>
                             </Button>
-                            <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
-                                <Text style={{color: 'white', padding: 8}}>Save</Text>
-                            </Button>
+                            {
+                                this.state.fromPublish ? 
+                                    <Button success style={{justifyContent: 'center', width: 100}} onPress={this.onPressVerify}>
+                                        <Text style={{color: 'white', padding: 8}}>Verify</Text>
+                                    </Button> :
+                                    <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
+                                        <Text style={{color: 'white', padding: 8}}>Save</Text>
+                                    </Button>
+                            }
+                            
                         </View>
                     
                     </View>
+                </Modal>
+                {/* Modal to tell the user that their survey is invalid */}
+                <Modal isVisible={this.state.isValidVisible}>
+                    <View style={{alignSelf: 'center', justifyContent:'center', alignItems: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
+                            Please fill out the required fields, highlighted in red.
+                        </Text>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
+                            <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelValidModal}>
+                                <Text style={{color: 'white', padding: 8}}>Continue</Text>
+                            </Button>
+                        </View>  
+                    </View>                
                 </Modal>
                 <SurveyFooter 
                     teamInfo={shouldRender.teamInfo}

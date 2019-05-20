@@ -22,6 +22,7 @@ export default class Area extends Component{
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
         MicroData: this.props.MicroData ? this.props.MicroData : {},
+        ribData: this.props.ribData ? this.props.ribData : {},
         showLastTime: false,
         lastTime: new Date(),
         lastHours: '00',
@@ -82,8 +83,10 @@ export default class Area extends Component{
                 title: "Beach Info",
                 content: <BeachInfo 
                             surveyData={this.props.surveyData} 
-                            updateSurveyState={this.props.updateSurveyState} 
+                            updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields} 
                             checkedbox={this.props.checkedbox} 
+                            updateSurveyLocation={this.props.updateSurveyLocation}
                         />  
             },
             {
@@ -91,6 +94,7 @@ export default class Area extends Component{
                 content: <NRO 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                          />
             },
             {
@@ -98,6 +102,7 @@ export default class Area extends Component{
                 content: <TideInfo 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                             updateSurveyTime={this.props.updateSurveyTime}
                             onDropdownChange={this.props.onDropdownChange}
 
@@ -108,6 +113,7 @@ export default class Area extends Component{
                 content: <WindInfo 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                             onDropdownChange={this.props.onDropdownChange}
                          />
             },
@@ -116,6 +122,7 @@ export default class Area extends Component{
                 content: <SlopeSubstrate 
                             surveyData={this.props.surveyData} 
                             updateSurveyState={this.props.updateSurveyState}
+                            invalidFields={this.props.invalidFields}
                             onDropdownChange={this.props.onDropdownChange}
                             checkedbox={this.props.checkedbox}
                          />
@@ -166,39 +173,54 @@ class BeachInfo extends Component {
                         <TextInput
                             ref = 'beachName' 
                             placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
+                            style={[styles.textInput, (
+                                this.props.invalidFields.includes('beachName') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {}
+                            )]} 
                             onChange={this.props.updateSurveyState.bind(this, 'beachName')}
                             value={this.state.surveyData.beachName}
                         />
                     </Item>
 
-                    <Text style={styles.inputSingle}>Latitude (Link to GPS stuff here)</Text>
+                    <Button light full style={{padding: 8, marginTop: 8}}onPress={this.props.updateSurveyLocation}>
+                        <Text>Get Coordinates</Text>
+                    </Button>
+                    <Text style={styles.inputSingle}>Latitude</Text>
                     <Item regular>
                         <TextInput
                             ref = 'latitude' 
                             placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
+                            style={[styles.textInput, (
+                                this.props.invalidFields.includes('latitude') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {}
+                            )]}  
                             onChange={this.props.updateSurveyState.bind(this, 'latitude')}
-                            value={this.state.surveyData.latitude}
+                            value={this.state.surveyData.latitude ? this.state.surveyData.latitude + "" : ""}
                         />
                     </Item>
-                    <Text style={styles.inputSingle}>Longitude (Link to GPS stuff here)</Text>
+                    <Text style={styles.inputSingle}>Longitude</Text>
                     <Item regular>
                         <TextInput
                             ref = 'longitude' 
                             placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
+                            style={[styles.textInput, (
+                                this.props.invalidFields.includes('longitude') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {}
+                            )]} 
                             onChange={this.props.updateSurveyState.bind(this, 'longitude')}
-                            value={this.state.surveyData.longitude}
+                            value={this.state.surveyData.longitude ? this.state.surveyData.longitude + "" : ""}
                         />
                     </Item>
                 </View>
                 <View style={styles.inputDoubleContainer}>
-                    <View style={styles.inputDouble}>
+                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('usage') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {})]} >
                         <Text>
                             Major Usage:
                         </Text> 
-                        <View style={styles.checkBox}>
+                        <View 
+                            style={styles.checkBox} 
+                        >
                             <CheckBox 
                                 style={styles.checkBoxInput} 
                                 isChecked={this.state.surveyData.usageRecreation} 
@@ -217,24 +239,29 @@ class BeachInfo extends Component {
                         <View style={styles.checkBox}>
                             <CheckBox 
                                 style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.usageOther} 
-                                onClick={this.props.checkedbox.bind(this, 'usageOther')} 
+                                isChecked={this.state.surveyData.otherChecked} 
+                                onClick={this.props.checkedbox.bind(this, 'otherChecked')} 
                             />
                             <Text style={{marginLeft:5}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
-                                editable={this.state.surveyData.usageOther === true} 
+                                editable={this.state.surveyData.otherChecked === true} 
                                 placeholder={invisiblePlaceholder} 
                                 style={{height: 30}}
+                                onChange={this.props.updateSurveyState.bind(this, 'usageOther')}
+                                value={this.state.surveyData.usageOther}
                             />
                         </Item>
                     </View>
-                    <View style={styles.inputDouble}>
+                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('locChoice') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {})]}>
                         <Text>
                             Reason For Beach Choice:
                         </Text>
-                        <View style={styles.checkBox}>
+                        <View 
+                            style={[styles.checkBox]} 
+                        >
                             <CheckBox 
                                 style={styles.checkBoxInput} 
                                 isChecked={this.state.surveyData.locationChoiceProximity} 
@@ -253,16 +280,18 @@ class BeachInfo extends Component {
                         <View style={styles.checkBox}>
                             <CheckBox 
                                 style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.locationChoiceOther} 
-                                onClick={this.props.checkedbox.bind(this, 'locationChoiceOther')} 
+                                isChecked={this.state.surveyData.lcOtherChecked} 
+                                onClick={this.props.checkedbox.bind(this, 'lcOtherChecked')} 
                             />
                             <Text style={{marginLeft:5}}>Other</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
-                                editable={this.state.surveyData.locationChoiceOther === true} 
+                                editable={this.state.surveyData.lcOtherChecked === true} 
                                 placeholder={invisiblePlaceholder} 
                                 style={{height: 30}}
+                                onChange={this.props.updateSurveyState.bind(this, 'locationChoiceOther')}
+                                value={this.state.surveyData.locationChoiceOther}
                             />
                         </Item>
                     </View>
@@ -273,7 +302,8 @@ class BeachInfo extends Component {
                         <TextInput
                             ref = 'cmpsDir' 
                             placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
+                            style={[styles.textInput, (this.props.invalidFields.includes('cmpsDir') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {})]} 
                             onChange={this.props.updateSurveyState.bind(this, 'cmpsDir')}
                             value={this.state.surveyData.cmpsDir}
                         />
@@ -303,7 +333,8 @@ class NRO extends Component {
                         <TextInput
                             ref = 'riverName' 
                             placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
+                            style={[styles.textInput, (this.props.invalidFields.includes('riverName') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {})]} 
                             onChange={this.props.updateSurveyState.bind(this, 'riverName')}
                             value={this.state.surveyData.riverName}
                         />
@@ -313,7 +344,8 @@ class NRO extends Component {
                         <TextInput
                             ref = 'riverDistance' 
                             placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
+                            style={[styles.textInput, (this.props.invalidFields.includes('riverDistance') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {})]} 
                             onChange={this.props.updateSurveyState.bind(this, 'riverDistance')}
                             value={this.state.surveyData.riverDistance}
                         />
@@ -418,7 +450,8 @@ class TideInfo extends Component {
                                 ref = 'tideHeightA' 
                                 keyboardType="number-pad"
                                 placeholder={invisiblePlaceholder} 
-                                style={styles.textInput} 
+                                style={[styles.textInput, (this.props.invalidFields.includes('tideHeightA') ? 
+                                        {borderColor: 'red', borderWidth: 2} : {})]}  
                                 onChange={this.props.updateSurveyState.bind(this, 'tideHeightA')}
                                 value={this.state.surveyData.tideHeightA}
                             />
@@ -439,7 +472,8 @@ class TideInfo extends Component {
                             />
                             <TextInput 
                                 editable={false }
-                                style={{width: '70%', textAlign: 'center', fontSize: 17}} 
+                                style={[{width: '70%', textAlign: 'center', fontSize: 17}, (this.props.invalidFields.includes('tideTimeA') ? 
+                                            {borderColor: 'red', borderWidth: 2} : {})]} 
                                 value={this.displayTimeString('tideTimeA')}
                             />
                         </Item>
@@ -471,7 +505,8 @@ class TideInfo extends Component {
                                 ref = 'tideHeightB' 
                                 placeholder={invisiblePlaceholder} 
                                 keyboardType="number-pad"
-                                style={styles.textInput} 
+                                style={[styles.textInput, (this.props.invalidFields.includes('tideHeightB') ? 
+                                        {borderColor: 'red', borderWidth: 2} : {})]} 
                                 onChange={this.props.updateSurveyState.bind(this, 'tideHeightB')}
                                 value={this.state.surveyData.tideHeightB}
                             />
@@ -492,7 +527,8 @@ class TideInfo extends Component {
                             />
                             <TextInput 
                                 editable={false }
-                                style={{width: '70%', textAlign: 'center', fontSize: 17}} 
+                                style={[{width: '70%', textAlign: 'center', fontSize: 17}, (this.props.invalidFields.includes('tideTimeB') ? 
+                                            {borderColor: 'red', borderWidth: 2} : {})]} 
                                 value={this.displayTimeString('tideTimeB')}
                             />
                         </Item>
@@ -522,7 +558,8 @@ class WindInfo extends Component {
                             ref = 'windSpeed'
                             keyboardType="number-pad" 
                             placeholder={invisiblePlaceholder} 
-                            style={styles.textInput} 
+                            style={[styles.textInput, (this.props.invalidFields.includes('windSpeed') ? 
+                                        {borderColor: 'red', borderWidth: 2} : {})]} 
                             onChange={this.props.updateSurveyState.bind(this, 'windSpeed')}
                             value={this.state.surveyData.windSpeed}
                         />
@@ -536,6 +573,7 @@ class WindInfo extends Component {
                             placeholderStyle={{ color: "#bfc6ea" }}
                             style={{width: undefined}}
                             selectedValue={this.state.surveyData.windDir}
+                            
                             onValueChange={this.props.onDropdownChange.bind(this, 'windDir' )}
                         >
                             <Picker.Item label="North" value="n" />
@@ -588,7 +626,9 @@ class SlopeSubstrate extends Component {
                 {/* Render the subtrate type choices */}
                 <View style={styles.inputSingleContainer}>
                     <Text>Substrate Type:</Text>
-                    <View style={styles.inputSingle}>
+                    <View style={[styles.inputSingle, (this.props.invalidFields.includes('subType') ? 
+                                        {borderColor: 'red', borderWidth: 2} : {})]}
+                     >
                         <View style={styles.checkBoxLarge}>
                             <CheckBox 
                                 isChecked={this.state.surveyData.substrateTypeSand} 
@@ -627,8 +667,8 @@ class SlopeSubstrate extends Component {
                         </View>
                         <View style={styles.checkBoxLarge}>
                             <CheckBox 
-                                isChecked={this.state.surveyData.substrateTypeOther} 
-                                onClick={this.props.checkedbox.bind(this, 'substrateTypeOther')} 
+                                isChecked={this.state.surveyData.stOther} 
+                                onClick={this.props.checkedbox.bind(this, 'stOther')} 
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
                             />
@@ -636,9 +676,11 @@ class SlopeSubstrate extends Component {
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
-                                editable={this.state.surveyData.locationChoiceOther === true} 
+                                editable={this.state.surveyData.stOther === true} 
                                 placeholder={invisiblePlaceholder} 
                                 style={{height: 30}}
+                                onChange={this.props.updateSurveyState.bind(this, 'substrateTypeOther')}
+                                value={this.state.surveyData.substrateTypeOther}
                             />
                         </Item>
                     </View>
