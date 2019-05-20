@@ -28,6 +28,7 @@ export default class TeamInfo extends Component {
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
         MicroData: this.props.MicroData ? this.props.MicroData : {},
+        ribData: this.props.ribData ? this.props.ribData : {},
         tabArray: this.props.tabArray ? this.props.tabArray : []
     }
 

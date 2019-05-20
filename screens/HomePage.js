@@ -59,9 +59,10 @@ class HomePage extends React.Component {
     this.props.navigation.navigate('SurveyContainer',
       {
         surveyData: survey.surveyData,
-        surveyName: survey.surveyName,
-        SRSData: survey.SRSData,
-        ASData: survey.ASData,
+        ribData: survey.ribData, 
+        surveyName: survey.surveyName, 
+        SRSData: survey.SRSData, 
+        ASData: survey.ASData, 
         MicroData: survey.MicroData,
         inProgress: survey._id,
       })
@@ -77,6 +78,7 @@ class HomePage extends React.Component {
     this.props.navigation.navigate('PublishContainer',
       {initSurvey : {
         surveyData: survey.surveyData,
+        ribData: survey.ribData,
         surveyName: survName,
         SRSData: survey.SRSData,
         ASData: survey.ASData,
