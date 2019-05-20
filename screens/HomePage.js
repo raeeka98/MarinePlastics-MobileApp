@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text, FlatList, TouchableOpacity, AsyncStorage } from 'react-native';
 import {Icon, Footer, Button, Toast} from 'native-base'
 import Modal from 'react-native-modal'
 
@@ -59,10 +59,10 @@ class HomePage extends React.Component {
     this.props.navigation.navigate('SurveyContainer',
       {
         surveyData: survey.surveyData,
-        ribData: survey.ribData, 
-        surveyName: survey.surveyName, 
-        SRSData: survey.SRSData, 
-        ASData: survey.ASData, 
+        ribData: survey.ribData,
+        surveyName: survey.surveyName,
+        SRSData: survey.SRSData,
+        ASData: survey.ASData,
         MicroData: survey.MicroData,
         inProgress: survey._id,
       })

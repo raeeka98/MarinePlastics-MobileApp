@@ -15,7 +15,7 @@ import surveyDB from '../../storage/mongoStorage'
 
 
 /**
- * This class will contain the entire survey within the screen, rendering different 
+ * This class will contain the entire survey within the screen, rendering different
  * sections of the survey within one page
  */
 
@@ -27,7 +27,7 @@ import surveyDB from '../../storage/mongoStorage'
  *   orgName: String,
  *   orgLoc: String,
  *   cleanupDate: Date,
- *   cleanupTime: Date,  
+ *   cleanupTime: Date,
  *   beachName: String,
  *   latitude: Number (?),
  *   longitude: Number,
@@ -55,7 +55,7 @@ import surveyDB from '../../storage/mongoStorage'
  *   substrateTypeSeaweed: Boolean,
  *   subStrateTypeOther: Boolean/String
  * },
- * 
+ *
  * ribData: {
  *   r1Length: String/Number,
  *   r1Start: String/Number,
@@ -66,7 +66,7 @@ import surveyDB from '../../storage/mongoStorage'
  *   r4Length: String/Number,
  *   r4Start: String/Number,
  * ,}
- * 
+ *
  * SRSData: {
  *   ITEMNAME__fresh__RIBNUMBER: Number,
  *   ITEMNAME__weathered__RIBNUMBER: Number
@@ -76,12 +76,12 @@ import surveyDB from '../../storage/mongoStorage'
  *   :
  *   :
  * }
- * 
+ *
  * ASData: {
  *   ITEMNAME__fresh__accumulation: NUMBER
  *   ITEMNAME__weathered__accumulation: NUMBER
  * }
- * 
+ *
  * MicroData: {
  *   rib1__fresh__micro: Number,
  *   rib1__weathered__micro: Number
@@ -89,7 +89,7 @@ import surveyDB from '../../storage/mongoStorage'
  *   :
  *   rib4__weathered__micro: Number
  * }
- * 
+ *
  */
 
 export default class SurveyContainer extends Component {
@@ -99,7 +99,7 @@ export default class SurveyContainer extends Component {
         //We may have props passed to this now: the data from a previous/inprogress
         //survey.
         const nav = this.props.navigation
-        this.state = { 
+        this.state = {
             surveyData: nav.getParam('surveyData') ? nav.getParam('surveyData') : {
                 windDir: 'n',
                 tideTypeA: 'high',
@@ -138,10 +138,10 @@ export default class SurveyContainer extends Component {
     }
 
     static navigationOptions = {
-        header : null 
+        header : null
     }
 
-    moveToTeamInfo() { 
+    moveToTeamInfo() {
         console.log(this.state )
         this.setState({
             currentScreen: "teamInfo",
@@ -209,7 +209,7 @@ export default class SurveyContainer extends Component {
 
     /**
      * This function takes in a reference name and an event to update the state of the survey.
-     * The reference name is the key that will be used to update the variable in surveyData. 
+     * The reference name is the key that will be used to update the variable in surveyData.
      * e is used to grab the text from the text input and update the data with the new
      * value
      */
@@ -254,20 +254,18 @@ export default class SurveyContainer extends Component {
      * A slightly different function has to be done here; e itself is the time that is being
      * updated, so we use it as the value to update the key
      */
-    updateSurveyTime(refName, e) {
-        console.log(e);
+    updateSurveyTime = (refName, e) => {
         let key = refName;
         let val = e;
-
+        console.log(key + "[===]" + e);
         this.setState(prevState => {
             prevState.surveyData[key] = val;
             return prevState;
         })
-        
     }
 
     /**
-     * Here, we need to take the change in the dropdown menu, stored in value, and set 
+     * Here, we need to take the change in the dropdown menu, stored in value, and set
      * surveyData[refName] to the new value.
      */
     onDropdownChange(refName, value) {
@@ -346,7 +344,7 @@ export default class SurveyContainer extends Component {
                 return prevState
             if(newVal < 0)
                 return prevState
-            prevState.MicroData[key]--; 
+            prevState.MicroData[key]--;
             return prevState;
         })
     }
@@ -364,7 +362,7 @@ export default class SurveyContainer extends Component {
         switch(currentScreen) {
             case "teamInfo" :
                 return (
-                    <TeamInfo 
+                    <TeamInfo
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
@@ -380,9 +378,9 @@ export default class SurveyContainer extends Component {
                         invalidFields={this.state.invalidFields}
                     />
                 )
-            case "area" : 
+            case "area" :
                 return(
-                    <Area 
+                    <Area
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
@@ -402,7 +400,7 @@ export default class SurveyContainer extends Component {
                 )
             case "srs" :
                 return (
-                    <SurfaceRibScan 
+                    <SurfaceRibScan
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
@@ -420,9 +418,9 @@ export default class SurveyContainer extends Component {
                         remade={this.state.remade}
                     />
                 )
-            case "as" : 
+            case "as" :
                 return (
-                    <AccumulationSweep 
+                    <AccumulationSweep
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
@@ -431,14 +429,14 @@ export default class SurveyContainer extends Component {
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
                         onClickFinish={this.onClickFinish}
-                        fromPublish={this.state.fromPublish} 
+                        fromPublish={this.state.fromPublish}
                         tabArray={this.state.tabArray}
                         ribsToSelect={this.state.ribsToSelect}
                     />
                 )
             default :
                 return (
-                    <MicroDebris 
+                    <MicroDebris
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
@@ -462,7 +460,7 @@ export default class SurveyContainer extends Component {
     onClickFinish = () => {
         /**
          * Render a modal/popup that will prompt the user to enter in a user defined name for the survey
-         * Once they finish, then the survey will be stored locally and accessed locally 
+         * Once they finish, then the survey will be stored locally and accessed locally
          */
         this.setState({isModalVisible:true})
     }
@@ -482,7 +480,7 @@ export default class SurveyContainer extends Component {
          */
         const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
         const survStoreData = {
-            surveyName, 
+            surveyName,
             surveyData,
             SRSData,
             ASData,
@@ -512,7 +510,7 @@ export default class SurveyContainer extends Component {
             let survID = this.props.navigation.getParam('inProgress');
             const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
             const survStoreData = {
-                surveyName, 
+                surveyName,
                 surveyData,
                 SRSData,
                 ASData,
@@ -521,7 +519,7 @@ export default class SurveyContainer extends Component {
                 /* Possibly store user credentials here too */
             }
             surveyDB.updateSurvey(survID, survStoreData);
-            /* We need to indicate that we're coming back from the validation process so that we can 
+            /* We need to indicate that we're coming back from the validation process so that we can
                perform the following:
                 - Query the website's database to see if the beach already exists
             */
@@ -554,10 +552,10 @@ export default class SurveyContainer extends Component {
             }
         }
 
-        if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther 
+        if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther
             && !survey.surveyData.locationChoiceProximity)
             invalid.push('locChoice')
-        
+
         if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
             && !survey.surveyData.usageOther)
             invalid.push('usage')
@@ -576,7 +574,7 @@ export default class SurveyContainer extends Component {
     render() {
         const {shouldRender} = this.state;
         console.log("Rendering")
-        return( 
+        return(
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
                 <Modal isVisible={this.state.isModalVisible}>
@@ -597,7 +595,7 @@ export default class SurveyContainer extends Component {
                                 <Text style={{color: 'white', padding: 8}}>Back</Text>
                             </Button>
                             {
-                                this.state.fromPublish ? 
+                                this.state.fromPublish ?
                                     <Button success style={{justifyContent: 'center', width: 100}} onPress={this.onPressVerify}>
                                         <Text style={{color: 'white', padding: 8}}>Verify</Text>
                                     </Button> :
@@ -605,9 +603,9 @@ export default class SurveyContainer extends Component {
                                         <Text style={{color: 'white', padding: 8}}>Save</Text>
                                     </Button>
                             }
-                            
+
                         </View>
-                    
+
                     </View>
                 </Modal>
                 {/* Modal to tell the user that their survey is invalid */}
@@ -620,10 +618,10 @@ export default class SurveyContainer extends Component {
                             <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelValidModal}>
                                 <Text style={{color: 'white', padding: 8}}>Continue</Text>
                             </Button>
-                        </View>  
-                    </View>                
+                        </View>
+                    </View>
                 </Modal>
-                <SurveyFooter 
+                <SurveyFooter
                     teamInfo={shouldRender.teamInfo}
                     area={shouldRender.area }
                     srs={shouldRender.srs}
