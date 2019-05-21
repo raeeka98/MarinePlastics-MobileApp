@@ -26,6 +26,7 @@ import surveyDB from '../storage/mongoStorage'
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { SurveyCard } from './Home/SurveyCard';
+import { DeleteModal } from './Home/HomeModals';
 
 class HomePage extends Component {
 
@@ -59,18 +60,14 @@ class HomePage extends Component {
     this.retrieveInProgress();
   }
 
-  cancelModal = () => {
-    this.setState({isModalVisble: false, chosenSurvey: ""})
-  }
+
 
   refreshSurveys = () => {
     console.log("refreshing!");
   }
 
-  cancelDelete = () => {
-    this.setState({isDeleteVisible: false})
-  }
-
+  cancelDelete = () => this.setState({isDeleteVisible: false});
+  cancelModal = () => this.setState({isModalVisble: false, chosenSurvey: ""});
 
   async openSurvey(){
     this.cancelModal();
@@ -114,7 +111,10 @@ class HomePage extends Component {
   }
 
   onPressDeleteSurvey = () => {
-    this.setState({isDeleteVisible: true})
+    this.setState({
+      isDeleteVisible: true,
+      isModalVisible: false
+    })
   }
 
   async deleteSurvey(){
@@ -133,10 +133,6 @@ class HomePage extends Component {
   showSurveyModal = (chosenSurvey) => {
     this.setState({isModalVisble: true, chosenSurvey: chosenSurvey})
   }
-
-
-
-
 
   renderInProgress = () => {
     const {inProgress} = this.state;
@@ -210,19 +206,26 @@ class HomePage extends Component {
 
             </View>
           </Modal>
-          <Modal isVisible={this.state.isDeleteVisible}>
-            <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
-              <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Delete {this.state.chosenSurvey.surveyName}?</Text>
-              <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <Button light style={{justifyContent: 'center',width: 100}}onPress={this.cancelDelete} >
-                  <Text>No</Text>
-                </Button>
-                <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.deleteSurvey} title='Edit'>
-                  <Text>Delete</Text>
-                </Button>
+          <DeleteModal
+            isDeleteVisible={this.state.isDeleteVisible}
+            name={this.state.chosenSurvey.surveyName}
+            cancelDelete={this.cancelDelete}
+            deleteSurvey={this.deleteSurvey}
+            />
+          {/* COMMENTED OUT UNTIL I FIGURE OUT WHY DELETE MODAL DOESNT DELETE SURVEYS
+              <Modal isVisible={this.state.isDeleteVisible}>
+              <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Delete {this.state.chosenSurvey.surveyName}?</Text>
+                <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                  <Button light style={{justifyContent: 'center',width: 100}}onPress={this.closeDelete} >
+                    <Text>No</Text>
+                  </Button>
+                  <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.deleteSurvey} title='Edit'>
+                    <Text>Delete</Text>
+                  </Button>
+                </View>
               </View>
-            </View>
-          </Modal>
+            </Modal>*/}
         </Content>
       </Container>
     );
