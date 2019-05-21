@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {createStackNavigator, createNavigationContainer, createAppContainer} from 'react-navigation';
+import {createStackNavigator, createNavigationContainer, createAppContainer, createDrawerNavigator, createSwitchNavigator} from 'react-navigation';
 
 import { StyleSheet, Text, View, Button } from 'react-native';
-import {Root} from 'native-base'
+import {Root, Switch} from 'native-base'
 
 // optimization?
 import { useScreens } from 'react-native-screens';
@@ -37,17 +37,35 @@ const MainNavigator = createStackNavigator(
     PublishContainer: {screen: PublishContainer},
     ChooseBeach: {screen: ChooseBeachPage},
     SurveyContainer: {screen: SurveyContainer},
-    Example : {screen: Example}
+    Example : {screen: Example},
 
   },
   {
     // First init route is for testing, second init route is for published app
-    initialRouteName: (__DEV__ ? 'Home' : 'Boarding')
+    initialRouteName: (__DEV__ ? 'Home' : 'Boarding'),
+    navigationOptions : ({navigation}) => {
+      const wat = navigation.state;
+      console.log(wat)
+    }
 
   }
 );
 
-const NavigationApp = createAppContainer(MainNavigator);
+const DrawerNavigator = createDrawerNavigator({
+  MainNavigator,
+  HomePage,
+  LogInPage,
+  SurveyPage
+  },
+)
+
+
+const SwitchNavigator = createSwitchNavigator({
+  Boarding: {screen: BoardingPage},
+  DrawerNavigator,
+})
+
+const NavigationApp = createAppContainer(SwitchNavigator);
 
 //export default App;
 
@@ -58,7 +76,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Root>
-        <NavigationApp/>
+
+          <NavigationApp/>
+      
       </Root>
     );
   }

@@ -27,7 +27,10 @@ class HomePage extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Home Page'
+    title: 'Home Page',
+    drawerIcon: ({focused}) => {
+      <Icon type='AntDesign' name='search' size={24} color={focused ? 'blue' : 'black'} />
+    }
   }
 
   async retrieveInProgress() {
