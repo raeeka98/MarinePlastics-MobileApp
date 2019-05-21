@@ -12,7 +12,14 @@ import AccumulationSweep from './AccumulationSweep'
 import MicroDebris from './MicroDebris'
 import SurveyFooter from './SurveyFooter'
 import surveyDB from '../../storage/mongoStorage'
+import { NavigationActions } from 'react-navigation';
 
+
+const navigateToHome = NavigationActions.navigate({
+    routeName: 'DrawerNavigator',
+    params: {}, 
+    action: NavigationActions.navigate({routeName: 'HomePage', params: {reload: true}})
+});
 
 /**
  * This class will contain the entire survey within the screen, rendering different 
@@ -499,7 +506,7 @@ export default class SurveyContainer extends Component {
         }
         /* Navigate back to the home page */
         await this.setState({isModalVisible:false, surveyName: ''})
-        this.props.navigation.navigate('Home');
+        this.props.navigation.dispatch(navigateToHome);
     }
 
     onPressVerify = () => {
