@@ -5,12 +5,17 @@ import Axios from 'axios';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
+import PageHeader from '../components/PageHeader';
 
 let URL='http://marineplastics.herokuapp.com/beaches'
 
 class SurveyPage extends React.Component {
   state={
     webData: {}
+  }
+
+  static navigationOptions = {
+    title: 'New Survey'
   }
 
   retrieveSurveys = () =>{
@@ -26,13 +31,16 @@ class SurveyPage extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return(
-      <View style={styles.container}>
-        <Text style={styles.paragraph}>
-          Survey Page
-        </Text>
-        <Button onPress={() => this.props.navigation.navigate("SurveyContainer")} title="Click Me!"/>
-        <Button onPress={this.retrieveSurveys} title="connect to database"/>
-        <Text>{JSON.stringify(this.state.webData)}</Text>
+      <View>
+        <PageHeader title="Start a survey" openDrawer={this.props.navigation.openDrawer} />
+        <View style={styles.container}>
+          <Text style={styles.paragraph}>
+            Survey Page
+          </Text>
+          <Button onPress={() => this.props.navigation.navigate("SurveyContainer")} title="Click Me!"/>
+          <Button onPress={this.retrieveSurveys} title="connect to database"/>
+          <Text>{JSON.stringify(this.state.webData)}</Text>
+        </View>
       </View>
     );
   }

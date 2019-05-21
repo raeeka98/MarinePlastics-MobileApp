@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import {Icon, Footer, Button, Toast} from 'native-base'
+import { SafeAreaView, Platform, StatusBar, StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import {Header, Container, Left, Right, Title, Content, Body, Icon, Footer, Button, Toast, Spinner} from 'native-base'
 import Modal from 'react-native-modal'
+import {Font, Constants} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
 import { ScrollView } from 'react-native-gesture-handler';
+import PageHeader from '../components/PageHeader'
 
 class HomePage extends React.Component {
 
@@ -15,7 +17,8 @@ class HomePage extends React.Component {
       inProgress: [],
       isModalVisble: false,
       chosenSurvey: "",
-      isDeleteVisible: false
+      isDeleteVisible: false,
+      loading: true
     }
 
     this.renderInProgress = this.renderInProgress.bind(this);
@@ -27,10 +30,20 @@ class HomePage extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Home Page',
+    title: 'Home',
     drawerIcon: ({focused}) => {
       <Icon type='AntDesign' name='search' size={24} color={focused ? 'blue' : 'black'} />
     }
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    })
+    this.setState({
+      loading : false
+    });
   }
 
   async retrieveInProgress() {
@@ -127,6 +140,7 @@ class HomePage extends React.Component {
     for(var i = 0; i < inProgress.length; i++){
       let survComponent = (
         <View style={{flex: 1, padding: 10, height: '15%'}}>
+
           <TouchableOpacity
             onPress={this.showSurveyModal.bind(this, inProgress[i])}
             style={
@@ -200,9 +214,13 @@ class HomePage extends React.Component {
   }
 
   render() {
+    if(this.state.loading) {
+      return <Spinner color='green'/>;
+    }
     return(
+      <SafeAreaView>
+        <PageHeader title='Home' openDrawer={this.props.navigation.openDrawer}/>
       <View style={styles.container}>
-
         <View style={{marginBottom: 50}}>
           <Text style={[styles.paragraph]}>
             In Progress
@@ -218,17 +236,11 @@ class HomePage extends React.Component {
           {this.renderPublished()}
         </View>
 
-        <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
-        </Button>
         {__DEV__ &&
             <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
               <Text style={{fontWeight: 'bold', color: 'white'}}>Test Survey Merging and Publishing</Text>
             </Button>
         }
-        <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
-        </Button>
 
         <Modal isVisible={this.state.isModalVisble}>
           <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
@@ -266,6 +278,7 @@ class HomePage extends React.Component {
           </View>
         </Modal>
       </View>
+      </SafeAreaView>
     );
   }
 }

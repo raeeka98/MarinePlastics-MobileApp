@@ -7,6 +7,7 @@ import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
+import headerStyles from '../headerStyles';
 
 const microRowLabels = [
     {key: 'Rib 1'}, 
@@ -99,14 +100,14 @@ export default class MicroDebris extends Component {
 
         return(
             <View style={styles.container}>
-                <Header hasTabs style={{height : 75}}>
+                <Header hasTabs style={headerStyles.header}>
                     <Left style={{marginTop: 20}}>
                        
                     </Left>
-                    <Body>
-                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Micro Debris</Text>
+                    <Body style={headerStyles.headerContents}>
+                        <Text style={{fontSize: 18, color: 'white'}}>Micro Debris</Text>
                     </Body>
-                    <Right style={{marginTop: 25}}>
+                    <Right style={headerStyles.headerContents}>
                         <Button success onPress={this.props.onClickFinish}>
                             <Text style={{padding: 5, color: 'white'}}>Finish</Text>
                         </Button>

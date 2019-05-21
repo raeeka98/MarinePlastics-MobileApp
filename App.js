@@ -2,8 +2,9 @@ import React from 'react';
 
 import {createStackNavigator, createNavigationContainer, createAppContainer, createDrawerNavigator, createSwitchNavigator} from 'react-navigation';
 
-import { StyleSheet, Text, View, Button } from 'react-native';
-import {Root, Switch} from 'native-base'
+import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
+import {Root, Spinner, Switch} from 'native-base'
+import {Constants, Font} from 'expo'
 
 // optimization?
 import { useScreens } from 'react-native-screens';
@@ -25,7 +26,16 @@ import Scanner from './screens/Publish/Scanner';
 import SurveyContainer from './screens/survey/SurveyContainer'
 import Example from './screens/Example';
 
-
+const DrawerNavigator = createDrawerNavigator({
+  HomePage,
+  LogInPage,
+  SurveyPage, 
+  BoardingPage
+  },
+  {
+    initialRouteName: "LogInPage"
+  }
+)
 
 const MainNavigator = createStackNavigator(
   { 
@@ -38,47 +48,49 @@ const MainNavigator = createStackNavigator(
     ChooseBeach: {screen: ChooseBeachPage},
     SurveyContainer: {screen: SurveyContainer},
     Example : {screen: Example},
+    DrawerNavigator
 
   },
   {
     // First init route is for testing, second init route is for published app
-    initialRouteName: (__DEV__ ? 'Home' : 'Boarding'),
-    navigationOptions : ({navigation}) => {
-      const wat = navigation.state;
-      console.log(wat)
-    }
-
+    initialRouteName: "DrawerNavigator",
+    headerMode: "none"
   }
 );
 
-const DrawerNavigator = createDrawerNavigator({
-  MainNavigator,
-  HomePage,
-  LogInPage,
-  SurveyPage
-  },
-)
 
-
-const SwitchNavigator = createSwitchNavigator({
-  Boarding: {screen: BoardingPage},
-  DrawerNavigator,
-})
-
-const NavigationApp = createAppContainer(SwitchNavigator);
+const NavigationApp = createAppContainer(MainNavigator);
 
 //export default App;
 
 
 export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      loading: true
+    }
+  }
 
+  async componentDidMount() {
+    await Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    })
+    this.setState({
+      loading : false
+    });
+  }
 
   render() {
+    if(this.state.loading){
+      return <Spinner color='green'/>;
+    }
     return (
       <Root>
-
+        <SafeAreaView style={styles.AndoidSafeView}>
           <NavigationApp/>
-      
+        </SafeAreaView>
       </Root>
     );
   }
@@ -94,4 +106,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  AndoidSafeView: {
+    flex: 1,
+    backgroundColor: '#fff',
+    
+  }
 });

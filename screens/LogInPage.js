@@ -5,6 +5,7 @@ import { Button, Alert, AsyncStorage, Linking, Image } from 'react-native';
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
 import { AuthSession } from 'expo';
+import PageHeader from '../components/PageHeader';
 
 
 // Load necessary credentials to a new Auth0 variable.
@@ -24,6 +25,10 @@ class LogInPage extends React.Component {
     //this.state = { accessToken: null };
     //this._retrieveAccessToken();
     this.state = { accessToken: null, email: null, name: null, picture: null};
+  }
+
+  static navigationOptions ={
+    title: "Profile/Login"
   }
 
   componentWillMount() {
@@ -255,28 +260,32 @@ class LogInPage extends React.Component {
     const {navigate} = this.props.navigation;
     let loggedIn = this.state.accessToken === null ? false : true; 
     return(
-      <View style={styles.container}>
-        <Text style={styles.header}>Log in with Auth0</Text>
-        <Text>
-          You are {loggedIn ? '' : 'not '}logged in.
-        </Text>
-        <Button
-          //title = {loggedIn ? 'log out' : 'log in'}/>
-          onPress={this._loginV3}
-          title={'log in'}/>
-        <Button 
-          onPress={this._onlogout}
-          title={'log out'}/>
-        <Text style={styles.container}>
-          {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
-        </Text>
-        <Text style={styles.container}>
-          Email: {loggedIn ? this.state.email : ''}
-        </Text>
-        <Image
-          style={{width:50, height: 50}}
-          source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
-        />
+      <View>
+        <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer} />
+        <View style={styles.container}>
+          
+          <Text style={styles.header}>Log in with Auth0</Text>
+          <Text>
+            You are {loggedIn ? '' : 'not '}logged in.
+          </Text>
+          <Button
+            //title = {loggedIn ? 'log out' : 'log in'}/>
+            onPress={this._loginV3}
+            title={'log in'}/>
+          <Button 
+            onPress={this._onlogout}
+            title={'log out'}/>
+          <Text style={styles.container}>
+            {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
+          </Text>
+          <Text style={styles.container}>
+            Email: {loggedIn ? this.state.email : ''}
+          </Text>
+          <Image
+            style={{width:50, height: 50}}
+            source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+          />
+        </View>
       </View>
     );
   }

@@ -41,6 +41,7 @@ import {
 
 import { mergeSurveys } from './MergeSurveys';
 import toExport from './env.js'
+import PageHeader from '../../components/PageHeader';
 
 
 export default class PublishContainer extends Component {
@@ -454,6 +455,7 @@ export default class PublishContainer extends Component {
     else {
       return(
         <Container>
+          <PageHeader title='Publish Survey' openDrawer={this.props.navigation.pop} />
             {this.state.isScanning &&
                 <Scanner
                   surveys={this.state.surveys}
