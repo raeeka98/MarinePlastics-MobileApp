@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, AppRegistry } from 'react-native';
 import { Button, Alert, AsyncStorage, Linking, Image } from 'react-native';
+import {Icon} from 'native-base'
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -28,7 +29,10 @@ class LogInPage extends React.Component {
   }
 
   static navigationOptions ={
-    title: "Profile/Login"
+    title: "Profile/Login",
+    drawerIcon: ({focused}) => (
+      <Icon type='MaterialIcons' name='person' style={{fontSize: 20, color: (focused ? 'blue' : 'black')}} />
+    )
   }
 
   componentWillMount() {

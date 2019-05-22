@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { Button } from 'react-native';
+import {Icon} from 'native-base'
 import Axios from 'axios';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import PageHeader from '../components/PageHeader';
@@ -15,7 +16,10 @@ class SurveyPage extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'New Survey'
+    title: 'New Survey',
+    drawerIcon: ({focused}) => (
+      <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'blue' : 'black')}} />
+    )
   }
 
   retrieveSurveys = () =>{

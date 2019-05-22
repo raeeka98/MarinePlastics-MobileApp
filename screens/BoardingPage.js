@@ -1,17 +1,47 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { Button } from 'react-native';
+import {NavigationActions} from 'react-navigation'
 
+const navigateToHome = NavigationActions.navigate({
+  routeName: 'MainNavigator',
+  params: {},
+  action: NavigationActions.navigate({
+    routeName: 'DrawerNavigator',
+    params: {},
+    action: NavigationActions.navigate({
+      routeName: 'HomePage',
+      params: {},
+    })
+  })
+})
+
+const navigateToLogin = NavigationActions.navigate({
+  routeName: 'MainNavigator',
+  params: {},
+  action: NavigationActions.navigate({
+    routeName: 'DrawerNavigator',
+    params: {},
+    action: NavigationActions.navigate({
+      routeName: 'LogInPage',
+      params: {},
+    })
+  })
+})
 
 class BoardingPage extends Component {
+
+
+  
+
   render() {
     return(
       <View style={styles.container}>
         <Text style={styles.paragraph}>
           Marine Plastics Monitor
         </Text>
-        <Button onPress={() => this.props.navigation.navigate('Home')} title="Home"/>
-        <Button onPress={() => this.props.navigation.navigate('Login')} title="Login"/>
+        <Button onPress={() => this.props.navigation.dispath(navigateToHome)} title="Home"/>
+        <Button onPress={() => this.props.navigation.navigate(navigateToLogin)} title="Login"/>
       </View>
     );
   }

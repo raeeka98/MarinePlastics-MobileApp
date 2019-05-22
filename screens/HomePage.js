@@ -32,9 +32,9 @@ class HomePage extends React.Component {
 
   static navigationOptions = {
     title: 'Home',
-    drawerIcon: ({focused}) => {
-      <Icon type='AntDesign' name='search' size={24} color={focused ? 'blue' : 'black'} />
-    }
+    drawerIcon: ({focused}) => (
+      <Icon type='Entypo' name='home' style={{fontSize: 20, color: focused ? 'blue' : 'black'}} />
+    )
   }
 
   componentWillReceiveProps(props){

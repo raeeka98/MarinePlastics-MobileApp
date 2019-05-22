@@ -25,15 +25,16 @@ import MicroDebris from './screens/survey/MicroDebris';
 import Scanner from './screens/Publish/Scanner';
 import SurveyContainer from './screens/survey/SurveyContainer'
 import Example from './screens/Example';
+import CustomDrawer from './components/CustomDrawer';
 
 const DrawerNavigator = createDrawerNavigator({
   HomePage,
   LogInPage,
   SurveyPage, 
-  BoardingPage
   },
   {
-    initialRouteName: "LogInPage"
+    initialRouteName: "LogInPage",
+    contentComponent: CustomDrawer
   }
 )
 
@@ -59,7 +60,14 @@ const MainNavigator = createStackNavigator(
 );
 
 
-const NavigationApp = createAppContainer(MainNavigator);
+const SwitchNavigator = createSwitchNavigator(
+  {
+    BoardingPage,
+    MainNavigator
+  }
+)
+
+const NavigationApp = createAppContainer(SwitchNavigator);
 
 //export default App;
 
