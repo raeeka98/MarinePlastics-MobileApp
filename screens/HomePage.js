@@ -39,7 +39,8 @@ class HomePage extends Component {
       isModalVisible: false,
       chosenSurvey: "",
       isDeleteVisible: false,
-      shouldShowDelete: false
+      shouldShowDelete: false,
+      isRefreshing: false
     }
 
     this.navToPublish = this.navToPublish.bind(this);
@@ -53,7 +54,6 @@ class HomePage extends Component {
 
   async retrieveInProgress() {
     let surveys =  await surveyDB.getNameDate();
-    console.log(`Retrieved: ${surveys}`)
     this.setState({
       inProgress: surveys
     })
@@ -65,7 +65,9 @@ class HomePage extends Component {
 
 
   refreshSurveys = () => {
-    console.log("refreshing!");
+    this.setState({
+        isRefreshing : false
+    })
   }
 
   cancelDelete = () => this.setState({isDeleteVisible: false});
@@ -100,7 +102,6 @@ class HomePage extends Component {
     let survey;
     let survID = this.state.chosenSurvey._id
     survey = await surveyDB.getSurvey(survID);
-    console.log(survey._id);
     this.props.navigation.navigate('PublishContainer',
       {
         initSurvey : {
@@ -166,10 +167,10 @@ class HomePage extends Component {
         <Content
           refreshControl={
             <RefreshControl
-              style={{backgroundColor: '#E0FFFF'}}
+              style={{backgroundColor: '#f2fdff'}}
+              refreshing={this.state.isRefreshing}
               onRefresh={this.refreshSurveys}
-              tintColor="#ff0000"
-              title="Loading..."
+              tintColor="#19d9ff"
               titleColor="#00ff00"
               colors={['#ff0000', '#00ff00', '#0000ff']}
               progressBackgroundColor="#ffff00"
