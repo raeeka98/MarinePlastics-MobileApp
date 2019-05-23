@@ -517,6 +517,7 @@ export default class SurveyContainer extends Component {
         } else {
             /* Save the survey, move back to publish */
             let survID = this.props.navigation.getParam('inProgress');
+            console.log("SURVEY ID:" + survID)
             const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
             const survStoreData = {
                 surveyName, 
@@ -532,7 +533,7 @@ export default class SurveyContainer extends Component {
                perform the following:
                 - Query the website's database to see if the beach already exists
             */
-            this.props.navigation.navigate('Publish', {
+            this.props.navigation.navigate('PublishContainer', {
                 isVerified: true,
                 verifyID: survID
             })/*

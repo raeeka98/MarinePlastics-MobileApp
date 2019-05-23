@@ -107,7 +107,7 @@ class HomePage extends React.Component {
         SRSData: survey.SRSData,
         ASData: survey.ASData,
         MicroData: survey.MicroData,
-        inProgress: survey._id,
+        _id: survey._id,
       }}
     );
   }
@@ -129,8 +129,8 @@ class HomePage extends React.Component {
 
   renderPublished(){
     const {inProgress} = this.state;
-    let surveyArray = this.state;
-    for(var i = 0; i < inProgress.length; i++){
+    let surveyArray = [];
+    /*for(var i = 0; i < inProgress.length; i++){
       if(!inProgress[i].published){
         continue;
       }
@@ -205,7 +205,7 @@ class HomePage extends React.Component {
         </View>
       )
       surveyArray.push({key: inProgress[i].surveyName, val: survComponent})
-    }
+    }*/
     if(surveyArray.length === 0) {
       return(
         <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
@@ -330,12 +330,10 @@ class HomePage extends React.Component {
           <Text style={styles.paragraph}>
             Published
           </Text>
-          <ScrollView style={{height: '5%'}}>
             {this.renderPublished()}
-          </ScrollView>
         </View>
 
-        {__DEV__ &&
+        {false &&
             <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
               <Text style={{fontWeight: 'bold', color: 'white'}}>Test Survey Merging and Publishing</Text>
             </Button>
