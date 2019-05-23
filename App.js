@@ -67,7 +67,7 @@ const SwitchNavigator = createSwitchNavigator(
   }
 )
 
-const NavigationApp = createAppContainer(SwitchNavigator);
+const NavigationApp = createAppContainer(MainNavigator);
 
 //export default App;
 

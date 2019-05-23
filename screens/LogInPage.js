@@ -180,7 +180,7 @@ class LogInPage extends React.Component {
       }else {
         //console.log('Name value is not Null on Name');
         console.log('Overriding Name in AsyncStorage');
-        await AsyncStorage.setItem('name', pictureValue);
+        await AsyncStorage.setItem('name', nameValue);
         console.log('Overwritten');
         console.log('Current name stored: ', await AsyncStorage.getItem('name'));
       }
