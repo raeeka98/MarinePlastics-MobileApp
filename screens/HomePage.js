@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   Platform,
   StatusBar,
@@ -21,13 +22,23 @@ import {
   Spinner,
   View
 } from 'native-base'
+
 import Modal from 'react-native-modal'
 
 import surveyDB from '../storage/mongoStorage'
-import { ScrollView } from 'react-native-gesture-handler';
 
-import { SurveyCard } from './Home/SurveyCard';
-import { DeleteModal, GeneralModal } from './Home/HomeModals';
+import {
+  ScrollView
+} from 'react-native-gesture-handler';
+
+import {
+  SurveyCard
+} from './Home/SurveyCard';
+
+import {
+  DeleteModal,
+  GeneralModal
+} from './Home/HomeModals';
 
 class HomePage extends Component {
 
