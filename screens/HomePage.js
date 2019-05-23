@@ -38,7 +38,8 @@ class HomePage extends Component {
       inProgress: [],
       isModalVisible: false,
       chosenSurvey: "",
-      isDeleteVisible: false
+      isDeleteVisible: false,
+      shouldShowDelete: false
     }
 
     this.navToPublish = this.navToPublish.bind(this);
@@ -71,7 +72,7 @@ class HomePage extends Component {
   cancelModal = () => this.setState({isModalVisible: false, chosenSurvey: ""});
   onPressDeleteSurvey = () => {
     this.setState({
-      isDeleteVisible: true,
+      shouldShowDelete: true,
       isModalVisible: false
     });
   }
@@ -119,7 +120,6 @@ class HomePage extends Component {
 
   async deleteSurvey(){
     await surveyDB.deleteSurvey(this.state.chosenSurvey._id);
-
     this.endModals();
     this.retrieveInProgress();
   }
@@ -132,6 +132,15 @@ class HomePage extends Component {
 
   showSurveyModal = (chosenSurvey) => {
     this.setState({isModalVisible: true, chosenSurvey: chosenSurvey})
+  }
+
+  openDelete = () => {
+    if(this.state.shouldShowDelete) {
+        this.setState({
+          isDeleteVisible: true,
+          shouldShowDelete: false
+        })
+    }
   }
 
   renderInProgress = () => {
@@ -182,7 +191,9 @@ class HomePage extends Component {
             <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
           </Button>
 
-          <Modal isVisible={this.state.isModalVisible}>
+          <Modal
+            isVisible={this.state.isModalVisible}
+            onModalHide={this.openDelete}>
             <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
               <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{this.state.chosenSurvey.surveyName}</Text>
               <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
@@ -201,7 +212,6 @@ class HomePage extends Component {
                   <Text>Publish</Text>
                 </Button>
               </View>
-
             </View>
           </Modal>
           <DeleteModal
