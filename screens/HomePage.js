@@ -250,7 +250,7 @@ class HomePage extends React.Component {
           </View>
         </Modal>
         <Modal isVisible={this.state.isQRVisible}>
-          <View style={{ alignSelf: 'center', width: '100%', height: '90%', backgroundColor: 'white', justifyContent: 'center' }} >
+          <View style={{ alignSelf: 'center', width: '100%', height: '90%', backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }} >
             <QRCode
               value={this.state.qrString}
               size={300}
