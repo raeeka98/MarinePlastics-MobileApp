@@ -36,7 +36,7 @@ class HomePage extends Component {
     this.state = {
       isLoadingSurveys: false,
       inProgress: [],
-      isModalVisble: false,
+      isModalVisible: false,
       chosenSurvey: "",
       isDeleteVisible: false
     }
@@ -63,13 +63,18 @@ class HomePage extends Component {
   }
 
 
-
   refreshSurveys = () => {
     console.log("refreshing!");
   }
 
   cancelDelete = () => this.setState({isDeleteVisible: false});
-  cancelModal = () => this.setState({isModalVisble: false, chosenSurvey: ""});
+  cancelModal = () => this.setState({isModalVisible: false, chosenSurvey: ""});
+  onPressDeleteSurvey = () => {
+    this.setState({
+      isDeleteVisible: true,
+      isModalVisible: false
+    });
+  }
 
   async openSurvey(){
     this.cancelModal();
@@ -109,13 +114,7 @@ class HomePage extends Component {
   }
 
   endModals = () => {
-    this.setState({isDeleteVisible: false, isModalVisble: false})
-  }
-
-  onPressDeleteSurvey = () => {
-    this.setState({
-      isModalVisible: false
-    });
+    this.setState({isDeleteVisible: false, isModalVisible: false})
   }
 
   async deleteSurvey(){
@@ -132,7 +131,7 @@ class HomePage extends Component {
   }
 
   showSurveyModal = (chosenSurvey) => {
-    this.setState({isModalVisble: true, chosenSurvey: chosenSurvey})
+    this.setState({isModalVisible: true, chosenSurvey: chosenSurvey})
   }
 
   renderInProgress = () => {
@@ -183,7 +182,7 @@ class HomePage extends Component {
             <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
           </Button>
 
-          <Modal isVisible={this.state.isModalVisble}>
+          <Modal isVisible={this.state.isModalVisible}>
             <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
               <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{this.state.chosenSurvey.surveyName}</Text>
               <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
