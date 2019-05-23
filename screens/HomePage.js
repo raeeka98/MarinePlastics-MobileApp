@@ -102,15 +102,17 @@ class HomePage extends Component {
     survey = await surveyDB.getSurvey(survID);
     console.log(survey._id);
     this.props.navigation.navigate('PublishContainer',
-      {initSurvey : {
-        surveyData: survey.surveyData,
-        ribData: survey.ribData,
-        surveyName: survName,
-        SRSData: survey.SRSData,
-        ASData: survey.ASData,
-        MicroData: survey.MicroData,
-        inProgress: survey._id,
-      }}
+      {
+        initSurvey : {
+            surveyData: survey.surveyData,
+            ribData: survey.ribData,
+            surveyName: survName,
+            SRSData: survey.SRSData,
+            ASData: survey.ASData,
+            MicroData: survey.MicroData,
+            inProgress: survey._id,
+        }
+      }
     );
   }
 
@@ -161,7 +163,19 @@ class HomePage extends Component {
   render() {
     return(
       <Container style={{flex: 1}}>
-        <Content>
+        <Content
+          refreshControl={
+            <RefreshControl
+              style={{backgroundColor: '#E0FFFF'}}
+              onRefresh={this.refreshSurveys}
+              tintColor="#ff0000"
+              title="Loading..."
+              titleColor="#00ff00"
+              colors={['#ff0000', '#00ff00', '#0000ff']}
+              progressBackgroundColor="#ffff00"
+              />
+          }
+          >
           <View style={{marginBottom: 50}}>
             <Text style={[styles.paragraph]}>
               In Progress
