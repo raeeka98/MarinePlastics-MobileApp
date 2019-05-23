@@ -53,7 +53,9 @@ class HomePage extends Component {
   async retrieveInProgress() {
     let surveys =  await surveyDB.getNameDate();
     console.log(`Retrieved: ${surveys}`)
-    this.setState({inProgress: surveys})
+    this.setState({
+      inProgress: surveys
+    })
   }
 
   componentWillMount(){
@@ -160,7 +162,6 @@ class HomePage extends Component {
             </Text>
             <ScrollView
               style={{height: '45%'}}
-
               >
               {this.renderInProgress()}
             </ScrollView>
