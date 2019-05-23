@@ -18,6 +18,7 @@ import {
   Container,
   Header,
   Content,
+  Spinner,
   View
 } from 'native-base'
 import Modal from 'react-native-modal'
@@ -34,6 +35,7 @@ class HomePage extends Component {
     super(props);
 
     this.state = {
+      pageLoading: true,
       isLoadingSurveys: false,
       inProgress: [],
       isModalVisible: false,
@@ -46,6 +48,7 @@ class HomePage extends Component {
     this.navToPublish = this.navToPublish.bind(this);
     this.openSurvey=this.openSurvey.bind(this)
     this.deleteSurvey=this.deleteSurvey.bind(this);
+    this.refreshPage=this.refreshPage.bind(this)
   }
 
   static navigationOptions = {
@@ -59,12 +62,18 @@ class HomePage extends Component {
     })
   }
 
-  componentWillMount(){
-    this.retrieveInProgress();
+  async componentWillMount(){
+    await this.retrieveInProgress();
+    const inProgress = this.renderInProgress();
+    this.setState({
+      pageLoading: false,
+      inProgressViews: inProgress
+    });
   }
 
-
-  refreshSurveys = () => {
+  async refreshPage() {
+    await this.retrieveInProgress();
+    const inProgress = this.renderInProgress();
     this.setState({
         isRefreshing : false
     })
@@ -162,67 +171,76 @@ class HomePage extends Component {
   }
 
   render() {
-    return(
-      <Container style={{flex: 1}}>
-        <Content
-          refreshControl={
-            <RefreshControl
-              style={{backgroundColor: '#f2fdff'}}
-              refreshing={this.state.isRefreshing}
-              onRefresh={this.refreshSurveys}
-              tintColor="#19d9ff"
-              titleColor="#00ff00"
-              colors={['#ff0000', '#00ff00', '#0000ff']}
-              progressBackgroundColor="#ffff00"
-              />
-          }
-          >
-          <View style={{marginBottom: 50}}>
-            <Text style={[styles.paragraph]}>
-              In Progress
-            </Text>
-            <ScrollView
-              style={{height: '45%'}}
-              >
-              {this.renderInProgress()}
-            </ScrollView>
-          </View>
-          <View style={{ marginBottom: 50}}>
-            <Text style={styles.paragraph}>
-              Published
-            </Text>
-            {this.renderPublished()}
-          </View>
+    if(this.state.pageLoading) {
+      return(
+        <Container>
+          <Spinner color='blue' />
+        </Container>
+      );
+    }else {
+      return(
+        <Container style={{flex: 1}}>
+          <Content
+            refreshControl={
+              <RefreshControl
+                style={{backgroundColor: '#f2fdff'}}
+                refreshing={this.state.isRefreshing}
+                onRefresh={this.refreshSurveys}
+                tintColor="#19d9ff"
+                titleColor="#00ff00"
+                colors={['#ff0000', '#00ff00', '#0000ff']}
+                progressBackgroundColor="#ffff00"
+                />
+            }
+            >
+            <View style={{marginBottom: 50}}>
+              <Text style={[styles.paragraph]}>
+                In Progress
+              </Text>
+              <ScrollView
+                style={{height: '50%'}}
+                >
+                {this.state.inProgressViews}
+              </ScrollView>
+            </View>
+            <View style={{ marginBottom: 50}}>
+              <Text style={styles.paragraph}>
+                Published
+              </Text>
+              {this.renderPublished()}
+            </View>
 
-          <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
-          </Button>
-          {__DEV__ &&
-              <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
-                <Text style={{fontWeight: 'bold', color: 'white'}}>Test Survey Merging and Publishing</Text>
-              </Button>
-          }
-          <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
-          </Button>
-          <GeneralModal
-            isModalVisible={this.state.isModalVisible}
-            openDelete={this.openDelete}
-            name={this.state.chosenSurvey.surveyName}
-            cancelModal={this.cancelModal}
-            openSurvey={this.openSurvey}
-            onPressDeleteSurvey={this.onPressDeleteSurvey}
-            navToPublish={this.navToPublish}
-            />
-          <DeleteModal
-            isDeleteVisible={this.state.isDeleteVisible}
-            name={this.state.chosenSurvey.surveyName}
-            cancelDelete={this.cancelDelete}
-            deleteSurvey={this.deleteSurvey}
-            />
-        </Content>
-      </Container>
-    );
+            <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
+              <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
+            </Button>
+            {__DEV__ &&
+                <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
+                  <Text style={{fontWeight: 'bold', color: 'white'}}>Test Survey Merging and Publishing</Text>
+                </Button>
+            }
+            <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
+              <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
+            </Button>
+            <GeneralModal
+              isModalVisible={this.state.isModalVisible}
+              openDelete={this.openDelete}
+              name={this.state.chosenSurvey.surveyName}
+              cancelModal={this.cancelModal}
+              openSurvey={this.openSurvey}
+              onPressDeleteSurvey={this.onPressDeleteSurvey}
+              navToPublish={this.navToPublish}
+              />
+            <DeleteModal
+              isDeleteVisible={this.state.isDeleteVisible}
+              name={this.state.chosenSurvey.surveyName}
+              cancelDelete={this.cancelDelete}
+              deleteSurvey={this.deleteSurvey}
+              />
+          </Content>
+        </Container>
+      );
+    }
+
   }
 }
 
