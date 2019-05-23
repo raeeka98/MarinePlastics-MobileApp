@@ -114,9 +114,8 @@ class HomePage extends Component {
 
   onPressDeleteSurvey = () => {
     this.setState({
-      isDeleteVisible: true,
       isModalVisible: false
-    })
+    });
   }
 
   async deleteSurvey(){
@@ -139,7 +138,6 @@ class HomePage extends Component {
   renderInProgress = () => {
     const {inProgress} = this.state;
     let surveyArray = [];
-    console.log(inProgress)
     for(var i = 0; i < inProgress.length; i++){
       let survComponent = (
         <SurveyCard

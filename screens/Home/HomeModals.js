@@ -23,7 +23,6 @@ import {
 import Modal from 'react-native-modal'
 
 function DeleteModal(props) {
-  console.log(props.isDeleteVisible);
   return(
     <Modal isVisible={props.isDeleteVisible}>
       <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
