@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import { Button } from 'react-native';
-import {Icon} from 'native-base'
+import {Icon, Button} from 'native-base'
 import Axios from 'axios';
 import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
@@ -37,13 +36,20 @@ class SurveyPage extends React.Component {
     return(
       <View>
         <PageHeader title="Start a survey" openDrawer={this.props.navigation.openDrawer} />
-        <View style={styles.container}>
-          <Text style={styles.paragraph}>
-            Survey Page
+        <View style={[styles.container, {flexDirection:'column', justifyContent: 'space-between'}]}>
+          <Text style={{fontSize: 16}}>
+            The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI). If
+            you are unfamiliar with their survey protocol, we suggest that you visit the Marine Plastics Monitor
+            website and familiarize yourself with the procedure. The survey on this app is a digital translation of 
+            COI's paper protocol, but there are some changes that should be noted. We have integrated QR code scanning
+            and generation in this app to make it easier for groups to split work on the survey. Only one survey must
+            fill out the "Team Information" and "Survey Area" portion. This survey would be considered as th "Master 
+            Survey", which will be used to scan all other form, if there are any, for this particulart surevy. 
+            QR codes can be generated after the survey is saved.
           </Text>
-          <Button onPress={() => this.props.navigation.navigate("SurveyContainer")} title="Click Me!"/>
-          <Button onPress={this.retrieveSurveys} title="connect to database"/>
-          <Text>{JSON.stringify(this.state.webData)}</Text>
+          <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
+            <Text style={{color:'white', fontWeight: 'bold'}}>OK, I got it!</Text>
+          </Button>
         </View>
       </View>
     );
