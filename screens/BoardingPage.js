@@ -40,8 +40,8 @@ class BoardingPage extends Component {
         <Text style={styles.paragraph}>
           Marine Plastics Monitor
         </Text>
-        <Button onPress={() => this.props.navigation.dispath(navigateToHome)} title="Home"/>
-        <Button onPress={() => this.props.navigation.navigate(navigateToLogin)} title="Login"/>
+        <Button onPress={() => this.props.navigation.dispatch(navigateToHome)} title="Home"/>
+        <Button onPress={() => this.props.navigation.dispatch(navigateToLogin)} title="Login"/>
       </View>
     );
   }

@@ -26,7 +26,7 @@ import {
 import Modal from 'react-native-modal'
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler';
- 
+
 import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
@@ -36,7 +36,8 @@ import {
   SubmitModal,
   LoginModal,
   LoadingModal,
-  FinishedModal
+  FinishedModal,
+  ConfirmModal
 } from './PublishModals';
 
 import { mergeSurveys } from './MergeSurveys';
@@ -110,6 +111,7 @@ export default class PublishContainer extends Component {
   closeSubmitModal = () => this.setState({isSubmitModalVisible: false});
   closeLoginModal = () => this.setState({isLoginModalVisible: false});
   closeFinishedModal = () => this.setState({isFinishedVisible: false});
+  closeConfirmModal = () => this.setState({isConfirmModalVisible: false});
 
 
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
@@ -359,7 +361,7 @@ export default class PublishContainer extends Component {
 
   async openBeachModal(beachName) {
     // Here's where we'll do a special query for the beaches that reside in a certain location
-    await axios.get(`${toExport.SERVER_URL}/beaches/search/closest`, 
+    await axios.get(`${toExport.SERVER_URL}/beaches/search/closest`,
       {
         params: {
           coords: {
@@ -488,8 +490,17 @@ export default class PublishContainer extends Component {
             <LoadingModal
               isLoadingModalVisible={this.state.isLoadingModalVisible}
               />
-
-
+            <ConfirmModal
+              isConfirmModalVisible={this.state.isConfirmModalVisible}
+              match={this.state.match}
+              confirmBeach={this.state.confirmBeach}
+              closeConfirmModal={this.closeConfirmModal}
+              finalBeachSubmit={this.finalBeachSubmit}
+              />
+            <FinishedModal
+              isFinishedVisible={this.state.isFinishedVisible}
+              closeFinishedModal={this.closeFinishedModal}
+              />
             <Modal isVisible={this.state.isBeachModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white'}}>
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Whoops!</Text>
@@ -515,30 +526,7 @@ export default class PublishContainer extends Component {
                   </Button>
                 </View>
               </View>
-            </Modal>
-            <Modal isVisible={this.state.isConfirmModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
-                  {
-                    this.state.match ?
-                      `Submit under beach \"${this.state.confirmBeach}\"?` :
-                      `Create a new beach \"${this.state.confirmBeach}\"?`
-                  }
-                  </Text>
-                <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
-                  <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isConfirmModalVisible: false})}>
-                    <Text>No</Text>
-                  </Button>
-                  <Button success style={{alignSelf: 'center'}} onPress={this.finalBeachSubmit}>
-                    <Text>Yes</Text>
-                  </Button>
-                </View>
-              </View>
-            </Modal>
-            <FinishedModal
-              isFinishedVisible={this.state.isFinishedVisible}
-              closeFinishedModal={this.closeFinishedModal}
-              />
+            </Modal>  
         </Container>
       );
     }

@@ -17,9 +17,9 @@ export default class TeamInfo extends Component {
      * Setting up the initial state of the app.
      * Note that here we separate the surveyData, SRS, Micro, and AS in order to keep the functions
      * for each object separate and independent
-     * 
+     *
      * Note that when we initialize the items, we want to check to see if any existing values that are passed
-     * from a previous screeen 
+     * from a previous screeen
      */
     state = {
         showTime: false,
@@ -66,19 +66,23 @@ export default class TeamInfo extends Component {
         this.setState({showTime: true})
     }
 
-    onCancel = () => {
+    hideTime = () => {
         this.setState({showTime: false})
-
     }
 
-    
+    onConfirm = (id, time) => {
+        this.props.updateSurveyTime(id, time);
+        this.hideTime();
+    }
+
+
     /**
      * In the render function, whenever we update the survey state we need to bind the function
-     * using this and the reference name. The reason that we do this is because elements in 
+     * using this and the reference name. The reason that we do this is because elements in
      * react native don't maintain an id attribute like react does, so we can't simply set
      * the id in the props. We need to pass the actual reference by binding the function
      * each time it is called.
-     * 
+     *
      * NOTE: Binding the function each time can lead to a bit of a slow down, but since there's
      * not really an easier way to do this for now we might need to stick with it.
      */
@@ -103,14 +107,14 @@ export default class TeamInfo extends Component {
                 <View style={styles.inputSingleContainer} >
                     <Text style={styles.inputSingle}>First Name</Text>
                     <Item regular>
-                        <Input 
+                        <Input
                             style={this.props.invalidFields.includes('userFirst') ? {borderWidth: 2, borderColor: 'red'} : {}}
                             editable={true}
                             ref='userFirst'
                             onChange={this.props.updateSurveyState.bind(this, 'userFirst')}
                             value={this.state.surveyData.userFirst}
                         />
-                    </Item> 
+                    </Item>
                     <Text style={styles.inputSingle}>Last Name</Text>
                     <Item regular>
                         <Input
@@ -138,24 +142,24 @@ export default class TeamInfo extends Component {
                             value={this.state.surveyData.orgLoc}
                         />
                     </Item>
-                    
+
                 </View>
                 <View style={styles.inputDoubleContainer}>
                     <View style={styles.inputDouble}>
-                        
+
                         <Text>Date</Text>
-                        <Item regular style={this.props.invalidFields.includes('cleanupDate') ? 
-                                        { 
-                                            borderWidth: 4, 
+                        <Item regular style={this.props.invalidFields.includes('cleanupDate') ?
+                                        {
+                                            borderWidth: 4,
                                             borderColor: 'red',
                                             textAlign: 'center'
-                                        } : 
+                                        } :
                                         {}
                                       }>
-                            <DatePicker 
+                            <DatePicker
                                 style={
                                         {
-                                            height: '100%', 
+                                            height: '100%',
                                             textAlign: 'center'
                                         }
                                       }
@@ -175,16 +179,16 @@ export default class TeamInfo extends Component {
                             </Button>
                             <DateTimePicker
                                 ref='cleanupTime'
-                                isVisible={this.state.showTime}    
+                                isVisible={this.state.showTime}
                                 mode={'time'}
-                                onConfirm={this.props.updateSurveyTime.bind(this, 'cleanupTime')}
+                                onConfirm={this.onConfirm.bind(this, 'cleanupTime')}
                                 is24Hour={false}
-                                maximumDate={new Date()}   
-                                onCancel={this.onCancel}                   
+                                maximumDate={new Date()}
+                                onCancel={this.hideTime}
                             />
-                            <TextInput 
+                            <TextInput
                                 editable={false }
-                                style={this.props.invalidFields.includes('cleanupTime') ? 
+                                style={this.props.invalidFields.includes('cleanupTime') ?
                                         {
                                             borderColor: 'red',
                                             borderWidth: 2,
@@ -193,17 +197,17 @@ export default class TeamInfo extends Component {
                                             fontSize: 17
                                         } :
                                         {
-                                            width: '70%', 
-                                            textAlign: 'center', 
+                                            width: '70%',
+                                            textAlign: 'center',
                                             fontSize: 17
                                         }
-                                    } 
+                                    }
                                 value={this.displayTimeString('cleanupTime')}
                             />
                         </Item>
-                    </View>  
+                    </View>
                 </View>
-            </View>  
+            </View>
         )
     }
 }

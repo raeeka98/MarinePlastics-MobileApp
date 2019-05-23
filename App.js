@@ -10,19 +10,12 @@ import {Constants, Font} from 'expo'
 import { useScreens } from 'react-native-screens';
 useScreens();
 
+// Screens
 import HomePage from './screens/HomePage';
 import BoardingPage from './screens/BoardingPage';
 import LogInPage from './screens/LogInPage';
-import ProfilePage from './screens/ProfilePage';
 import SurveyPage from './screens/SurveyPage';
 import PublishContainer from './screens/Publish/PublishContainer';
-import ChooseBeachPage from './screens/ChooseBeachPage';
-import TeamInfo from './screens/survey/TeamInfo';
-import Area from './screens/survey/Area';
-import SurfaceRibScan from './screens/survey/SurfaceRibScan';
-import AccumulationSweep from './screens/survey/AccumulationSweep';
-import MicroDebris from './screens/survey/MicroDebris';
-import Scanner from './screens/Publish/Scanner';
 import SurveyContainer from './screens/survey/SurveyContainer'
 import Example from './screens/Example';
 import CustomDrawer from './components/CustomDrawer';
@@ -38,15 +31,14 @@ const DrawerNavigator = createDrawerNavigator({
   }
 )
 
+// Navigator to different screens/pages.
 const MainNavigator = createStackNavigator(
   { 
     Boarding: {screen: BoardingPage},
     Home: {screen: HomePage},
     Login: {screen: LogInPage},
-    Profile: {screen: ProfilePage},
     SurveyEntry: {screen: SurveyPage},
     PublishContainer: {screen: PublishContainer},
-    ChooseBeach: {screen: ChooseBeachPage},
     SurveyContainer: {screen: SurveyContainer},
     Example : {screen: Example},
     DrawerNavigator
@@ -67,9 +59,8 @@ const SwitchNavigator = createSwitchNavigator(
   }
 )
 
-const NavigationApp = createAppContainer(MainNavigator);
-
-//export default App;
+// Create the appcontainer that will navigate between screens.
+const NavigationApp = createAppContainer(SwitchNavigator); 
 
 
 export default class App extends React.Component {
