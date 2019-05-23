@@ -42,6 +42,7 @@ import {
 
 import { mergeSurveys } from './MergeSurveys';
 import toExport from './env.js'
+import PageHeader from '../../components/PageHeader';
 
 
 export default class PublishContainer extends Component {
@@ -100,6 +101,7 @@ export default class PublishContainer extends Component {
       console.log("Verified")
       let verifyID = props.navigation.getParam('verifyID');
       const survey = await surveyDB.getSurvey(verifyID)
+      console.log("SURVEY HERE")
       console.log(survey);
       this.setState({mergedSurvey: survey})
       this.checkIfBeachExists(survey);
@@ -179,8 +181,11 @@ export default class PublishContainer extends Component {
           return false;
         } else {
           console.log(res.data)
-          this.setState({match: res.data[0]._id})
-          return true;
+          if(res.data[0].n === beachName){
+            this.setState({match: res.data[0]._id})
+            return true;
+          }
+          return false;
         }
       })
       .catch(err => {
@@ -401,15 +406,15 @@ export default class PublishContainer extends Component {
     if(invalidArray.length > 0){
       /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
       this.setState({isSubmitModalVisible: false});
-
+      console.log("****SURVEYID****\n" + JSON.stringify(this.state.surveys[0]))
       this.props.navigation.navigate('SurveyContainer', {
-        surveyName: currentSurvey.surveyName,
+        surveyName: this.state.surveys[0].surveyName,
         ribData: currentSurvey.ribData,
         surveyData: currentSurvey.surveyData,
         SRSData: currentSurvey.SRSData,
         ASData: currentSurvey.ASData,
         MicroData: currentSurvey.MicroData,
-        inProgress: currentSurvey._id,
+        inProgress: this.state.surveys[0]._id,
         invalidArray: invalidArray,
         fromPublish: true
       })
@@ -456,6 +461,7 @@ export default class PublishContainer extends Component {
     else {
       return(
         <Container>
+          <PageHeader title='Publish Survey' openDrawer={this.props.navigation.pop} />
             {this.state.isScanning &&
                 <Scanner
                   surveys={this.state.surveys}

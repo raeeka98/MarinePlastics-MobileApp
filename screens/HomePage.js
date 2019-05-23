@@ -6,11 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
   AsyncStorage,
+  SafeAreaView,
   RefreshControl
-} from 'react-native';
+} from 'react-native'; 
 
 import {
   Icon,
+  View,
   Footer,
   Button,
   Toast,
@@ -18,12 +20,14 @@ import {
   Container,
   Header,
   Content,
-  View
-} from 'native-base'
+  Spinner
+} from 'native-base';
 import Modal from 'react-native-modal'
+import {Font, Constants} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
 import { ScrollView } from 'react-native-gesture-handler';
+import PageHeader from '../components/PageHeader'
 
 import { SurveyCard } from './Home/SurveyCard';
 import { DeleteModal } from './Home/HomeModals';
@@ -39,6 +43,8 @@ class HomePage extends Component {
       isModalVisible: false,
       chosenSurvey: "",
       isDeleteVisible: false,
+      loading: true,
+      reload: false,
       shouldShowDelete: false
     }
 
@@ -48,7 +54,27 @@ class HomePage extends Component {
   }
 
   static navigationOptions = {
-    title: 'Home Page'
+    title: 'Home',
+    drawerIcon: ({focused}) => (
+      <Icon type='Entypo' name='home' style={{fontSize: 20, color: focused ? 'blue' : 'black'}} />
+    )
+  }
+
+  componentWillReceiveProps(props){
+    let reload = props.navigation.getParam('reload');
+    if(reload){
+      this.retrieveInProgress();
+    }
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    })
+    this.setState({
+      loading : false
+    });
   }
 
   async retrieveInProgress() {
@@ -109,7 +135,7 @@ class HomePage extends Component {
         SRSData: survey.SRSData,
         ASData: survey.ASData,
         MicroData: survey.MicroData,
-        inProgress: survey._id,
+        _id: survey._id,
       }}
     );
   }
@@ -125,9 +151,90 @@ class HomePage extends Component {
   }
 
   renderPublished(){
-    return(
-      <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
-    )
+    const {inProgress} = this.state;
+    let surveyArray = [];
+    /*for(var i = 0; i < inProgress.length; i++){
+      if(!inProgress[i].published){
+        continue;
+      }
+      let survComponent = (
+        <View style={{flex: 1, padding: 10, height: '15%'}}>
+
+          <TouchableOpacity
+            onPress={this.showSurveyModal.bind(this, inProgress[i])}
+            style={
+              {
+                height: 35,
+                borderRadius: 5,
+                padding: 10,
+                backgroundColor: 'lightblue',
+                borderColor: 'black',
+                borderWidth: 1
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  position: 'absolute',
+                  marginTop: '1%',
+                  width:"50%",
+                  textAlign:'center',
+                  paddingRight: '5%',
+                  fontSize: 16,
+                  fontWeight:'bold'
+                }
+              }
+            >
+              {inProgress[i].surveyName.length <= 15 ? inProgress[i].surveyName : inProgress[i].surveyName.substr(0, 13) + "..."}
+            </Text>
+            <Icon
+              style={
+                {
+                  position: 'absolute',
+                  marginTop: '1%',
+                  marginHorizontal: '46%',
+                  alignSelf: 'center'
+                }
+              }
+              type="AntDesign"
+              name="pause"
+            />
+            <View style={
+                  {
+                    position: 'absolute',
+                    marginTop: '1%',
+                    paddingLeft: '66%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                  }
+                }>
+              <Text
+                style={{fontSize: 17,
+                  fontStyle: 'italic'}}
+              >
+                {
+                  inProgress[i].surveyData.cleanupDate ?
+                    (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
+                    + inProgress[i].surveyData.cleanupDate.getDate() + "/"
+                    + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100) :
+                    "No Date"
+                }
+              </Text>
+              <Icon type='Entypo' name='dots-three-horizontal'/>
+            </View>
+
+          </TouchableOpacity>
+        </View>
+      )
+      surveyArray.push({key: inProgress[i].surveyName, val: survComponent})
+    }*/
+    if(surveyArray.length === 0) {
+      return(
+        <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
+      )
+    }
+    return <FlatList data={surveyArray} extraData={this.state} renderItem={({item}) => {return item.val}} />
   }
 
   showSurveyModal = (chosenSurvey) => {
@@ -147,6 +254,8 @@ class HomePage extends Component {
     const {inProgress} = this.state;
     let surveyArray = [];
     for(var i = 0; i < inProgress.length; i++){
+      if(inProgress[i].published)
+        continue;
       let survComponent = (
         <SurveyCard
           showSurveyModal={this.showSurveyModal}
@@ -159,9 +268,13 @@ class HomePage extends Component {
   }
 
   render() {
+    if(this.state.loading) {
+      return <Spinner style={{alignSelf: 'center'}}color='green'/>;
+    }
     return(
       <Container style={{flex: 1}}>
-        <Content>
+      <PageHeader title='Home' openDrawer={this.props.navigation.openDrawer}/>
+        <Content contentContainerStyle={{height: "100%"}}>
           <View style={{marginBottom: 50}}>
             <Text style={[styles.paragraph]}>
               In Progress
@@ -178,18 +291,6 @@ class HomePage extends Component {
             </Text>
             {this.renderPublished()}
           </View>
-
-          <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
-          </Button>
-          {__DEV__ &&
-              <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
-                <Text style={{fontWeight: 'bold', color: 'white'}}>Test Survey Merging and Publishing</Text>
-              </Button>
-          }
-          <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
-          </Button>
 
           <Modal
             isVisible={this.state.isModalVisible}
