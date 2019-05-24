@@ -250,9 +250,6 @@ class HomePage extends Component {
               </Text>
               {this.renderPublished()}
             </View>
-            <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
-              <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
-            </Button>
             <GeneralModal
               isModalVisible={this.state.isModalVisible}
               openDelete={this.openDelete}
