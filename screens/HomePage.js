@@ -75,10 +75,14 @@ class HomePage extends Component {
     )
   }
 
-  componentWillReceiveProps(props){
+  async componentWillReceiveProps(props){
     let reload = props.navigation.getParam('reload');
     if(reload){
       this.retrieveInProgress();
+      let inProgress = await this.renderInProgress();
+      this.setState({
+        inProgressViews: inProgress
+      })
     }
   }
 
@@ -106,7 +110,8 @@ class HomePage extends Component {
     await this.retrieveInProgress();
     const inProgress = this.renderInProgress();
     this.setState({
-        isRefreshing : false
+        isRefreshing : false,
+        inProgressViews: inProgress
     })
   }
 
@@ -165,6 +170,10 @@ class HomePage extends Component {
     await surveyDB.deleteSurvey(this.state.chosenSurvey._id);
     this.endModals();
     this.retrieveInProgress();
+    let inProgress = this.renderInProgress();
+    this.setState({
+      inProgressViews: inProgress
+    })
   }
 
   renderPublished(){
