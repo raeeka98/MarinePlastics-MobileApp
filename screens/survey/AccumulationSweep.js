@@ -76,7 +76,7 @@ export default class AccumulationSweep extends Component {
                     padding: 10,
                     justifyContent: "space-between",
                     alignItems: "center" ,
-                    backgroundColor: "#6CB5FF" }} 
+                    backgroundColor: "#1a8cff" }} 
             >
                 <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
                 <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>

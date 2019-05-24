@@ -599,16 +599,16 @@ export default class SurveyContainer extends Component {
                             </Item>
                         </View>
                         <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
-                            <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
-                                <Text style={{color: 'white', padding: 8}}>Back</Text>
+                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
+                                <Text style={{color: 'black', fontWeight: 'bold', padding: 8}}>Back</Text>
                             </Button>
                             {
                                 this.state.fromPublish ?
                                     <Button success style={{justifyContent: 'center', width: 100}} onPress={this.onPressVerify}>
-                                        <Text style={{color: 'white', padding: 8}}>Verify</Text>
+                                        <Text style={{color: 'white', fontWeight: 'bold', padding: 8}}>Verify</Text>
                                     </Button> :
                                     <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
-                                        <Text style={{color: 'white', padding: 8}}>Save</Text>
+                                        <Text style={{color: 'white', fontWeight: 'bold', padding: 8}}>Save</Text>
                                     </Button>
                             }
 

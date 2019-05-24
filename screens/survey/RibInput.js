@@ -172,7 +172,7 @@ export default class RibInput extends Component {
                     padding: 10,
                     justifyContent: "space-between",
                     alignItems: "center" ,
-                    backgroundColor: "#6CB5FF" }} 
+                    backgroundColor: "#1a8cff" }} 
             >
                 <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
                 <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
@@ -200,7 +200,7 @@ export default class RibInput extends Component {
                     <Text style={{fontSize: 17}}>{this.state.ribData[ribStart]}</Text>
                     <Text style={{fontSize: 17}}>Rib Length:</Text>
                     <Text style={{fontSize: 17}}>{this.state.ribData[ribLength]}</Text>
-                    <Button info onPress={this.showModal}>
+                    <Button onPress={this.showModal}>
                         <Text style={{padding: 8, color: 'white'}}>Edit Rib Info</Text>
                     </Button>
                 </View>

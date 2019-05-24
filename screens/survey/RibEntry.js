@@ -92,7 +92,6 @@ export default class RibEntry extends Component {
                 </View>
                 <View style={styles.inputSingleContainer}>
                     <Button
-                        info
                         style={{alignSelf: 'stretch', justifyContent: 'center'}}
                         onPress={this.onSubmitEdits.bind(this)}
                     >

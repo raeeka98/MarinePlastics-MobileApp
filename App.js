@@ -56,6 +56,9 @@ const SwitchNavigator = createSwitchNavigator(
   {
     BoardingPage,
     MainNavigator
+  }, 
+  {
+    initialRouteName: 'BoardingPage'
   }
 )
 

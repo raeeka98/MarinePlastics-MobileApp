@@ -78,6 +78,7 @@ class HomePage extends Component {
   componentWillReceiveProps(props){
     let reload = props.navigation.getParam('reload');
     if(reload){
+      console.log("Reload")
       this.retrieveInProgress();
     }
   }
@@ -96,7 +97,9 @@ class HomePage extends Component {
   }
 
   async retrieveInProgress() {
+    console.log("Retrieve in Progress")
     let surveys =  await surveyDB.getNameDate();
+    console.log(surveys)
     this.setState({
       inProgress: surveys
     })
