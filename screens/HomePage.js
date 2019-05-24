@@ -7,11 +7,13 @@ import {
   FlatList,
   TouchableOpacity,
   AsyncStorage,
+  SafeAreaView,
   RefreshControl
-} from 'react-native';
+} from 'react-native'; 
 
 import {
   Icon,
+  View,
   Footer,
   Button,
   Toast,
@@ -19,13 +21,16 @@ import {
   Container,
   Header,
   Content,
-  Spinner,
-  View
-} from 'native-base'
+  Spinner
+} from 'native-base';
 
 import Modal from 'react-native-modal'
+import {Font, Constants} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
+
+import { ScrollView } from 'react-native-gesture-handler';
+import PageHeader from '../components/PageHeader'
 
 import {
   ScrollView
@@ -54,6 +59,8 @@ class HomePage extends Component {
       isDeleteVisible: false,
       shouldShowDelete: false,
       isRefreshing: false
+      reload: false,
+      shouldShowDelete: false
     }
 
     this.navToPublish = this.navToPublish.bind(this);
@@ -63,7 +70,30 @@ class HomePage extends Component {
   }
 
   static navigationOptions = {
-    title: 'Home Page'
+    title: 'Home',
+    drawerIcon: ({focused}) => (
+      <Icon type='Entypo' name='home' style={{fontSize: 20, color: focused ? 'blue' : 'black'}} />
+    )
+  }
+
+  componentWillReceiveProps(props){
+    let reload = props.navigation.getParam('reload');
+    if(reload){
+      this.retrieveInProgress();
+    }
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    })
+    await this.retrieveInProgress();
+    const inProgress = this.renderInProgress();
+    this.setState({
+      pageLoading: false,
+      inProgressViews: inProgress
+    });
   }
 
   async retrieveInProgress() {
@@ -71,15 +101,6 @@ class HomePage extends Component {
     this.setState({
       inProgress: surveys
     })
-  }
-
-  async componentWillMount(){
-    await this.retrieveInProgress();
-    const inProgress = this.renderInProgress();
-    this.setState({
-      pageLoading: false,
-      inProgressViews: inProgress
-    });
   }
 
   async refreshPage() {
@@ -148,9 +169,14 @@ class HomePage extends Component {
   }
 
   renderPublished(){
-    return(
-      <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
-    )
+    const {inProgress} = this.state;
+    let surveyArray = [];
+    if(surveyArray.length === 0) {
+      return(
+        <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
+      )
+    }
+    return <FlatList data={surveyArray} extraData={this.state} renderItem={({item}) => {return item.val}} />
   }
 
   showSurveyModal = (chosenSurvey) => {
@@ -170,6 +196,8 @@ class HomePage extends Component {
     const {inProgress} = this.state;
     let surveyArray = [];
     for(var i = 0; i < inProgress.length; i++){
+      if(inProgress[i].published)
+        continue;
       let survComponent = (
         <SurveyCard
           showSurveyModal={this.showSurveyModal}
@@ -182,6 +210,7 @@ class HomePage extends Component {
   }
 
   render() {
+
     if(this.state.pageLoading) {
       return(
         <Container>
@@ -191,7 +220,9 @@ class HomePage extends Component {
     }else {
       return(
         <Container style={{flex: 1}}>
+        <PageHeader title='Home' openDrawer={this.props.navigation.openDrawer}/>
           <Content
+            contentContainerStyle={{height: "100%"}}
             refreshControl={
               <RefreshControl
                 style={{backgroundColor: '#f2fdff'}}
@@ -221,13 +252,6 @@ class HomePage extends Component {
               {this.renderPublished()}
             </View>
 
-            <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('SurveyEntry')}>
-              <Text style={{fontWeight: 'bold', color: 'white'}}>Survey Page</Text>
-            </Button>
-            {__DEV__ &&
-                <Button full info style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('PublishContainer')}>
-                  <Text style={{fontWeight: 'bold', color: 'white'}}>Test Survey Merging and Publishing</Text>
-                </Button>
             }
             <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
               <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>

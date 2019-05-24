@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button, Header, Right, Left, Body} from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker'
+import {Constants} from 'expo' 
 
 import SurveyFooter from './SurveyFooter'
+import headerStyles from '../headerStyles'
 import styles from './surveyStyles'
 
 export default class TeamInfo extends Component {
@@ -87,16 +89,16 @@ export default class TeamInfo extends Component {
     render() {
         return(
             <View style={styles.container}>
-                <Header style={{height : 75}}>
-                    <Left style={{marginTop: 20}}>
+                <Header style={headerStyles.header}>
+                    <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.onPressBack}>
                             <Icon type="AntDesign" name='arrowleft'/>
                         </Button>
                     </Left>
                     <Body>
-                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Team Information</Text>
+                        <Text style={[headerStyles.headerContents, {fontSize: 18, color: 'white'}]}>Team Information</Text>
                     </Body>
-                    <Right style={{marginTop: 25}}>
+                    <Right style={headerStyles.headerContents}>
                         <Button success onPress={this.props.onClickFinish}>
                             <Text style={{padding: 5, color: 'white'}}>Finish</Text>
                         </Button>

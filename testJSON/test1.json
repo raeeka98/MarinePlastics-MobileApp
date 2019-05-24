@@ -25,7 +25,7 @@
       "tideHeightB": "10.0",
       "tideTimeB": "10:30",
       "windSpeed": "20",
-      "windDir": "NW",
+      "windDir": "nw",
       "slope": "winter",
       "substrateTypeSand": false,
       "substrateTypePebble": false,

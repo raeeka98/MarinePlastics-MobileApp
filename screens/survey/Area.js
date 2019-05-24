@@ -7,6 +7,7 @@ import CheckBox from 'react-native-check-box'
 import SurveyFooter from './SurveyFooter'
 import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
+import headerStyles from '../headerStyles'
 
 /**
  * I think that users still need to enter in this information while they're at the beach because they need
@@ -131,14 +132,14 @@ export default class Area extends Component{
         return(
             <KeyboardView style={styles.container}>
             
-                <Header hasTabs style={{height : 75}} >
-                    <Left style={{marginTop: 20}}>
+                <Header hasTabs style={headerStyles.header} >
+                    <Left style={headerStyles.headerContents}>
                     
                     </Left>
-                    <Body>
-                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Survey Area</Text>
+                    <Body style={headerStyles.headerContents}>
+                        <Text style={{fontSize: 18, color: 'white'}}>Survey Area</Text>
                     </Body>
-                    <Right style={{marginTop: 25}}>
+                    <Right style={headerStyles.headerContents}>
                         <Button success onPress={this.props.onClickFinish}>
                             <Text style={{padding: 5, color: 'white'}}>Finish</Text>
                         </Button>

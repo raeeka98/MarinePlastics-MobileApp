@@ -57,6 +57,14 @@ let surveyDB = {
             }
             return res;
         })
+    },
+    deleteAll: () => {
+        /* This method should only be used in development, and shall
+         * be deleted in production
+         */
+        return db.remove({}, {multi: true}, (err, res)=>{
+            console.log("Deleted everything!")
+        })
     }
 
 }

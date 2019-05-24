@@ -1,7 +1,7 @@
 export default {
-  "test1" : {
-    "surveyName" : "test1",
-    "surveyData": {
+  "test1" : { 
+    "surveyName" : "Natural Bridges Group 2",
+    /*"surveyData": {
         "userFirst" : "Franky",
         "userLast" : "Kohn",
         "orgName" : "COI",
@@ -35,7 +35,7 @@ export default {
         "substrateTypeSeaweed": true,
         "subStrateTypeOther": false,
         "numOfP" : 19
-    },
+    },*/
     "ribData": {
       "r1Length": 20,
       "r1Start": 50
@@ -55,7 +55,7 @@ export default {
     }
   },
   "test2" : {
-      "surveyName" : "test2",
+      "surveyName" : "Natural Bridges Group 3",
       "ribData" : {
         "r2Length" : 20,
         "r2Start" : 30
@@ -80,7 +80,7 @@ export default {
       }
   },
   "test3" : {
-      "surveyName" : "test3",
+      "surveyName" : "Natural Bridges Group 4",
       "ribData" : {
         "r3Length" : 19,
         "r3Start" : 70
