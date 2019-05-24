@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   Platform,
   StatusBar,
@@ -22,15 +23,27 @@ import {
   Content,
   Spinner
 } from 'native-base';
+
 import Modal from 'react-native-modal'
 import {Font, Constants} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
+
 import { ScrollView } from 'react-native-gesture-handler';
 import PageHeader from '../components/PageHeader'
 
-import { SurveyCard } from './Home/SurveyCard';
-import { DeleteModal } from './Home/HomeModals';
+import {
+  ScrollView
+} from 'react-native-gesture-handler';
+
+import {
+  SurveyCard
+} from './Home/SurveyCard';
+
+import {
+  DeleteModal,
+  GeneralModal
+} from './Home/HomeModals';
 
 class HomePage extends Component {
 
@@ -38,12 +51,14 @@ class HomePage extends Component {
     super(props);
 
     this.state = {
+      pageLoading: true,
       isLoadingSurveys: false,
       inProgress: [],
       isModalVisible: false,
       chosenSurvey: "",
       isDeleteVisible: false,
-      loading: true,
+      shouldShowDelete: false,
+      isRefreshing: false
       reload: false,
       shouldShowDelete: false
     }
@@ -51,6 +66,7 @@ class HomePage extends Component {
     this.navToPublish = this.navToPublish.bind(this);
     this.openSurvey=this.openSurvey.bind(this)
     this.deleteSurvey=this.deleteSurvey.bind(this);
+    this.refreshPage=this.refreshPage.bind(this)
   }
 
   static navigationOptions = {
@@ -72,26 +88,27 @@ class HomePage extends Component {
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
+    await this.retrieveInProgress();
+    const inProgress = this.renderInProgress();
     this.setState({
-      loading : false
+      pageLoading: false,
+      inProgressViews: inProgress
     });
   }
 
   async retrieveInProgress() {
     let surveys =  await surveyDB.getNameDate();
-    console.log(`Retrieved: ${surveys}`)
     this.setState({
       inProgress: surveys
     })
   }
 
-  componentWillMount(){
-    this.retrieveInProgress();
-  }
-
-
-  refreshSurveys = () => {
-    console.log("refreshing!");
+  async refreshPage() {
+    await this.retrieveInProgress();
+    const inProgress = this.renderInProgress();
+    this.setState({
+        isRefreshing : false
+    })
   }
 
   cancelDelete = () => this.setState({isDeleteVisible: false});
@@ -126,17 +143,18 @@ class HomePage extends Component {
     let survey;
     let survID = this.state.chosenSurvey._id
     survey = await surveyDB.getSurvey(survID);
-    console.log(survey._id);
     this.props.navigation.navigate('PublishContainer',
-      {initSurvey : {
-        surveyData: survey.surveyData,
-        ribData: survey.ribData,
-        surveyName: survName,
-        SRSData: survey.SRSData,
-        ASData: survey.ASData,
-        MicroData: survey.MicroData,
-        _id: survey._id,
-      }}
+      {
+        initSurvey : {
+            surveyData: survey.surveyData,
+            ribData: survey.ribData,
+            surveyName: survName,
+            SRSData: survey.SRSData,
+            ASData: survey.ASData,
+            MicroData: survey.MicroData,
+            inProgress: survey._id,
+        }
+      }
     );
   }
 
@@ -153,82 +171,6 @@ class HomePage extends Component {
   renderPublished(){
     const {inProgress} = this.state;
     let surveyArray = [];
-    /*for(var i = 0; i < inProgress.length; i++){
-      if(!inProgress[i].published){
-        continue;
-      }
-      let survComponent = (
-        <View style={{flex: 1, padding: 10, height: '15%'}}>
-
-          <TouchableOpacity
-            onPress={this.showSurveyModal.bind(this, inProgress[i])}
-            style={
-              {
-                height: 35,
-                borderRadius: 5,
-                padding: 10,
-                backgroundColor: 'lightblue',
-                borderColor: 'black',
-                borderWidth: 1
-              }
-            }
-          >
-            <Text
-              style={
-                {
-                  position: 'absolute',
-                  marginTop: '1%',
-                  width:"50%",
-                  textAlign:'center',
-                  paddingRight: '5%',
-                  fontSize: 16,
-                  fontWeight:'bold'
-                }
-              }
-            >
-              {inProgress[i].surveyName.length <= 15 ? inProgress[i].surveyName : inProgress[i].surveyName.substr(0, 13) + "..."}
-            </Text>
-            <Icon
-              style={
-                {
-                  position: 'absolute',
-                  marginTop: '1%',
-                  marginHorizontal: '46%',
-                  alignSelf: 'center'
-                }
-              }
-              type="AntDesign"
-              name="pause"
-            />
-            <View style={
-                  {
-                    position: 'absolute',
-                    marginTop: '1%',
-                    paddingLeft: '66%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                  }
-                }>
-              <Text
-                style={{fontSize: 17,
-                  fontStyle: 'italic'}}
-              >
-                {
-                  inProgress[i].surveyData.cleanupDate ?
-                    (inProgress[i].surveyData.cleanupDate.getMonth() + 1) + "/"
-                    + inProgress[i].surveyData.cleanupDate.getDate() + "/"
-                    + (inProgress[i].surveyData.cleanupDate.getFullYear() % 100) :
-                    "No Date"
-                }
-              </Text>
-              <Icon type='Entypo' name='dots-three-horizontal'/>
-            </View>
-
-          </TouchableOpacity>
-        </View>
-      )
-      surveyArray.push({key: inProgress[i].surveyName, val: survComponent})
-    }*/
     if(surveyArray.length === 0) {
       return(
         <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
@@ -268,76 +210,72 @@ class HomePage extends Component {
   }
 
   render() {
-    if(this.state.loading) {
-      return <Spinner style={{alignSelf: 'center'}}color='green'/>;
-    }
-    return(
-      <Container style={{flex: 1}}>
-      <PageHeader title='Home' openDrawer={this.props.navigation.openDrawer}/>
-        <Content contentContainerStyle={{height: "100%"}}>
-          <View style={{marginBottom: 50}}>
-            <Text style={[styles.paragraph]}>
-              In Progress
-            </Text>
-            <ScrollView
-              style={{height: '45%'}}
-              >
-              {this.renderInProgress()}
-            </ScrollView>
-          </View>
-          <View style={{ marginBottom: 50}}>
-            <Text style={styles.paragraph}>
-              Published
-            </Text>
-            {this.renderPublished()}
-          </View>
 
-          <Modal
-            isVisible={this.state.isModalVisible}
-            onModalHide={this.openDelete}>
-            <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
-              <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{this.state.chosenSurvey.surveyName}</Text>
-              <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <Button light style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal} >
-                  <Text>Back</Text>
-                </Button>
-                <Button light  style={{justifyContent: 'center', width: 100}}onPress={this.openSurvey} title='Edit'>
-                  <Text>Edit</Text>
-                </Button>
-                <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.onPressDeleteSurvey} title='Delete'>
-                  <Text>Delete</Text>
-                </Button>
-              </View>
-              <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <Button primary style={{justifyContent: 'center',width: 100}} onPress={this.navToPublish}>
-                  <Text>Publish</Text>
-                </Button>
-              </View>
+    if(this.state.pageLoading) {
+      return(
+        <Container>
+          <Spinner color='blue' />
+        </Container>
+      );
+    }else {
+      return(
+        <Container style={{flex: 1}}>
+        <PageHeader title='Home' openDrawer={this.props.navigation.openDrawer}/>
+          <Content
+            contentContainerStyle={{height: "100%"}}
+            refreshControl={
+              <RefreshControl
+                style={{backgroundColor: '#f2fdff'}}
+                refreshing={this.state.isRefreshing}
+                onRefresh={this.refreshSurveys}
+                tintColor="#19d9ff"
+                titleColor="#00ff00"
+                colors={['#ff0000', '#00ff00', '#0000ff']}
+                progressBackgroundColor="#ffff00"
+                />
+            }
+            >
+            <View style={{marginBottom: 50}}>
+              <Text style={[styles.paragraph]}>
+                In Progress
+              </Text>
+              <ScrollView
+                style={{height: '50%'}}
+                >
+                {this.state.inProgressViews}
+              </ScrollView>
             </View>
-          </Modal>
-          <DeleteModal
-            isDeleteVisible={this.state.isDeleteVisible}
-            name={this.state.chosenSurvey.surveyName}
-            cancelDelete={this.cancelDelete}
-            deleteSurvey={this.deleteSurvey}
-            />
-          {/* COMMENTED OUT UNTIL I FIGURE OUT WHY DELETE MODAL DOESNT DELETE SURVEYS
-              <Modal isVisible={this.state.isDeleteVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Delete {this.state.chosenSurvey.surveyName}?</Text>
-                <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                  <Button light style={{justifyContent: 'center',width: 100}}onPress={this.closeDelete} >
-                    <Text>No</Text>
-                  </Button>
-                  <Button danger  style={{justifyContent: 'center', width: 100}}onPress={this.deleteSurvey} title='Edit'>
-                    <Text>Delete</Text>
-                  </Button>
-                </View>
-              </View>
-            </Modal>*/}
-        </Content>
-      </Container>
-    );
+            <View style={{ marginBottom: 50}}>
+              <Text style={styles.paragraph}>
+                Published
+              </Text>
+              {this.renderPublished()}
+            </View>
+
+            }
+            <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
+              <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
+            </Button>
+            <GeneralModal
+              isModalVisible={this.state.isModalVisible}
+              openDelete={this.openDelete}
+              name={this.state.chosenSurvey.surveyName}
+              cancelModal={this.cancelModal}
+              openSurvey={this.openSurvey}
+              onPressDeleteSurvey={this.onPressDeleteSurvey}
+              navToPublish={this.navToPublish}
+              />
+            <DeleteModal
+              isDeleteVisible={this.state.isDeleteVisible}
+              name={this.state.chosenSurvey.surveyName}
+              cancelDelete={this.cancelDelete}
+              deleteSurvey={this.deleteSurvey}
+              />
+          </Content>
+        </Container>
+      );
+    }
+
   }
 }
 
