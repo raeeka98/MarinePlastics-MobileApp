@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   SafeAreaView,
   RefreshControl
-} from 'react-native'; 
+} from 'react-native';
 
 import {
   Icon,
@@ -29,7 +29,6 @@ import {Font, Constants} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
 
-import { ScrollView } from 'react-native-gesture-handler';
 import PageHeader from '../components/PageHeader'
 
 import {
@@ -58,7 +57,7 @@ class HomePage extends Component {
       chosenSurvey: "",
       isDeleteVisible: false,
       shouldShowDelete: false,
-      isRefreshing: false
+      isRefreshing: false,
       reload: false,
       shouldShowDelete: false
     }
@@ -251,8 +250,6 @@ class HomePage extends Component {
               </Text>
               {this.renderPublished()}
             </View>
-
-            }
             <Button info full style={{marginBottom: 18, borderRadius: 5}} onPress={() => this.props.navigation.navigate('Login')}>
               <Text style={{fontWeight: 'bold', color: 'white'}}>Login</Text>
             </Button>
