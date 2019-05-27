@@ -481,7 +481,7 @@ export default class SurveyContainer extends Component {
         this.setState({isModalVisible:false})
     }
 
-     saveModal = async  () => {
+    saveModal = async  () => {
         /**
          * Commit all of the data to local storage
          */
@@ -493,6 +493,7 @@ export default class SurveyContainer extends Component {
             ASData,
             MicroData,
             ribData,
+            published: false,
             /* Possibly store user credentials here too */
         }
         if(this.props.navigation.getParam('inProgress') !== undefined){
@@ -523,7 +524,8 @@ export default class SurveyContainer extends Component {
                 SRSData,
                 ASData,
                 MicroData,
-                ribData
+                ribData,
+                published: false
                 /* Possibly store user credentials here too */
             }
             surveyDB.updateSurvey(survID, survStoreData);

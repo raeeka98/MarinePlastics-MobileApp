@@ -15,7 +15,7 @@ let surveyDB = {
     }, 
     getNameDate: () => {
         /* Get only the names and date of the survey (stored in surveyData) */
-        return db.find({}).projection({ _id: 1, surveyData: 1, surveyName: 1}).exec((err, res) => {
+        return db.find({}).projection({ _id: 1, surveyData: 1, surveyName: 1, published: 1}).exec((err, res) => {
             if(err) {
                 return (`Error retrieving surveys: ${err}`)
             }

@@ -31,6 +31,7 @@ import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
 import testSurveys from '../../testJSON/testSurveys';
+import {NavigationActions} from 'react-navigation'
 
 import {
   SubmitModal,
@@ -44,6 +45,9 @@ import { mergeSurveys } from './MergeSurveys';
 import toExport from './env.js'
 import PageHeader from '../../components/PageHeader';
 
+const goBack = NavigationActions.back({
+  key: 'DrawerNavigator'
+})
 
 export default class PublishContainer extends Component {
   constructor(props) {
@@ -59,6 +63,7 @@ export default class PublishContainer extends Component {
     const initSurvey = this.props.navigation.getParam('initSurvey');
     if(initSurvey) {
         this.state.surveys.push(initSurvey);
+        this.state.surveyID = initSurvey.inProgress;
     }
      // bind methods
      this.removeSurvey = this.removeSurvey.bind(this);
@@ -103,7 +108,7 @@ export default class PublishContainer extends Component {
       const survey = await surveyDB.getSurvey(verifyID)
       console.log("SURVEY HERE")
       console.log(survey);
-      this.setState({mergedSurvey: survey})
+      this.setState({mergedSurvey: survey, surveyID: verifyID})
       this.checkIfBeachExists(survey);
     }
   }
@@ -302,6 +307,8 @@ export default class PublishContainer extends Component {
       .then(res => {
         if(res.data.survID){
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
+          //Finally set the 'published' variable for the survey
+          surveyDB.updateSurvey(this.state.surveyID, {$set: {published: true}});
         }
       })
       .catch(err => {
@@ -309,7 +316,6 @@ export default class PublishContainer extends Component {
         console.log("Error submitting form:")
         console.log(err)
       })
-
   }
 
   async isSurveyValid() {
@@ -414,7 +420,7 @@ export default class PublishContainer extends Component {
         SRSData: currentSurvey.SRSData,
         ASData: currentSurvey.ASData,
         MicroData: currentSurvey.MicroData,
-        inProgress: this.state.surveys[0]._id,
+        inProgress: this.state.surveyID,
         invalidArray: invalidArray,
         fromPublish: true
       })
@@ -461,7 +467,7 @@ export default class PublishContainer extends Component {
     else {
       return(
         <Container>
-          <PageHeader title='Publish Survey' openDrawer={this.props.navigation.pop} />
+          <PageHeader title='Publish Survey' arrow openDrawer={() => this.props.navigation.pop()} />
             {this.state.isScanning &&
                 <Scanner
                   surveys={this.state.surveys}

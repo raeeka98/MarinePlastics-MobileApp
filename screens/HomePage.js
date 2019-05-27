@@ -179,9 +179,19 @@ class HomePage extends Component {
     })
   }
 
-  renderPublished(){
+  renderPublished = () => {
     const {inProgress} = this.state;
     let surveyArray = [];
+    for(var i = 0; i < inProgress.length; i++){
+      if(!inProgress[i].published)
+        continue;
+      let survComponent = (
+        <SurveyCard
+          showSurveyModal={this.showSurveyModal}
+          survey={inProgress[i]} />
+      )
+      surveyArray.push({key: inProgress[i].surveyName, val: survComponent});
+    }
     if(surveyArray.length === 0) {
       return(
         <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
@@ -221,7 +231,8 @@ class HomePage extends Component {
   }
 
   render() {
-
+    console.log('--------------NAVIGATION---------------')
+    console.log(this.props.navigation.openDrawer)
     if(this.state.pageLoading) {
       return(
         <Container>
@@ -241,7 +252,7 @@ class HomePage extends Component {
                 onRefresh={this.refreshSurveys}
                 tintColor="#19d9ff"
                 titleColor="#00ff00"
-                colors={['#ff0000', '#00ff00', '#0000ff']}
+                colors={['#ff0000', '#00ff00', '#0000ff']} 
                 progressBackgroundColor="#ffff00"
                 />
             }
@@ -251,7 +262,7 @@ class HomePage extends Component {
                 In Progress
               </Text>
               <ScrollView
-                style={{height: '50%'}}
+                style={{height: '45%'}}
                 >
                 {this.state.inProgressViews}
               </ScrollView>
@@ -260,7 +271,11 @@ class HomePage extends Component {
               <Text style={styles.paragraph}>
                 Published
               </Text>
-              {this.renderPublished()}
+              <ScrollView
+                style={{height: '45%'}}
+                >
+                {this.renderPublished()}
+              </ScrollView>
             </View>
             <GeneralModal
               isModalVisible={this.state.isModalVisible}

@@ -9,10 +9,12 @@ export default class PageHeader extends Component {
   }
 
   render() {
+    console.log('----------OPEN----------')
+    console.log(this.props.openDrawer)
     return(
       <Header style={headerStyles.header}>
         <Left style={headerStyles.headerContents}>
-          <Icon type='AntDesign' name='menuunfold' style={{color: 'white'}} onPress={this.props.openDrawer} />
+          <Icon type='AntDesign' name={this.props.arrow? 'arrowleft' : 'menuunfold'} style={{color: 'white'}} onPress={this.props.openDrawer} />
         </Left>
         <Body style={headerStyles.headerContents}>
           <Title>{this.props.title}</Title>
