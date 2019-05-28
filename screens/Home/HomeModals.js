@@ -53,15 +53,15 @@ function GeneralModal (props) {
           <Button light style={{justifyContent: 'center',width: 100}}onPress={cancelModal} >
             <Text>Back</Text>
           </Button>
-          <Button light  style={{justifyContent: 'center', width: 100}}onPress={openSurvey} title='Edit'>
-            <Text>Edit</Text>
+          <Button light disabled={props.published} style={{justifyContent: 'center', width: 100}}onPress={openSurvey} title='Edit'>
+            <Text >Edit</Text>
           </Button>
           <Button danger  style={{justifyContent: 'center', width: 100}}onPress={onPressDeleteSurvey} title='Delete'>
             <Text>Delete</Text>
           </Button>
         </View>
         <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
-          <Button primary style={{justifyContent: 'center',width: 100}} onPress={navToPublish}>
+          <Button primary disabled={props.published} style={{justifyContent: 'center',width: 100}} onPress={navToPublish}>
             <Text>Publish</Text>
           </Button>
         </View>

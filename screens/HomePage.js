@@ -285,6 +285,7 @@ class HomePage extends Component {
               openSurvey={this.openSurvey}
               onPressDeleteSurvey={this.onPressDeleteSurvey}
               navToPublish={this.navToPublish}
+              published={this.state.chosenSurvey.published}
               />
             <DeleteModal
               isDeleteVisible={this.state.isDeleteVisible}
