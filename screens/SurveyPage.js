@@ -37,12 +37,12 @@ class SurveyPage extends React.Component {
       <View>
         <PageHeader title="Start a survey" openDrawer={this.props.navigation.openDrawer} />
         <View style={[styles.container, {flexDirection:'column', justifyContent: 'space-between'}]}>
-          <Text style={{fontSize: 16, fontFamily: 'Roboto'}}>
+          <Text style={{fontSize: 18, fontFamily: 'Roboto'}}>
             The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI). If
             you are unfamiliar with their survey protocol, we suggest that you visit the Marine Plastics Monitor
             website and familiarize yourself with the procedure. 
           </Text>
-          <Text style={{fontSize: 16, fontFamily: 'Roboto'}}>
+          <Text style={{fontSize: 18, fontFamily: 'Roboto'}}>
             The survey on this app is a digital translation of 
             COI's paper protocol, but there are some changes that should be noted. We have integrated QR code scanning
             and generation in this app to make it easier for groups to split work on the survey. Only one survey must
