@@ -270,7 +270,6 @@ class HomePage extends React.Component {
   // Converts these to 9-bit binary and adds them to a binary string (binstring)
   // The binToEncoded then translates this to a string using ascii values in the range 48-112
   encodeToText = async () => {
-    console.log("hello");
     var binstring = "";
     var survey = await surveyDB.getSurvey(this.state.chosenSurvey._id);
 
@@ -313,9 +312,6 @@ class HomePage extends React.Component {
 
     var encoded = this.binToEncoded(binstring);
     var decoded = this.decodeText(encoded);
-    console.log(encoded);
-    console.log(decoded);
-
     return encoded;
   }
 
