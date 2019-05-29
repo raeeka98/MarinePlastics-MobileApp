@@ -59,7 +59,7 @@ function GeneralModal (props) {
           
         </View>
         <View style={ {flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10}}>
-        <Button primary disabled={props.published} style={{justifyContent: 'center',width: 100}} onPress={navToPublish}>
+        <Button primary disabled={false} style={{justifyContent: 'center',width: 100}} onPress={navToPublish}>
             <Text>Publish</Text>
           </Button>
         </View>
