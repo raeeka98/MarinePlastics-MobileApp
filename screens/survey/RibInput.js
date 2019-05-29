@@ -29,6 +29,7 @@ export default class RibInput extends Component {
     state = {
         SRSData: this.props.SRSData,
         surveyData: this.props.surveyData,
+        ribData: this.props.ribData,
         ribNumber: this.props.ribNumber,
         inputItems: [
             {title: "Cigarette Butts"},
@@ -68,8 +69,8 @@ export default class RibInput extends Component {
     saveModal(ribStart, ribLength){
         this.setState(prevState => {
             prevState.isModalVisible = false;
-            prevState.surveyData[ribStart] = prevState.editStart !== '' ? prevState.editStart : prevState.surveyData[ribStart];
-            prevState.surveyData[ribLength] = prevState.editLength !== '' ? prevState.editLength : prevState.surveyData[ribLength];
+            prevState.ribData[ribStart] = prevState.editStart !== '' ? prevState.editStart : prevState.ribData[ribStart];
+            prevState.ribData[ribLength] = prevState.editLength !== '' ? prevState.editLength : prevState.ribData[ribLength];
             prevState.editLength = '';
             prevState.editStart = ''
             return prevState
@@ -197,9 +198,9 @@ export default class RibInput extends Component {
                       } 
                 >
                     <Text style={{fontSize: 17}}>Rib Start:</Text>
-                    <Text style={{fontSize: 17}}>{this.state.surveyData[ribStart]}</Text>
+                    <Text style={{fontSize: 17}}>{this.state.ribData[ribStart]}</Text>
                     <Text style={{fontSize: 17}}>Rib Length:</Text>
-                    <Text style={{fontSize: 17}}>{this.state.surveyData[ribLength]}</Text>
+                    <Text style={{fontSize: 17}}>{this.state.ribData[ribLength]}</Text>
                     <Button info onPress={this.showModal}>
                         <Text style={{padding: 8, color: 'white'}}>Edit Rib Info</Text>
                     </Button>

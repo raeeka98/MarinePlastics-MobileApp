@@ -8,6 +8,7 @@ import styles from './surveyStyles'
 import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
 import RibEntry from './RibEntry'
+import headerStyles from '../headerStyles';
 
 const tabHeadings = [
     '+ Add Rib',
@@ -23,14 +24,16 @@ export default class SurfaceRibScan extends Component {
         SRSData: this.props.SRSData ? this.props.SRSData : {},
         ASData: this.props.ASData ? this.props.ASData : {},
         MicroData: this.props.MicroData ? this.props.MicroData : {},
+        ribData: this.props.ribData ? this.props.ribData : {},
         modalVisible: false,
         tabArray: this.props.tabArray ? this.props.tabArray : [],
-        ribsToSelect: [
+        ribsToSelect: this.props.ribsToSelect ? this.props.ribsToSelect : [
             <Picker.Item key='1' label="1" value="1" />,
             <Picker.Item key='2' label="2" value="2" />,
             <Picker.Item key='3' label="3" value="3" />,
             <Picker.Item key='4' label="4" value="4" />
-        ]
+        ],
+        remade: this.props.remade ? this.props.remade : false
     }
 
     submitAddRib = (ribNumber, ribLength, ribStart) => {
@@ -44,39 +47,42 @@ export default class SurfaceRibScan extends Component {
                     id={ribNumber}
                     SRSData={this.state.SRSData}
                     surveyData={this.state.surveyData}
+                    ribData={this.state.ribData}
                     ribNumber={ribNumber} 
                     decrementSRS={this.props.decrementSRS} 
                     incrementSRS={this.props.incrementSRS}
                     inputItems={this.state[ribArrayName]}
                     updateSurveyState={this.props.updateSurveyState}
+                    updateRibData={this.props.updateRibData}
                 />
             </Tab>
         )
         
         this.setState(prevState => {
             prevState.tabArray.push(newRib);
-            prevState.surveyData[ribNumLength] = ribLength;
-            prevState.surveyData[ribNumStart] = ribStart;
+            prevState.ribData[ribNumLength] = ribLength;
+            prevState.ribData[ribNumStart] = ribStart;
             prevState.ribsToSelect = prevState.ribsToSelect.filter(comp => comp.props.value !== ribNumber)
-            console.log(prevState)
+            console.log(prevState.ribsToSelect)
             return prevState
         })
     }
 
     remakeTabs = () => {
-        const {surveyData} = this.state;
-        if(surveyData.r1Start !== undefined){
-            this.submitAddRib('1', surveyData.r1Length, surveyData.r1Start);
+        const {ribData} = this.state;
+        if(ribData.r1Start !== undefined){
+            this.submitAddRib('1', ribData.r1Length, ribData.r1Start);
         }
-        if(surveyData.r2Start !== undefined){
-            this.submitAddRib('2', surveyData.r2Length, surveyData.r2Start);
+        if(ribData.r2Start !== undefined){
+            this.submitAddRib('2', ribData.r2Length, ribData.r2Start);
         }
-        if(surveyData.r3Start !== undefined){
-            this.submitAddRib('3', surveyData.r3Length, surveyData.r3Start);
+        if(ribData.r3Start !== undefined){
+            this.submitAddRib('3', ribData.r3Length, ribData.r3Start);
         }
-        if(surveyData.r4Start !== undefined){
-            this.submitAddRib('4', surveyData.r4Length, surveyData.r4Start);
+        if(ribData.r4Start !== undefined){
+            this.submitAddRib('4', ribData.r4Length, ribData.r4Start);
         }
+        this.props.setRemade();
     }
 
     /**
@@ -84,7 +90,8 @@ export default class SurfaceRibScan extends Component {
      * we have to reconstruct the tabs
      */
     componentWillMount(){
-        this.remakeTabs()
+        if(!this.state.remade)
+            this.remakeTabs()
     }
     
     /**
@@ -96,14 +103,14 @@ export default class SurfaceRibScan extends Component {
         console.log("OUTER RENDER" )
         return (
             <View style={styles.container}>
-                <Header hasTabs style={{height : 75}}>
-                    <Left style={{marginTop: 20}}>
+                <Header hasTabs style={headerStyles.header}>
+                    <Left style={headerStyles.headerContents}>
                         
                     </Left>
-                    <Body>
-                        <Text style={{marginTop: 20, fontSize: 18, color: 'white'}}>Header</Text>
+                    <Body style={headerStyles.headerContents}>
+                        <Text style={{fontSize: 18, color: 'white'}}>Header</Text>
                     </Body>
-                    <Right style={{marginTop: 25}}>
+                    <Right style={headerStyles.headerContents}>
                         <Button success onPress={this.props.onClickFinish}>
                             <Text style={{padding: 5, color: 'white'}}>Finish</Text>
                         </Button>
@@ -115,6 +122,7 @@ export default class SurfaceRibScan extends Component {
                             <Tab heading='+ Add Rib'>
                                 <RibEntry
                                     updateSurveyState={this.props.updateSurveyState}
+                                    updateRibData={this.props.updateRibData}
                                     surveyData={this.props.surveyData}
                                     submitAddRib={this.submitAddRib}
                                     tabArray={this.state.tabArray}

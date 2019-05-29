@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-
+import {Font} from 'expo'
 import { Image } from 'react-native';
+import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
-import {
-  Card,
-  CardItem,
-  Text,
-  Button,
-  Icon,
-  Left,
-  Body,
-  Right
-} from 'native-base';
 
 export default class ImportView extends Component {
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    })
+  }
+
+
   render() {
-    let { survey, index } = this.props;
-    const s = JSON.parse(survey);
+    let { index, name } = this.props;
     return (
       <Card style={{ borderRadius:10 }}>
         <CardItem bordered style={{
@@ -24,7 +23,9 @@ export default class ImportView extends Component {
             height: 100
           }}>
           <Left>
-            <Text>{s.surveyName ? s.surveyName : "NO NAME"}</Text>
+            <Button transparent onPress={() => {}}>
+              <Text>{name}</Text>
+            </Button>
           </Left>
           <Right>
               {index == 0 ?
