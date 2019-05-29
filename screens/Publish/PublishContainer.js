@@ -303,7 +303,7 @@ export default class PublishContainer extends Component {
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
 
-    axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
+    axios.post(`http://169.233.214.173:3001/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
@@ -314,7 +314,9 @@ export default class PublishContainer extends Component {
       .catch(err => {
         this.setState({isConfirmModalVisible: false})
         console.log("Error submitting form:")
-        console.log(err)
+        let error = err.response.data.error
+        console.log(error);
+        alert("Uh Oh! An error has occurred: \n" + error)
       })
   }
 
@@ -412,7 +414,6 @@ export default class PublishContainer extends Component {
     if(invalidArray.length > 0){
       /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
       this.setState({isSubmitModalVisible: false});
-      console.log("****SURVEYID****\n" + JSON.stringify(this.state.surveys[0]))
       this.props.navigation.navigate('SurveyContainer', {
         surveyName: this.state.surveys[0].surveyName,
         ribData: currentSurvey.ribData,

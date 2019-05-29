@@ -9,8 +9,6 @@ export default class PageHeader extends Component {
   }
 
   render() {
-    console.log('----------OPEN----------')
-    console.log(this.props.openDrawer)
     return(
       <Header style={headerStyles.header}>
         <Left style={headerStyles.headerContents}>
