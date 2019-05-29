@@ -213,11 +213,13 @@ export default class PublishContainer extends Component {
     }
   }
 
-  combineDateTime() {
+   combineDateTime() {
     const currentSurveyData = this.state.mergedSurvey.surveyData;
-    let currentDate = currentSurveyData.cleanupDate.toISOString();
+    let currentDate = new Date(currentSurveyData.cleanupDate).toISOString();
+    console.log(currentDate);
     const dateOnly = currentDate.split('T')[0];
     let currentTime = currentSurveyData.cleanupTime.toISOString();
+    console.log(currentTime)
     const timeOnly= currentTime.split('T')[1];
     let returnDate = new Date(dateOnly + 'T' + timeOnly);
     return returnDate;
@@ -287,14 +289,13 @@ export default class PublishContainer extends Component {
         nroDist: surveyData.riverDistance
       }
     }
+    console.log("DATEDTAETAETTAFTADTEF: " + form.survData.survDate)
     return form;
   }
 
   convertTimeString(time){
     let timeString = "";
-    console.log(time);
     timeString = time.toString().split(/ /)[4].substring(0, 5);
-    console.log(timeString)
     return timeString;
   }
 
@@ -303,7 +304,7 @@ export default class PublishContainer extends Component {
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
 
-    axios.post(`http://169.233.214.173:3001/beaches/surveys`, formToSubmit)
+    axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
