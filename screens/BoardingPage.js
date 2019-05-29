@@ -40,6 +40,9 @@ class BoardingPage extends Component {
         <Text style={styles.paragraph}>
           Marine Plastics Monitor
         </Text>
+        <Text style={{fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>
+          Clean Ocean International's Survey Input Assistant
+        </Text>
         <Button onPress={() => this.props.navigation.dispatch(navigateToHome)} title="Home"/>
         <Button onPress={() => this.props.navigation.dispatch(navigateToLogin)} title="Login"/>
       </View>
@@ -58,8 +61,8 @@ container: {
     backgroundColor: "#ffffff",
   },
     paragraph: {
-    margin: 24,
-    fontSize: 18,
+    margin: 14,
+    fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e",
