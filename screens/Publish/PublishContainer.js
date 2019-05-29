@@ -233,7 +233,6 @@ export default class PublishContainer extends Component {
     let userID = await AsyncStorage.getItem('accessToken');
     userID = userID.split("|")[1];
     let userEmail = await AsyncStorage.getItem('email');
-    console.log("==============" + userEmail);
     const form = {
       survData: {
         user: {
@@ -290,7 +289,6 @@ export default class PublishContainer extends Component {
         nroDist: surveyData.riverDistance
       }
     }
-    console.log("DATEDTAETAETTAFTADTEF: " + form.survData.survDate)
     return form;
   }
 
@@ -305,7 +303,7 @@ export default class PublishContainer extends Component {
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
 
-    axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
+    axios.post(`http://169.233.214.173:3001/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
