@@ -312,6 +312,7 @@ class HomePage extends React.Component {
 
     var encoded = this.binToEncoded(binstring);
     var decoded = this.decodeText(encoded);
+    console.log(decoded);
     return encoded;
   }
 
@@ -338,14 +339,46 @@ class HomePage extends React.Component {
 
   decodeText(encoded) {
     var binstring = this.encodedToBin(encoded);
-    var decoded = "";
+    var decoded = [];
     while (binstring.length >= 9) {
       var substr = binstring.substr(0, 9);
       binstring = binstring.substr(9);
       var dec = parseInt(substr, 2);
-      decoded += dec;
+      decoded.push(dec);
     }
-    return decoded;
+    var survey = {
+      surveyData : {},
+      SRSData : {},
+      ASData : {},
+      MicroData : {}
+    };
+    var i=0;
+    for (var ribNum = 1; ribNum <= 4; ribNum++) {
+      //RIB 1 (example rib) DO FOR EACH RIB
+      survey.surveyData[`r${ribNum}Start`] = decoded[i++];
+      survey.surveyData[`r${ribNum}Length`] = decoded[i++];
+
+      //Encode fresh and weathered for each category
+      for (var key in debrisInfoID) {
+        survey.SRSData[`${debrisInfoID[key]}__fresh__${ribNum}`] = decoded[i++];
+        survey.SRSData[`${debrisInfoID[key]}__weathered__${ribNum}`] = decoded[i++];
+      }
+    }
+
+    //ACCUMULATION SWEEP
+    for (var key in debrisInfoID) {
+      survey.ASData[`${debrisInfoID[key]}__fresh__accumulation`] = decoded[i++];
+      survey.ASData[`${debrisInfoID[key]}__weathered__accumulation`] = decoded[i++];
+    }
+
+    //MICRODEBRIS
+    for (var ribNum = 1; ribNum <= 4; ribNum++) {
+      survey.MicroData[`rib${ribNum}__fresh__micro`] = decoded[i++];
+      survey.MicroData[`rib${ribNum}__weathered__micro`] = decoded[i++];
+    }
+
+    console.log(survey);
+    return survey;
   }
 
   encodedToBin(encoded) {
