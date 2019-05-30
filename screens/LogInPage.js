@@ -284,7 +284,7 @@ class LogInPage extends React.Component {
             {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
           </Text>
           <Text style={styles.container}>
-            Email: {loggedIn ? this.state.email : ''}
+            {loggedIn ? "Email: "+this.state.email : ''}
           </Text>
           <Text style={[styles.paragraph]}>Log in with Auth0</Text>
           {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
