@@ -287,14 +287,12 @@ class LogInPage extends React.Component {
             Email: {loggedIn ? this.state.email : ''}
           </Text>
           <Text style={[styles.paragraph]}>Log in with Auth0</Text>
-          <Text style={[styles.paragraph]}>You are {loggedIn ? '' : 'not '}logged in.</Text>
-          <Button info onPress={this._loginV3} style={styles.button}>
+          {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
             <Text style={[styles.paragraph]}>Log In</Text>
-          </Button>
-          <Button info onPress={this._onlogout} style={styles.button}>
+          </Button>}
+          {loggedIn ? <Button danger onPress={this._onlogout} style={styles.button}>
             <Text style={[styles.paragraph]}>Log Out</Text>
-          </Button>
-          
+          </Button> : null}
         </View>
     </View>
 
@@ -358,6 +356,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 20,
     backgroundColor: "#ffffff",
+    alignItems: "center",
   },
   paragraph: {
     marginHorizontal: 24,
@@ -368,7 +367,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 50,
+    marginTop: 25,
     fontSize: 20,
+    width: "80%",
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",
