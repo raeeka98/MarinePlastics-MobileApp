@@ -47,46 +47,7 @@ class LogInPage extends React.Component {
     Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
       this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
         error => console.log(error));
-    // if (Platform.OS === 'android'){
-    //   console.log('Logging out of Android');
-      //this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-      //this._storeAccessToken();
-
-      /*
-      await AuthSession.startAsync(`${credentials.domain}/v2/logout`).then(success => {
-        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
-          error => console.log(error));
-      */
-
-      /*
-      await AuthSession.dismiss().then(success => {
-        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
-          error => console.log(error));
-      */
-
-      /*
-      auth0.webAuth
-        .logout({returnTo: `${credentials.domain}/v2/logout`})
-        .then(success => {
-          this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-      })
-      .catch(error => console.log(error));*/
-
-    //   Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
-    //     this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
-    //       error => console.log(error));
-    // }
-    // else {
-    //   console.log('Logging out');
-    //   auth0.webAuth
-    //     .clearSession({})
-    //     .then(success => {
-    //       this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-    //       //this._storeAccessToken();
-    //     })
-    //     .catch(error => console.log(error));
-    // }
-    // console.log('Successful Logout');
+    console.log('Successful Logout');
   };
 
   // Log into Auth0 then store the token to AsyncStorage.
