@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, AppRegistry } from 'react-native';
-import { Button, Alert, AsyncStorage, Linking, Image } from 'react-native';
-import {Icon} from 'native-base'
+import { Platform, StyleSheet, AppRegistry } from 'react-native';
+import { Alert, AsyncStorage, Linking, Image } from 'react-native';
+import {Icon, View, Button, Text, Container, Content } from 'native-base'
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -273,6 +273,32 @@ class LogInPage extends React.Component {
     // Store that in a boolean variable.
     let loggedIn = this.state.accessToken === null ? false : true; 
     return(
+      <View style={{justifyContent: "center"}}>
+        <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
+        <View style={styles.container}>
+          <Image
+              style={{width:150, height: 150}}
+              source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+            />
+          <Text style={styles.container}>
+            {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
+          </Text>
+          <Text style={styles.container}>
+            Email: {loggedIn ? this.state.email : ''}
+          </Text>
+          <Text style={[styles.paragraph]}>Log in with Auth0</Text>
+          <Text style={[styles.paragraph]}>You are {loggedIn ? '' : 'not '}logged in.</Text>
+          <Button info onPress={this._loginV3} style={styles.button}>
+            <Text style={[styles.paragraph]}>Log In</Text>
+          </Button>
+          <Button info onPress={this._onlogout} style={styles.button}>
+            <Text style={[styles.paragraph]}>Log Out</Text>
+          </Button>
+          
+        </View>
+    </View>
+
+      /*
       <View>
         <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer} />
         <View style={styles.container}>
@@ -299,7 +325,7 @@ class LogInPage extends React.Component {
             source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
           />
         </View>
-      </View>
+      </View>*/
     );
   }
 }
@@ -312,6 +338,7 @@ export default LogInPage;
 
 // Style variable.
 const styles = StyleSheet.create({
+  /*
   container: {
     justifyContent: "center",
     marginTop: 50,
@@ -324,6 +351,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e",
+  }*/
+
+  container: {
+    justifyContent: "center",
+    marginTop: 10,
+    padding: 20,
+    backgroundColor: "#ffffff",
+  },
+  paragraph: {
+    marginHorizontal: 24,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#34495e",
+  },
+  button: {
+    marginHorizontal: 50,
+    fontSize: 20,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#158964"
   }
 });
-
