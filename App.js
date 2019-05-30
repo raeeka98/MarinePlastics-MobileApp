@@ -51,7 +51,6 @@ const MainNavigator = createStackNavigator(
   }
 );
 
-
 const SwitchNavigator = createSwitchNavigator(
   {
     BoardingPage,
