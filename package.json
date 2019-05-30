@@ -4,6 +4,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
+    "cross" : "emulator -avd Nexus_5X_API_28_x86 && expo start --ios --android",
     "eject": "expo eject"
   },
   "dependencies": {
