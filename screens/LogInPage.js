@@ -44,8 +44,11 @@ class LogInPage extends React.Component {
   // Log out by setting the stored variables to null then saving to AsyncStorage.
   _onlogout = async () => {
     console.log('Setting AccessToken to Null for Logout');
-    if (Platform.OS === 'android'){
-      console.log('Logging out of Android');
+    Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
+      this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
+        error => console.log(error));
+    // if (Platform.OS === 'android'){
+    //   console.log('Logging out of Android');
       //this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
       //this._storeAccessToken();
 
@@ -69,21 +72,21 @@ class LogInPage extends React.Component {
       })
       .catch(error => console.log(error));*/
 
-      Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
-        this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
-          error => console.log(error));
-    }
-    else {
-      console.log('Logging out');
-      auth0.webAuth
-        .clearSession({})
-        .then(success => {
-          this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-          //this._storeAccessToken();
-        })
-        .catch(error => console.log(error));
-    }
-    console.log('Successful Logout');
+    //   Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
+    //     this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
+    //       error => console.log(error));
+    // }
+    // else {
+    //   console.log('Logging out');
+    //   auth0.webAuth
+    //     .clearSession({})
+    //     .then(success => {
+    //       this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
+    //       //this._storeAccessToken();
+    //     })
+    //     .catch(error => console.log(error));
+    // }
+    // console.log('Successful Logout');
   };
 
   // Log into Auth0 then store the token to AsyncStorage.
