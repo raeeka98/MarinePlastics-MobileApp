@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, AppRegistry } from 'react-native';
-import { Button, Alert, AsyncStorage, Linking, Image } from 'react-native';
-import {Icon} from 'native-base'
+import { Platform, StyleSheet, AppRegistry } from 'react-native';
+import { Alert, AsyncStorage, Linking, Image } from 'react-native';
+import {Icon, View, Button, Text, Container, Content } from 'native-base'
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -44,45 +44,9 @@ class LogInPage extends React.Component {
   // Log out by setting the stored variables to null then saving to AsyncStorage.
   _onlogout = async () => {
     console.log('Setting AccessToken to Null for Logout');
-    if (Platform.OS === 'android'){
-      console.log('Logging out of Android');
-      //this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-      //this._storeAccessToken();
-
-      /*
-      await AuthSession.startAsync(`${credentials.domain}/v2/logout`).then(success => {
-        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
-          error => console.log(error));
-      */
-
-      /*
-      await AuthSession.dismiss().then(success => {
-        this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()})}).catch(
-          error => console.log(error));
-      */
-
-      /*
-      auth0.webAuth
-        .logout({returnTo: `${credentials.domain}/v2/logout`})
-        .then(success => {
-          this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-      })
-      .catch(error => console.log(error));*/
-
-      Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
-        this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
-          error => console.log(error));
-    }
-    else {
-      console.log('Logging out');
-      auth0.webAuth
-        .clearSession({})
-        .then(success => {
-          this.setState({ accessToken: null, email: null }, () => {this._storeAccessToken()});
-          //this._storeAccessToken();
-        })
-        .catch(error => console.log(error));
-    }
+    Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
+      this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
+        error => console.log(error));
     console.log('Successful Logout');
   };
 
@@ -119,9 +83,9 @@ class LogInPage extends React.Component {
       Alert('Authentication error', response.error_description || 'something went wrong');
       return;
     }
-    console.log("Response recorded " + JSON.stringify(response)); 
+    console.log("Response recorded " + JSON.stringify(response));
     // Store the response and decode it.
-    const jwtToken = response.id_token; 
+    const jwtToken = response.id_token;
     const decoded = jwtDecode(jwtToken);
     console.log(decoded);
     // Extract the following values given the keys from the decoded response.
@@ -208,7 +172,7 @@ class LogInPage extends React.Component {
       console.log(error);
     }
   };
- 
+
   // Get the accessToken from AsyncStorage and set the according state variable.
   _retrieveAccessToken = async() => {
     try {
@@ -271,12 +235,36 @@ class LogInPage extends React.Component {
     const {navigate} = this.props.navigation;
     // We'll determine if a user is logged in just by looking at the accesstoken state variable.
     // Store that in a boolean variable.
-    let loggedIn = this.state.accessToken === null ? false : true; 
+    let loggedIn = this.state.accessToken === null ? false : true;
     return(
+      <View style={{justifyContent: "center"}}>
+        <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
+        <View style={styles.container}>
+          <Image
+              style={{width:150, height: 150}}
+              source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+            />
+          <Text style={styles.container}>
+            {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
+          </Text>
+          <Text style={styles.container}>
+            {loggedIn ? "Email: "+this.state.email : ''}
+          </Text>
+          <Text style={[styles.paragraph]}>Log in with Auth0</Text>
+          {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
+            <Text style={[styles.paragraph]}>Log In</Text>
+          </Button>}
+          {loggedIn ? <Button danger onPress={this._onlogout} style={styles.button}>
+            <Text style={[styles.paragraph]}>Log Out</Text>
+          </Button> : null}
+        </View>
+    </View>
+
+      /*
       <View>
         <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer} />
         <View style={styles.container}>
-          
+
           <Text style={styles.header}>Log in with Auth0</Text>
           <Text>
             You are {loggedIn ? '' : 'not '}logged in.
@@ -285,7 +273,7 @@ class LogInPage extends React.Component {
             //title = {loggedIn ? 'log out' : 'log in'}/>
             onPress={this._loginV3}
             title={'log in'}/>
-          <Button 
+          <Button
             onPress={this._onlogout}
             title={'log out'}/>
           <Text style={styles.container}>
@@ -299,7 +287,7 @@ class LogInPage extends React.Component {
             source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
           />
         </View>
-      </View>
+      </View>*/
     );
   }
 }
@@ -312,6 +300,7 @@ export default LogInPage;
 
 // Style variable.
 const styles = StyleSheet.create({
+  /*
   container: {
     justifyContent: "center",
     marginTop: 50,
@@ -324,6 +313,30 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e",
+  }*/
+
+  container: {
+    justifyContent: "center",
+    marginTop: 10,
+    padding: 20,
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+  },
+  paragraph: {
+    marginHorizontal: 24,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#34495e",
+  },
+  button: {
+    alignSelf: 'center',
+    marginTop: 25,
+    fontSize: 20,
+    width: "80%",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#158964"
   }
 });
-

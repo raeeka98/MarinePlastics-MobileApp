@@ -218,7 +218,7 @@ export default class PublishContainer extends Component {
   /**
    * Take the cleanupDate and cleanupTime and combine them into one date object
    */
-   combineDateTime() {
+  combineDateTime() {
     const currentSurveyData = this.state.mergedSurvey.surveyData;
     let returnDate = currentSurveyData.cleanupDate;
     let currentTime = currentSurveyData.cleanupTime;

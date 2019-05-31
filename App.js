@@ -23,7 +23,7 @@ import CustomDrawer from './components/CustomDrawer';
 const DrawerNavigator = createDrawerNavigator({
   HomePage,
   LogInPage,
-  SurveyPage, 
+  SurveyPage,
   },
   {
     initialRouteName: "LogInPage",
@@ -33,7 +33,7 @@ const DrawerNavigator = createDrawerNavigator({
 
 // Navigator to different screens/pages.
 const MainNavigator = createStackNavigator(
-  { 
+  {
     Boarding: {screen: BoardingPage},
     Home: {screen: HomePage},
     Login: {screen: LogInPage},
@@ -51,7 +51,6 @@ const MainNavigator = createStackNavigator(
   }
 );
 
-
 const SwitchNavigator = createSwitchNavigator(
   {
     BoardingPage,
@@ -63,7 +62,7 @@ const SwitchNavigator = createSwitchNavigator(
 )
 
 // Create the appcontainer that will navigate between screens.
-const NavigationApp = createAppContainer(SwitchNavigator); 
+const NavigationApp = createAppContainer(SwitchNavigator);
 
 
 export default class App extends React.Component {
@@ -111,6 +110,6 @@ const styles = StyleSheet.create({
   AndoidSafeView: {
     flex: 1,
     backgroundColor: '#fff',
-    
+
   }
 });
