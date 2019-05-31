@@ -18,6 +18,8 @@ import {
   Button,
   Toast,
   Text,
+  Title,
+  Subtitle,
   Container,
   Header,
   Content,
@@ -43,6 +45,8 @@ import {
   DeleteModal,
   GeneralModal
 } from './Home/HomeModals';
+
+import homeStyles from './Home/homeStyles';
 
 class HomePage extends Component {
 
@@ -231,32 +235,32 @@ class HomePage extends Component {
         <PageHeader title='Home' openDrawer={this.props.navigation.openDrawer}/>
           <Content
             contentContainerStyle={{height: "100%"}}
+            style={{backgroundColor: '#e4eaff'}}
             refreshControl={
               <RefreshControl
-                style={{backgroundColor: '#f2fdff'}}
+                style={{backgroundColor: '#e4eaff'}}
                 refreshing={this.state.isRefreshing}
                 onRefresh={this.refreshSurveys}
-                tintColor="#19d9ff"
-                titleColor="#00ff00"
+                tintColor="#010101"
+                titleColor="#010101"
+                title="loading..."
                 colors={['#ff0000', '#00ff00', '#0000ff']}
                 progressBackgroundColor="#ffff00"
                 />
             }
             >
             <View style={{marginBottom: 50}}>
-              <Text style={[styles.paragraph]}>
+              <Title style={homeStyles.sectionHeader}>
                 In Progress
-              </Text>
-              <ScrollView
-                style={{height: '50%'}}
-                >
+              </Title>
+              <ScrollView style={{height: '50%'}}>
                 {this.state.inProgressViews}
               </ScrollView>
             </View>
             <View style={{ marginBottom: 50}}>
-              <Text style={styles.paragraph}>
+              <Title style={homeStyles.sectionHeader}>
                 Published
-              </Text>
+              </Title>
               {this.renderPublished()}
             </View>
             <GeneralModal
@@ -283,21 +287,3 @@ class HomePage extends Component {
 }
 
 export default HomePage;
-
-
-// Style variable.
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    marginTop: 10,
-    padding: 20,
-    backgroundColor: "#ffffff",
-  },
-  paragraph: {
-    marginHorizontal: 24,
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#34495e",
-  }
-});
