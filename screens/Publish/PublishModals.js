@@ -86,7 +86,7 @@ function FinishedModal(props) {
 }
 
 function ConfirmModal(props) {
-  const { isConfirmModalVisible, match, confirmBeach, closeConfirmOpenBeachModal, closeConfirmOpenSubmitModal, finalBeachSubmit } = props;
+  const { isConfirmModalVisible, match, confirmBeach, closeConfirmOpenBeachModal, closeConfirmModal, finalBeachSubmit, foundBeach } = props;
   return(
     <Modal isVisible={isConfirmModalVisible}>
       <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
@@ -98,7 +98,7 @@ function ConfirmModal(props) {
           }
           </Text>
         <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end'}}>
-          <Button light style={{alignSelf: 'center'}} onPress={match ? closeConfirmOpenBeachModal : closeConfirmOpenSubmitModal}>
+          <Button light style={{alignSelf: 'center'}} onPress={() => foundBeach ? closeConfirmModal() : closeConfirmOpenBeachModal()}>
             <Text>No</Text>
           </Button>
           <Button success style={{alignSelf: 'center'}} onPress={finalBeachSubmit}>

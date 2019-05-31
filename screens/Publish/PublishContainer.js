@@ -117,6 +117,8 @@ export default class PublishContainer extends Component {
   closeLoginModal = () => this.setState({isLoginModalVisible: false});
   closeFinishedModal = () => this.setState({isFinishedVisible: false});
   closeConfirmModal = () => this.setState({isConfirmModalVisible: false});
+  closeConfirmOpenBeachModal = () => this.setState({isBeachModalVisible: true, isConfirmModalVisible: false})
+
 
 
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
@@ -176,7 +178,6 @@ export default class PublishContainer extends Component {
   }
 
   async checkIfBeachExists(survey){
-    console.log("Hello")
     const beachName = survey.surveyData.beachName;
     //Use the beach name to query the server's database
     const exists = await axios.get(`${toExport.SERVER_URL}/beaches/search`, {params: {q: beachName}})
@@ -204,7 +205,8 @@ export default class PublishContainer extends Component {
       this.setState({
         isConfirmModalVisible: true,
         isLoadingModalVisible: false,
-        confirmBeach: beachName
+        confirmBeach: beachName,
+        foundBeach: true
       })
     } else {
       //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
@@ -502,7 +504,9 @@ export default class PublishContainer extends Component {
               match={this.state.match}
               confirmBeach={this.state.confirmBeach}
               closeConfirmModal={this.closeConfirmModal}
+              closeConfirmOpenBeachModal={this.closeConfirmOpenBeachModal}
               finalBeachSubmit={this.finalBeachSubmit}
+              foundBeach={this.state.foundBeach}
               />
             <FinishedModal
               isFinishedVisible={this.state.isFinishedVisible}
