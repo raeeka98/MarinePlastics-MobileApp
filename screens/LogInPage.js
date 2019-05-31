@@ -83,9 +83,9 @@ class LogInPage extends React.Component {
       Alert('Authentication error', response.error_description || 'something went wrong');
       return;
     }
-    console.log("Response recorded " + JSON.stringify(response)); 
+    console.log("Response recorded " + JSON.stringify(response));
     // Store the response and decode it.
-    const jwtToken = response.id_token; 
+    const jwtToken = response.id_token;
     const decoded = jwtDecode(jwtToken);
     console.log(decoded);
     // Extract the following values given the keys from the decoded response.
@@ -172,7 +172,7 @@ class LogInPage extends React.Component {
       console.log(error);
     }
   };
- 
+
   // Get the accessToken from AsyncStorage and set the according state variable.
   _retrieveAccessToken = async() => {
     try {
@@ -235,7 +235,7 @@ class LogInPage extends React.Component {
     const {navigate} = this.props.navigation;
     // We'll determine if a user is logged in just by looking at the accesstoken state variable.
     // Store that in a boolean variable.
-    let loggedIn = this.state.accessToken === null ? false : true; 
+    let loggedIn = this.state.accessToken === null ? false : true;
     return(
       <View style={{justifyContent: "center"}}>
         <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
@@ -264,7 +264,7 @@ class LogInPage extends React.Component {
       <View>
         <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer} />
         <View style={styles.container}>
-          
+
           <Text style={styles.header}>Log in with Auth0</Text>
           <Text>
             You are {loggedIn ? '' : 'not '}logged in.
@@ -273,7 +273,7 @@ class LogInPage extends React.Component {
             //title = {loggedIn ? 'log out' : 'log in'}/>
             onPress={this._loginV3}
             title={'log in'}/>
-          <Button 
+          <Button
             onPress={this._onlogout}
             title={'log out'}/>
           <Text style={styles.container}>
