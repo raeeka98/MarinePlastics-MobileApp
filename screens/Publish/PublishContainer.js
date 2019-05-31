@@ -401,11 +401,11 @@ export default class PublishContainer extends Component {
   }
 
   onPressBeach(beachName, beachID) {
-    this.setState({isConfirmModalVisible: true, match: beachID, confirmBeach: beachName});
+    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: beachID, confirmBeach: beachName});
   }
 
   onPressNoMatch(beachName) {
-    this.setState({isConfirmModalVisible: true, match: null, confirmBeach: beachName})
+    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: null, confirmBeach: beachName})
   }
 
   async onPressSubmit(){
