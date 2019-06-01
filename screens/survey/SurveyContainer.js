@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View, FlatList } from 'react-native'
-import {Button, Item} from 'native-base'
+import {TextInput, View, FlatList } from 'react-native'
+import {Button, Item, Text} from 'native-base'
 import Modal from 'react-native-modal'
 import Expo from 'expo'
 
@@ -40,10 +40,10 @@ const navigateToHome = NavigationActions.navigate({
  *   longitude: Number,
  *   usageRecreation: Boolean,
  *   usageCommercial: Boolean,
- *   usageOther: Boolean/String,
+ *   usageOther: String,
  *   locationChoiceProximity: boolean,
  *   locationChoiceDebris: Boolean,
- *   locationChoiceOther: Boolean/String,
+ *   locationChoiceOther: tring,
  *   cmpsDir: String,
  *   riverName: String,
  *   riverDistance: String,
@@ -60,7 +60,7 @@ const navigateToHome = NavigationActions.navigate({
  *   substrateTypePebble: Boolean,
  *   subastrateTypeRipRap: Boolean,
  *   substrateTypeSeaweed: Boolean,
- *   subStrateTypeOther: Boolean/String
+ *   subStrateTypeOther: String
  * },
  *
  * ribData: {
@@ -130,12 +130,11 @@ export default class SurveyContainer extends Component {
             surveyName: nav.getParam('surveyName') ? nav.getParam('surveyName') : "",
             isModalVisible: false,
             isValidVisible: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false,
+            isBackVisible: false,
             invalidFields: nav.getParam('invalidArray') ? nav.getParam('invalidArray') : [],
             fromPublish: nav.getParam('fromPublish') ? nav.getParam('fromPublish') : false,
             remade: false,
         }
-        console.log("------STATE------")
-        console.log(this.state)
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
         this.moveToArea=this.moveToArea.bind(this);
@@ -148,8 +147,11 @@ export default class SurveyContainer extends Component {
         header : null
     }
 
+    /**
+     * These 'moveTo' functions are used to render each section of the survey, while
+     * updating the icons and highlights in the footer tabs on the survey.
+     */
     moveToTeamInfo() {
-        console.log(this.state )
         this.setState({
             currentScreen: "teamInfo",
             shouldRender:{
@@ -221,7 +223,6 @@ export default class SurveyContainer extends Component {
      * value
      */
     updateSurveyState(refName, e) {
-        console.log(this.state)
         let key =  refName;//e.target.id;
         let value = e.nativeEvent.text;
         this.setState(prevState => {
@@ -232,14 +233,25 @@ export default class SurveyContainer extends Component {
             this.setState({showTime: false})
     }
 
+    /*
+     * Update the rib length or the rib start
+     */
+
     updateRibData(refName, e) {
         let key = refName;
         let val = e.nativeEvent.text;
         this.setState(prevState => {
-            prevState.ribData[key] = value;
+            prevState.ribData[key] = val;
             return prevState;
         })
     }
+
+    /**
+     * Use the navigator's geolocation function to get the current position of 
+     * the user. The user will be asked to enable location services upon request.
+     * If the user does not want to have location services, then they can manually
+     * enter their location
+     */
 
     updateSurveyLocation = () => {
         navigator.geolocation.getCurrentPosition(
@@ -264,7 +276,6 @@ export default class SurveyContainer extends Component {
     updateSurveyTime = (refName, e) => {
         let key = refName;
         let val = e;
-        console.log(key + "[===]" + e);
         this.setState(prevState => {
             prevState.surveyData[key] = val;
             return prevState;
@@ -278,7 +289,6 @@ export default class SurveyContainer extends Component {
     onDropdownChange(refName, value) {
         this.setState(prevState => {
             prevState.surveyData[refName] = value;
-            console.log(prevState.surveyData)
             return prevState
         })
     }
@@ -364,6 +374,12 @@ export default class SurveyContainer extends Component {
         })
     }
 
+    /**
+     * Use the currentScreen variable to determine which section of the survey to render, based
+     * on what the user has selected using the navigation bar. Here we'll also take the functions
+     * that are used by each component, such as updateSurveyState, and pass them as props
+     */
+
     renderCurrentScreen() {
         const {currentScreen} = this.state;
         switch(currentScreen) {
@@ -383,6 +399,8 @@ export default class SurveyContainer extends Component {
                         fromPublish={this.state.fromPublish}
                         navigation={this.props.navigation}
                         invalidFields={this.state.invalidFields}
+                        openBackModal={this.openBackModal}
+                        closeBackModal={this.closeBackModal}
                     />
                 )
             case "area" :
@@ -460,6 +478,11 @@ export default class SurveyContainer extends Component {
         }
     }
 
+    /**
+     * The "remade" variable is used to ensure that the ribs have been rendered properly
+     * after the user selects this survey tp be edited
+     */
+
     setRemade =() => {
         this.setState({remade: true})
     }
@@ -508,6 +531,12 @@ export default class SurveyContainer extends Component {
         this.props.navigation.dispatch(navigateToHome);
     }
 
+    /**
+     * This function will only be called once the user finishes validating the survey.
+     * If the user has not completed the required fields, then we'll prompt them to keep 
+     * filling it out, other wise we'll go back to the publish workflow
+     */
+
     onPressVerify = () => {
         let invalidArray = this.verifyModal();
         if(invalidArray.length > 0){
@@ -536,14 +565,13 @@ export default class SurveyContainer extends Component {
             this.props.navigation.navigate('PublishContainer', {
                 isVerified: true,
                 verifyID: survID
-            })/*
-            const resetAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'Publish', params: {isVerified: true, verifyID: survID} })],
-              });
-              this.props.navigation.dispatch(resetAction);*/
+            })
         }
     }
+
+    /**
+     * Verify that the user has filled out all of the required fields
+     */
 
     verifyModal = () => {
         /* Here we'll need to verify the new survey information */
@@ -581,12 +609,26 @@ export default class SurveyContainer extends Component {
         this.setState({isValidVisible: false})
     }
 
+    openBackModal = () => {
+        this.setState({isBackVisible: true})
+    }
+
+    closeBackModal = () => {
+        this.setState({isBackVisible: false})
+    }
+
+    closeBackAndNavigate = () => {
+        this.closeBackModal();
+        this.props.navigation.pop()
+    }
+
     render() {
         const {shouldRender} = this.state;
         console.log("Rendering")
         return(
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
+                {/* This modal is used to prompt the user to give the survey a name before saving */}
                 <Modal isVisible={this.state.isModalVisible}>
                     <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
                         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Enter Survey Name:</Text>
@@ -631,6 +673,29 @@ export default class SurveyContainer extends Component {
                         </View>
                     </View>
                 </Modal>
+                {/* Modal to make sure the user want to exit the survey */}
+                <Modal isVisible={this.state.isBackVisible}>
+                    <View style= {
+                        {
+                            alignSelf:'center', 
+                            backgroundColor: 'white', 
+                            height: 150, 
+                            width: '90%'
+                        }
+                    } 
+                    >
+                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Exit without saving?</Text>
+                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
+                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.closeBackModal}>
+                                <Text style={{padding: 8}}>No</Text>
+                            </Button>
+                            <Button danger style={{justifyContent: 'center',width: 100}}onPress={this.closeBackAndNavigate}>
+                                <Text style={{color: 'white', padding: 8}}>Exit</Text>
+                            </Button>
+                        </View>
+                    </View>
+                </Modal>
+                {/* Render the survey footer */}
                 <SurveyFooter
                     teamInfo={shouldRender.teamInfo}
                     area={shouldRender.area }

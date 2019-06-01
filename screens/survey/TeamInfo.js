@@ -52,14 +52,15 @@ export default class TeamInfo extends Component {
     }
 
     /**
-     * Some navigation for pressing back
+     * Some navigation for pressing back. We only want the user to press back in this page, since it
+     * signifies that they will be leaving the survey form
      */
     onPressBack = () => {
         /**
          * We may need to have a modal to ask them if they are sure that they want to
          * leave the survey
          */
-        this.props.navigation.pop();
+        this.props.openBackModal();
     }
 
     onPressTime = () => {
