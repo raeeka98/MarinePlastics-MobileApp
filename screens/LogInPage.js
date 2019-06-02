@@ -43,17 +43,17 @@ class LogInPage extends React.Component {
 
   // Log out by setting the stored variables to null then saving to AsyncStorage.
   _onlogout = async () => {
-    console.log('Setting AccessToken to Null for Logout');
+    //console.log('Setting AccessToken to Null for Logout');
     Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
       this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
         error => console.log(error));
-    console.log('Successful Logout');
+    //console.log('Successful Logout');
   };
 
   // Log into Auth0 then store the token to AsyncStorage.
   _loginV3 = async () => {
     const redirectUrl = AuthSession.getRedirectUrl();
-    console.log(`Redirect URL: ${redirectUrl}`);
+    //console.log(`Redirect URL: ${redirectUrl}`);
 
     const queryParams = toQueryString({
       client_id: credentials.clientId,
@@ -67,7 +67,7 @@ class LogInPage extends React.Component {
 
     // Access auth0 login by calling the redirect url in an authsession.
     const response = await AuthSession.startAsync({ authUrl });
-    console.log('Authentication response ', response);
+    //console.log('Authentication response ', response);
 
     // Handle the response if login was successful.
     if (response.type === 'success'){
@@ -79,15 +79,15 @@ class LogInPage extends React.Component {
   handleResponse = (response) => {
     // Error catch in case the response was some sort of error.
     if (response.error) {
-      console.log("Uh oh")
+      //console.log("Uh oh")
       Alert('Authentication error', response.error_description || 'something went wrong');
       return;
     }
-    console.log("Response recorded " + JSON.stringify(response));
+    //console.log("Response recorded " + JSON.stringify(response));
     // Store the response and decode it.
     const jwtToken = response.id_token;
     const decoded = jwtDecode(jwtToken);
-    console.log(decoded);
+    //console.log(decoded);
     // Extract the following values given the keys from the decoded response.
     const { sub } = decoded;
     const { name } = decoded;
@@ -96,7 +96,7 @@ class LogInPage extends React.Component {
     // Set the following state variables given the keys form the response.
     this.setState({accessToken: sub, email: name, name: nickname, picture: picture}, () => {this._storeAccessToken()});
 
-    console.log('Storing AccessToken for LogIn');
+    //console.log('Storing AccessToken for LogIn');
     //this._storeAccessToken();
   };
 
@@ -111,65 +111,65 @@ class LogInPage extends React.Component {
       // If the value we're storing is null then we're erasing it.
       if (value === null){
         //console.log('Value is Null on storeAccesToken');
-        console.log('Clearing AccessToken in AsyncStorage');
+        //console.log('Clearing AccessToken in AsyncStorage');
         await AsyncStorage.removeItem('accessToken');
-        console.log('Cleared');
-        console.log('Current value stored: ', await AsyncStorage.getItem('accessToken'));
+        //console.log('Cleared');
+        //console.log('Current value stored: ', await AsyncStorage.getItem('accessToken'));
       }
       // Otherwise, we're overriding that variable's value with the other one (from state).
       else {
         //console.log('Value is not Null on storeAccessToken');
-        console.log('Overriding AccessToken in AsyncStorage');
+        //console.log('Overriding AccessToken in AsyncStorage');
         await AsyncStorage.setItem('accessToken', value);
-        console.log('Overwritten');
-        console.log('Current value stored: ', await AsyncStorage.getItem('accessToken'));
+        //console.log('Overwritten');
+        //console.log('Current value stored: ', await AsyncStorage.getItem('accessToken'));
       }
 
       // Repeat for accesstoken (above), email, nickname, and picture (below).
       if (emailValue === null){
         //console.log('Email value is Null on Email');
-        console.log('Clearing Email in AsyncStorage');
+        //console.log('Clearing Email in AsyncStorage');
         await AsyncStorage.removeItem('email');
-        console.log('Cleared');
-        console.log('Current email stored: ', await AsyncStorage.getItem('email'));
+        //console.log('Cleared');
+        //console.log('Current email stored: ', await AsyncStorage.getItem('email'));
       }
       else {
         //console.log('Email value is not Null on Email');
-        console.log('Overriding Email in AsyncStorage');
+        //console.log('Overriding Email in AsyncStorage');
         await AsyncStorage.setItem('email', emailValue);
-        console.log('Overwritten');
-        console.log('Current email stored: ', await AsyncStorage.getItem('email'));
+        //console.log('Overwritten');
+        //console.log('Current email stored: ', await AsyncStorage.getItem('email'));
       }
 
       if (nameValue === null){
         //console.log('Name value is Null on Name');
-        console.log('Clearing Name in AsyncStorage');
+        //console.log('Clearing Name in AsyncStorage');
         await AsyncStorage.removeItem('name');
-        console.log('Cleared');
-        console.log('Current name stored: ', await AsyncStorage.getItem('name'));
+        //console.log('Cleared');
+        //console.log('Current name stored: ', await AsyncStorage.getItem('name'));
       }else {
         //console.log('Name value is not Null on Name');
-        console.log('Overriding Name in AsyncStorage');
+        //console.log('Overriding Name in AsyncStorage');
         await AsyncStorage.setItem('name', nameValue);
-        console.log('Overwritten');
-        console.log('Current name stored: ', await AsyncStorage.getItem('name'));
+        //console.log('Overwritten');
+        //console.log('Current name stored: ', await AsyncStorage.getItem('name'));
       }
 
       if (pictureValue === null){
         //console.log('Picture value is Null on Picture');
-        console.log('Clearing Picture in AsyncStorage');
+        //console.log('Clearing Picture in AsyncStorage');
         await AsyncStorage.removeItem('picture');
-        console.log('Cleared');
-        console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
+        //console.log('Cleared');
+        //console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
       }else {
         //console.log('Picture value is not Null on Picture');
-        console.log('Overriding Picture in AsyncStorage');
+        //console.log('Overriding Picture in AsyncStorage');
         await AsyncStorage.setItem('picture', pictureValue);
-        console.log('Overwritten');
-        console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
+        //console.log('Overwritten');
+        //console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 
@@ -183,7 +183,7 @@ class LogInPage extends React.Component {
         this.setState({ accessToken: null });
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 
@@ -197,7 +197,7 @@ class LogInPage extends React.Component {
         this.setState({ email: null });
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 
@@ -211,7 +211,7 @@ class LogInPage extends React.Component {
         this.setState({ name: null });
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   }
 
@@ -225,7 +225,7 @@ class LogInPage extends React.Component {
         this.setState({ picture: null });
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   }
 
@@ -259,35 +259,6 @@ class LogInPage extends React.Component {
           </Button> : null}
         </View>
     </View>
-
-      /*
-      <View>
-        <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer} />
-        <View style={styles.container}>
-
-          <Text style={styles.header}>Log in with Auth0</Text>
-          <Text>
-            You are {loggedIn ? '' : 'not '}logged in.
-          </Text>
-          <Button
-            //title = {loggedIn ? 'log out' : 'log in'}/>
-            onPress={this._loginV3}
-            title={'log in'}/>
-          <Button
-            onPress={this._onlogout}
-            title={'log out'}/>
-          <Text style={styles.container}>
-            {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
-          </Text>
-          <Text style={styles.container}>
-            Email: {loggedIn ? this.state.email : ''}
-          </Text>
-          <Image
-            style={{width:50, height: 50}}
-            source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
-          />
-        </View>
-      </View>*/
     );
   }
 }
@@ -300,21 +271,6 @@ export default LogInPage;
 
 // Style variable.
 const styles = StyleSheet.create({
-  /*
-  container: {
-    justifyContent: "center",
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: "#ffffff",
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#34495e",
-  }*/
-
   container: {
     justifyContent: "center",
     marginTop: 10,
