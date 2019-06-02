@@ -3,15 +3,29 @@ import {Modal, View, Text, TextInput} from 'react-native'
 import {Button, Item, Icon, Picker} from 'native-base'
 import styles from './surveyStyles'
 
+/**
+ * RibEntry is used to initialize a rib component when a user wants to survey a rib
+ * in the beach. It takse in the rib number, start position, and length, and uses
+ * those to create new rib components and add that data to the survey's SRS information
+ */
 
 export default class RibEntry extends Component {
-    state={
-        modalVisible: false,
-        surveyData: this.props.surveyData,
-        ribNumber: this.props.ribsToSelect[0].props.value,
-        canEdit: true,
-        tabArray: this.props.tabArray
+    constructor(props){
+        super(props);
+        this.state = {
+            modalVisible: false,
+            surveyData: this.props.surveyData,
+            ribNumber: this.props.ribsToSelect[0].props.value,
+            canEdit: true,
+            tabArray: this.props.tabArray
+        }
     }
+
+    /**
+     * Take the refName and update its information based on the input. 
+     * Here, we also need to distinguish when a user uses the picker to update information
+     * versus when they use a simple text input
+     */
 
     updateRibInfo(refName, e) {
         let newValue = e.nativeEvent ? e.nativeEvent.text : e;
@@ -33,20 +47,23 @@ export default class RibEntry extends Component {
         })
     }
 
+    /**
+     * Make sure that the user inputs all of the required information to create a rib. Once 
+     * they enter all that info, then call 'submitAddRib' to create a new rib component. Also,
+     * clear the inputs to get ready for another rib input
+     */
+
     async onSubmitEdits () {
         if(this.state.ribNumber === "" || this.state.ribLength === "" || this.state.ribStart === ""){
             alert("Please fill out all of the information")
             return
         }
 
-        console.log("Submitting")
         await this.props.submitAddRib(this.state.ribNumber, this.state.ribLength, this.state.ribStart);
         this.clearInputs();
-        console.log("Done")
     } 
 
     render() {
-        console.log(this.props.ribsToSelect[0])
         return (
             <View style={styles.container}>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
@@ -92,7 +109,6 @@ export default class RibEntry extends Component {
                 </View>
                 <View style={styles.inputSingleContainer}>
                     <Button
-                        info
                         style={{alignSelf: 'stretch', justifyContent: 'center'}}
                         onPress={this.onSubmitEdits.bind(this)}
                     >

@@ -49,20 +49,26 @@ function GeneralModal (props) {
       onModalHide={openDelete}>
       <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{name}</Text>
-        <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
+        <View style={ {flexDirection: 'row', justifyContent: 'space-around'}}>
+          <Button success style={{justifyContent: 'center',width: 100}}onPress={() => console.log('Generate QR Here')} >
+            <Text>QR Code</Text>
+          </Button>
+          <Button light disabled={props.published} style={{justifyContent: 'center', width: 100}}onPress={openSurvey} title='Edit'>
+            <Text >Edit</Text>
+          </Button>
+          
+        </View>
+        <View style={ {flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10}}>
+        <Button primary disabled={props.published} style={{justifyContent: 'center',width: 100}} onPress={navToPublish}>
+            <Text>Publish</Text>
+          </Button>
+        </View>
+        <View style={ {flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10}}>
           <Button light style={{justifyContent: 'center',width: 100}}onPress={cancelModal} >
             <Text>Back</Text>
           </Button>
-          <Button light  style={{justifyContent: 'center', width: 100}}onPress={openSurvey} title='Edit'>
-            <Text>Edit</Text>
-          </Button>
           <Button danger  style={{justifyContent: 'center', width: 100}}onPress={onPressDeleteSurvey} title='Delete'>
             <Text>Delete</Text>
-          </Button>
-        </View>
-        <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
-          <Button primary style={{justifyContent: 'center',width: 100}} onPress={navToPublish}>
-            <Text>Publish</Text>
           </Button>
         </View>
       </View>

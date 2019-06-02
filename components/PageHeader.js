@@ -12,7 +12,7 @@ export default class PageHeader extends Component {
     return(
       <Header style={headerStyles.header}>
         <Left style={headerStyles.headerContents}>
-          <Icon type='AntDesign' name='menuunfold' style={{color: 'white'}} onPress={this.props.openDrawer} />
+          <Icon type='AntDesign' name={this.props.arrow? 'arrowleft' : 'menuunfold'} style={{color: 'white'}} onPress={this.props.openDrawer} />
         </Left>
         <Body style={headerStyles.headerContents}>
           <Title style={headerStyles.text}>{this.props.title}</Title>

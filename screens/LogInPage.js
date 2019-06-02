@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     color: "#34495e",
   },
   button: {
-    marginHorizontal: 50,
+    alignSelf: 'center',
     marginTop: 25,
     fontSize: 20,
     width: "80%",
