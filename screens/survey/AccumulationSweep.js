@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View, FlatList } from 'react-native'
-import {Accordion, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
-import Expo from 'expo'
+import {TextInput, Text, View} from 'react-native'
+import {Accordion, Item, Button, Icon, Header, Left, Body, Right} from 'native-base'
 
-import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
-import SurveyFooter from './SurveyFooter'
-import RibInput from './RibInput'
 import debrisInfoID from './debrisInfo'
 import headerStyles from '../headerStyles';
 
@@ -26,7 +22,9 @@ var BUTTONS = [
     'Cancel'
 ]
 
-var CANCEL_INDEX = 12;
+/**
+ * This has the same logic as a single input rib for a the SurfaceRibScan section
+ */
 
 export default class AccumulationSweep extends Component {
     state = {

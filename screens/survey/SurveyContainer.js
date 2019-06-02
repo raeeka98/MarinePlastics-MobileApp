@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import {TextInput, View, FlatList } from 'react-native'
+import {TextInput, View } from 'react-native'
 import {Button, Item, Text} from 'native-base'
 import Modal from 'react-native-modal'
-import Expo from 'expo'
 
 import styles from './surveyStyles'
 import TeamInfo from './TeamInfo'

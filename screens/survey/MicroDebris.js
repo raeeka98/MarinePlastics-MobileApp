@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title} from 'native-base'
-import Expo from 'expo'
+import {Item, Button, Icon, Header, Left, Body, Right} from 'native-base'
 
-import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
-import SurveyFooter from './SurveyFooter'
-import RibInput from './RibInput'
 import headerStyles from '../headerStyles';
 
 const microRowLabels = [
@@ -23,16 +19,24 @@ const microRowIDs = {
     'Rib 4' : 'rib4'
 }
 
+/**
+ * This section is pretty static, mainly because all of the micro debris ribs can
+ * be rendered on a single page
+ */
+
 export default class MicroDebris extends Component {
-    state = {
-        surveyData: this.props.surveyData ? this.props.surveyData : {},
-        SRSData: this.props.SRSData ? this.props.SRSData : {},
-        ASData: this.props.ASData ? this.props.ASData : {},
-        MicroData: this.props.MicroData ? this.props.MicroData : {},
-        ribData: this.props.ribData ? this.props.ribData : {},
-        microRowLabels: microRowLabels
+    constructor(props){
+        super(props);
+        this.state = {
+            surveyData: this.props.surveyData ? this.props.surveyData : {},
+            SRSData: this.props.SRSData ? this.props.SRSData : {},
+            ASData: this.props.ASData ? this.props.ASData : {},
+            MicroData: this.props.MicroData ? this.props.MicroData : {},
+            ribData: this.props.ribData ? this.props.ribData : {},
+            microRowLabels: microRowLabels
+        }
     }
-   
+
 
     renderMicroRows = ({item}) => {
         const currentItemKey = microRowIDs[item.key];

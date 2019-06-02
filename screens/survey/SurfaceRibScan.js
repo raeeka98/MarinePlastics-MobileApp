@@ -1,43 +1,65 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View, FlatList } from 'react-native'
-import {ActionSheet, Item, Button, Icon, Input, Tab, Tabs, Header, Left, Body, Right, Title, Picker} from 'native-base'
-import Expo from 'expo'
+import {Text, View} from 'react-native'
+import {Button, Tab, Tabs, Header, Left, Body, Right, Picker} from 'native-base'
 
-import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
-import SurveyFooter from './SurveyFooter'
 import RibInput from './RibInput'
 import RibEntry from './RibEntry'
 import headerStyles from '../headerStyles';
 
-const tabHeadings = [
-    '+ Add Rib',
-    'Rib 1',
-    'Rib 2',
-    'Rib 3',
-    'Rib 4'
-]
+/**
+ * This is the most complex section of the survey. The SRS section allows users to dynamically
+ * add up to 4 rib sections to survey. This is to make it easier for groups to take a rib
+ * and conduct a survey on it, eventually putting it all together in the end when generating
+ * the QR code to combine rib data
+ */
 
 export default class SurfaceRibScan extends Component {
-    state = {
-        surveyData: this.props.surveyData ? this.props.surveyData : {},
-        SRSData: this.props.SRSData ? this.props.SRSData : {},
-        ASData: this.props.ASData ? this.props.ASData : {},
-        MicroData: this.props.MicroData ? this.props.MicroData : {},
-        ribData: this.props.ribData ? this.props.ribData : {},
-        modalVisible: false,
-        tabArray: this.props.tabArray ? this.props.tabArray : [],
-        ribsToSelect: this.props.ribsToSelect ? this.props.ribsToSelect : [
-            <Picker.Item key='1' label="1" value="1" />,
-            <Picker.Item key='2' label="2" value="2" />,
-            <Picker.Item key='3' label="3" value="3" />,
-            <Picker.Item key='4' label="4" value="4" />
-        ],
-        remade: this.props.remade ? this.props.remade : false
+    /**
+     * 'tabArray'
+     * - This is an array that contains each of the tab components that are to be rendered
+     *   for its corresponding rib. This array needs to be preserved across all of the survey
+     *   sections to that the rib input gets rendered. It will also need to be remade when
+     *   a user comes back to edit the survey later on.
+     * 
+     * 'ribsToSelect'
+     * - This is an array that will also need to be preserved across all components, mainly to
+     *   make sure that the user can't enter in two 'Rib 1' sections, for example. As a user 
+     *   creates a new Rib, the corresponding picker items will be removed.
+     * 
+     * 'remade'
+     * - This is a boolean variable that is used to remake the tab sections when the user leaves
+     *   the survey or navigates to another section.
+     */
+    constructor(props){
+        super(props);
+
+        this.state = {
+            surveyData: this.props.surveyData ? this.props.surveyData : {},
+            SRSData: this.props.SRSData ? this.props.SRSData : {},
+            ASData: this.props.ASData ? this.props.ASData : {},
+            MicroData: this.props.MicroData ? this.props.MicroData : {},
+            ribData: this.props.ribData ? this.props.ribData : {},
+            modalVisible: false,
+            tabArray: this.props.tabArray ? this.props.tabArray : [],
+            ribsToSelect: this.props.ribsToSelect ? this.props.ribsToSelect : [
+                <Picker.Item key='1' label="1" value="1" />,
+                <Picker.Item key='2' label="2" value="2" />,
+                <Picker.Item key='3' label="3" value="3" />,
+                <Picker.Item key='4' label="4" value="4" />
+            ],
+            remade: this.props.remade ? this.props.remade : false
+        }
     }
 
+    /**
+     * This function takes in the ribNumber, ribLength, and ribStart that the user inputs 
+     * into RibEntry component and saves it into the 'ribData' object that can be exported to 
+     * other surveys. Additionally, a RibInput component will be added to the tab array 
+     * so that the rib's data can be added to the survey
+     */
+
     submitAddRib = (ribNumber, ribLength, ribStart) => {
-        console.log("Made it")
         let ribArrayName = `r${ribNumber}Items`
         let ribNumLength = `r${ribNumber}Length`
         let ribNumStart = `r${ribNumber}Start`
@@ -63,10 +85,13 @@ export default class SurfaceRibScan extends Component {
             prevState.ribData[ribNumLength] = ribLength;
             prevState.ribData[ribNumStart] = ribStart;
             prevState.ribsToSelect = prevState.ribsToSelect.filter(comp => comp.props.value !== ribNumber)
-            console.log(prevState.ribsToSelect)
             return prevState
         })
     }
+    
+    /**
+     * Check to see if there are preexisting rib data in order to remake a certain tab
+     */
 
     remakeTabs = () => {
         const {ribData} = this.state;

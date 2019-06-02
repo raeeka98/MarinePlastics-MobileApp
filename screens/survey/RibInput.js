@@ -25,31 +25,38 @@ var BUTTONS = [
 
 
 export default class RibInput extends Component {
-    state = {
-        SRSData: this.props.SRSData,
-        surveyData: this.props.surveyData,
-        ribData: this.props.ribData,
-        ribNumber: this.props.ribNumber,
-        inputItems: [
-            {title: "Cigarette Butts"},
-            {title: 'Fishing Line / Polypropylene Rope'},
-            {title: 'Plastic Straws'},
-            {title: 'Filmed Plastic'},
-            {title: 'Plastic Bottles / Plastic Caps'},
-            {title: 'Aluminum Cans / Foil / Metal'},
-            {title: "Glass"},
-            {title: 'Styofoam / Urethane'},
-            {title: "Other: Plastics"},
-            {title: "Other: Food / Organics"},
-            {title: "Other: Cotton / Cloth"},
-            {title: "Other: Wood / Paper"},
-
-        ],
-        selections: BUTTONS,
-        isModalVisible: false,
-        editLength: "",
-        editStart: ""
+    constructor(props){
+        super(props);
+        this.state = {
+            SRSData: this.props.SRSData,
+            surveyData: this.props.surveyData,
+            ribData: this.props.ribData,
+            ribNumber: this.props.ribNumber,
+            inputItems: [
+                {title: "Cigarette Butts"},
+                {title: 'Fishing Line / Polypropylene Rope'},
+                {title: 'Plastic Straws'},
+                {title: 'Filmed Plastic'},
+                {title: 'Plastic Bottles / Plastic Caps'},
+                {title: 'Aluminum Cans / Foil / Metal'},
+                {title: "Glass"},
+                {title: 'Styofoam / Urethane'},
+                {title: "Other: Plastics"},
+                {title: "Other: Food / Organics"},
+                {title: "Other: Cotton / Cloth"},
+                {title: "Other: Wood / Paper"},
+    
+            ],
+            selections: BUTTONS,
+            isModalVisible: false,
+            editLength: "",
+            editStart: ""
+        }
     }
+
+    /**
+     * Show the modal for editing the rib information
+     */
 
     showModal = () => {
         this.setState({isModalVisible: true})
@@ -64,6 +71,10 @@ export default class RibInput extends Component {
             }
         )
     }
+
+    /**
+     * Save the new rib start and rib length information
+     */
 
     saveModal(ribStart, ribLength){
         this.setState(prevState => {
@@ -148,6 +159,10 @@ export default class RibInput extends Component {
             </View>
         )
     }
+
+    /**
+     * Styling for the header component of the accordion
+     */
 
     renderAccordionHeader = (item, expanded) => {
         if(expanded) {
