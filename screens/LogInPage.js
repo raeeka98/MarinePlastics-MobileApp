@@ -169,7 +169,7 @@ class LogInPage extends React.Component {
         //console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
 
@@ -183,7 +183,7 @@ class LogInPage extends React.Component {
         this.setState({ accessToken: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
 
@@ -197,7 +197,7 @@ class LogInPage extends React.Component {
         this.setState({ email: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
 
@@ -211,7 +211,7 @@ class LogInPage extends React.Component {
         this.setState({ name: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   }
 
@@ -225,7 +225,7 @@ class LogInPage extends React.Component {
         this.setState({ picture: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   }
 
