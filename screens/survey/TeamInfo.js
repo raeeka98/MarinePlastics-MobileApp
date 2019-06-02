@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TextInput} from 'react-native';
-import {DatePicker, Icon, Item, Input, Footer, FooterTab, Button, Header, Right, Left, Body} from 'native-base';
-import DateTimePicker from 'react-native-modal-datetime-picker'
-import {Constants} from 'expo' 
+import {Text, View, TextInput} from 'react-native';
+import {DatePicker, Icon, Item, Input, Button, Header, Right, Left, Body} from 'native-base';
+import DateTimePicker from 'react-native-modal-datetime-picker' 
 
-import SurveyFooter from './SurveyFooter'
 import headerStyles from '../headerStyles'
 import styles from './surveyStyles'
 
@@ -52,14 +50,11 @@ export default class TeamInfo extends Component {
     }
 
     /**
-     * Some navigation for pressing back
+     * Some navigation for pressing back. We only want the user to press back in this page, since it
+     * signifies that they will be leaving the survey form
      */
     onPressBack = () => {
-        /**
-         * We may need to have a modal to ask them if they are sure that they want to
-         * leave the survey
-         */
-        this.props.navigation.pop();
+        this.props.openBackModal();
     }
 
     onPressTime = () => {
@@ -144,6 +139,8 @@ export default class TeamInfo extends Component {
                     </Item>
 
                 </View>
+                {/* - Use the DatePicker component to have a user select a date that the beach survey takes place */}
+                {/* - Use the DateTimePicker component to have a user select the time for the beach survey */}
                 <View style={styles.inputDoubleContainer}>
                     <View style={styles.inputDouble}>
 

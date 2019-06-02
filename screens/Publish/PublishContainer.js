@@ -31,6 +31,7 @@ import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
 import testSurveys from '../../testJSON/testSurveys';
+import {NavigationActions} from 'react-navigation'
 
 import {
   SubmitModal,
@@ -44,6 +45,9 @@ import { mergeSurveys } from './MergeSurveys';
 import toExport from './env.js'
 import PageHeader from '../../components/PageHeader';
 
+const goBack = NavigationActions.back({
+  key: 'DrawerNavigator'
+})
 
 export default class PublishContainer extends Component {
   constructor(props) {
@@ -59,6 +63,7 @@ export default class PublishContainer extends Component {
     const initSurvey = this.props.navigation.getParam('initSurvey');
     if(initSurvey) {
         this.state.surveys.push(initSurvey);
+        this.state.surveyID = initSurvey.inProgress;
     }
      // bind methods
      this.removeSurvey = this.removeSurvey.bind(this);
@@ -103,7 +108,7 @@ export default class PublishContainer extends Component {
       const survey = await surveyDB.getSurvey(verifyID)
       console.log("SURVEY HERE")
       console.log(survey);
-      this.setState({mergedSurvey: survey})
+      this.setState({mergedSurvey: survey, surveyID: verifyID})
       this.checkIfBeachExists(survey);
     }
   }
@@ -112,6 +117,8 @@ export default class PublishContainer extends Component {
   closeLoginModal = () => this.setState({isLoginModalVisible: false});
   closeFinishedModal = () => this.setState({isFinishedVisible: false});
   closeConfirmModal = () => this.setState({isConfirmModalVisible: false});
+  closeConfirmOpenBeachModal = () => this.setState({isBeachModalVisible: true, isConfirmModalVisible: false})
+
 
 
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
@@ -171,7 +178,6 @@ export default class PublishContainer extends Component {
   }
 
   async checkIfBeachExists(survey){
-    console.log("Hello")
     const beachName = survey.surveyData.beachName;
     //Use the beach name to query the server's database
     const exists = await axios.get(`${toExport.SERVER_URL}/beaches/search`, {params: {q: beachName}})
@@ -199,7 +205,8 @@ export default class PublishContainer extends Component {
       this.setState({
         isConfirmModalVisible: true,
         isLoadingModalVisible: false,
-        confirmBeach: beachName
+        confirmBeach: beachName,
+        foundBeach: true
       })
     } else {
       //If its false, then perform that algorithm to find the beaches within the 5-mile radius and let the user choose the beach
@@ -228,7 +235,6 @@ export default class PublishContainer extends Component {
     let userID = await AsyncStorage.getItem('accessToken');
     userID = userID.split("|")[1];
     let userEmail = await AsyncStorage.getItem('email');
-    console.log("==============" + userEmail);
     const form = {
       survData: {
         user: {
@@ -290,9 +296,7 @@ export default class PublishContainer extends Component {
 
   convertTimeString(time){
     let timeString = "";
-    console.log(time);
     timeString = time.toString().split(/ /)[4].substring(0, 5);
-    console.log(timeString)
     return timeString;
   }
 
@@ -301,18 +305,21 @@ export default class PublishContainer extends Component {
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
 
-    axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
+    axios.post(`http://169.233.214.173:3001/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
+          //Finally set the 'published' variable for the survey
+          surveyDB.updateSurvey(this.state.surveyID, {$set: {published: true}});
         }
       })
       .catch(err => {
         this.setState({isConfirmModalVisible: false})
         console.log("Error submitting form:")
-        console.log(err)
+        let error = err.response.data.error
+        console.log(error);
+        alert("Uh Oh! An error has occurred: \n" + error)
       })
-
   }
 
   async isSurveyValid() {
@@ -396,11 +403,11 @@ export default class PublishContainer extends Component {
   }
 
   onPressBeach(beachName, beachID) {
-    this.setState({isConfirmModalVisible: true, match: beachID, confirmBeach: beachName});
+    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: beachID, confirmBeach: beachName});
   }
 
   onPressNoMatch(beachName) {
-    this.setState({isConfirmModalVisible: true, match: null, confirmBeach: beachName})
+    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: null, confirmBeach: beachName})
   }
 
   async onPressSubmit(){
@@ -409,7 +416,6 @@ export default class PublishContainer extends Component {
     if(invalidArray.length > 0){
       /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
       this.setState({isSubmitModalVisible: false});
-      console.log("****SURVEYID****\n" + JSON.stringify(this.state.surveys[0]))
       this.props.navigation.navigate('SurveyContainer', {
         surveyName: this.state.surveys[0].surveyName,
         ribData: currentSurvey.ribData,
@@ -417,7 +423,7 @@ export default class PublishContainer extends Component {
         SRSData: currentSurvey.SRSData,
         ASData: currentSurvey.ASData,
         MicroData: currentSurvey.MicroData,
-        inProgress: this.state.surveys[0]._id,
+        inProgress: this.state.surveyID,
         invalidArray: invalidArray,
         fromPublish: true
       })
@@ -464,7 +470,7 @@ export default class PublishContainer extends Component {
     else {
       return(
         <Container>
-          <PageHeader title='Publish Survey' openDrawer={this.props.navigation.pop} />
+          <PageHeader title='Publish Survey' arrow openDrawer={() => this.props.navigation.pop()} />
             {this.state.isScanning &&
                 <Scanner
                   surveys={this.state.surveys}
@@ -498,7 +504,9 @@ export default class PublishContainer extends Component {
               match={this.state.match}
               confirmBeach={this.state.confirmBeach}
               closeConfirmModal={this.closeConfirmModal}
+              closeConfirmOpenBeachModal={this.closeConfirmOpenBeachModal}
               finalBeachSubmit={this.finalBeachSubmit}
+              foundBeach={this.state.foundBeach}
               />
             <FinishedModal
               isFinishedVisible={this.state.isFinishedVisible}

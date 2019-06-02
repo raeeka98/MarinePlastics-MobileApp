@@ -82,8 +82,9 @@ class HomePage extends Component {
   async componentWillReceiveProps(props){
     let reload = props.navigation.getParam('reload');
     if(reload){
-      this.retrieveInProgress();
-      let inProgress = await this.renderInProgress();
+      console.log("Reload")
+      await this.retrieveInProgress();
+      const inProgress = this.renderInProgress();
       this.setState({
         inProgressViews: inProgress
       })
@@ -105,7 +106,9 @@ class HomePage extends Component {
   }
 
   async retrieveInProgress() {
+    console.log("Retrieve in Progress")
     let surveys =  await surveyDB.getNameDate();
+    console.log(surveys)
     this.setState({
       inProgress: surveys
     })
@@ -174,16 +177,26 @@ class HomePage extends Component {
   async deleteSurvey(){
     await surveyDB.deleteSurvey(this.state.chosenSurvey._id);
     this.endModals();
-    this.retrieveInProgress();
-    let inProgress = this.renderInProgress();
+    await this.retrieveInProgress();
+    const inProgress = this.renderInProgress();
     this.setState({
       inProgressViews: inProgress
     })
   }
 
-  renderPublished(){
+  renderPublished = () => {
     const {inProgress} = this.state;
     let surveyArray = [];
+    for(var i = 0; i < inProgress.length; i++){
+      if(!inProgress[i].published)
+        continue;
+      let survComponent = (
+        <SurveyCard
+          showSurveyModal={this.showSurveyModal}
+          survey={inProgress[i]} />
+      )
+      surveyArray.push({key: inProgress[i].surveyName, val: survComponent});
+    }
     if(surveyArray.length === 0) {
       return(
         <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
@@ -223,7 +236,8 @@ class HomePage extends Component {
   }
 
   render() {
-
+    console.log('--------------NAVIGATION---------------')
+    console.log(this.props.navigation.openDrawer)
     if(this.state.pageLoading) {
       return(
         <Container>
@@ -272,6 +286,7 @@ class HomePage extends Component {
               openSurvey={this.openSurvey}
               onPressDeleteSurvey={this.onPressDeleteSurvey}
               navToPublish={this.navToPublish}
+              published={this.state.chosenSurvey.published}
               />
             <DeleteModal
               isDeleteVisible={this.state.isDeleteVisible}
