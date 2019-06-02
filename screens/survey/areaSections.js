@@ -573,4 +573,4 @@ class SlopeSubstrate extends Component {
     }
 }
 
-export default {BeachInfo, NRO, TideInfo, WindInfo,SlopeSubstrate};
+export {BeachInfo, NRO, TideInfo, WindInfo,SlopeSubstrate};
