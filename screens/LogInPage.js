@@ -176,14 +176,15 @@ class LogInPage extends React.Component {
   // Get the accessToken from AsyncStorage and set the according state variable.
   _retrieveAccessToken = async() => {
     try {
-      const value = await AsyncStorage.getItem('accessToken');
+      let rawValue = await AsyncStorage.getItem('accessToken');
+      const value = JSON.stringify(rawValue);
       if (value !== null) {
         this.setState({ accessToken: value });
       } else {
         this.setState({ accessToken: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
 
