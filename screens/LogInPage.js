@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AppRegistry } from 'react-native';
 import { Alert, AsyncStorage, Linking, Image } from 'react-native';
-import {Icon, View, Button, Text, Container, Content } from 'native-base'
+import {Icon, View, Button, Text, Container, Content, Spinner } from 'native-base'
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -23,7 +23,7 @@ function toQueryString(params) {
 class LogInPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { accessToken: null, email: null, name: null, picture: null};
+    this.state = { accessToken: null, email: null, name: null, picture: null, isLoading: true};
   }
 
   static navigationOptions ={
@@ -34,11 +34,12 @@ class LogInPage extends React.Component {
   }
 
   // Upon loading the page, retrieve all of the following variables stored in async storage.
-  componentWillMount() {
-    this._retrieveAccessToken()
-    this._retrieveEmail()
-    this._retrieveNickname()
-    this._retrievePicture()
+  async componentDidMount() {
+    await this._retrieveAccessToken()
+    await this._retrieveEmail()
+    await this._retrieveNickname()
+    await this._retrievePicture()
+    this.setState({ isLoading : false })
   }
 
   // Log out by setting the stored variables to null then saving to AsyncStorage.
@@ -169,15 +170,15 @@ class LogInPage extends React.Component {
         //console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
 
   // Get the accessToken from AsyncStorage and set the according state variable.
   _retrieveAccessToken = async() => {
     try {
-      let rawValue = await AsyncStorage.getItem('accessToken');
-      const value = JSON.stringify(rawValue);
+      const value = await AsyncStorage.getItem('accessToken');
+      console.log(value);
       if (value !== null) {
         this.setState({ accessToken: value });
       } else {
@@ -192,13 +193,14 @@ class LogInPage extends React.Component {
   _retrieveEmail = async() => {
     try {
       const emailValue = await AsyncStorage.getItem('email');
+      console.log(emailValue);
       if (emailValue !== null) {
         this.setState({ email: emailValue });
       } else {
         this.setState({ email: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
 
@@ -206,13 +208,14 @@ class LogInPage extends React.Component {
   _retrieveNickname = async() => {
     try {
       const nameValue = await AsyncStorage.getItem('name');
+      console.log(nameValue);
       if (nameValue !== null) {
         this.setState({ name: nameValue });
       } else {
         this.setState({ name: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   }
 
@@ -220,13 +223,14 @@ class LogInPage extends React.Component {
   _retrievePicture = async() => {
     try {
       const pictureValue = await AsyncStorage.getItem('picture');
+      console.log(pictureValue);
       if (pictureValue !== null) {
         this.setState({ picture: pictureValue });
       } else {
         this.setState({ picture: null });
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   }
 
@@ -237,30 +241,38 @@ class LogInPage extends React.Component {
     // We'll determine if a user is logged in just by looking at the accesstoken state variable.
     // Store that in a boolean variable.
     let loggedIn = this.state.accessToken === null ? false : true;
-    return(
-      <View style={{justifyContent: "center"}}>
-        <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
-        <View style={styles.container}>
-          <Image
-              style={{width:150, height: 150}}
-              source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
-            />
-          <Text style={styles.container}>
-            {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
-          </Text>
-          <Text style={styles.container}>
-            {loggedIn ? "Email: "+this.state.email : ''}
-          </Text>
-          <Text style={[styles.paragraph]}>Log in with Auth0</Text>
-          {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
-            <Text style={[styles.paragraph]}>Log In</Text>
-          </Button>}
-          {loggedIn ? <Button danger onPress={this._onlogout} style={styles.button}>
-            <Text style={[styles.paragraph]}>Log Out</Text>
-          </Button> : null}
-        </View>
-    </View>
-    );
+    if(this.state.isLoading) {
+      return (
+        <Container>
+          <Spinner color='blue' />
+        </Container>
+      );
+    } else {
+      return(
+        <View style={{justifyContent: "center"}}>
+          <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
+          <View style={styles.container}>
+            <Image
+                style={{width:150, height: 150}}
+                source={(loggedIn && this.state.picture) ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+              />
+            <Text style={styles.container}>
+              {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
+            </Text>
+            <Text style={styles.container}>
+              {loggedIn ? "Email: "+this.state.email : ''}
+            </Text>
+            <Text style={[styles.paragraph]}>Log in with Auth0</Text>
+            {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
+              <Text style={[styles.paragraph]}>Log In</Text>
+            </Button>}
+            {loggedIn ? <Button danger onPress={this._onlogout} style={styles.button}>
+              <Text style={[styles.paragraph]}>Log Out</Text>
+            </Button> : null}
+          </View>
+      </View>
+      );
+    }
   }
 }
 
