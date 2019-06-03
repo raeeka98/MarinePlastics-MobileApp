@@ -21,12 +21,12 @@ export default class SurfaceRibScan extends Component {
      *   for its corresponding rib. This array needs to be preserved across all of the survey
      *   sections to that the rib input gets rendered. It will also need to be remade when
      *   a user comes back to edit the survey later on.
-     * 
+     *
      * 'ribsToSelect'
      * - This is an array that will also need to be preserved across all components, mainly to
-     *   make sure that the user can't enter in two 'Rib 1' sections, for example. As a user 
+     *   make sure that the user can't enter in two 'Rib 1' sections, for example. As a user
      *   creates a new Rib, the corresponding picker items will be removed.
-     * 
+     *
      * 'remade'
      * - This is a boolean variable that is used to remake the tab sections when the user leaves
      *   the survey or navigates to another section.
@@ -53,9 +53,9 @@ export default class SurfaceRibScan extends Component {
     }
 
     /**
-     * This function takes in the ribNumber, ribLength, and ribStart that the user inputs 
-     * into RibEntry component and saves it into the 'ribData' object that can be exported to 
-     * other surveys. Additionally, a RibInput component will be added to the tab array 
+     * This function takes in the ribNumber, ribLength, and ribStart that the user inputs
+     * into RibEntry component and saves it into the 'ribData' object that can be exported to
+     * other surveys. Additionally, a RibInput component will be added to the tab array
      * so that the rib's data can be added to the survey
      */
 
@@ -70,8 +70,8 @@ export default class SurfaceRibScan extends Component {
                     SRSData={this.state.SRSData}
                     surveyData={this.state.surveyData}
                     ribData={this.state.ribData}
-                    ribNumber={ribNumber} 
-                    decrementSRS={this.props.decrementSRS} 
+                    ribNumber={ribNumber}
+                    decrementSRS={this.props.decrementSRS}
                     incrementSRS={this.props.incrementSRS}
                     inputItems={this.state[ribArrayName]}
                     updateSurveyState={this.props.updateSurveyState}
@@ -79,7 +79,7 @@ export default class SurfaceRibScan extends Component {
                 />
             </Tab>
         )
-        
+
         this.setState(prevState => {
             prevState.tabArray.push(newRib);
             prevState.ribData[ribNumLength] = ribLength;
@@ -88,7 +88,7 @@ export default class SurfaceRibScan extends Component {
             return prevState
         })
     }
-    
+
     /**
      * Check to see if there are preexisting rib data in order to remake a certain tab
      */
@@ -111,14 +111,14 @@ export default class SurfaceRibScan extends Component {
     }
 
     /**
-     * We need to check to see if we're editing a pre-existing survey. If so, 
+     * We need to check to see if we're editing a pre-existing survey. If so,
      * we have to reconstruct the tabs
      */
     componentWillMount(){
         if(!this.state.remade)
             this.remakeTabs()
     }
-    
+
     /**
      * Here we render the actual input screens within the tabs so that each rib can have its
      * own input screen dedicated to entering data
@@ -130,10 +130,10 @@ export default class SurfaceRibScan extends Component {
             <View style={styles.container}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
-                        
+
                     </Left>
                     <Body style={headerStyles.headerContents}>
-                        <Text style={{fontSize: 18, color: 'white'}}>Header</Text>
+                        <Text style={{fontSize: 18, color: 'white'}}>Surface Rib Scan</Text>
                     </Body>
                     <Right style={headerStyles.headerContents}>
                         <Button success onPress={this.props.onClickFinish}>
@@ -143,7 +143,7 @@ export default class SurfaceRibScan extends Component {
                 </Header>
                 <Tabs>
                     {
-                        this.state.tabArray.length < 4 ? 
+                        this.state.tabArray.length < 4 ?
                             <Tab heading='+ Add Rib'>
                                 <RibEntry
                                     updateSurveyState={this.props.updateSurveyState}
@@ -157,9 +157,9 @@ export default class SurfaceRibScan extends Component {
                             </Tab>
                         : null
                     }
-                   {this.state.tabArray}  
+                   {this.state.tabArray}
                 </Tabs>
-               
+
             </View>
         )
     }

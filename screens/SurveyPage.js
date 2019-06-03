@@ -9,7 +9,7 @@ import PageHeader from '../components/PageHeader';
 
 let URL='http://marineplastics.herokuapp.com/beaches'
 
-class SurveyPage extends React.Component {
+class SurveyPage extends Component {
   state={
     webData: {}
   }
@@ -40,14 +40,14 @@ class SurveyPage extends React.Component {
           <Text style={{fontSize: 18, fontFamily: 'Roboto'}}>
             The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI). If
             you are unfamiliar with their survey protocol, we suggest that you visit the Marine Plastics Monitor
-            website and familiarize yourself with the procedure. 
+            website and familiarize yourself with the procedure.
           </Text>
           <Text style={{fontSize: 18, fontFamily: 'Roboto'}}>
-            The survey on this app is a digital translation of 
+            The survey on this app is a digital translation of
             COI's paper protocol, but there are some changes that should be noted. We have integrated QR code scanning
             and generation in this app to make it easier for groups to split work on the survey. Only one survey must
-            fill out the "Team Information" and "Survey Area" portion. This survey would be considered as th "Master 
-            Survey", which will be used to scan all other form, if there are any, for this particulart survey. 
+            fill out the "Team Information" and "Survey Area" portion. This survey would be considered as th "Master
+            Survey", which will be used to scan all other form, if there are any, for this particulart survey.
             QR codes can be generated after the survey is saved.
           </Text>
           <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
