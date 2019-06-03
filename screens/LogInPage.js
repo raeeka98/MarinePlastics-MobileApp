@@ -20,13 +20,13 @@ function toQueryString(params) {
     .join('&');
 }
 
-class LogInPage extends React.Component {
+class LogInPage extends Component {
   constructor(props) {
     super(props);
     this.state = { accessToken: null, email: null, name: null, picture: null, isLoading: true};
   }
 
-  static navigationOptions ={
+  static navigationOptions = {
     title: "Profile/Login",
     drawerIcon: ({focused}) => (
       <Icon type='MaterialIcons' name='person' style={{fontSize: 20, color: (focused ? 'blue' : 'black')}} />
@@ -90,12 +90,14 @@ class LogInPage extends React.Component {
     const decoded = jwtDecode(jwtToken);
     //console.log(decoded);
     // Extract the following values given the keys from the decoded response.
-    const { sub } = decoded;
-    const { name } = decoded;
-    const { nickname } = decoded;
-    const { picture } = decoded;
+    const { sub, name, nickname, picture } = decoded;
     // Set the following state variables given the keys form the response.
-    this.setState({accessToken: sub, email: name, name: nickname, picture: picture}, () => {this._storeAccessToken()});
+    this.setState({
+      accessToken: sub,
+      email: name,
+      name: nickname,
+      picture: picture
+    }, () => {this._storeAccessToken()});
 
     //console.log('Storing AccessToken for LogIn');
     //this._storeAccessToken();
