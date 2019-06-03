@@ -1,7 +1,24 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AppRegistry } from 'react-native';
 import { Alert, AsyncStorage, Linking, Image } from 'react-native';
-import {Icon, View, Button, Text, Container, Content, Spinner } from 'native-base'
+import {
+  Icon,
+  View,
+  Button,
+  Text,
+  Container,
+  Content,
+  Spinner,
+  Card,
+  CardItem,
+  Body,
+  Left,
+  Right,
+  Title,
+  Subtitle,
+  H1,
+  H2
+} from 'native-base'
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -251,9 +268,63 @@ class LogInPage extends Component {
       );
     } else {
       return(
-        <View style={{justifyContent: "center"}}>
+        <Container style={{flex: 1}}>
           <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
-          <View style={styles.container}>
+          <Content style={{backgroundColor: '#e4eaff'}}>
+            <View style={{padding: 40}}>
+              <Image
+                  style={styles.profilePic}
+                  source={(loggedIn && this.state.picture) ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+                  />
+            </View>
+
+            <Card style={{padding: 10}}>
+
+              <CardItem bordered>
+                <Left>
+                  <Title>
+                    Name:
+                  </Title>
+                </Left>
+                <Body>
+                  <Title>
+                    {loggedIn ? this.state.name : 'Guest'}
+                  </Title>
+                </Body>
+              </CardItem>
+
+              <CardItem>
+                  <Left>
+                    <Title>
+                      Email:
+                    </Title>
+                  </Left>
+                  <Body>
+                    <Title>
+                      {loggedIn ? this.state.email : ''}
+                    </Title>
+                  </Body>
+              </CardItem>
+            </Card>
+
+            <View style={styles.bottom}>
+              {loggedIn ?
+                <Button danger onPress={this._onlogout} style={styles.button}>
+                  <Text style={[styles.paragraph]}>Log Out</Text>
+                </Button>
+              :
+                <Button info onPress={this._loginV3} style={styles.button}>
+                  <Text style={[styles.paragraph]}>Log In</Text>
+                </Button>
+              }
+            </View>
+          </Content>
+        </Container>
+
+
+          /*<View style={{justifyContent: "center"}}>
+            <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
+            <View style={styles.container}>
             <Image
                 style={{width:150, height: 150}}
                 source={(loggedIn && this.state.picture) ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
@@ -272,7 +343,8 @@ class LogInPage extends Component {
               <Text style={[styles.paragraph]}>Log Out</Text>
             </Button> : null}
           </View>
-      </View>
+        </View>*/
+
       );
     }
   }
@@ -302,12 +374,22 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'center',
-    marginTop: 25,
     fontSize: 20,
     width: "80%",
     textAlign: "center",
     justifyContent: "center",
-    alignItems: "center",
     color: "#158964"
+  },
+  profilePic: {
+    width:150,
+    height: 150,
+    paddingBottom: 100,
+    alignSelf: 'center'
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    flexDirection: 'column',
+    marginTop: 80
   }
 });
