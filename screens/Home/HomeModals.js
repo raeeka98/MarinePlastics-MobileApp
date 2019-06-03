@@ -1,24 +1,12 @@
-import React, { Component } from 'react';
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  AsyncStorage,
-  RefreshControl
-} from 'react-native';
+import React from 'react';
+
 
 import {
-  Icon,
-  Footer,
   Button,
-  Toast,
   Text,
-  Container,
-  Header,
-  Content,
-  View
+  View,
+  List,
+  ListItem
 } from 'native-base'
 import Modal from 'react-native-modal'
 
@@ -46,31 +34,42 @@ function GeneralModal (props) {
   return(
     <Modal
       isVisible={isModalVisible}
-      onModalHide={openDelete}>
-      <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+      onModalHide={openDelete}
+      style={{flex: 1}}>
+      <View style={{alignSelf: 'center', width: '90%', height: '55%', backgroundColor: 'white'}} >
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{name}</Text>
-        <View style={ {flexDirection: 'row', justifyContent: 'space-around'}}>
-          <Button success style={{justifyContent: 'center',width: 100}}onPress={() => console.log('Generate QR Here')} >
-            <Text>QR Code</Text>
-          </Button>
-          <Button light disabled={props.published} style={{justifyContent: 'center', width: 100}}onPress={openSurvey} title='Edit'>
-            <Text >Edit</Text>
-          </Button>
+          <List>
+            <ListItem>
+              <Button transparent style={{justifyContent: 'flex-start',width: 100}}onPress={() => console.log('Generate QR Here')} >
+                <Text style={{color: 'royalblue'}}>QR Code</Text>
+              </Button>
+            </ListItem>
+            <ListItem>
+              <Button 
+                transparent 
+                style={{justifyContent: 'flex-start', width: 100}}
+                onPress={() => {if(!props.published){props.openSurvey()}} } 
+                >
+                <Text style={{color: props.published ? 'lightgrey' : 'royalblue'}}>Edit</Text>
+              </Button>
+            </ListItem>
+            <ListItem>
+              <Button transparent style={{justifyContent: 'flex-start',width: 100}} onPress={()=>{if(!props.published){props.navToPublish()}}}>
+                <Text style={{color: props.published ? 'lightgrey' : 'royalblue'}}>Publish</Text>
+              </Button>
+            </ListItem>
+            <ListItem>
+              <Button transparent style={{justifyContent: 'flex-start', width: 100}}onPress={onPressDeleteSurvey} title='Delete'>
+                <Text style={{color: 'red'}}>Delete</Text>
+              </Button>
+            </ListItem>
+            <ListItem>
+              <Button transparent style={{justifyContent: 'flex-start',width: 100}}onPress={cancelModal} >
+                <Text style={{color: 'royalblue'}}>Back</Text>
+              </Button>
+            </ListItem>
+          </List>
           
-        </View>
-        <View style={ {flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10}}>
-        <Button primary disabled={props.published} style={{justifyContent: 'center',width: 100}} onPress={navToPublish}>
-            <Text>Publish</Text>
-          </Button>
-        </View>
-        <View style={ {flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10}}>
-          <Button light style={{justifyContent: 'center',width: 100}}onPress={cancelModal} >
-            <Text>Back</Text>
-          </Button>
-          <Button danger  style={{justifyContent: 'center', width: 100}}onPress={onPressDeleteSurvey} title='Delete'>
-            <Text>Delete</Text>
-          </Button>
-        </View>
       </View>
     </Modal>
   );
