@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import {Font} from 'expo'
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  View,
-  ActivityIndicator
-} from 'react-native';
+import {View} from 'react-native';
 
 import {
 
@@ -18,10 +12,6 @@ import {
   Button,
   Text,
   Container,
-  Header,
-  Content,
-  Card,
-  CardItem,
 } from 'native-base';
 import Modal from 'react-native-modal'
 import axios from 'axios'
@@ -52,7 +42,6 @@ const goBack = NavigationActions.back({
 export default class PublishContainer extends Component {
   constructor(props) {
     super(props);
-    this.baseURL = 'http://169.233.235.63:3001'
     this.state = {
       loading : true,
       isImporting : true,
@@ -228,8 +217,14 @@ export default class PublishContainer extends Component {
     return returnDate
   }
 
+  /**
+   * This function takes the merged survey, stored in the state's merged survey key, and 
+   * converts it into the survey schema format that's used to store surveys in the database
+   * It will also attach a beach ID if the survey is being submitted under a current beach, 
+   * or it will submit a beach schema with it containing information for the new beach if
+   * it does not exist in the database
+   */
   async convertSurvey(index) {
-    console.log(`------------------ CONVERTING SURVEY OF INDEX ${index} --------------------`)
     let currentSurvey = this.state.mergedSurvey;
     let surveyData = currentSurvey.surveyData;
     let userID = await AsyncStorage.getItem('accessToken');
@@ -294,12 +289,18 @@ export default class PublishContainer extends Component {
     return form;
   }
 
+  /**
+   * Converts time to a string that will be stored in the database
+   */
   convertTimeString(time){
     let timeString = "";
     timeString = time.toString().split(/ /)[4].substring(0, 5);
     return timeString;
   }
 
+  /**
+   * The final submission function that will 
+   */
   async finalBeachSubmit() {
     const formToSubmit = await this.convertSurvey();
     console.log(formToSubmit);

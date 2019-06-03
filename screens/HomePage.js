@@ -236,8 +236,6 @@ class HomePage extends Component {
   }
 
   render() {
-    console.log('--------------NAVIGATION---------------')
-    console.log(this.props.navigation.openDrawer)
     if(this.state.pageLoading) {
       return(
         <Container>
