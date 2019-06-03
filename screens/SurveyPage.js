@@ -17,7 +17,7 @@ class SurveyPage extends React.Component {
   static navigationOptions = {
     title: 'New Survey',
     drawerIcon: ({focused}) => (
-      <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'blue' : 'black')}} />
+      <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'dodgerblue' : 'black')}} />
     )
   }
 
