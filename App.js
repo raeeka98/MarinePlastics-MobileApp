@@ -1,10 +1,10 @@
 import React from 'react';
 
-import {createStackNavigator, createNavigationContainer, createAppContainer, createDrawerNavigator, createSwitchNavigator} from 'react-navigation';
+import {createStackNavigator, createAppContainer, createDrawerNavigator, createSwitchNavigator} from 'react-navigation';
 
-import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
-import {Root, Spinner, Switch} from 'native-base'
-import {Constants, Font} from 'expo'
+import { StyleSheet, SafeAreaView } from 'react-native';
+import {Root, Spinner} from 'native-base'
+import {Font} from 'expo'
 
 // optimization?
 import { useScreens } from 'react-native-screens';
@@ -17,7 +17,6 @@ import LogInPage from './screens/LogInPage';
 import SurveyPage from './screens/SurveyPage';
 import PublishContainer from './screens/Publish/PublishContainer';
 import SurveyContainer from './screens/survey/SurveyContainer'
-import Example from './screens/Example';
 import CustomDrawer from './components/CustomDrawer';
 
 /**
@@ -33,7 +32,6 @@ import CustomDrawer from './components/CustomDrawer';
  *          - SurveyEntry
  *          - PublishContainer
  *          - SurveyContainer
- *          - Example (?)
  *          - DrawerNavigator (Drawer): 
  *              - HomePage
  *              - LogInPage
@@ -47,7 +45,7 @@ import CustomDrawer from './components/CustomDrawer';
  * - If you wanted to properly navigate from a page exclusive to MainNavigator and a page in 
  *    DrawerNavigator (ie SurveyContainer to HomePage), you would need to nest the navigation
  *    actions between components. For an example, observe how 'navigateToHome' is used in 
- *    SurveyContainer
+ *    BoardingPage
  */
 
 const DrawerNavigator = createDrawerNavigator({
@@ -70,7 +68,6 @@ const MainNavigator = createStackNavigator(
     SurveyEntry: {screen: SurveyPage},
     PublishContainer: {screen: PublishContainer},
     SurveyContainer: {screen: SurveyContainer},
-    Example : {screen: Example},
     DrawerNavigator
 
   },

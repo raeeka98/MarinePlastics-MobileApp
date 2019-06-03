@@ -3,7 +3,7 @@ import {Text, View, TextInput} from 'react-native';
 import {DatePicker, Icon, Item, Input, Button, Header, Right, Left, Body} from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker' 
 
-import headerStyles from '../headerStyles'
+import headerStyles from '../../components/headerStyles'
 import styles from './surveyStyles'
 
 export default class TeamInfo extends Component {

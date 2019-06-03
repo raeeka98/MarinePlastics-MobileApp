@@ -3,7 +3,7 @@ import {TextInput, Text, View, FlatList } from 'react-native'
 import {Item, Button, Icon, Header, Left, Body, Right} from 'native-base'
 
 import styles from './surveyStyles'
-import headerStyles from '../headerStyles';
+import headerStyles from '../../components/headerStyles';
 
 const microRowLabels = [
     {key: 'Rib 1'}, 

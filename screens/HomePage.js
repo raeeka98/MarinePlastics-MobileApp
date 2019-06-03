@@ -1,33 +1,21 @@
 import React, { Component } from 'react';
 
 import {
-  Platform,
-  StatusBar,
-  StyleSheet,
   FlatList,
-  TouchableOpacity,
-  AsyncStorage,
-  SafeAreaView,
   RefreshControl
 } from 'react-native';
 
 import {
   Icon,
   View,
-  Footer,
-  Button,
-  Toast,
   Text,
   Title,
-  Subtitle,
   Container,
-  Header,
   Content,
   Spinner
 } from 'native-base';
 
-import Modal from 'react-native-modal'
-import {Font, Constants} from 'expo'
+import {Font} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
 

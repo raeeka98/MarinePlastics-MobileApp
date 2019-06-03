@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Header, Left, Right, Body, Title, Icon, Text} from 'native-base';
+import {Header, Left, Right, Body, Title, Icon} from 'native-base';
 
-import headerStyles from '../screens/headerStyles'
+import headerStyles from './headerStyles'
 /* Custom header to be used for every page in main navigation*/
 export default class PageHeader extends Component {
   constructor(props){

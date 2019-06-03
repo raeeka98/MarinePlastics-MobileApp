@@ -616,14 +616,13 @@ export default class SurveyContainer extends Component {
         this.setState({isBackVisible: false})
     }
 
-    closeBackAndNavigate = () => {
-        this.closeBackModal();
+    closeBackAndNavigate = async () => {
+        await this.closeBackModal();
         this.props.navigation.pop()
     }
 
     render() {
         const {shouldRender} = this.state;
-        console.log("Rendering")
         return(
             <View style={styles.container}>
                 {this.renderCurrentScreen()}
