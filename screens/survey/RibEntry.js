@@ -22,7 +22,7 @@ export default class RibEntry extends Component {
     }
 
     /**
-     * Take the refName and update its information based on the input. 
+     * Take the refName and update its information based on the input.
      * Here, we also need to distinguish when a user uses the picker to update information
      * versus when they use a simple text input
      */
@@ -48,12 +48,12 @@ export default class RibEntry extends Component {
     }
 
     /**
-     * Make sure that the user inputs all of the required information to create a rib. Once 
+     * Make sure that the user inputs all of the required information to create a rib. Once
      * they enter all that info, then call 'submitAddRib' to create a new rib component. Also,
      * clear the inputs to get ready for another rib input
      */
 
-    async onSubmitEdits () {
+    onSubmitEdits = async () => {
         if(this.state.ribNumber === "" || this.state.ribLength === "" || this.state.ribStart === ""){
             alert("Please fill out all of the information")
             return
@@ -61,7 +61,7 @@ export default class RibEntry extends Component {
 
         await this.props.submitAddRib(this.state.ribNumber, this.state.ribLength, this.state.ribStart);
         this.clearInputs();
-    } 
+    }
 
     render() {
         return (
@@ -86,7 +86,7 @@ export default class RibEntry extends Component {
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
                     <Text style={{fontSize: 20}}>Rib Start (meters):</Text>
                     <Item regular>
-                        <TextInput 
+                        <TextInput
                             style={{width: 100, height: 35}}
                             keyboardType="number-pad"
                             editable={this.state.canEdit}
@@ -98,7 +98,7 @@ export default class RibEntry extends Component {
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
                     <Text style={{fontSize: 20}}>Rib Length (meters):</Text>
                     <Item regular>
-                        <TextInput 
+                        <TextInput
                             style={{width: 100, height: 35}}
                             keyboardType="number-pad"
                             editable={this.state.canEdit}
@@ -110,14 +110,14 @@ export default class RibEntry extends Component {
                 <View style={styles.inputSingleContainer}>
                     <Button
                         style={{alignSelf: 'stretch', justifyContent: 'center'}}
-                        onPress={this.onSubmitEdits.bind(this)}
+                        onPress={this.onSubmitEdits}
                     >
                         <Icon type='AntDesign' name='plus'/>
                         <Text style={{color: 'white'}}>Add Rib</Text>
                     </Button>
                 </View>
             </View>
-            
+
         )
     }
 }

@@ -42,6 +42,7 @@ export default class SurfaceRibScan extends Component {
             ribData: this.props.ribData ? this.props.ribData : {},
             modalVisible: false,
             tabArray: this.props.tabArray ? this.props.tabArray : [],
+            activeRib: 0,
             ribsToSelect: this.props.ribsToSelect ? this.props.ribsToSelect : [
                 <Picker.Item key='1' label="1" value="1" />,
                 <Picker.Item key='2' label="2" value="2" />,
@@ -81,6 +82,7 @@ export default class SurfaceRibScan extends Component {
         )
 
         this.setState(prevState => {
+            prevState.activeRib++;
             prevState.tabArray.push(newRib);
             prevState.ribData[ribNumLength] = ribLength;
             prevState.ribData[ribNumStart] = ribStart;
@@ -140,7 +142,7 @@ export default class SurfaceRibScan extends Component {
                         </Button>
                     </Right>
                 </Header>
-                <Tabs>
+                <Tabs page={this.state.activeRib}>
                     {
                         this.state.tabArray.length < 4 ?
                             <Tab heading='+ Add Rib'>

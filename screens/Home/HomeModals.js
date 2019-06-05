@@ -36,7 +36,7 @@ function GeneralModal (props) {
       isVisible={isModalVisible}
       onModalHide={openDelete}
       style={{flex: 1}}>
-      <View style={{alignSelf: 'center', width: '90%', height: '55%', backgroundColor: 'white'}} >
+      <View style={{alignSelf: 'center', width: '90%', backgroundColor: 'white'}} >
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{name}</Text>
           <List>
             <ListItem>
@@ -45,10 +45,10 @@ function GeneralModal (props) {
               </Button>
             </ListItem>
             <ListItem>
-              <Button 
-                transparent 
+              <Button
+                transparent
                 style={{justifyContent: 'flex-start', width: 100}}
-                onPress={() => {if(!props.published){props.openSurvey()}} } 
+                onPress={() => {if(!props.published){props.openSurvey()}} }
                 >
                 <Text style={{color: props.published ? 'lightgrey' : 'royalblue'}}>Edit</Text>
               </Button>
@@ -69,7 +69,6 @@ function GeneralModal (props) {
               </Button>
             </ListItem>
           </List>
-          
       </View>
     </Modal>
   );
