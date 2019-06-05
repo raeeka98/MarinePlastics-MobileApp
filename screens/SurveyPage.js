@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {Icon, Button} from 'native-base'
+import { Platform, StatusBar, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Icon, Button, Text} from 'native-base'
 import Axios from 'axios';
 import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import PageHeader from '../components/PageHeader';
 
-let URL='http://marineplastics.herokuapp.com/beaches'
+/**
+ * This is a page that can be much improved upon in the next iteration. This idea was pitched 
+ * a bit late in the game, but it could still be something that can be integrated later on:
+ * Instead of some paragraphs to serve as an on-boarding session, it'll be much better to
+ * create a little tutorial guide that shows the user how to fill out and generate QR codes
+ * with our app.
+ */
 
 class SurveyPage extends React.Component {
 
@@ -21,24 +27,27 @@ class SurveyPage extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return(
-      <View>
+      <View style={{backgroundColor: '#e4eaff', flex: 1}}>
         <PageHeader title="Start a survey" openDrawer={this.props.navigation.openDrawer} />
         <View style={[styles.container, {flexDirection:'column', justifyContent: 'space-between'}]}>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto'}}>
-            The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI). If
-            you are unfamiliar with their survey protocol, we suggest that you visit the Marine Plastics Monitor
-            website and familiarize yourself with the procedure. 
+          <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 22, marginBottom: '2%'}}>GETTING STARTED</Text>
+          <Text style={{fontSize: 18}}>
+            The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI).{" "}
+             <Text style={{fontStyle:'italic', fontSize: 18}}>
+              If you are unfamiliar with their survey protocol, we suggest that you visit the Marine Plastics Monitor
+              website and familiarize yourself with the procedure.
+            </Text> 
           </Text>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto'}}>
+          <Text style={{fontSize: 18, fontFamily: 'Roboto', marginBottom: '5%'}}>
             The survey on this app is a digital translation of 
-            COI's paper protocol, but there are some changes that should be noted. We have integrated QR code scanning
-            and generation in this app to make it easier for groups to split work on the survey. Only one survey must
-            fill out the "Team Information" and "Survey Area" portion. This survey would be considered as th "Master 
-            Survey", which will be used to scan all other form, if there are any, for this particulart survey. 
+            COI's paper protocol. But there are some changes that should be noted. We have integrated QR code scanning
+            and generation in this app to make it easier for groups to split up and work on different ribs during the survey. 
+            Only one survey must fill out the "Team Information" and "Survey Area" portion. This survey would be considered as 
+            the "Master Survey", which will be used to scan all other form, if there are any, for this particular survey. 
             QR codes can be generated after the survey is saved.
           </Text>
           <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
-            <Text style={{color:'white', fontWeight: 'bold'}}>OK, I got it!</Text>
+            <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
           </Button>
         </View>
       </View>
@@ -52,9 +61,8 @@ export default SurveyPage;
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    marginTop: 50,
     padding: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#e4eaff",
   },
   paragraph: {
     margin: 24,

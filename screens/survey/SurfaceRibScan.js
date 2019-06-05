@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Text, View} from 'react-native'
-import {Button, Tab, Tabs, Header, Left, Body, Right, Picker} from 'native-base'
+import {Button, Tab,Icon, Tabs, Header, Left, Body, Right, Picker} from 'native-base'
 
 import styles from './surveyStyles'
 import RibInput from './RibInput'
@@ -129,7 +129,9 @@ export default class SurfaceRibScan extends Component {
             <View style={styles.container}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
-                        
+                        <Button transparent onPress={this.props.openBackModal}>
+                            <Icon type="AntDesign" name='close'/>
+                        </Button>
                     </Left>
                     <Body style={headerStyles.headerContents}>
                         <Text style={{fontSize: 18, color: 'white'}}>Header</Text>

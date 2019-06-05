@@ -36,7 +36,7 @@ function GeneralModal (props) {
       isVisible={isModalVisible}
       onModalHide={openDelete}
       style={{flex: 1}}>
-      <View style={{alignSelf: 'center', width: '90%', height: '55%', backgroundColor: 'white'}} >
+      <View style={{alignSelf: 'center', width: '90%', backgroundColor: 'white'}} >
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{name}</Text>
           <List>
             <ListItem>

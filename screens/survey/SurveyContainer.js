@@ -420,6 +420,8 @@ export default class SurveyContainer extends Component {
                         fromPublish={this.state.fromPublish}
                         invalidFields={this.state.invalidFields}
                         updateSurveyLocation={this.updateSurveyLocation}
+                        openBackModal={this.openBackModal}
+                        closeBackModal={this.closeBackModal}
                     />
                 )
             case "srs" :
@@ -440,6 +442,8 @@ export default class SurveyContainer extends Component {
                         fromPublish={this.state.fromPublish}
                         setRemade={this.setRemade}
                         remade={this.state.remade}
+                        openBackModal={this.openBackModal}
+                        closeBackModal={this.closeBackModal}
                     />
                 )
             case "as" :
@@ -456,6 +460,8 @@ export default class SurveyContainer extends Component {
                         fromPublish={this.state.fromPublish}
                         tabArray={this.state.tabArray}
                         ribsToSelect={this.state.ribsToSelect}
+                        openBackModal={this.openBackModal}
+                        closeBackModal={this.closeBackModal}
                     />
                 )
             default :
@@ -472,6 +478,8 @@ export default class SurveyContainer extends Component {
                         fromPublish={this.state.fromPublish}
                         tabArray={this.state.tabArray}
                         ribsToSelect={this.state.ribsToSelect}
+                        openBackModal={this.openBackModal}
+                        closeBackModal={this.closeBackModal}
                     />
                 )
         }
@@ -618,7 +626,7 @@ export default class SurveyContainer extends Component {
 
     closeBackAndNavigate = async () => {
         await this.closeBackModal();
-        this.props.navigation.pop()
+        this.props.navigation.dispatch(navigateToHome)
     }
 
     render() {

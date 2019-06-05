@@ -10,7 +10,6 @@ export default class TeamInfo extends Component {
 
     constructor(props){
         super(props);
-    }
     /*
      * Setting up the initial state of the app.
      * Note that here we separate the surveyData, SRS, Micro, and AS in order to keep the functions
@@ -19,7 +18,7 @@ export default class TeamInfo extends Component {
      * Note that when we initialize the items, we want to check to see if any existing values that are passed
      * from a previous screeen
      */
-    state = {
+    this.state = {
         showTime: false,
         time: new Date(),
         hours: '00',
@@ -31,6 +30,8 @@ export default class TeamInfo extends Component {
         ribData: this.props.ribData ? this.props.ribData : {},
         tabArray: this.props.tabArray ? this.props.tabArray : []
     }
+    }
+
 
     /**
      * Creates the time string to display on the app before and after the user enters a time
@@ -87,7 +88,7 @@ export default class TeamInfo extends Component {
                 <Header style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.onPressBack}>
-                            <Icon type="AntDesign" name='arrowleft'/>
+                            <Icon type="AntDesign" name='close'/>
                         </Button>
                     </Left>
                     <Body>
