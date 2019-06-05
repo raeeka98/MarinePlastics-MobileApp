@@ -1,14 +1,32 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View} from 'react-native'
-import {Accordion, Item, Button, Icon, Header, Left, Body, Right} from 'native-base'
+
+import {
+  TextInput,
+  Text,
+  View
+} from 'react-native'
+
+import {
+  Accordion,
+  Item,
+  Button,
+  Icon,
+  Header,
+  Left,
+  Body,
+  Right,
+  Card,
+  CardItem
+} from 'native-base'
 
 import styles from './surveyStyles'
 import debrisInfoID from './debrisInfo'
+import SurveyItemHeader from '../../components/SurveyItemHeader'
 import headerStyles from '../../components/headerStyles';
 
 var BUTTONS = [
-    'Cigarette Butts', 
-    'Fishing Line / Polypropylene Rope', 
+    'Cigarette Butts',
+    'Fishing Line / Polypropylene Rope',
     'Plastic Straws',
     'Filmed Plastic',
     'Plastic Bottles / Plastic Caps',
@@ -46,7 +64,7 @@ export default class AccumulationSweep extends Component {
                 {key: 'Other: Food / Organics'},
                 {key: 'Other: Cotton / Cloth'},
                 {key: 'Other: Wood / Paper'},
-                
+
             ],
             MicroData: this.props.MicroData ? this.props.MicroData : {},
             ribData: this.props.ribData ? this.props.ribData : {},
@@ -54,87 +72,57 @@ export default class AccumulationSweep extends Component {
         }
     }
 
-    renderAccordionHeader = (item, expanded) => {
-        if(expanded) {
-            return (
-                <View 
-                    style={{
-                        flexDirection: "row", 
-                        padding: 10,
-                        justifyContent: "space-between",
-                        alignItems: "center" ,
-                        backgroundColor: "#87cefa" }}
-                >
-                    <Text style={{fontWeight: "500"}}>{" "}{item.title}</Text>
-                    <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
-                </View>
-            )
-        }
-        return (
-            <View 
-                style={{
-                    flexDirection: "row",
-                    padding: 10,
-                    justifyContent: "space-between",
-                    alignItems: "center" ,
-                    backgroundColor: "#1a8cff" }} 
-            >
-                <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
-                <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
-            </View>
-        )
-    }
+    renderAccordionHeader = (item, expanded) => <SurveyItemHeader title={item.title} expanded={expanded}/>
 
     renderCategoryInput = (item) => {
         const currentItemKey = debrisInfoID[item.title];
         const freshKey = `${currentItemKey}__fresh__accumulation`
         const weatheredKey = `${currentItemKey}__weathered__accumulation`
         return (
-            <View style = {{padding: 15}}>
+            <View style = {{padding: 10, backgroundColor: 'white'}}>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
+                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Fresh:</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
+                        <Button
+                            light
                             onPress={this.props.decrementAS.bind(this, freshKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
                         <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
+                            <TextInput
+                                editable={false}
+                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.ASData[freshKey] ? this.state.ASData[freshKey] + '' : '0'}
                             />
                         </Item>
-                        <Button 
+                        <Button
                             light
-                            onPress={this.props.incrementAS.bind(this, freshKey)}    
+                            onPress={this.props.incrementAS.bind(this, freshKey)}
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
                     </View>
-                    
                 </View>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Weathered:</Text>
+                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Weathered:</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
+                        <Button
+                            light
                             onPress={this.props.decrementAS.bind(this, weatheredKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
                         <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
+                            <TextInput
+                                editable={false}
+                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.ASData[weatheredKey] ? this.state.ASData[weatheredKey] + '' : '0'}
                             />
                         </Item>
-                        <Button 
+                        <Button
                             light
-                            onPress={this.props.incrementAS.bind(this, weatheredKey)}    
+                            onPress={this.props.incrementAS.bind(this, weatheredKey)}
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
@@ -160,7 +148,7 @@ export default class AccumulationSweep extends Component {
             {title: 'Other: Wood / Paper'},
         ]
         return(
-            <View style={styles.container}>
+            <View style={[styles.container, {marginBottom: 60}]}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.props.openBackModal}>
@@ -175,12 +163,12 @@ export default class AccumulationSweep extends Component {
                             <Text style={{padding: 5, color: 'white'}}>Finish</Text>
                         </Button>
                     </Right>
-                </Header> 
-                <Accordion 
-                    dataArray={accordData} renderHeader={this.renderAccordionHeader} renderContent={this.renderCategoryInput}
-                />
+                </Header>
+                  <Accordion
+                      dataArray={accordData} renderHeader={this.renderAccordionHeader} renderContent={this.renderCategoryInput}
+                  />
             </View>
-        
+
         )
     }
 }

@@ -1,12 +1,27 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View, FlatList } from 'react-native'
-import {Item, Button, Icon, Header, Left, Body, Right} from 'native-base'
+import {TextInput, FlatList } from 'react-native'
+
+import {
+  Item,
+  Button,
+  Icon,
+  Header,
+  Left,
+  Body,
+  Text,
+  Right,
+  View,
+  Container,
+  Content,
+  Card,
+  CardItem
+} from 'native-base'
 
 import styles from './surveyStyles'
 import headerStyles from '../../components/headerStyles';
 
 const microRowLabels = [
-    {key: 'Rib 1'}, 
+    {key: 'Rib 1'},
     {key: 'Rib 2'},
     {key: 'Rib 3'},
     {key: 'Rib 4'}
@@ -43,67 +58,70 @@ export default class MicroDebris extends Component {
         const freshKey = `${currentItemKey}__fresh__micro`
         const weatheredKey = `${currentItemKey}__weathered__micro`
         return (
-            <View style = {{marginBottom: 15}}>
-            
+            <Card bordered>
+              <CardItem header bordered>
                 <Text style={{fontSize: 19}}>{item.key}</Text>
-                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
-                    <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
-                            onPress={this.props.decrementMicro.bind(this, freshKey)}
-                        >
-                            <Icon type='AntDesign' name='minus'/>
-                        </Button>
-                        <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
-                                value={this.state.MicroData[freshKey] ? this.state.MicroData[freshKey] + '' : '0'}
-                            />
-                        </Item>
-                        <Button 
-                            light
-                            onPress={this.props.incrementMicro.bind(this, freshKey)}    
-                        >
-                            <Icon type='AntDesign' name='plus'/>
-                        </Button>
-                    </View>
-                    
-                </View>
-                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Weathered:</Text>
-                    <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
-                            onPress={this.props.decrementMicro.bind(this, weatheredKey)}
-                        >
-                            <Icon type='AntDesign' name='minus'/>
-                        </Button>
-                        <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
-                                value={this.state.MicroData[weatheredKey] ? this.state.MicroData[weatheredKey] + '' : '0'}
-                            />
-                        </Item>
-                        <Button 
-                            light
-                            onPress={this.props.incrementMicro.bind(this, weatheredKey)}    
-                        >
-                            <Icon type='AntDesign' name='plus'/>
-                        </Button>
-                    </View>
-                </View>
-                <View style={styles.segmentSeparator}/>
-            </View>
+              </CardItem>
+              <CardItem bordered  style={{flex: 1}}>
+                  <Left>
+                    <Text style={{fontSize: 18}}>Fresh:</Text>
+                  </Left>
+                  <Body style={{flexDirection: 'row'}}>
+                    <Button
+                        light
+                        onPress={this.props.decrementMicro.bind(this, freshKey)}
+                    >
+                        <Icon type='AntDesign' name='minus'/>
+                    </Button>
+                    <Item regular>
+                        <TextInput
+                            editable={false}
+                            style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
+                            value={this.state.MicroData[freshKey] ? this.state.MicroData[freshKey] + '' : '0'}
+                        />
+                    </Item>
+                    <Button
+                        light
+                        onPress={this.props.incrementMicro.bind(this, freshKey)}
+                    >
+                        <Icon type='AntDesign' name='plus'/>
+                    </Button>
+                  </Body>
+              </CardItem>
+              <CardItem bordered>
+                <Left>
+                    <Text style={{fontSize: 18}}>Weathered:</Text>
+                </Left>
+                <Body style={{flexDirection: 'row'}}>
+                  <Button
+                      light
+                      onPress={this.props.decrementMicro.bind(this, weatheredKey)}
+                  >
+                      <Icon type='AntDesign' name='minus'/>
+                  </Button>
+                  <Item regular>
+                      <TextInput
+                          editable={false}
+                          style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
+                          value={this.state.MicroData[weatheredKey] ? this.state.MicroData[weatheredKey] + '' : '0'}
+                      />
+                  </Item>
+                  <Button
+                      light
+                      onPress={this.props.incrementMicro.bind(this, weatheredKey)}
+                  >
+                      <Icon type='AntDesign' name='plus'/>
+                  </Button>
+                </Body>
+              </CardItem>
+            </Card>
         )
     }
 
     render() {
 
         return(
-            <View style={styles.container}>
+            <Container style={[styles.container, {marginBottom: 60}]}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.props.openBackModal}>
@@ -119,16 +137,16 @@ export default class MicroDebris extends Component {
                         </Button>
                     </Right>
                 </Header>
-                
-                <FlatList 
-                    style={{marginLeft:20, marginRight:20}}
-                    data={this.state.microRowLabels} 
-                    extraData={this.state} 
-                    renderItem={this.renderMicroRows}
-                />
-                
-            </View>
-            
+                <Content>
+                  <FlatList
+                      style={{marginTop: 10, marginLeft: 5, marginRight: 5}}
+                      data={this.state.microRowLabels}
+                      extraData={this.state}
+                      renderItem={this.renderMicroRows}
+                  />
+                </Content>
+            </Container>
+
         )
     }
 }

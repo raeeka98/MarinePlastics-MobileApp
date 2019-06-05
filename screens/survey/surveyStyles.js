@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#e4eaff'
     },
     inputSingleContainer: {
         padding: 30,
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     inputDoubleContainer: {
         flexDirection: 'row'
     },
-    inputDouble: { 
+    inputDouble: {
         flex: 2,
         marginLeft: 10,
         marginRight: 10
@@ -23,8 +24,8 @@ const styles = StyleSheet.create({
         marginTop: 3
     },
     checkBoxInput: {
-        marginRight:5, 
-        height: 25, 
+        marginRight:5,
+        height: 25,
         width: 25
     },
     checkBoxLarge: {
@@ -32,8 +33,8 @@ const styles = StyleSheet.create({
         marginTop: 6
     },
     checkBoxLargeInput: {
-        marginRight:10, 
-        height: 35, 
+        marginRight:10,
+        height: 35,
         width: 35
     },
     textInput: {

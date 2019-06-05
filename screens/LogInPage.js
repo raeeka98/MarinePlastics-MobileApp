@@ -320,31 +320,6 @@ class LogInPage extends Component {
             </View>
           </Content>
         </Container>
-
-
-          /*<View style={{justifyContent: "center"}}>
-            <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
-            <View style={styles.container}>
-            <Image
-                style={{width:150, height: 150}}
-                source={(loggedIn && this.state.picture) ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
-              />
-            <Text style={styles.container}>
-              {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
-            </Text>
-            <Text style={styles.container}>
-              {loggedIn ? "Email: "+this.state.email : ''}
-            </Text>
-            <Text style={[styles.paragraph]}>Log in with Auth0</Text>
-            {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
-              <Text style={[styles.paragraph]}>Log In</Text>
-            </Button>}
-            {loggedIn ? <Button danger onPress={this._onlogout} style={styles.button}>
-              <Text style={[styles.paragraph]}>Log Out</Text>
-            </Button> : null}
-          </View>
-        </View>*/
-
       );
     }
   }

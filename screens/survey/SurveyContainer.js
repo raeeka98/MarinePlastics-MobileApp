@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {TextInput, View } from 'react-native'
-import {Button, Item, Text} from 'native-base'
+import {Button, Item, Text, Container, Content} from 'native-base'
 import Modal from 'react-native-modal'
 
 import styles from './surveyStyles'
@@ -13,10 +13,14 @@ import SurveyFooter from './SurveyFooter'
 import surveyDB from '../../storage/mongoStorage'
 import { NavigationActions } from 'react-navigation';
 
+import {
+  ExitModal
+} from './SurveyModals'
+
 
 const navigateToHome = NavigationActions.navigate({
     routeName: 'DrawerNavigator',
-    params: {}, 
+    params: {},
     action: NavigationActions.navigate({routeName: 'HomePage', params: {reload: true}})
 });
 
@@ -246,7 +250,7 @@ export default class SurveyContainer extends Component {
     }
 
     /**
-     * Use the navigator's geolocation function to get the current position of 
+     * Use the navigator's geolocation function to get the current position of
      * the user. The user will be asked to enable location services upon request.
      * If the user does not want to have location services, then they can manually
      * enter their location
@@ -540,7 +544,7 @@ export default class SurveyContainer extends Component {
 
     /**
      * This function will only be called once the user finishes validating the survey.
-     * If the user has not completed the required fields, then we'll prompt them to keep 
+     * If the user has not completed the required fields, then we'll prompt them to keep
      * filling it out, other wise we'll go back to the publish workflow
      */
 
@@ -632,7 +636,7 @@ export default class SurveyContainer extends Component {
     render() {
         const {shouldRender} = this.state;
         return(
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 {this.renderCurrentScreen()}
                 {/* This modal is used to prompt the user to give the survey a name before saving */}
                 <Modal isVisible={this.state.isModalVisible}>
@@ -679,28 +683,11 @@ export default class SurveyContainer extends Component {
                         </View>
                     </View>
                 </Modal>
-                {/* Modal to make sure the user want to exit the survey */}
-                <Modal isVisible={this.state.isBackVisible}>
-                    <View style= {
-                        {
-                            alignSelf:'center', 
-                            backgroundColor: 'white', 
-                            height: 150, 
-                            width: '90%'
-                        }
-                    } 
-                    >
-                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Exit without saving?</Text>
-                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
-                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.closeBackModal}>
-                                <Text style={{padding: 8}}>No</Text>
-                            </Button>
-                            <Button danger style={{justifyContent: 'center',width: 100}}onPress={this.closeBackAndNavigate}>
-                                <Text style={{color: 'white', padding: 8}}>Exit</Text>
-                            </Button>
-                        </View>
-                    </View>
-                </Modal>
+                <ExitModal
+                  isBackVisible={this.state.isBackVisible}
+                  closeBackModal={this.closeBackModal}
+                  closeBackAndNavigate={this.closeBackAndNavigate}
+                  />
                 {/* Render the survey footer */}
                 <SurveyFooter
                     teamInfo={shouldRender.teamInfo}
@@ -714,7 +701,7 @@ export default class SurveyContainer extends Component {
                     moveToAS={this.moveToAS}
                     moveToMicro={this.moveToMicro}
                 />
-            </View>
+            </Container>
         )
     }
 }
