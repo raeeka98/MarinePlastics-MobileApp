@@ -13,6 +13,10 @@ import SurveyFooter from './SurveyFooter'
 import surveyDB from '../../storage/mongoStorage'
 import { NavigationActions } from 'react-navigation';
 
+import {
+  ExitModal
+} from './SurveyModals'
+
 
 const navigateToHome = NavigationActions.navigate({
     routeName: 'DrawerNavigator',
@@ -671,28 +675,11 @@ export default class SurveyContainer extends Component {
                         </View>
                     </View>
                 </Modal>
-                {/* Modal to make sure the user wants to exit the survey */}
-                <Modal isVisible={this.state.isBackVisible}>
-                    <View style= {
-                        {
-                            alignSelf:'center',
-                            backgroundColor: 'white',
-                            height: 150,
-                            width: '90%'
-                        }
-                    }
-                    >
-                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Exit without saving?</Text>
-                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
-                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.closeBackModal}>
-                                <Text style={{padding: 8}}>No</Text>
-                            </Button>
-                            <Button danger style={{justifyContent: 'center',width: 100}}onPress={this.closeBackAndNavigate}>
-                                <Text style={{color: 'white', padding: 8}}>Exit</Text>
-                            </Button>
-                        </View>
-                    </View>
-                </Modal>
+                <ExitModal
+                  isBackVisible={this.state.isBackVisible}
+                  closeBackModal={this.closeBackModal}
+                  closeBackAndNavigate={this.closeBackAndNavigate}
+                  />
                 {/* Render the survey footer */}
                 <SurveyFooter
                     teamInfo={shouldRender.teamInfo}
