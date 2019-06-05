@@ -21,6 +21,7 @@ import {
 
 import styles from './surveyStyles'
 import debrisInfoID from './debrisInfo'
+import SurveyItemHeader from '../../components/SurveyItemHeader'
 import headerStyles from '../../components/headerStyles';
 
 var BUTTONS = [
@@ -71,36 +72,7 @@ export default class AccumulationSweep extends Component {
         }
     }
 
-    renderAccordionHeader = (item, expanded) => {
-        if(expanded) {
-            return (
-                <View
-                    style={{
-                        flexDirection: "row",
-                        padding: 10,
-                        justifyContent: "space-between",
-                        alignItems: "center" ,
-                        backgroundColor: "#87cefa" }}
-                >
-                    <Text style={{fontWeight: "500"}}>{" "}{item.title}</Text>
-                    <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
-                </View>
-            )
-        }
-        return (
-            <Card style={{height: 100}}>
-              <CardItem bordered style={{flex: 1}}>
-                <Left>
-                  <Text style={{fontWeight: "600", color: 'black', fontSize: 20}}>{" "}{item.title}</Text>
-                </Left>
-                <Right>
-                  <Icon style={{fontSize: 18, color: 'black'}}type="SimpleLineIcons" name="arrow-down"/>
-                </Right>
-              </CardItem>
-            </Card>
-
-        )
-    }
+    renderAccordionHeader = (item, expanded) => <SurveyItemHeader title={item.title} expanded={expanded}/>
 
     renderCategoryInput = (item) => {
         const currentItemKey = debrisInfoID[item.title];

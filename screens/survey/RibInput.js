@@ -1,15 +1,25 @@
 import React, { Component } from 'react'
 import {TextInput, Text, View, ScrollView } from 'react-native'
-import {Item, Button, Icon, Accordion} from 'native-base'
+import {
+  Item,
+  Button,
+  Icon,
+  Accordion,
+  Card,
+  CardItem,
+  Left,
+  Right
+} from 'native-base'
 import Modal from 'react-native-modal'
 
 import styles from './surveyStyles'
+import SurveyItemHeader from '../../components/SurveyItemHeader'
 import debrisInfoID from './debrisInfo'
 
 /* These are used to display the options on the modal */
 var BUTTONS = [
-    'Cigarette Butts', 
-    'Fishing Line / Polypropylene Rope', 
+    'Cigarette Butts',
+    'Fishing Line / Polypropylene Rope',
     'Plastic Straws',
     'Filmed Plastic',
     'Plastic Bottles / Plastic Caps',
@@ -45,7 +55,7 @@ export default class RibInput extends Component {
                 {title: "Other: Food / Organics"},
                 {title: "Other: Cotton / Cloth"},
                 {title: "Other: Wood / Paper"},
-    
+
             ],
             selections: BUTTONS,
             isModalVisible: false,
@@ -92,7 +102,7 @@ export default class RibInput extends Component {
         this.setState(prevState => {
             prevState[key] = val;
             return prevState
-        }) 
+        })
     }
 
     /*
@@ -110,47 +120,47 @@ export default class RibInput extends Component {
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
+                        <Button
+                            light
                             onPress={this.props.decrementSRS.bind(this, freshKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
                         <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
+                            <TextInput
+                                editable={false}
+                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.SRSData[freshKey] ? this.state.SRSData[freshKey] + '' : '0'}
                             />
                         </Item>
-                        <Button 
+                        <Button
                             light
-                            onPress={this.props.incrementSRS.bind(this, freshKey)}    
+                            onPress={this.props.incrementSRS.bind(this, freshKey)}
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
                     </View>
-                    
+
                 </View>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Weathered:</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Button 
-                            light 
+                        <Button
+                            light
                             onPress={this.props.decrementSRS.bind(this, weatheredKey)}
                         >
                             <Icon type='AntDesign' name='minus'/>
                         </Button>
                         <Item regular>
-                            <TextInput 
-                                editable={false} 
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}} 
+                            <TextInput
+                                editable={false}
+                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.SRSData[weatheredKey] ? this.state.SRSData[weatheredKey] + '' : '0'}
                             />
                         </Item>
-                        <Button 
+                        <Button
                             light
-                            onPress={this.props.incrementSRS.bind(this, weatheredKey)}    
+                            onPress={this.props.incrementSRS.bind(this, weatheredKey)}
                         >
                             <Icon type='AntDesign' name='plus'/>
                         </Button>
@@ -164,36 +174,8 @@ export default class RibInput extends Component {
      * Styling for the header component of the accordion
      */
 
-    renderAccordionHeader = (item, expanded) => {
-        if(expanded) {
-            return (
-                <View 
-                    style={{
-                        flexDirection: "row", 
-                        padding: 10,
-                        justifyContent: "space-between",
-                        alignItems: "center" ,
-                        backgroundColor: "#87cefa" }}
-                >
-                    <Text style={{fontWeight: "500"}}>{" "}{item.title}</Text>
-                    <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
-                </View>
-            )
-        }
-        return (
-            <View 
-                style={{
-                    flexDirection: "row",
-                    padding: 10,
-                    justifyContent: "space-between",
-                    alignItems: "center" ,
-                    backgroundColor: "#1a8cff" }} 
-            >
-                <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
-                <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
-            </View>
-        )
-    }
+    renderAccordionHeader = (item, expanded) => <SurveyItemHeader title={item.title} expanded={expanded}/>;
+
 
     render() {
         const ribStart = `r${this.state.ribNumber}Start`;
@@ -202,14 +184,14 @@ export default class RibInput extends Component {
             <ScrollView style={{marginBottom: 50}}>
                 <View style={
                         [
-                            styles.inputDoubleContainer, 
+                            styles.inputDoubleContainer,
                             {
-                                alignItems: 'center', 
-                                justifyContent: 'space-evenly', 
+                                alignItems: 'center',
+                                justifyContent: 'space-evenly',
                                 marginTop: 15
                             }
                         ]
-                      } 
+                      }
                 >
                     <Text style={{fontSize: 17}}>Rib Start:</Text>
                     <Text style={{fontSize: 17}}>{this.state.ribData[ribStart]}</Text>
@@ -219,7 +201,7 @@ export default class RibInput extends Component {
                         <Text style={{padding: 8, color: 'white'}}>Edit Rib Info</Text>
                     </Button>
                 </View>
-                <Accordion 
+                <Accordion
                     style={{marginTop: 20, padding: 10}}
                     dataArray={this.state.inputItems}
                     renderContent={this.renderCategoryInput}
@@ -231,7 +213,7 @@ export default class RibInput extends Component {
                         <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 20}]}>
                             <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Start:</Text>
                             <Item regular style={{marginRight: 10}}>
-                                <TextInput 
+                                <TextInput
                                     style={{width: 50, height: 35, fontSize: 18}}
                                     keyboardType="number-pad"
                                     onChange={this.onEditChange.bind(this, 'editStart')}
@@ -242,7 +224,7 @@ export default class RibInput extends Component {
                         <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 30}]}>
                             <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Length:</Text>
                             <Item regular style={{marginRight: 10}}>
-                                <TextInput 
+                                <TextInput
                                     style={{width: 50, height: 35, fontSize: 18}}
                                     keyboardType="number-pad"
                                     onChange={this.onEditChange.bind(this, 'editLength')}
@@ -258,7 +240,7 @@ export default class RibInput extends Component {
                                 <Text style={{color: 'white', padding: 8}}>Save</Text>
                             </Button>
                         </View>
-                        
+
                     </View>
                 </Modal>
             </ScrollView>
