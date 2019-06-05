@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/coi-logo.png",
+    "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/images/coi-logo.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,11 +23,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "infoPlist" : {
-          "NSCameraUsageDescription" : "Allow Marine Plastics to Access Your Camera"
-      }
+      "supportsTablet": true
     }
-
+    
   }
 }

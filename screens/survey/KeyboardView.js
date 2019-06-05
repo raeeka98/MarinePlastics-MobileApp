@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import { Animated, UIManager, TextInput, Dimensions, StyleSheet, Keyboard} from 'react-native'
+import { Animated, UIManager, TextInput, Dimensions, StyleSheet, Text, Keyboard} from 'react-native'
 
 const {State: TextInputState} = TextInput;
 
 export default class KeyboardView extends Component {
-    constructor(props){
-        super(props);
-        this.state={
-            shift: new Animated.Value(0),
-        }
+    state={
+        shift: new Animated.Value(0),
     }
 
     componentWillMount() {
@@ -21,12 +18,7 @@ export default class KeyboardView extends Component {
         this.keyboardDidHideSub.remove();
     }
 
-    /**
-     * Here, we need to handle some screen movements for when the keyboard pops up on the screen.
-     * We take the window height and the position of the currently focused text input box. If we
-     * find that the box is gonna get covered by the  keyboard (ie the gap < 0), then we need to shift 
-     * the view up to reveal the keyboard
-     */
+    /**Some magic off of stack overflow */
     handleKeyboardDidShow = (event) => {
         const {height: windowHeight} = Dimensions.get('window');
         const keyboardHeight = event.endCoordinates.height;
@@ -49,9 +41,6 @@ export default class KeyboardView extends Component {
         });
     }
 
-    /**
-     * When the keyboard gets closed, shift the view back down
-     */
     handleKeyboardDidHide = () => {
         Animated.timing(
             this.state.shift,
@@ -72,3 +61,9 @@ export default class KeyboardView extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+})
