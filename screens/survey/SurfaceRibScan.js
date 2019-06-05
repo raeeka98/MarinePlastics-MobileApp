@@ -5,7 +5,7 @@ import {Button, Tab, Tabs, Header, Left, Body, Right, Picker} from 'native-base'
 import styles from './surveyStyles'
 import RibInput from './RibInput'
 import RibEntry from './RibEntry'
-import headerStyles from '../headerStyles';
+import headerStyles from '../../components/headerStyles';
 
 /**
  * This is the most complex section of the survey. The SRS section allows users to dynamically
@@ -125,7 +125,6 @@ export default class SurfaceRibScan extends Component {
      * Once we get to 4 ribs, we want to hide the option to add a rib (for now...)
      */
     render() {
-        console.log("OUTER RENDER" )
         return (
             <View style={styles.container}>
                 <Header hasTabs style={headerStyles.header}>

@@ -4,7 +4,7 @@ import {Accordion, Item, Button, Icon, Header, Left, Body, Right} from 'native-b
 
 import styles from './surveyStyles'
 import debrisInfoID from './debrisInfo'
-import headerStyles from '../headerStyles';
+import headerStyles from '../../components/headerStyles';
 
 var BUTTONS = [
     'Cigarette Butts', 
@@ -27,28 +27,31 @@ var BUTTONS = [
  */
 
 export default class AccumulationSweep extends Component {
-    state = {
-        surveyData: this.props.surveyData ? this.props.surveyData : {},
-        SRSData: this.props.SRSData ? this.props.SRSData : {},
-        ASData: this.props.ASData ? this.props.ASData : {},
-        asItems: [
-            {key: 'Cigarette Butts'},
-            {key: 'Fishing Line / Polypropylene Rope'},
-            {key: 'Plastic Straws'},
-            {key: 'Filmed Plastic'},
-            {key: 'Plastic Bottles / Plastic Caps'},
-            {key: 'Aluminum Cans / Foil / Metal'},
-            {key: 'Glass'},
-            {key: 'Styofoam / Urethane'},
-            {key: 'Other: Plastics'},
-            {key: 'Other: Food / Organics'},
-            {key: 'Other: Cotton / Cloth'},
-            {key: 'Other: Wood / Paper'},
-            
-        ],
-        MicroData: this.props.MicroData ? this.props.MicroData : {},
-        ribData: this.props.ribData ? this.props.ribData : {},
-        selections: BUTTONS
+    constructor(props) {
+        super(props);
+        this.state = {
+            surveyData: this.props.surveyData ? this.props.surveyData : {},
+            SRSData: this.props.SRSData ? this.props.SRSData : {},
+            ASData: this.props.ASData ? this.props.ASData : {},
+            asItems: [
+                {key: 'Cigarette Butts'},
+                {key: 'Fishing Line / Polypropylene Rope'},
+                {key: 'Plastic Straws'},
+                {key: 'Filmed Plastic'},
+                {key: 'Plastic Bottles / Plastic Caps'},
+                {key: 'Aluminum Cans / Foil / Metal'},
+                {key: 'Glass'},
+                {key: 'Styofoam / Urethane'},
+                {key: 'Other: Plastics'},
+                {key: 'Other: Food / Organics'},
+                {key: 'Other: Cotton / Cloth'},
+                {key: 'Other: Wood / Paper'},
+                
+            ],
+            MicroData: this.props.MicroData ? this.props.MicroData : {},
+            ribData: this.props.ribData ? this.props.ribData : {},
+            selections: BUTTONS
+        }
     }
 
     renderAccordionHeader = (item, expanded) => {

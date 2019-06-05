@@ -3,6 +3,14 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'native-base';
 import {NavigationActions} from 'react-navigation'
 
+/**
+ * For the boarding page navigation, we have to use some nesting in order to properly navigate
+ * between some components. To get to the Home page, we have to navigate from the SwitchNavigator 
+ * to enter the MainNavigator. From there, we need to then navigate to the DrawerNavigator, where
+ * we need to navigate one last time to the Home page. It's a bit convoluted, but that's how
+ * we get the Drawer navigation to work properly
+ */
+
 const navigateToHome = NavigationActions.navigate({
   routeName: 'MainNavigator',
   params: {},

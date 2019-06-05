@@ -9,26 +9,14 @@ import PageHeader from '../components/PageHeader';
 
 let URL='http://marineplastics.herokuapp.com/beaches'
 
+
 class SurveyPage extends Component {
-  state={
-    webData: {}
-  }
 
   static navigationOptions = {
     title: 'New Survey',
     drawerIcon: ({focused}) => (
-      <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'blue' : 'black')}} />
+      <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'dodgerblue' : 'black')}} />
     )
-  }
-
-  retrieveSurveys = () =>{
-    Axios.get(URL)
-      .then(res => {
-        console.log(res.data)
-        this.setState({
-          webData: res.data
-        })
-      })
   }
 
   render() {

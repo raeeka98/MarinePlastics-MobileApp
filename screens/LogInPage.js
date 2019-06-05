@@ -46,7 +46,7 @@ class LogInPage extends Component {
   static navigationOptions = {
     title: "Profile/Login",
     drawerIcon: ({focused}) => (
-      <Icon type='MaterialIcons' name='person' style={{fontSize: 20, color: (focused ? 'blue' : 'black')}} />
+      <Icon type='MaterialIcons' name='person' style={{fontSize: 20, color: (focused ? 'dodgerblue' : 'black')}} />
     )
   }
 

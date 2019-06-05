@@ -4,7 +4,7 @@ import {Button, Icon, Header, Left, Right, Body, Accordion} from 'native-base'
 
 import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
-import headerStyles from '../headerStyles'
+import headerStyles from '../../components/headerStyles'
 import {BeachInfo, NRO, TideInfo, WindInfo, SlopeSubstrate} from './areaSections'
 
 /**
@@ -15,20 +15,23 @@ import {BeachInfo, NRO, TideInfo, WindInfo, SlopeSubstrate} from './areaSections
 
 
 export default class Area extends Component{
-    state = {
-        surveyData: this.props.surveyData ? this.props.surveyData : {},
-        SRSData: this.props.SRSData ? this.props.SRSData : {},
-        ASData: this.props.ASData ? this.props.ASData : {},
-        MicroData: this.props.MicroData ? this.props.MicroData : {},
-        ribData: this.props.ribData ? this.props.ribData : {},
-        showLastTime: false,
-        lastTime: new Date(),
-        lastHours: '00',
-        lastMinutes: '00',
-        showNextTime: false,
-        nextTime: new Date(),
-        nextHours: '00',
-        nextMinutes: '00',
+    constructor(props) {
+        super(props);
+        this.state = {
+            surveyData: this.props.surveyData ? this.props.surveyData : {},
+            SRSData: this.props.SRSData ? this.props.SRSData : {},
+            ASData: this.props.ASData ? this.props.ASData : {},
+            MicroData: this.props.MicroData ? this.props.MicroData : {},
+            ribData: this.props.ribData ? this.props.ribData : {},
+            showLastTime: false,
+            lastTime: new Date(),
+            lastHours: '00',
+            lastMinutes: '00',
+            showNextTime: false,
+            nextTime: new Date(),
+            nextHours: '00',
+            nextMinutes: '00',
+        }
     }
 
     static navigationOptions =  {

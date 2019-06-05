@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Footer, FooterTab, Icon, Button} from 'native-base'
-import {Text, StyleSheet} from 'react-native'
+import {Text} from 'react-native'
 
 import styles from './surveyStyles'
 

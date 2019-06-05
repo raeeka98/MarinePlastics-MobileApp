@@ -1,33 +1,21 @@
 import React, { Component } from 'react';
 
 import {
-  Platform,
-  StatusBar,
-  StyleSheet,
   FlatList,
-  TouchableOpacity,
-  AsyncStorage,
-  SafeAreaView,
   RefreshControl
 } from 'react-native';
 
 import {
   Icon,
   View,
-  Footer,
-  Button,
-  Toast,
   Text,
   Title,
-  Subtitle,
   Container,
-  Header,
   Content,
   Spinner
 } from 'native-base';
 
-import Modal from 'react-native-modal'
-import {Font, Constants} from 'expo'
+import {Font} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
 
@@ -75,7 +63,7 @@ class HomePage extends Component {
   static navigationOptions = {
     title: 'Home',
     drawerIcon: ({focused}) => (
-      <Icon type='Entypo' name='home' style={{fontSize: 20, color: focused ? 'blue' : 'black'}} />
+      <Icon type='Entypo' name='home' style={{fontSize: 20, color: focused ? 'dodgerblue' : 'black'}} />
     )
   }
 
@@ -236,8 +224,6 @@ class HomePage extends Component {
   }
 
   render() {
-    console.log('--------------NAVIGATION---------------')
-    console.log(this.props.navigation.openDrawer)
     if(this.state.pageLoading) {
       return(
         <Container>
