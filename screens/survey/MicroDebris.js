@@ -123,8 +123,10 @@ export default class MicroDebris extends Component {
         return(
             <Container style={[styles.container, {marginBottom: 60}]}>
                 <Header hasTabs style={headerStyles.header}>
-                    <Left style={{marginTop: 20}}>
-
+                    <Left style={headerStyles.headerContents}>
+                        <Button transparent onPress={this.props.openBackModal}>
+                            <Icon type="AntDesign" name='close'/>
+                        </Button>
                     </Left>
                     <Body style={headerStyles.headerContents}>
                         <Text style={{fontSize: 18, color: 'white'}}>Micro Debris</Text>
