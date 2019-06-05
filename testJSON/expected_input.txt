@@ -1,0 +1,69 @@
+
+  surveyData: {
+    userFirst: String,
+    userLast: String,
+    orgName: String,
+    orgLoc: String,
+    cleanupDate: Date,
+    cleanupTime: Date,
+    beachName: String,
+    latitude: Number (?),
+    longitude: Number,
+    usageRecreation: Boolean,
+    usageCommercial: Boolean,
+    usageOther: Boolean/String,
+    locationChoiceProximity: boolean,
+    locationChoiceDebris: Boolean,
+    locationChoiceOther: Boolean/String,
+    cmpsDir: String,
+    riverName: String,
+    riverDistance: String,
+    tideTypeA: String,
+    tideHeightA: String,
+    tideTimeA: Date,
+    tideTypeB: String,
+    tideHeightB: String,
+    tideTimeB: Date,
+    windSpeed: String,
+    windDir: String,
+    slope: String,
+    substrateTypeSand: Boolean,
+    substrateTypePebble: Boolean,
+    subastrateTypeRipRap: Boolean,
+    substrateTypeSeaweed: Boolean,
+    subStrateTypeOther: Boolean/String,
+
+  },
+  ribData: {
+    r1Length: String/Number,
+    r1Start: String/Number,
+    r2Length: String/Number,
+    r2Start: String/Number,
+    r3Length: String/Number,
+    r3Start: String/Number,
+    r4Length: String/Number,
+    r4Start: String/Number,
+  },
+
+  SRSData: {
+    ITEMNAME__fresh__RIBNUMBER: Number,
+    ITEMNAME__weathered__RIBNUMBER: Number
+    (Example)
+    plasticStraws__fresh__1: 9,
+    plasticStraws__weathered__1: 14
+    :
+    :
+  }
+
+  ASData: {
+    ITEMNAME__fresh__accumulation: NUMBER
+    ITEMNAME__weathered__accumulation: NUMBER
+  }
+
+  MicroData: {
+    rib1__fresh__micro: Number,
+    rib1__weathered__micro: Number
+    :
+    :
+    rib4__weathered__micro: Number
+  }

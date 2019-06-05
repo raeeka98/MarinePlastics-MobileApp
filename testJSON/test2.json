@@ -1,0 +1,24 @@
+{
+  "ribData" : {
+    "r2Length" : 20,
+    "r2Start" : 30
+  },
+  "SRSData": {
+      "glass__weathered__2" : 20,
+      "glass__fresh__2" : 9,
+      "plasticBottlesCaps__weathered__2" : 17,
+      "styrothane__fresh__2" : 16,
+      "plasticStraws__fresh__2" : 7,
+      "plasticStraws__weathered__2" : 1
+  },
+  "ASData" : {
+      "glass__weathered__accumulation" : 19,
+      "styrothane__fresh__accumulation" : 7,
+      "plasticStraws__weathered__accumulation" : 2,
+      "plasticStraws__fresh__accumulation" : 7,
+  },
+  "MicroData" : {
+      "rib2__fresh__micro" : 10,
+      "rib2__weathered__micro" : 20
+  }
+}

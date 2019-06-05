@@ -1,0 +1,54 @@
+{
+  "surveyData": {
+      "userFirst" : "Franky",
+      "userLast" : "Kohn",
+      "orgName" : "COI",
+      "orgLoc" : "Santa Cruz",
+      "cleanupDate" : "05/02/2019",
+      "cleanupTime" : "03:50",
+      "beachName" : "UCSC death dungeon",
+      "latitude" : 36.959717,
+      "longitude" : -121.983560,
+      "usageRecreation" : true,
+      "usageCommercial" : false,
+      "usageOther" : "for fun",
+      "locationChoiceProximity" : false,
+      "locationChoiceDebris" : true,
+      "locationChoiceOther" : "close to cabrillo",
+      "cmpsDir" : "215",
+      "riverName" : "Corkoran Lagoon",
+      "riverDistance" : "200",
+      "tideTypeA" : "low",
+      "tideHeightA" : "0.5",
+      "tideTimeA": "02:50",
+      "tideTypeB": "high",
+      "tideHeightB": "10.0",
+      "tideTimeB": "10:30",
+      "windSpeed": "20",
+      "windDir": "nw",
+      "slope": "winter",
+      "substrateTypeSand": false,
+      "substrateTypePebble": false,
+      "subastrateTypeRipRap": true,
+      "substrateTypeSeaweed": true,
+      "subStrateTypeOther": false,
+      "numOfP" : 19
+  },
+  "ribData": {
+    "r1Length": 20,
+    "r1Start": 50
+  },
+  "SRSData" : {
+      "cigaretteButts__fresh__1": 9,
+      "cigaretteButts__weathered__1": 20,
+      "filmedPlastic__fresh__1" : 14,
+      "aluminumCans__weathered__1" : 17,
+      "otherWood__fresh__1" : 20
+  },
+  "ASData" : {
+      "cigaretteButts__fresh__accumulation": 16,
+      "otherFood__weathered__accumulation" : 19,
+      "glass__weathered__accumulation" : 7,
+      "aluminumCans__fresh__accumulation" : 10
+  }
+}
