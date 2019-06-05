@@ -176,7 +176,7 @@ export default class AccumulationSweep extends Component {
             {title: 'Other: Wood / Paper'},
         ]
         return(
-            <View style={styles.container}>
+            <View style={[styles.container, {marginBottom: 60}]}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
 

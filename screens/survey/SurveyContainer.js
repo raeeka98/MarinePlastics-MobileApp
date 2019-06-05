@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {TextInput, View } from 'react-native'
-import {Button, Item, Text} from 'native-base'
+import {Button, Item, Text, Container, Content} from 'native-base'
 import Modal from 'react-native-modal'
 
 import styles from './surveyStyles'
@@ -16,7 +16,7 @@ import { NavigationActions } from 'react-navigation';
 
 const navigateToHome = NavigationActions.navigate({
     routeName: 'DrawerNavigator',
-    params: {}, 
+    params: {},
     action: NavigationActions.navigate({routeName: 'HomePage', params: {reload: true}})
 });
 
@@ -246,7 +246,7 @@ export default class SurveyContainer extends Component {
     }
 
     /**
-     * Use the navigator's geolocation function to get the current position of 
+     * Use the navigator's geolocation function to get the current position of
      * the user. The user will be asked to enable location services upon request.
      * If the user does not want to have location services, then they can manually
      * enter their location
@@ -532,7 +532,7 @@ export default class SurveyContainer extends Component {
 
     /**
      * This function will only be called once the user finishes validating the survey.
-     * If the user has not completed the required fields, then we'll prompt them to keep 
+     * If the user has not completed the required fields, then we'll prompt them to keep
      * filling it out, other wise we'll go back to the publish workflow
      */
 
@@ -624,7 +624,7 @@ export default class SurveyContainer extends Component {
     render() {
         const {shouldRender} = this.state;
         return(
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 {this.renderCurrentScreen()}
                 {/* This modal is used to prompt the user to give the survey a name before saving */}
                 <Modal isVisible={this.state.isModalVisible}>
@@ -671,16 +671,16 @@ export default class SurveyContainer extends Component {
                         </View>
                     </View>
                 </Modal>
-                {/* Modal to make sure the user want to exit the survey */}
+                {/* Modal to make sure the user wants to exit the survey */}
                 <Modal isVisible={this.state.isBackVisible}>
                     <View style= {
                         {
-                            alignSelf:'center', 
-                            backgroundColor: 'white', 
-                            height: 150, 
+                            alignSelf:'center',
+                            backgroundColor: 'white',
+                            height: 150,
                             width: '90%'
                         }
-                    } 
+                    }
                     >
                         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Exit without saving?</Text>
                         <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
@@ -706,7 +706,7 @@ export default class SurveyContainer extends Component {
                     moveToAS={this.moveToAS}
                     moveToMicro={this.moveToMicro}
                 />
-            </View>
+            </Container>
         )
     }
 }
