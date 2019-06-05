@@ -1,7 +1,24 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AppRegistry } from 'react-native';
 import { Alert, AsyncStorage, Linking, Image } from 'react-native';
-import {Icon, View, Button, Text, Container, Content } from 'native-base'
+import {
+  Icon,
+  View,
+  Button,
+  Text,
+  Container,
+  Content,
+  Spinner,
+  Card,
+  CardItem,
+  Body,
+  Left,
+  Right,
+  Title,
+  Subtitle,
+  H1,
+  H2
+} from 'native-base'
 
 import jwtDecode from 'jwt-decode';
 import Auth0 from 'react-native-auth0';
@@ -20,13 +37,13 @@ function toQueryString(params) {
     .join('&');
 }
 
-class LogInPage extends React.Component {
+class LogInPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { accessToken: null, email: null, name: null, picture: null};
+    this.state = { accessToken: null, email: null, name: null, picture: null, isLoading: true};
   }
 
-  static navigationOptions ={
+  static navigationOptions = {
     title: "Profile/Login",
     drawerIcon: ({focused}) => (
       <Icon type='MaterialIcons' name='person' style={{fontSize: 20, color: (focused ? 'dodgerblue' : 'black')}} />
@@ -34,11 +51,12 @@ class LogInPage extends React.Component {
   }
 
   // Upon loading the page, retrieve all of the following variables stored in async storage.
-  componentWillMount() {
-    this._retrieveAccessToken()
-    this._retrieveEmail()
-    this._retrieveNickname()
-    this._retrievePicture()
+  async componentDidMount() {
+    await this._retrieveAccessToken()
+    await this._retrieveEmail()
+    await this._retrieveNickname()
+    await this._retrievePicture()
+    this.setState({ isLoading : false })
   }
 
   // Log out by setting the stored variables to null then saving to AsyncStorage.
@@ -89,12 +107,14 @@ class LogInPage extends React.Component {
     const decoded = jwtDecode(jwtToken);
     //console.log(decoded);
     // Extract the following values given the keys from the decoded response.
-    const { sub } = decoded;
-    const { name } = decoded;
-    const { nickname } = decoded;
-    const { picture } = decoded;
+    const { sub, name, nickname, picture } = decoded;
     // Set the following state variables given the keys form the response.
-    this.setState({accessToken: sub, email: name, name: nickname, picture: picture}, () => {this._storeAccessToken()});
+    this.setState({
+      accessToken: sub,
+      email: name,
+      name: nickname,
+      picture: picture
+    }, () => {this._storeAccessToken()});
 
     //console.log('Storing AccessToken for LogIn');
     //this._storeAccessToken();
@@ -177,6 +197,7 @@ class LogInPage extends React.Component {
   _retrieveAccessToken = async() => {
     try {
       const value = await AsyncStorage.getItem('accessToken');
+      console.log(value);
       if (value !== null) {
         this.setState({ accessToken: value });
       } else {
@@ -191,6 +212,7 @@ class LogInPage extends React.Component {
   _retrieveEmail = async() => {
     try {
       const emailValue = await AsyncStorage.getItem('email');
+      console.log(emailValue);
       if (emailValue !== null) {
         this.setState({ email: emailValue });
       } else {
@@ -205,6 +227,7 @@ class LogInPage extends React.Component {
   _retrieveNickname = async() => {
     try {
       const nameValue = await AsyncStorage.getItem('name');
+      console.log(nameValue);
       if (nameValue !== null) {
         this.setState({ name: nameValue });
       } else {
@@ -219,6 +242,7 @@ class LogInPage extends React.Component {
   _retrievePicture = async() => {
     try {
       const pictureValue = await AsyncStorage.getItem('picture');
+      console.log(pictureValue);
       if (pictureValue !== null) {
         this.setState({ picture: pictureValue });
       } else {
@@ -236,30 +260,93 @@ class LogInPage extends React.Component {
     // We'll determine if a user is logged in just by looking at the accesstoken state variable.
     // Store that in a boolean variable.
     let loggedIn = this.state.accessToken === null ? false : true;
-    return(
-      <View style={{justifyContent: "center"}}>
-        <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
-        <View style={styles.container}>
-          <Image
-              style={{width:150, height: 150}}
-              source={loggedIn ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
-            />
-          <Text style={styles.container}>
-            {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
-          </Text>
-          <Text style={styles.container}>
-            {loggedIn ? "Email: "+this.state.email : ''}
-          </Text>
-          <Text style={[styles.paragraph]}>Log in with Auth0</Text>
-          {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
-            <Text style={[styles.paragraph]}>Log In</Text>
-          </Button>}
-          {loggedIn ? <Button danger onPress={this._onlogout} style={styles.button}>
-            <Text style={[styles.paragraph]}>Log Out</Text>
-          </Button> : null}
-        </View>
-    </View>
-    );
+    if(this.state.isLoading) {
+      return (
+        <Container>
+          <Spinner color='blue' />
+        </Container>
+      );
+    } else {
+      return(
+        <Container style={{flex: 1}}>
+          <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
+          <Content style={{backgroundColor: '#e4eaff'}}>
+            <View style={{padding: 40}}>
+              <Image
+                  style={styles.profilePic}
+                  source={(loggedIn && this.state.picture) ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+                  />
+            </View>
+
+            <Card style={{padding: 10}}>
+
+              <CardItem bordered>
+                <Left>
+                  <Title>
+                    Name:
+                  </Title>
+                </Left>
+                <Body>
+                  <Title>
+                    {loggedIn ? this.state.name : 'Guest'}
+                  </Title>
+                </Body>
+              </CardItem>
+
+              <CardItem>
+                  <Left>
+                    <Title>
+                      Email:
+                    </Title>
+                  </Left>
+                  <Body>
+                    <Title>
+                      {loggedIn ? this.state.email : ''}
+                    </Title>
+                  </Body>
+              </CardItem>
+            </Card>
+
+            <View style={styles.bottom}>
+              {loggedIn ?
+                <Button danger onPress={this._onlogout} style={styles.button}>
+                  <Text style={[styles.paragraph]}>Log Out</Text>
+                </Button>
+              :
+                <Button info onPress={this._loginV3} style={styles.button}>
+                  <Text style={[styles.paragraph]}>Log In</Text>
+                </Button>
+              }
+            </View>
+          </Content>
+        </Container>
+
+
+          /*<View style={{justifyContent: "center"}}>
+            <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
+            <View style={styles.container}>
+            <Image
+                style={{width:150, height: 150}}
+                source={(loggedIn && this.state.picture) ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
+              />
+            <Text style={styles.container}>
+              {loggedIn ? 'Welcome back '+this.state.name : 'You are now a Guest'}
+            </Text>
+            <Text style={styles.container}>
+              {loggedIn ? "Email: "+this.state.email : ''}
+            </Text>
+            <Text style={[styles.paragraph]}>Log in with Auth0</Text>
+            {loggedIn ? null : <Button info onPress={this._loginV3} style={styles.button}>
+              <Text style={[styles.paragraph]}>Log In</Text>
+            </Button>}
+            {loggedIn ? <Button danger onPress={this._onlogout} style={styles.button}>
+              <Text style={[styles.paragraph]}>Log Out</Text>
+            </Button> : null}
+          </View>
+        </View>*/
+
+      );
+    }
   }
 }
 
@@ -287,12 +374,22 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'center',
-    marginTop: 25,
     fontSize: 20,
     width: "80%",
     textAlign: "center",
     justifyContent: "center",
-    alignItems: "center",
     color: "#158964"
+  },
+  profilePic: {
+    width:150,
+    height: 150,
+    paddingBottom: 100,
+    alignSelf: 'center'
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    flexDirection: 'column',
+    marginTop: 80
   }
 });

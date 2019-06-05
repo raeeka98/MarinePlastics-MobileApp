@@ -15,7 +15,8 @@ import PageHeader from '../components/PageHeader';
  * with our app.
  */
 
-class SurveyPage extends React.Component {
+
+class SurveyPage extends Component {
 
   static navigationOptions = {
     title: 'New Survey',
