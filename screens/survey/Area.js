@@ -137,7 +137,9 @@ export default class Area extends Component{
             
                 <Header hasTabs style={headerStyles.header} >
                     <Left style={headerStyles.headerContents}>
-                    
+                    <Button transparent onPress={this.props.openBackModal}>
+                        <Icon type="AntDesign" name='close'/>
+                    </Button>
                     </Left>
                     <Body style={headerStyles.headerContents}>
                         <Text style={{fontSize: 18, color: 'white'}}>Survey Area</Text>
