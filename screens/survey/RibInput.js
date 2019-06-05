@@ -170,12 +170,8 @@ export default class RibInput extends Component {
         )
     }
 
-    /**
-     * Styling for the header component of the accordion
-     */
 
     renderAccordionHeader = (item, expanded) => <SurveyItemHeader title={item.title} expanded={expanded}/>;
-
 
     render() {
         const ribStart = `r${this.state.ribNumber}Start`;
