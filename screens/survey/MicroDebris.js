@@ -121,7 +121,7 @@ export default class MicroDebris extends Component {
     render() {
 
         return(
-            <Container style={[styles.container, {marginBottom: 60}]}>
+            <Container style={[{marginBottom: 60, flex: 1, backgroundColor: '#e4eaff'}]}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.props.openBackModal}>

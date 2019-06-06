@@ -54,6 +54,7 @@ class BeachInfo extends Component {
                                     {borderColor: 'red', borderWidth: 2} : {}
                             )]}  
                             onChange={this.props.updateSurveyState.bind(this, 'latitude')}
+                            keyboardType='number-pad'
                             value={this.state.surveyData.latitude ? this.state.surveyData.latitude + "" : ""}
                         />
                     </Item>
@@ -66,6 +67,7 @@ class BeachInfo extends Component {
                                 this.props.invalidFields.includes('longitude') ? 
                                     {borderColor: 'red', borderWidth: 2} : {}
                             )]} 
+                            keyboardType='number-pad'
                             onChange={this.props.updateSurveyState.bind(this, 'longitude')}
                             value={this.state.surveyData.longitude ? this.state.surveyData.longitude + "" : ""}
                         />
@@ -209,6 +211,7 @@ class NRO extends Component {
                         <TextInput
                             ref = 'riverDistance' 
                             placeholder={invisiblePlaceholder} 
+                            keyboardType='number-pad'
                             style={[styles.textInput, (this.props.invalidFields.includes('riverDistance') ? 
                                     {borderColor: 'red', borderWidth: 2} : {})]} 
                             onChange={this.props.updateSurveyState.bind(this, 'riverDistance')}

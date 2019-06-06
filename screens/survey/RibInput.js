@@ -116,7 +116,7 @@ export default class RibInput extends Component {
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
         const weatheredKey = `${currentItemKey}__weathered__${this.state.ribNumber}`
         return (
-            <View style = {{padding:10}}>
+            <View style = {{padding:10, width: '99%', alignSelf: 'center', backgroundColor: '#ffffff'}}>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
                     <View style={{flexDirection: 'row'}}>
@@ -177,7 +177,7 @@ export default class RibInput extends Component {
         const ribStart = `r${this.state.ribNumber}Start`;
         const ribLength = `r${this.state.ribNumber}Length`
         return (
-            <ScrollView style={{marginBottom: 50}}>
+            <ScrollView style={{marginBottom: 50, backgroundColor: '#e4eaff', flex: 1}}>
                 <View style={
                         [
                             styles.inputDoubleContainer,

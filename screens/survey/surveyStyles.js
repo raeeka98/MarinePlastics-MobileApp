@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#e4eaff'
+        backgroundColor: '#ffffff'
     },
     inputSingleContainer: {
         padding: 30,
