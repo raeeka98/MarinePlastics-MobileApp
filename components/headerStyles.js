@@ -21,6 +21,7 @@ let headerStyles = (Platform.OS === 'android') ?
         height: Constants.statusBarHeight + 50
       },
       headerContents: {
+        flexDirection: 'row',
         paddingTop: Constants.statusBarHeight
       }
     }
@@ -32,6 +33,7 @@ let headerStyles = (Platform.OS === 'android') ?
         backgroundColor: '#3f51b5'
       },
       headerContents: {
+        flexDirection: 'row',
         paddingTop: -30
       },
       text: {
