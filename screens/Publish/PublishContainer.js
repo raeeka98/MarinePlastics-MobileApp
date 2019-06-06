@@ -47,6 +47,7 @@ export default class PublishContainer extends Component {
       isImporting : true,
       isScanning : false,
       isPublished : false,
+      isLoggedIn: true,
       surveys : []
     };
     const initSurvey = this.props.navigation.getParam('initSurvey');
@@ -306,7 +307,7 @@ export default class PublishContainer extends Component {
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
 
-    axios.post(`http://169.233.214.173:3001/beaches/surveys`, formToSubmit)
+    axios.post(`${toExport.SERVER_URL}`, formToSubmit)
       .then(res => {
         if(res.data.survID){
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
@@ -327,8 +328,8 @@ export default class PublishContainer extends Component {
     //We should also check to see if the user is logged in
     if(await AsyncStorage.getItem('accessToken') === null){
       // Use another modal to alert the user that they must log in
-      this.setState({isSubmitModalVisible: false, isLoginModalVisible: true});
-      return false
+      this.setState({isSubmitModalVisible: false, isLoginModalVisible: true, isLoggedIn: false});
+      return
      }
      let survey = this.state.mergedSurvey
      console.log("-----SURVEY-----")
@@ -414,8 +415,12 @@ export default class PublishContainer extends Component {
   async onPressSubmit(){
     const currentSurvey = this.state.mergedSurvey;
     let invalidArray = await this.isSurveyValid();
+    if(!this.state.isLoggedIn){
+      return;
+    }
     if(invalidArray.length > 0){
       /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
+      console.log("Not valid")
       this.setState({isSubmitModalVisible: false});
       this.props.navigation.navigate('SurveyContainer', {
         surveyName: this.state.surveys[0].surveyName,
