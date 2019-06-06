@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 
 import {
   TextInput,
-  Text,
-  View
 } from 'react-native'
 
 import {
   Accordion,
   Item,
+  Text,
   Button,
+  View,
   Icon,
   Header,
   Left,
@@ -155,7 +155,7 @@ export default class AccumulationSweep extends Component {
                             <Icon type="AntDesign" name='close'/>
                         </Button>
                     </Left>
-                    <Body style={headerStyles.headerContents}>
+                    <Body>
                         <Text style={{fontSize: 18, color: 'white'}}>Accumulation Sweep</Text>
                     </Body>
                     <Right style={headerStyles.headerContents}>
