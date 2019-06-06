@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import {Icon, Button, Text} from 'native-base'
-import Axios from 'axios';
-import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
-import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import PageHeader from '../components/PageHeader';
 
 /**
@@ -12,7 +9,7 @@ import PageHeader from '../components/PageHeader';
  * a bit late in the game, but it could still be something that can be integrated later on:
  * Instead of some paragraphs to serve as an on-boarding session, it'll be much better to
  * create a little tutorial guide that shows the user how to fill out and generate QR codes
- * with our app.
+ * with our app. 
  */
 
 

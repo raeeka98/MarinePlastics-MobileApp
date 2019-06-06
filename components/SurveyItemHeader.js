@@ -23,10 +23,12 @@ export default function SurveyItemHeader(props) {
           <View
               style={{
                   flexDirection: "row",
-                  padding: 10,
+                  padding: 15,
                   justifyContent: "space-between",
                   alignItems: "center" ,
-                  backgroundColor: "#87cefa" }}
+                  backgroundColor: "#87cefa", 
+                  width: "99%",
+                  alignSelf: "center"}}
           >
               <Text style={{fontWeight: "500"}}>{" "}{title}</Text>
               <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
@@ -38,7 +40,7 @@ export default function SurveyItemHeader(props) {
       <Card style={{height: 100}}>
         <CardItem bordered style={{flex: 1}}>
           <Left>
-            <Text style={{fontWeight: "600", color: 'black', fontSize: 20}}>{" "}{title}</Text>
+            <Text style={{fontWeight: "600", color: 'black', fontSize: 20}}>{title}</Text>
           </Left>
           <Right>
             <Icon style={{fontSize: 18, color: 'black'}}type="SimpleLineIcons" name="arrow-down"/>

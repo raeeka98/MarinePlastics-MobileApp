@@ -148,7 +148,7 @@ export default class AccumulationSweep extends Component {
             {title: 'Other: Wood / Paper'},
         ]
         return(
-            <View style={[styles.container, {marginBottom: 60}]}>
+            <View style={[{flex: 1, backgroundColor: '#e4eaff', marginBottom: 60}]}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.props.openBackModal}>
