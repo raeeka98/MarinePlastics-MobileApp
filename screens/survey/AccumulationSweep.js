@@ -79,7 +79,7 @@ export default class AccumulationSweep extends Component {
         const freshKey = `${currentItemKey}__fresh__accumulation`
         const weatheredKey = `${currentItemKey}__weathered__accumulation`
         return (
-            <View style = {{padding: 10, backgroundColor: 'white'}}>
+            <View style = {{padding:10, width: '99%', alignSelf: 'center', backgroundColor: '#ffffff'}}>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
                     <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Fresh:</Text>
                     <View style={{flexDirection: 'row'}}>
@@ -148,7 +148,7 @@ export default class AccumulationSweep extends Component {
             {title: 'Other: Wood / Paper'},
         ]
         return(
-            <View style={[styles.container, {marginBottom: 60}]}>
+            <View style={[{flex: 1, backgroundColor: '#e4eaff', marginBottom: 60}]}>
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.props.openBackModal}>

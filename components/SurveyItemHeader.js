@@ -21,12 +21,14 @@ export default function SurveyItemHeader(props) {
   if(expanded) {
       return (
           <View
-              style={{
-                  flexDirection: "row",
-                  padding: 10,
-                  justifyContent: "space-between",
-                  alignItems: "center" ,
-                  backgroundColor: "#87cefa" }}
+            style={{
+              flexDirection: "row",
+              padding: 15,
+              justifyContent: "space-between",
+              alignItems: "center" ,
+              backgroundColor: "#87cefa", 
+              width: "99%",
+              alignSelf: "center"}}
           >
               <Text style={{fontWeight: "500"}}>{" "}{title}</Text>
               <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
