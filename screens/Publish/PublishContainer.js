@@ -307,7 +307,7 @@ export default class PublishContainer extends Component {
     console.log(formToSubmit);
       //If there is a beach ID, then we can just sumbit the survey under that beach
 
-    axios.post(`${toExport.SERVER_URL}`, formToSubmit)
+    axios.post(`http://169.233.232.61:3001/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
           this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
