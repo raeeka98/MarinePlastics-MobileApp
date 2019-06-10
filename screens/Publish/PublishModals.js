@@ -65,8 +65,8 @@ function LoadingModal(props) {
   return(
     <Modal isVisible={props.isLoadingModalVisible}>
       <View style={{alignSelf: 'center', width: '90%', height: '20%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'space-around', flexDirection:'row'}}>
-        <ActivityIndicator size="large" color="#0000ff" />
         <Text style={{fontSize: 17}}>Loading ...</Text>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     </Modal>
   );

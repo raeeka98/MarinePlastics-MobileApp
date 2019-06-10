@@ -41,8 +41,8 @@ function GeneralModal (props) {
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{name}</Text>
           <List>
             <ListItem>
-              <Button transparent style={{justifyContent: 'flex-start',width: 100}}onPress={encodeToText} >
-                <Text style={{color: 'royalblue'}}>QR Code</Text>
+              <Button transparent style={{justifyContent: 'flex-start'}}onPress={encodeToText} >
+                <Text style={{color: 'royalblue'}}>Generate QR Code</Text>
               </Button>
             </ListItem>
             <ListItem>
