@@ -22,6 +22,8 @@ function mergeSRS(surveys) {
                   finalSRS[debris] += survey.SRSData[debris];
               }
               else {
+                  if(survey.SRSData[debris] === 0)
+                    continue
                   finalSRS[debris] = survey.SRSData[debris];
               }
           }
@@ -39,6 +41,8 @@ function mergeAS(surveys) {
                   finalAS[debris] += survey.ASData[debris];
               }
               else {
+                  if(survey.ASData[debris] === 0) 
+                    continue
                   finalAS[debris] = survey.ASData[debris];
               }
           }
@@ -56,6 +60,8 @@ function mergeMicro(surveys) {
                   finalMicro[debris] += survey.MicroData[debris];
               }
               else {
+                  if(survey.MicroData[debris] === 0) 
+                    continue
                   finalMicro[debris] = survey.MicroData[debris];
               }
           }
@@ -69,6 +75,8 @@ function mergeRib(surveys) {
     surveys.forEach(survey => {
         if(survey.hasOwnProperty("ribData")){
           for (const ribInfo in survey.ribData) {
+              if(survey.ribData[ribInfo] === 0)
+                continue
               finalRib[ribInfo] = survey.ribData[ribInfo];
           }
         }

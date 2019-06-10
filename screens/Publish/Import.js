@@ -62,7 +62,7 @@ export default class Import extends Component {
                 style={{ backgroundColor: '#5067FF' }}
                 position="bottomLeft"
                 onPress={this.props.toScanner}>
-                <Icon name="camera" />
+                <Icon name="qrcode-scan" type='MaterialCommunityIcons'/>
               </Fab>
               <Fab
                 containerStyle={{ }}

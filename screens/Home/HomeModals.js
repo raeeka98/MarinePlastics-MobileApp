@@ -14,9 +14,10 @@ function DeleteModal(props) {
   const { isDeleteVisible, name, cancelDelete, deleteSurvey } = props;
   return(
     <Modal isVisible={isDeleteVisible}>
-      <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
+      <View style={{alignSelf: 'center', width: '90%', height: 200, backgroundColor: 'white'}} >
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Delete {name}?</Text>
-        <View style={ {flexDirection: 'row', justifyContent: 'space-evenly'}}>
+        <Text style={{alignSelf: 'center', padding: 4, fontSize: 16}}>If you delete, the data is gone for good!</Text>
+        <View style={ {flexDirection: 'row', marginTop: 20, justifyContent: 'space-evenly'}}>
           <Button light style={{justifyContent: 'center',width: 100}}onPress={cancelDelete}>
             <Text>No</Text>
           </Button>
@@ -30,7 +31,7 @@ function DeleteModal(props) {
 }
 
 function GeneralModal (props) {
-  const {isModalVisible, openDelete, name, cancelModal, openSurvey, onPressDeleteSurvey, navToPublish } = props;
+  const {isModalVisible, openDelete, name, encodeToText, cancelModal, openSurvey, onPressDeleteSurvey, navToPublish } = props;
   return(
     <Modal
       isVisible={isModalVisible}
@@ -40,21 +41,21 @@ function GeneralModal (props) {
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{name}</Text>
           <List>
             <ListItem>
-              <Button transparent style={{justifyContent: 'flex-start',width: 100}}onPress={() => console.log('Generate QR Here')} >
-                <Text style={{color: 'royalblue'}}>QR Code</Text>
+              <Button transparent style={{justifyContent: 'flex-start'}}onPress={encodeToText} >
+                <Text style={{color: 'royalblue'}}>Generate QR Code</Text>
               </Button>
             </ListItem>
             <ListItem>
               <Button
                 transparent
                 style={{justifyContent: 'flex-start', width: 100}}
-                onPress={() => {if(!props.published){props.openSurvey()}} }
+                onPress={() => {if(!props.published){openSurvey()}} }
                 >
                 <Text style={{color: props.published ? 'lightgrey' : 'royalblue'}}>Edit</Text>
               </Button>
             </ListItem>
             <ListItem>
-              <Button transparent style={{justifyContent: 'flex-start',width: 100}} onPress={()=>{if(!props.published){props.navToPublish()}}}>
+              <Button transparent style={{justifyContent: 'flex-start',width: 100}} onPress={()=>{if(!props.published){navToPublish()}}}>
                 <Text style={{color: props.published ? 'lightgrey' : 'royalblue'}}>Publish</Text>
               </Button>
             </ListItem>
