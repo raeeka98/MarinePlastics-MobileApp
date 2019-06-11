@@ -15,9 +15,12 @@ import {
   Spinner,
   Button
 } from 'native-base';
+
 import QRCode from 'react-native-qrcode';
 import Modal from 'react-native-modal'
-import {Font} from 'expo'
+import {
+  Font
+} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
 import debrisInfoID from './survey/debrisInfo'
@@ -375,15 +378,14 @@ class HomePage extends Component {
               deleteSurvey={this.deleteSurvey}
               />
             <Modal
-              isVisible={this.state.isQRVisible}
-              style={{flex: 1}}>
+              isVisible={this.state.isQRVisible}>
               <View style={homeStyles.QRView}>
                 <QRCode
                   value={this.state.qrCode}
                   size={350}
-                  style={{alignSelf: 'center', width: 500}}
+                  style={{alignSelf: 'center'}}
                 />
-              <Button light style={{alignSelf: 'center', marginTop: 20}} onPress={() => this.setState({isQRVisible: false, isModalVisible: false})}>
+                <Button light style={{alignSelf: 'center', marginTop: 20}} onPress={() => this.setState({isQRVisible: false, isModalVisible: false})}>
                   <Text>Done</Text>
                 </Button>
               </View>
