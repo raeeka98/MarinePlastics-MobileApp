@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, AppRegistry } from 'react-native';
+
+import {
+  Platform,
+  StyleSheet,
+  AppRegistry
+} from 'react-native';
 
 import {
   Alert,

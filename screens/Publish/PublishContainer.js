@@ -75,17 +75,6 @@ export default class PublishContainer extends Component {
       loading : false
     });
 
-    // for testing merging functionality
-    if(__DEV__) {
-
-      this.setState(prevState => {
-          prevState.surveys.push(testSurveys.test1);
-          prevState.surveys.push(testSurveys.test2);
-          prevState.surveys.push(testSurveys.test3);
-          return prevState;
-      })
-    }
-
   }
 
   async componentWillReceiveProps(props) {
@@ -103,11 +92,30 @@ export default class PublishContainer extends Component {
     }
   }
 
+  // Manage Modals ============================================================
+
   closeSubmitModal = () => this.setState({isSubmitModalVisible: false});
   closeLoginModal = () => this.setState({isLoginModalVisible: false});
   closeFinishedModal = () => this.setState({isFinishedVisible: false});
   closeConfirmModal = () => this.setState({isConfirmModalVisible: false});
   closeConfirmOpenBeachModal = () => this.setState({isBeachModalVisible: true, isConfirmModalVisible: false})
+
+  openPublishModal(survey) {
+    const {surveyName} = survey;
+    this.setState({
+      isSubmitModalVisible: true,
+      selectedName: surveyName,
+      mergedSurvey: survey
+    })
+  }
+
+  onPressBeach(beachName, beachID) {
+    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: beachID, confirmBeach: beachName});
+  }
+
+  onPressNoMatch(beachName) {
+    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: null, confirmBeach: beachName})
+  }
 
 
 
@@ -122,6 +130,15 @@ export default class PublishContainer extends Component {
           return prevState;
       });
   }
+
+  removeSurvey = (index) => {
+      this.setState(prevState => {
+          prevState.surveys.splice(index, 1);
+          return prevState;
+      });
+  }
+
+  // Merge Surveys ===========================================================
 
   calculateTotals(type) {
     let currentSurvey = this.state.mergedSurvey
@@ -213,15 +230,15 @@ export default class PublishContainer extends Component {
     let returnDate = currentSurveyData.cleanupDate;
     let currentTime = currentSurveyData.cleanupTime;
     // Use the time stored in the survey to set the time with the date of the survey
-    returnDate.setHours(currentTime.getHours()) 
+    returnDate.setHours(currentTime.getHours())
     returnDate.setMinutes(currentTime.getMinutes());
     return returnDate
   }
 
   /**
-   * This function takes the merged survey, stored in the state's merged survey key, and 
+   * This function takes the merged survey, stored in the state's merged survey key, and
    * converts it into the survey schema format that's used to store surveys in the database
-   * It will also attach a beach ID if the survey is being submitted under a current beach, 
+   * It will also attach a beach ID if the survey is being submitted under a current beach,
    * or it will submit a beach schema with it containing information for the new beach if
    * it does not exist in the database
    */
@@ -300,7 +317,7 @@ export default class PublishContainer extends Component {
   }
 
   /**
-   * The final submission function that will 
+   * The final submission function that will
    */
   async finalBeachSubmit() {
     const formToSubmit = await this.convertSurvey();
@@ -364,12 +381,6 @@ export default class PublishContainer extends Component {
      return invalid
   }
 
-  removeSurvey = (index) => {
-      this.setState(prevState => {
-          prevState.surveys.splice(index, 1);
-          return prevState;
-      });
-  }
 
   async openBeachModal(beachName) {
     // Here's where we'll do a special query for the beaches that reside in a certain location
@@ -395,22 +406,7 @@ export default class PublishContainer extends Component {
 
   }
 
-  openPublishModal(survey) {
-    const {surveyName} = survey;
-    this.setState({
-      isSubmitModalVisible: true,
-      selectedName: surveyName,
-      mergedSurvey: survey
-    })
-  }
 
-  onPressBeach(beachName, beachID) {
-    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: beachID, confirmBeach: beachName});
-  }
-
-  onPressNoMatch(beachName) {
-    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: null, confirmBeach: beachName})
-  }
 
   async onPressSubmit(){
     const currentSurvey = this.state.mergedSurvey;
@@ -471,7 +467,7 @@ export default class PublishContainer extends Component {
 
   render() {
     if(this.state.loading) {
-      return <Spinner color='green'/>;
+      return <Spinner color='blue'/>;
     }
     else {
       return(
@@ -543,7 +539,7 @@ export default class PublishContainer extends Component {
                   </Button>
                 </View>
               </View>
-            </Modal>  
+            </Modal>
         </Container>
       );
     }

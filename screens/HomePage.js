@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 import {
   FlatList,
   RefreshControl
-} from 'react-native';
+} from 'react-native'
 
 import {
   Icon,
@@ -14,9 +14,9 @@ import {
   Content,
   Spinner,
   Button
-} from 'native-base';
+} from 'native-base'
 
-import QRCode from 'react-native-qrcode';
+import QRCode from 'react-native-qrcode'
 import Modal from 'react-native-modal'
 import {
   Font
@@ -28,18 +28,18 @@ import PageHeader from '../components/PageHeader'
 
 import {
   ScrollView
-} from 'react-native-gesture-handler';
+} from 'react-native-gesture-handler'
 
 import {
   SurveyCard
-} from './Home/SurveyCard';
+} from './Home/SurveyCard'
 
 import {
   DeleteModal,
   GeneralModal
-} from './Home/HomeModals';
+} from './Home/HomeModals'
 
-import homeStyles from './Home/homeStyles';
+import homeStyles from './Home/homeStyles'
 
 class HomePage extends Component {
 
