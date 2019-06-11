@@ -15,9 +15,12 @@ import {
   Spinner,
   Button
 } from 'native-base';
+
 import QRCode from 'react-native-qrcode';
 import Modal from 'react-native-modal'
-import {Font} from 'expo'
+import {
+  Font
+} from 'expo'
 
 import surveyDB from '../storage/mongoStorage'
 import debrisInfoID from './survey/debrisInfo'

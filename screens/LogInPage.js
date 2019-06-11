@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, AppRegistry } from 'react-native';
-import { Alert, AsyncStorage, Linking, Image } from 'react-native';
+
+import {
+  Alert,
+  AsyncStorage,
+  Linking,
+  Image
+} from 'react-native';
+
 import {
   Icon,
   View,
