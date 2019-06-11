@@ -2,6 +2,10 @@ import React, {Component} from 'react'
 import {ScrollView, View, Text, Image} from 'react-native'
 import {SafeAreaView, DrawerItems} from 'react-navigation'
 
+/**
+ * Our Custom Drawer component
+ */
+
 export default class CustomDrawer extends Component {
     constructor(props){
         super(props)
