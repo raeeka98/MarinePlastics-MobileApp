@@ -48,6 +48,8 @@ export default class PublishContainer extends Component {
       isScanning : false,
       isPublished : false,
       isLoggedIn: true,
+      shouldShowConfirmModal: false,
+      shouldShowFinished: false,
       surveys : []
     };
     const initSurvey = this.props.navigation.getParam('initSurvey');
@@ -100,6 +102,15 @@ export default class PublishContainer extends Component {
   closeConfirmModal = () => this.setState({isConfirmModalVisible: false});
   closeConfirmOpenBeachModal = () => this.setState({isBeachModalVisible: true, isConfirmModalVisible: false})
 
+  openFinishModal = () => {
+    if(this.state.shouldShowFinished) {
+        this.setState({
+          shouldShowFinished: false,
+          isFinishedVisible: true
+        });
+    }
+  }
+
   openPublishModal(survey) {
     const {surveyName} = survey;
     this.setState({
@@ -110,7 +121,16 @@ export default class PublishContainer extends Component {
   }
 
   onPressBeach(beachName, beachID) {
-    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: beachID, confirmBeach: beachName});
+    this.setState({shouldShowConfirmModal: true, isBeachModalVisible: false, match: beachID, confirmBeach: beachName});
+  }
+
+  showSecondConfirm = () => {
+    if(this.state.shouldShowConfirmModal) {
+      this.setState({
+        isConfirmModalVisible: true,
+        shouldShowConfirmModal: false
+      })
+    }
   }
 
   onPressNoMatch(beachName) {
@@ -327,7 +347,7 @@ export default class PublishContainer extends Component {
     axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
       .then(res => {
         if(res.data.survID){
-          this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
+          this.setState({shouldShowFinished: true, isConfirmModalVisible: false, isBeachModalVisible: false})
           //Finally set the 'published' variable for the survey
           surveyDB.updateSurvey(this.state.surveyID, {$set: {published: true}});
         }
@@ -509,12 +529,16 @@ export default class PublishContainer extends Component {
               closeConfirmOpenBeachModal={this.closeConfirmOpenBeachModal}
               finalBeachSubmit={this.finalBeachSubmit}
               foundBeach={this.state.foundBeach}
+              openFinishModal={this.openFinishModal}
               />
             <FinishedModal
               isFinishedVisible={this.state.isFinishedVisible}
               closeFinishedModal={this.closeFinishedModal}
               />
-            <Modal isVisible={this.state.isBeachModalVisible}>
+            <Modal
+              isVisible={this.state.isBeachModalVisible}
+              onModalHide={this.showSecondConfirm}
+              >
               <View style={{alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white'}}>
                 <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Beach Not Found!</Text>
                 <Text style={{padding: 8, fontSize: 15}}>

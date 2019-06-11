@@ -86,9 +86,12 @@ function FinishedModal(props) {
 }
 
 function ConfirmModal(props) {
-  const { isConfirmModalVisible, match, confirmBeach, closeConfirmOpenBeachModal, closeConfirmModal, finalBeachSubmit, foundBeach } = props;
+  const { isConfirmModalVisible, openFinishModal, match, confirmBeach, closeConfirmOpenBeachModal, closeConfirmModal, finalBeachSubmit, foundBeach } = props;
   return(
-    <Modal isVisible={isConfirmModalVisible}>
+    <Modal
+      isVisible={isConfirmModalVisible}
+      onModalHide={openFinishModal}
+      >
       <View style={{alignSelf: 'center', width: '90%', height: 150, backgroundColor: 'white'}} >
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
           {

@@ -79,8 +79,10 @@ class HomePage extends Component {
       console.log("Reload")
       await this.retrieveInProgress();
       const inProgress = this.renderInProgress();
+      const published = this.renderPublished();
       this.setState({
-        inProgressViews: inProgress
+        inProgressViews: inProgress,
+        publishedViews: published
       })
     }
   }
@@ -93,9 +95,11 @@ class HomePage extends Component {
     })
     await this.retrieveInProgress();
     const inProgress = this.renderInProgress();
+    const published = this.renderPublished();
     this.setState({
       pageLoading: false,
-      inProgressViews: inProgress
+      inProgressViews: inProgress,
+      publishedViews: published
     });
   }
 
@@ -111,9 +115,11 @@ class HomePage extends Component {
   async refreshPage() {
     await this.retrieveInProgress();
     const inProgress = this.renderInProgress();
+    const published = this.renderPublished();
     this.setState({
         isRefreshing : false,
-        inProgressViews: inProgress
+        inProgressViews: inProgress,
+        publishedViews: published
     })
   }
 
@@ -174,8 +180,10 @@ class HomePage extends Component {
     this.endModals();
     await this.retrieveInProgress();
     const inProgress = this.renderInProgress();
+    const published = this.renderPublished();
     this.setState({
-      inProgressViews: inProgress
+      inProgressViews: inProgress,
+      publishedViews: published
     })
   }
 
@@ -358,7 +366,7 @@ class HomePage extends Component {
               <Title style={homeStyles.sectionHeader}>
                 Published
               </Title>
-              {this.renderPublished()}
+              {this.state.publishedViews}
             </View>
             <GeneralModal
               isModalVisible={this.state.isModalVisible}
