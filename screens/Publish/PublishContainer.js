@@ -520,7 +520,7 @@ export default class PublishContainer extends Component {
               />
             <Modal isVisible={this.state.isBeachModalVisible}>
               <View style={{alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white'}}>
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Whoops!</Text>
+                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Beach Not Found!</Text>
                 <Text style={{padding: 8, fontSize: 15}}>
                   It looks like the beach "{this.state.beachName}" is not in our database! We may actually have it stored, just under a different name.
                   Here's a list of the closest beaches based on your survey's coordinates.
