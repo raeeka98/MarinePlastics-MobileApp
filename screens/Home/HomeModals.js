@@ -31,11 +31,11 @@ function DeleteModal(props) {
 }
 
 function GeneralModal (props) {
-  const {isModalVisible, openDelete, name, encodeToText, cancelModal, openSurvey, onPressDeleteSurvey, navToPublish } = props;
+  const {isModalVisible, openSecondModal, name, encodeToText, cancelModal, openSurvey, onPressDeleteSurvey, navToPublish } = props;
   return(
     <Modal
       isVisible={isModalVisible}
-      onModalHide={openDelete}
+      onModalHide={openSecondModal}
       style={{flex: 1}}>
       <View style={{alignSelf: 'center', width: '90%', backgroundColor: 'white'}} >
         <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>{name}</Text>

@@ -116,6 +116,7 @@ class HomePage extends Component {
 
   cancelDelete = () => this.setState({isDeleteVisible: false});
   cancelModal = () => this.setState({isModalVisible: false, chosenSurvey: ""});
+
   onPressDeleteSurvey = () => {
     this.setState({
       shouldShowDelete: true,
@@ -200,11 +201,17 @@ class HomePage extends Component {
     this.setState({isModalVisible: true, chosenSurvey: chosenSurvey})
   }
 
-  openDelete = () => {
+  openSecondModal = () => {
     if(this.state.shouldShowDelete) {
         this.setState({
           isDeleteVisible: true,
           shouldShowDelete: false
+        })
+    }
+    if(this.state.shouldShowQR) {
+        this.setState({
+          isQRVisible: true,
+          shouldShowQR: false
         })
     }
   }
@@ -224,6 +231,10 @@ class HomePage extends Component {
       surveyArray.push({key: inProgress[i].surveyName, val: survComponent})
     }
     return <FlatList data={surveyArray} extraData={this.state} renderItem={({item}) => {return item.val}} />
+  }
+
+  showQRModal = async() => {
+
   }
 
   encodeToText = async () => {
@@ -273,7 +284,7 @@ class HomePage extends Component {
       binstring += this.intToBin(weathered);
     }
     var encoded = this.binToEncoded(binstring);
-    this.setState({qrCode: encoded, isModalVisible: false, isQRVisible: true})
+    this.setState({qrCode: encoded, isModalVisible: false, shouldShowQR: true})
   }
 
   // Binary to Encoded (using an encoding style similar to base64)
@@ -348,7 +359,7 @@ class HomePage extends Component {
             </View>
             <GeneralModal
               isModalVisible={this.state.isModalVisible}
-              openDelete={this.openDelete}
+              openSecondModal={this.openSecondModal}
               name={this.state.chosenSurvey.surveyName}
               encodeToText={this.encodeToText}
               cancelModal={this.cancelModal}
@@ -363,16 +374,16 @@ class HomePage extends Component {
               cancelDelete={this.cancelDelete}
               deleteSurvey={this.deleteSurvey}
               />
-            <Modal 
+            <Modal
               isVisible={this.state.isQRVisible}
               style={{flex: 1}}>
-              <View style={{width: '95%', height: '90%', alignSelf:'center', backgroundColor: 'wheat'}}>
+              <View style={homeStyles.QRView}>
                 <QRCode
                   value={this.state.qrCode}
                   size={350}
                   style={{alignSelf: 'center', width: 500}}
                 />
-                <Button light style={{alignSelf: 'center', marginTop: 20}} onPress={() => this.setState({isQRVisible: false, isModalVisible: true})}>
+              <Button light style={{alignSelf: 'center', marginTop: 20}} onPress={() => this.setState({isQRVisible: false, isModalVisible: false})}>
                   <Text>Done</Text>
                 </Button>
               </View>

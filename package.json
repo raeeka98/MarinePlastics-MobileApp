@@ -28,6 +28,7 @@
     "react-native-local-mongodb": "^2.2.9",
     "react-native-modal": "^10.0.0",
     "react-native-modal-datetime-picker": "^6.1.0",
+    "react-native-qrcode": "^0.2.7",
     "react-native-qrcode-scanner": "^1.1.2",
     "react-navigation": "^3.7.1",
     "react-navigator": "0.0.0-0",

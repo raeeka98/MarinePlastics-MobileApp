@@ -17,6 +17,12 @@ let homeStyles = (Platform.OS === 'android') ?
         paddingLeft: 10,
         textAlign: "left",
         color: "#010101"
+      },
+      QRView: {
+        width: '95%',
+        height: '90%',
+        alignSelf:'center',
+        backgroundColor: 'wheat'
       }
     }
     :
@@ -32,6 +38,12 @@ let homeStyles = (Platform.OS === 'android') ?
         paddingTop: 10,
         paddingBottom: 5,
         textAlign: "left"
+      },
+      QRView: {
+        width: '95%',
+        height: '90%',
+        alignSelf:'center',
+        backgroundColor: 'wheat'
       }
     }
 
