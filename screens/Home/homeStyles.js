@@ -40,10 +40,13 @@ let homeStyles = (Platform.OS === 'android') ?
         textAlign: "left"
       },
       QRView: {
-        width: '95%',
-        height: '90%',
-        alignSelf:'center',
-        backgroundColor: 'wheat'
+        width: '120%',
+        right: '10%',
+        height: '100%',
+        justifyContent: 'center',
+        flex: 1,
+        backgroundColor: 'white',
+        alignItems: 'center'
       }
     }
 
