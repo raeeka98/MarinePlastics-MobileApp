@@ -4,6 +4,7 @@
     "slug": "MarinePlasticsApp",
     "privacy": "public",
     "sdkVersion": "32.0.0",
+    "scheme": "marineplastics",
     "platforms": [
       "ios",
       "android"
@@ -22,6 +23,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.marineplastics.marineplasticsapp"
+    },
     "ios": {
       "supportsTablet": true,
       "infoPlist" : {
