@@ -75,7 +75,8 @@ export default class MicroDebris extends Component {
                     </Button>
                     <Item regular>
                         <TextInput
-                            editable={false}
+                            keyboardType='number-pad'
+                            onChange={this.props.handleManualMicro(this, freshKey)}
                             style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                             value={this.state.MicroData[freshKey] ? this.state.MicroData[freshKey] + '' : '0'}
                         />
@@ -101,7 +102,8 @@ export default class MicroDebris extends Component {
                   </Button>
                   <Item regular>
                       <TextInput
-                          editable={false}
+                          keyboardType='number-pad'
+                          onChange={this.props.handleManualMicro(this, weatheredKey)}
                           style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                           value={this.state.MicroData[weatheredKey] ? this.state.MicroData[weatheredKey] + '' : '0'}
                       />

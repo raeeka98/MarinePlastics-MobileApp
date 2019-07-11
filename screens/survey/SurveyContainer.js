@@ -314,6 +314,53 @@ export default class SurveyContainer extends Component {
      * value.
      */
 
+    /**
+     * Handle a manual input for a debris amount when logging data. This will be helpful if the users
+     * find multiple items at once and want to enter in those totals later on (suggestion from beach cleanup)
+     */
+
+    handleManualSRS = (refName, e) => {
+        let strValue = e.nativeEvent.text
+        var numValue = parseInt(strValue)
+        let key = refName
+
+        this.setState(prevState => {
+            if(numValue < 0 || isNaN(numValue)) {
+                return prevState
+            }
+            prevState.SRSData[key] = numValue
+            return prevState
+        })
+    }
+
+    handleManualAS(refName, e) {
+        let strValue = e.nativeEvent.text
+        var numValue = parseInt(strValue)
+        let key = refName
+
+        this.setState(prevState => {
+            if(numValue < 0 || isNaN(numValue)) {
+                return prevState
+            }
+            prevState.ASData[key] = numValue
+            return prevState
+        })
+    }
+
+    handleManualMicro (refName, e){
+        let strValue = e.nativeEvent.text
+        var numValue = parseInt(strValue)
+        let key = refName
+        this.setState(prevState => {
+            if(numValue < 0 || isNaN(numValue)) {
+                return prevState
+            }
+            prevState.MicroData[key] = numValue
+            return prevState
+        })
+
+    }
+
     decrementSRS (refName, e){
         let key = refName;
         this.setState(prevState => {
@@ -440,6 +487,7 @@ export default class SurveyContainer extends Component {
                         ribsToSelect={this.state.ribsToSelect}
                         updateSurveyState={this.updateSurveyState}
                         updateRibData={this.updateRibData}
+                        handleManualSRS={this.handleManualSRS}
                         incrementSRS={this.incrementSRS}
                         decrementSRS={this.decrementSRS}
                         onClickFinish={this.onClickFinish}
@@ -458,6 +506,7 @@ export default class SurveyContainer extends Component {
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
                         ribData={this.state.ribData}
+                        handleManualAS={this.handleManualAS}
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
                         onClickFinish={this.onClickFinish}
@@ -476,6 +525,7 @@ export default class SurveyContainer extends Component {
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
                         ribData={this.state.ribData}
+                        handleManualMicro={this.handleManualMicro}
                         incrementMicro={this.incrementMicro}
                         decrementMicro={this.decrementMicro}
                         onClickFinish={this.onClickFinish}

@@ -128,7 +128,8 @@ export default class RibInput extends Component {
                         </Button>
                         <Item regular>
                             <TextInput
-                                editable={false}
+                                keyboardType='number-pad'
+                                onChange={this.props.handleManualSRS.bind(this, freshKey)}
                                 style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.SRSData[freshKey] ? this.state.SRSData[freshKey] + '' : '0'}
                             />
@@ -153,7 +154,8 @@ export default class RibInput extends Component {
                         </Button>
                         <Item regular>
                             <TextInput
-                                editable={false}
+                                keyboardType='number-pad'
+                                onChange={this.props.handleManualSRS.bind(this, weatheredKey)}
                                 style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.SRSData[weatheredKey] ? this.state.SRSData[weatheredKey] + '' : '0'}
                             />

@@ -72,6 +72,7 @@ export default class SurfaceRibScan extends Component {
                     surveyData={this.state.surveyData}
                     ribData={this.state.ribData}
                     ribNumber={ribNumber}
+                    handleManualSRS={this.props.handleManualSRS}
                     decrementSRS={this.props.decrementSRS}
                     incrementSRS={this.props.incrementSRS}
                     inputItems={this.state[ribArrayName]}

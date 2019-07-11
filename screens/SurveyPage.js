@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, TouchableOpacity} from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
 import {Icon, Button, Text} from 'native-base'
-import Axios from 'axios';
-import { AppLoading, Asset, Font } from 'expo';
-//import t from 'tcomb-form-native';
-import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import PageHeader from '../components/PageHeader';
 
 /**
@@ -28,7 +24,7 @@ class SurveyPage extends Component {
   render() {
     const {navigate} = this.props.navigation;
     return(
-      <View style={{backgroundColor: '#e4eaff', flex: 1}}>
+      <ScrollView style={{backgroundColor: '#e4eaff', flex: 1}}>
         <PageHeader title="Start a survey" openDrawer={this.props.navigation.openDrawer} />
         <View style={[styles.container, {flexDirection:'column', justifyContent: 'space-between'}]}>
           <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 22, marginBottom: '2%'}}>GETTING STARTED</Text>
@@ -51,7 +47,7 @@ class SurveyPage extends Component {
             <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
           </Button>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

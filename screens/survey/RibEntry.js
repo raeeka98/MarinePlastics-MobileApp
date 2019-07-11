@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, View, Text, TextInput} from 'react-native'
+import {Modal, View, TextInput, Text} from 'react-native'
 import {Button, Item, Icon, Picker} from 'native-base'
 import styles from './surveyStyles'
 
@@ -38,12 +38,22 @@ export default class RibEntry extends Component {
         })
     }
 
-    clearInputs =()=>{
+    clearInputs = () => {
         this.setState({
             ribNumber: "",
             ribLength: "",
             ribStart: "",
             canEdit: true
+        })
+    }
+
+    randomizeRibStart = () => {
+        let randomStart = Math.floor(Math.random() * 101) + 1
+        this.setState(prevState => {
+            if(!prevState.canEdit)
+                prevState.canEdit = true;
+            prevState.ribStart = randomStart.toString()
+            return prevState
         })
     }
 
@@ -85,6 +95,11 @@ export default class RibEntry extends Component {
                 </View>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
                     <Text style={{fontSize: 20}}>Rib Start (meters):</Text>
+                    <Button onPress={this.randomizeRibStart} style={{height: 35}}>
+                        <Text style={{color: 'white', padding: 2}}>
+                            Randomize
+                        </Text>
+                    </Button>
                     <Item regular>
                         <TextInput
                             style={{width: 100, height: 35}}

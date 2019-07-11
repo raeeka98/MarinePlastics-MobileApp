@@ -91,7 +91,8 @@ export default class AccumulationSweep extends Component {
                         </Button>
                         <Item regular>
                             <TextInput
-                                editable={false}
+                                keyboardType='number-pad'
+                                onChange={this.props.handleManualAS.bind(this, freshKey)}
                                 style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.ASData[freshKey] ? this.state.ASData[freshKey] + '' : '0'}
                             />
@@ -115,7 +116,8 @@ export default class AccumulationSweep extends Component {
                         </Button>
                         <Item regular>
                             <TextInput
-                                editable={false}
+                                keyboardType='number-pad'
+                                onChange={this.props.handleManualAS.bind(this, weatheredKey)}
                                 style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
                                 value={this.state.ASData[weatheredKey] ? this.state.ASData[weatheredKey] + '' : '0'}
                             />
