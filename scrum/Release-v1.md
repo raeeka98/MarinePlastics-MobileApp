@@ -6,7 +6,7 @@
 
 **Release:** **1.0** on **March 18, 2020**
 
-**Github:** github.com/
+**Github:** https://github.com/raeeka98/MarinePlastics-MobileApp
 
 **Revision:** #3 February 3, 2020
 
@@ -21,7 +21,7 @@
 
 |------|------|------|
 
-||**21**|**Sprint 1**|
+|**21**|**Sprint 1**|
 
 |13|As a developer, I want to familiarize myself with all of the technologies so I can use the technology to improve the mobile app.|
 
@@ -29,7 +29,7 @@
 
 |5|As a developer, I want to test the mobile app and modify the database so I can verify that it works and see what needs to be improved.|
 
-||**26**|**Sprint 2**|
+|**26**|**Sprint 2**|
 
 |5|As a user, I want the app to work on both Android and ios so that I can use it on an iPhone.|
 
@@ -37,7 +37,7 @@
 
 |8|As a developer, I want the micro debris section to be supported by the backend so the feature works.|
 
-||**34**|**Sprint 3**|
+|**34**|**Sprint 3**|
 
 |13|As a user, I want to be able to update the survey form using voice recognition.|
 
@@ -45,7 +45,7 @@
 
 |8|As a user, I want to be able to sign in on the app, not be sent to an Auth0 page, because that can be confusing and inconvenient.|
 
-||**Total Points: 81**|**Story Count: 9**|
+|**Total Points: 81**|**Story Count: 9**|
 
 
 ## Product Backlog
