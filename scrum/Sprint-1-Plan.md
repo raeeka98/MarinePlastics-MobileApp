@@ -54,11 +54,11 @@
 
 ## Initial Burnup Chart
 
-
+- in the google drive
 
 ## Initial Scrum Board
 
-
+- in the google drive
 
 ## Scrum Time
 
