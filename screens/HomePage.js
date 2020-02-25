@@ -16,7 +16,7 @@ import {
   Button
 } from 'native-base'
 
-import QRCode from 'react-native-qrcode'
+import QRCodeScanner from 'react-native-qrcode-scanner'
 import Modal from 'react-native-modal'
 import {
   Font
@@ -57,7 +57,7 @@ class HomePage extends Component {
       isRefreshing: false,
       reload: false,
       shouldShowDelete: false,
-      qrCode:''
+      qrCodeScanner:''
     }
 
     this.navToPublish = this.navToPublish.bind(this);
@@ -287,7 +287,7 @@ class HomePage extends Component {
       binstring += this.intToBin(weathered);
     }
     var encoded = this.binToEncoded(binstring);
-    this.setState({qrCode: encoded, isModalVisible: false, shouldShowQR: true})
+    this.setState({qrCodeScanner: encoded, isModalVisible: false, shouldShowQR: true})
   }
 
   // Binary to Encoded (using an encoding style similar to base64)
@@ -380,7 +380,7 @@ class HomePage extends Component {
             <Modal
               isVisible={this.state.isQRVisible}>
               <View style={homeStyles.QRView}>
-                <QRCode
+                <QRCodeScanner
                   value={this.state.qrCode}
                   size={350}
                   style={{alignSelf: 'center'}}
