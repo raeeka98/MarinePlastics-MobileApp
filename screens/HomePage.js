@@ -16,7 +16,7 @@ import {
   Button
 } from 'native-base'
 
-import QRCodeScanner from 'react-native-qrcode-scanner'
+// import QRCodeScanner from 'react-native-qrcode-scanner'
 import Modal from 'react-native-modal'
 import {
   Font
@@ -380,11 +380,6 @@ class HomePage extends Component {
             <Modal
               isVisible={this.state.isQRVisible}>
               <View style={homeStyles.QRView}>
-                <QRCodeScanner
-                  value={this.state.qrCode}
-                  size={350}
-                  style={{alignSelf: 'center'}}
-                />
                 <Button light style={{alignSelf: 'center', marginTop: 20}} onPress={() => this.setState({isQRVisible: false, isModalVisible: false})}>
                   <Text>Done</Text>
                 </Button>
