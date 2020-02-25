@@ -4,7 +4,7 @@ import {createStackNavigator, createAppContainer, createDrawerNavigator, createS
 
 import { StyleSheet, SafeAreaView } from 'react-native';
 import {Root, Spinner} from 'native-base'
-import {Font} from 'expo'
+import * as Font from 'expo-font'
 
 // optimization?
 import { useScreens } from 'react-native-screens';

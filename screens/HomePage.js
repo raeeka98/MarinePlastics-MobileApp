@@ -7,7 +7,8 @@ import {
 
 import {
   Icon,
-  View,
+    View,
+
   Text,
   Title,
   Container,
@@ -18,9 +19,7 @@ import {
 
 // import QRCodeScanner from 'react-native-qrcode-scanner'
 import Modal from 'react-native-modal'
-import {
-  Font
-} from 'expo'
+import * as Font from 'expo-font'
 
 import surveyDB from '../storage/mongoStorage'
 import debrisInfoID from './survey/debrisInfo'
@@ -388,6 +387,12 @@ class HomePage extends Component {
           </Content>
         </Container>
       );
+      // In the Modal tag, in View above Button, enter the following code:
+      // <QRCodeScanner
+      //   value={this.state.qrCodeScanner}
+      //   size={350}
+      //   style={{alignSelf: 'center'}}
+      // />
     }
 
   }

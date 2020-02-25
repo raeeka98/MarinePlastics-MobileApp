@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Font} from 'expo'
+import * as Font from 'expo-font'
 import {View} from 'react-native';
 
 import {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Icon, Button, Text} from 'native-base'
 import Axios from 'axios';
-import { AppLoading, Asset, Font } from 'expo';
+// import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import PageHeader from '../components/PageHeader';

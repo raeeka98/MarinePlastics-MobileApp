@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Font} from 'expo'
+// import {Font} from 'expo'
 import {
   Platform,
   StatusBar,
