@@ -52,10 +52,8 @@
 - (13) As a user, I want there to be a written/animated tutorial to understand how to do the survey.
   - (8) Task 4: Add an infinite scroll of text and images
 
- - (8) As a developer, I want the micro debris section to be supported by the backend so the feature works.
-  - (3) Task 1: Create the api for micro debris
-  - (2) Task 2: Create a new database for testing
-  - (3) Task 3: Add the code to add the micro debris in the database
+ - (3) As a developer, I want the micro debris section to be supported by the backend so the feature works.
+  - (3) Task 2: Create a new database for testing
 
 ## Work completion Rate
 
