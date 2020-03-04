@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Icon, Button, Text} from 'native-base'
 import Axios from 'axios';
 // import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
+import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'react-native-best-viewpager';
+import { Platform, StyleSheet, View, Dimensions } from "react-native";  
 import PageHeader from '../components/PageHeader';
 
 /**
@@ -26,6 +27,7 @@ class SurveyPage extends Component {
   }
 
   render() {
+    /*
     const {navigate} = this.props.navigation;
     return(
       <View style={{backgroundColor: '#e4eaff', flex: 1}}>
@@ -54,8 +56,40 @@ class SurveyPage extends Component {
       </View>
     );
   }
-}
+  */
+        return (
+            <View style={{flex:1}}>
+                <IndicatorViewPager
+                    style={{height:500}}
+                    indicator={this._renderDotIndicator()}
+                >
+                    <View style={{backgroundColor:'cadetblue'}}>
+                        <Text>The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI)</Text>
+                    </View>
+                    <View style={{backgroundColor:'cornflowerblue'}}>
+                        <Text>page two</Text>
+                    </View>
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Text>page three</Text>
+                    </View>
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Text>page four</Text>
+                    </View>
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Text>page five</Text>
+                        <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
+            <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
+          </Button>
+                    </View>
+                </IndicatorViewPager>
+            </View>
+        );
+      }
 
+    _renderDotIndicator() {
+        return <PagerDotIndicator pageCount={5} />;
+    }
+}
 export default SurveyPage;
 
 // Style variable.
