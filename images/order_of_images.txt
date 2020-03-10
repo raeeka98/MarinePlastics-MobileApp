@@ -1,0 +1,9 @@
+This file lists the order the images should be displayed in the tutorial:
+team_info.PNG
+survey_area.PNG
+surface_rib_scan.PNG
+accumulation_sweep.PNG
+micro_debris.PNG
+before_scan.PNG
+qr_code.PNG
+after_scan.PNG
