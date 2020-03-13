@@ -5,8 +5,9 @@ import Axios from 'axios';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'react-native-best-viewpager';
-import { Platform, StyleSheet, View, Dimensions } from "react-native";  
+import { Platform, StyleSheet, View, Image, Dimensions } from "react-native";  
 import PageHeader from '../components/PageHeader';
+//import images from '../images';
 
 /**
  * This is a page that can be much improved upon in the next iteration. This idea was pitched 
@@ -67,27 +68,53 @@ class SurveyPage extends Component {
                         <Text>The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI)</Text>
                     </View>
                     <View style={{backgroundColor:'cornflowerblue'}}>
-                        <Text>page two</Text>
+                        {/* <Image source={require('../images/team_info.PNG')} style= {styles.backgroundImage} resizeMode={Image.resizeMode.sretch}</Image> /> */}
+                        {/* <Image source={require('./team_info.PNG')} style= {styles.backgroundImage} resizeMode={Image.resizeMode.sretch} />  */}
+                        <Image source={require('../images/teaminfo.png')} />
                     </View>
+
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Text>page three</Text>
+                        <Image source={require('../images/surveyarea.png')} />
                     </View>
+
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Text>page four</Text>
+                        <Image source={require('../images/surfaceribscan.png')} />
                     </View>
+
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Text>page five</Text>
+                        <Image source={require('../images/accumulationsweep.png')} />
+                    </View>
+
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Image source={require('../images/microdebris.png')} />
+                    </View>
+
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Image source={require('../images/beforescan.png')} />
+                    </View>
+
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Image source={require('../images/qrcode.png')} />
+                    </View>
+
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Image source={require('../images/afterscan.png')} />
+                    </View>
+
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        {/* <Text>page ten</Text> */}
                         <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
-            <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
-          </Button>
+                          <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
+                        </Button>
                     </View>
+
                 </IndicatorViewPager>
             </View>
         );
       }
 
     _renderDotIndicator() {
-        return <PagerDotIndicator pageCount={5} />;
+        return <PagerDotIndicator pageCount={10} />;
     }
 }
 export default SurveyPage;
@@ -105,5 +132,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e",
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null,
   }
 });
