@@ -18,6 +18,7 @@
 
 ## User Stories
 |Story Points|User Story|
+
 |------|------|------|
 
 ||**21**|**Sprint 1**|
@@ -42,6 +43,7 @@
 
 ||**Total Points: 81**|**Story Count: 9**|
 
+---
 
 ## Product Backlog
 1. QR code scanning Design 
