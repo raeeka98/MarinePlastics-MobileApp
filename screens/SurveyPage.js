@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {Icon, Button, Text} from 'native-base'
+import {Icon, Button, Text} from 'native-base';
 import Axios from 'axios';
 // import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'react-native-best-viewpager';
-import { Platform, StyleSheet, View, Dimensions } from "react-native";  
+import { Platform, StyleSheet, View, Dimensions, Image } from "react-native";  
 import PageHeader from '../components/PageHeader';
 
 /**
@@ -14,10 +14,10 @@ import PageHeader from '../components/PageHeader';
  * Instead of some paragraphs to serve as an on-boarding session, it'll be much better to
  * create a little tutorial guide that shows the user how to fill out and generate QR codes
  * with our app.
- */
+   */
 
 
-class SurveyPage extends Component {
+  class SurveyPage extends Component {
 
   static navigationOptions = {
     title: 'New Survey',
@@ -27,70 +27,45 @@ class SurveyPage extends Component {
   }
 
   render() {
-    /*
-    const {navigate} = this.props.navigation;
-    return(
-      <View style={{backgroundColor: '#e4eaff', flex: 1}}>
-        <PageHeader title="Start a survey" openDrawer={this.props.navigation.openDrawer} />
-        <View style={[styles.container, {flexDirection:'column', justifyContent: 'space-between'}]}>
-          <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 22, marginBottom: '2%'}}>GETTING STARTED</Text>
-          <Text style={{fontSize: 18}}>
-            The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI).{" "}
-             <Text style={{fontStyle:'italic', fontSize: 18}}>
-              If you are unfamiliar with their survey protocol, we suggest that you visit the Marine Plastics Monitor
-              website and familiarize yourself with the procedure.
-            </Text> 
-          </Text>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto', marginBottom: '5%'}}>
-            The survey on this app is a digital translation of 
-            COI's paper protocol. But there are some changes that should be noted. We have integrated QR code scanning
-            and generation in this app to make it easier for groups to split up and work on different ribs during the survey. 
-            Only one survey must fill out the "Team Information" and "Survey Area" portion. This survey would be considered as 
-            the "Master Survey", which will be used to scan all other form, if there are any, for this particular survey. 
-            QR codes can be generated after the survey is saved.
-          </Text>
-          <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
-            <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
-          </Button>
-        </View>
-      </View>
-    );
-  }
-  */
         return (
             <View style={{flex:1}}>
                 <IndicatorViewPager
                     style={{height:500}}
-                    indicator={this._renderDotIndicator()}
-                >
+                    indicator={this._renderDotIndicator()}>
                     <View style={{backgroundColor:'cadetblue'}}>
-                        <Text>The Marine Plastics Monitor app follows a protocol developed by Clean Oceans International (COI)</Text>
-                    </View>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI1.png')}/>
+        </View>
                     <View style={{backgroundColor:'cornflowerblue'}}>
-                        <Text>page two</Text>
-                    </View>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI2.png')}/> 
+        </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Text>page three</Text>
-                    </View>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI3.png')}/>
+        </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Text>page four</Text>
-                    </View>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI4.png')}/>
+        </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Text>page five</Text>
-                        <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
+      <Image style={styles.stretch} source={require('./COI-instructions/COI5.png')}/>
+        <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
             <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
           </Button>
-                    </View>
+        </View>
                 </IndicatorViewPager>
-            </View>
+        </View>
         );
       }
+    
 
+    
     _renderDotIndicator() {
         return <PagerDotIndicator pageCount={5} />;
     }
 }
 export default SurveyPage;
+
+// window variables
+const win = Dimensions.get('window');
+const ratio = win.width/541; //541 is actual image width
 
 // Style variable.
 const styles = StyleSheet.create({
@@ -105,5 +80,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e",
-  }
+  },
+  pageStyle: {
+   alignItems: 'center',
+   padding: 20,
+  },
+   stretch: {
+   flex: 1,
+   justifyContent: "center",
+   vertical-align: middle,
+   width: windowWidth,
+   height: windowHeight,
+   resizeMode: 'contain',
+  },
 });
