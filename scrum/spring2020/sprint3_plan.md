@@ -28,9 +28,8 @@
 - (8) As a user, I want to see a picture associated with a type of plastic on the mobile app because I may not know what all of the types of plastics mean.
   - (3) Create a folder of pictures
   - (5) Create a link to the picture, be able to click the type of plastic and exit out
-- (5) As a user, I want my survey to have an autofill of 0 if I don’t include something on the survey.
+- (2) As a user, I want my survey to have an autofill of 0 if I don’t include something on the survey.
   - (2) Autofill 0 for survey entries on website
-  - (3) Autofill 0 for all entries on mobile app
 - (8) As a user, I want to be able to edit surveys and names for surveys that I have submitted.
   - (3) Allow users to view the correct information on a survey on the website
   - (3) Allow users to edit surveys they have permission to edit on the website
