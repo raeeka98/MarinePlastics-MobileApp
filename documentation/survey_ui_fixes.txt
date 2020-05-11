@@ -1,0 +1,20 @@
+This lists the things that are broken or aren't user friendly when filling out
+  the survey.
+
+When done filling out a textbox, user has to click “return” instead of a special
+  “done” button. This made me stuck for a while.
+When inputting data in the bottom textboxes for the “Team Information” section,
+  the phone popup keyboard covers the textboxes so users can’t see what they are
+  typing.
+The Date is in the format dd/mm/yyyy.
+The X, title of the survey part, and “Finish” button, are not centered
+  vertically with the blue top bar.
+COI recommended not using accordian style for “Area” section.
+Long header names are cut off.
+When typing in textboxes in “Area” section, the beginning of the word is cut off.
+No decimal option for numerical textboxes.
+“Get Coordinates” doesn’t work.
+No “return” or “done” option for numerical textboxes.
+Time slot for tide is broken and says “Set a date”.
+If attempt to publish a survey while not logged in, app freezes.
+Textboxes can’t currently have punctuation.
