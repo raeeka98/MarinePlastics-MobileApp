@@ -36,6 +36,7 @@ const navigateToHome = NavigationActions.navigate({
  *   userLast: String,
  *   orgName: String,
  *   orgLoc: String,
+ *   userEmail: String,
  *   cleanupDate: Date,
  *   cleanupTime: Date,
  *   beachName: String,
@@ -588,7 +589,7 @@ export default class SurveyContainer extends Component {
         /* Here we'll need to verify the new survey information */
         const survey = this.state;
         let invalid = [];
-        const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
+        const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc', 'userEmail',
             'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
             'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
             'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
