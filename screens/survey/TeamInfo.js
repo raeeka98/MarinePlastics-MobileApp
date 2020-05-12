@@ -141,10 +141,10 @@ export default class TeamInfo extends Component {
                     <Text style={styles.inputSingle}>Email Address</Text>
                     <Item regular>
                         <Input
-                            style={this.props.invalidFields.includes('emailAd') ? {borderWidth: 2, borderColor: 'red'} : {}}
-                            ref='emailAd'
-                            onChange={this.props.updateSurveyState.bind(this, 'emailAd')}
-                            value={this.state.surveyData.emailAd}
+                            style={this.props.invalidFields.includes('userEmail') ? {borderWidth: 2, borderColor: 'red'} : {}}
+                            ref='userEmail'
+                            onChange={this.props.updateSurveyState.bind(this, 'userEmail')}
+                            value={this.state.surveyData.userEmail}
                         />
                     </Item>
 

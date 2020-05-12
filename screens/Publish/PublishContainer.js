@@ -353,7 +353,7 @@ export default class PublishContainer extends Component {
      console.log(survey)
      let invalid = [];
 
-     const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
+     const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc', 'userEmail',
          'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
          'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
          'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
