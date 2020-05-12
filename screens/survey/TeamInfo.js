@@ -138,6 +138,15 @@ export default class TeamInfo extends Component {
                             value={this.state.surveyData.orgLoc}
                         />
                     </Item>
+                    <Text style={styles.inputSingle}>Email Address</Text>
+                    <Item regular>
+                        <Input
+                            style={this.props.invalidFields.includes('emailAd') ? {borderWidth: 2, borderColor: 'red'} : {}}
+                            ref='emailAd'
+                            onChange={this.props.updateSurveyState.bind(this, 'emailAd')}
+                            value={this.state.surveyData.emailAd}
+                        />
+                    </Item>
 
                 </View>
                 {/* - Use the DatePicker component to have a user select a date that the beach survey takes place */}
