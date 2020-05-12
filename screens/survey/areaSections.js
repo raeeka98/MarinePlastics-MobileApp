@@ -77,7 +77,7 @@ class BeachInfo extends Component {
                     <View style={[styles.inputDouble, (this.props.invalidFields.includes('usage') ? 
                                     {borderColor: 'red', borderWidth: 2} : {})]} >
                         <Text>
-                            Major Usage:
+                            Major Usage: {"\n"} (most approperiate one)
                         </Text> 
                         <View 
                             style={styles.checkBox} 
@@ -126,7 +126,7 @@ class BeachInfo extends Component {
                     <View style={[styles.inputDouble, (this.props.invalidFields.includes('locChoice') ? 
                                     {borderColor: 'red', borderWidth: 2} : {})]}>
                         <Text>
-                            Reason For Beach Choice:
+                            Reason For Beach Choice: {"\n"} (check all that apply)
                         </Text>
                         <View 
                             style={[styles.checkBox]} 
@@ -166,7 +166,7 @@ class BeachInfo extends Component {
                     </View>
                 </View>
                 <View style={{marginLeft: 15, marginRight:15}}>
-                    <Text style={styles.inputSingle}>Compass Direction {"\n"} (When facing the water - Degrees)</Text>
+                    <Text style={styles.inputSingle}>Compass Direction {"\n"} (when facing the water - Degrees)</Text>
                     <Item regular>
                         <TextInput
                             ref = 'cmpsDir' 
