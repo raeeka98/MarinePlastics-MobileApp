@@ -289,6 +289,7 @@ export default class PublishContainer extends Component {
         majorUse: {
           rec: surveyData.usageRecreation ? surveyData.usageRecreation : undefined,
           com: surveyData.usageCommercial ? surveyData.usageCommercial : undefined,
+          rem: surveyData.usageRemote ? surveyData.usageRemote : undefined,
           other: surveyData.usageOther ? surveyData.usageOther : undefined
         } ,
         SRSDebris: this.calculateTotals('SRS'),
@@ -371,7 +372,7 @@ export default class PublishContainer extends Component {
          invalid.push('locChoice')
 
      if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
-         && !survey.surveyData.usageOther)
+        && !survey.surveyData.usageRemote && !survey.surveyData.usageOther)
          invalid.push('usage')
 
      if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap

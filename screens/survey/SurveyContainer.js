@@ -44,6 +44,7 @@ const navigateToHome = NavigationActions.navigate({
  *   longitude: Number,
  *   usageRecreation: Boolean,
  *   usageCommercial: Boolean,
+ *   usageRemote: Boolean,
  *   usageOther: String,
  *   locationChoiceProximity: boolean,
  *   locationChoiceDebris: Boolean,
@@ -607,7 +608,7 @@ export default class SurveyContainer extends Component {
             invalid.push('locChoice')
 
         if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
-            && !survey.surveyData.usageOther)
+            && !survey.surveyData.usageRemote && !survey.surveyData.usageOther)
             invalid.push('usage')
 
         if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap

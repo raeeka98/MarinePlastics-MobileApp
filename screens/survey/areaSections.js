@@ -100,6 +100,14 @@ class BeachInfo extends Component {
                         <View style={styles.checkBox}>
                             <CheckBox 
                                 style={styles.checkBoxInput} 
+                                isChecked={this.state.surveyData.usageRemote} 
+                                onClick={this.props.checkedbox.bind(this, 'usageRemote')} 
+                            />
+                            <Text style={{marginLeft:5}}>Remote/Unused</Text>
+                        </View>
+                        <View style={styles.checkBox}>
+                            <CheckBox 
+                                style={styles.checkBoxInput} 
                                 isChecked={this.state.surveyData.otherChecked} 
                                 onClick={this.props.checkedbox.bind(this, 'otherChecked')} 
                             />
