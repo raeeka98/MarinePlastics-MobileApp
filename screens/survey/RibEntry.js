@@ -84,7 +84,7 @@ export default class RibEntry extends Component {
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
-                    <Text style={{fontSize: 20}}>Rib Start (meters):</Text>
+                    <Text style={{fontSize: 20}}>SPINE Start Point (meters):</Text>
                     <Item regular>
                         <TextInput
                             style={{width: 100, height: 35}}
@@ -96,7 +96,7 @@ export default class RibEntry extends Component {
                     </Item>
                 </View>
                 <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10, padding: 10}]}>
-                    <Text style={{fontSize: 20}}>Rib Length (meters):</Text>
+                    <Text style={{fontSize: 20}}>RIB LENGTH (meters):</Text>
                     <Item regular>
                         <TextInput
                             style={{width: 100, height: 35}}
