@@ -166,7 +166,7 @@ class BeachInfo extends Component {
                     </View>
                 </View>
                 <View style={{marginLeft: 15, marginRight:15}}>
-                    <Text style={styles.inputSingle}>Compass Direction (Degrees)</Text>
+                    <Text style={styles.inputSingle}>Compass Direction {"\n"} (When facing the water - Degrees)</Text>
                     <Item regular>
                         <TextInput
                             ref = 'cmpsDir' 
