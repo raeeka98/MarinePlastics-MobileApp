@@ -60,6 +60,7 @@ const navigateToHome = NavigationActions.navigate({
  *   tideTimeB: Date,
  *   windSpeed: String,
  *   windDir: String,
+ *   windCom: String,
  *   slope: String,
  *   substrateTypeSand: Boolean,
  *   substrateTypePebble: Boolean,

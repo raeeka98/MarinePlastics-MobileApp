@@ -283,8 +283,9 @@ export default class PublishContainer extends Component {
           height: surveyData.tideHeightA ? surveyData.tideHeightA : ""
         },
         wind: {
-          dir: surveyData.windDir? surveyData.windDir : "",
-          spd: surveyData.windSpeed ? surveyData.windSpeed : ""
+          dir: surveyData.windDir ? surveyData.windDir : "",
+          spd: surveyData.windSpeed ? surveyData.windSpeed : "",
+          comm: surveyData.windCom ? surveyData.windCom : ""
         },
         majorUse: {
           rec: surveyData.usageRecreation ? surveyData.usageRecreation : undefined,

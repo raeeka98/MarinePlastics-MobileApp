@@ -214,7 +214,7 @@ class NRO extends Component {
                             value={this.state.surveyData.riverName}
                         />
                     </Item>
-                    <Text style={styles.inputSingle}>Approximate Distance</Text>
+                    <Text style={styles.inputSingle}>Approximate Distance from "zero" on the Spine</Text>
                     <Item regular>
                         <TextInput
                             ref = 'riverDistance' 
@@ -476,6 +476,19 @@ class WindInfo extends Component {
                             <Picker.Item label="Northwest" value='nw' />
                         </Picker>
                     </Item>
+                    <Text style={styles.inputSingle}>COMMENTS: </Text>
+                    <Item regular>
+                        <TextInput
+                            ref = 'windCom' 
+                            placeholder={invisiblePlaceholder} 
+                            style={[styles.textInput, (
+                                this.props.invalidFields.includes('windCom') ? 
+                                    {borderColor: 'red', borderWidth: 2} : {}
+                            )]} 
+                            onChange={this.props.updateSurveyState.bind(this, 'windCom')}
+                            value={this.state.surveyData.windCom}
+                        />
+                    </Item>
                 </View>
             </View>
         )
@@ -548,7 +561,7 @@ class SlopeSubstrate extends Component {
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}  
                             />
-                            <Text style={{marginLeft:15, fontSize: 16}}>Rip Rap</Text>
+                            <Text style={{marginLeft:15, fontSize: 16}}>Rip Rap (large boulders)</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
                             <CheckBox 
