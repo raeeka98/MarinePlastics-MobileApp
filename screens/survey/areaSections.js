@@ -77,7 +77,7 @@ class BeachInfo extends Component {
                     <View style={[styles.inputDouble, (this.props.invalidFields.includes('usage') ? 
                                     {borderColor: 'red', borderWidth: 2} : {})]} >
                         <Text>
-                            Major Usage: {"\n"} (most approperiate one)
+                            Major Usage: {"\n"} (most appropriate one)
                         </Text> 
                         <View 
                             style={styles.checkBox} 
