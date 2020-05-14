@@ -15,6 +15,7 @@ import HomePage from './screens/HomePage';
 import BoardingPage from './screens/BoardingPage';
 import LogInPage from './screens/LogInPage';
 import SurveyPage from './screens/SurveyPage';
+import TutorialPage from './screens/TutorialPage';
 import PublishContainer from './screens/Publish/PublishContainer';
 import SurveyContainer from './screens/survey/SurveyContainer'
 import CustomDrawer from './components/CustomDrawer';
@@ -36,6 +37,7 @@ import CustomDrawer from './components/CustomDrawer';
  *              - HomePage
  *              - LogInPage
  *              - SurveyPage
+ *              - TutorialPage
  * 
  * Some things to note: 
  *  - There are two sets of Home, Login and Surveys. DrawerNavigator needs it in order to use
@@ -52,6 +54,7 @@ const DrawerNavigator = createDrawerNavigator({
   HomePage,
   LogInPage,
   SurveyPage,
+  TutorialPage,
   },
   {
     initialRouteName: "LogInPage",
@@ -66,10 +69,10 @@ const MainNavigator = createStackNavigator(
     Home: {screen: HomePage},
     Login: {screen: LogInPage},
     SurveyEntry: {screen: SurveyPage},
+    TutorialPage: {screen: TutorialPage},
     PublishContainer: {screen: PublishContainer},
     SurveyContainer: {screen: SurveyContainer},
     DrawerNavigator
-
   },
   {
     // First init route is for testing, second init route is for published app

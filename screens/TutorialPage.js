@@ -17,10 +17,10 @@ import PageHeader from '../components/PageHeader';
    */
 
 
-  class SurveyPage extends Component {
+  class TutorialPage extends Component {
 
   static navigationOptions = {
-    title: 'New Survey',
+    title: 'New Tutorial',
     drawerIcon: ({focused}) => (
       <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'dodgerblue' : 'black')}} />
     )
@@ -55,12 +55,13 @@ import PageHeader from '../components/PageHeader';
         );
       }
     
+
     
     _renderDotIndicator() {
         return <PagerDotIndicator pageCount={5} />;
     }
 }
-export default SurveyPage;
+export default TutorialPage;
 
 // window variables
 const windowWidth = Dimensions.get('window').width;
