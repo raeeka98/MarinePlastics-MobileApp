@@ -26,7 +26,6 @@ var BUTTONS = [
     'Misc. Plastic',
     'Plastic Bottles / Plastic Caps',
     'Styrofoam',
-    'Wood / Paper',
     'Food / Organics',
     'Urethane Foam',
     'Metal',
@@ -35,6 +34,7 @@ var BUTTONS = [
     'Aluminum Cans / Foil',
     'Hygiene Items',
     'Tile / Brick',
+    'Wood / Paper',
     'Cancel'
 ]
 
@@ -56,7 +56,6 @@ export default class RibInput extends Component {
                 {title: 'Misc. Plastic'},
                 {title: 'Plastic Bottles / Plastic Caps'},
                 {title: 'Styrofoam'},
-                {title: 'Wood / Paper'},
                 {title: 'Food / Organics'},
                 {title: 'Urethane Foam'},
                 {title: 'Metal'},
@@ -65,6 +64,7 @@ export default class RibInput extends Component {
                 {title: 'Aluminum Cans / Foil'},
                 {title: 'Hygiene Items'},
                 {title: 'Tile / Brick'},
+                {title: 'Wood / Paper'},
             ],
             selections: BUTTONS,
             isModalVisible: false,

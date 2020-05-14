@@ -27,7 +27,7 @@ class BeachInfo extends Component {
             <View style={{marginBottom: 8}}>
                 {/* Render the Beach Info */}
                 <View style={styles.inputSingleContainer}>
-                    <Text style={styles.inputSingle}>Beach Name</Text>
+                    <Text style={styles.inputSingle}>Name of Beach</Text>
                     <Item regular>
                         <TextInput
                             ref = 'beachName' 
@@ -42,9 +42,9 @@ class BeachInfo extends Component {
                     </Item>
 
                     <Button light full style={{padding: 8, marginTop: 8}}onPress={this.props.updateSurveyLocation}>
-                        <Text>Get Coordinates</Text>
+                        <Text>Coordinates</Text>
                     </Button>
-                    <Text style={styles.inputSingle}>Latitude</Text>
+                    <Text style={styles.inputSingle}>Latitude:</Text>
                     <Item regular>
                         <TextInput
                             ref = 'latitude' 
@@ -58,7 +58,7 @@ class BeachInfo extends Component {
                             value={this.state.surveyData.latitude ? this.state.surveyData.latitude + "" : ""}
                         />
                     </Item>
-                    <Text style={styles.inputSingle}>Longitude</Text>
+                    <Text style={styles.inputSingle}>Longitude:</Text>
                     <Item regular>
                         <TextInput
                             ref = 'longitude' 
@@ -77,7 +77,7 @@ class BeachInfo extends Component {
                     <View style={[styles.inputDouble, (this.props.invalidFields.includes('usage') ? 
                                     {borderColor: 'red', borderWidth: 2} : {})]} >
                         <Text>
-                            Major Usage: {"\n"} (most appropriate one)
+                            Major Usage {"\n"} (most appropriate one)
                         </Text> 
                         <View 
                             style={styles.checkBox} 
@@ -111,7 +111,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.otherChecked} 
                                 onClick={this.props.checkedbox.bind(this, 'otherChecked')} 
                             />
-                            <Text style={{marginLeft:5}}>Other</Text>
+                            <Text style={{marginLeft:5}}>Other:</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
@@ -126,7 +126,7 @@ class BeachInfo extends Component {
                     <View style={[styles.inputDouble, (this.props.invalidFields.includes('locChoice') ? 
                                     {borderColor: 'red', borderWidth: 2} : {})]}>
                         <Text>
-                            Reason For Beach Choice: {"\n"} (check all that apply)
+                            Reason For Beach Choice {"\n"} (check all that apply)
                         </Text>
                         <View 
                             style={[styles.checkBox]} 
@@ -152,7 +152,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.lcOtherChecked} 
                                 onClick={this.props.checkedbox.bind(this, 'lcOtherChecked')} 
                             />
-                            <Text style={{marginLeft:5}}>Other</Text>
+                            <Text style={{marginLeft:5}}>Other:</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 
@@ -203,7 +203,7 @@ class NRO extends Component {
             <View>
                 {/* Render the Nearest River Output Section */}
                 <View style={styles.inputSingleContainer}>
-                    <Text style={styles.inputSingle}>River Name</Text>
+                    <Text style={styles.inputSingle}>River Name:</Text>
                     <Item regular>
                         <TextInput
                             ref = 'riverName' 
@@ -214,7 +214,7 @@ class NRO extends Component {
                             value={this.state.surveyData.riverName}
                         />
                     </Item>
-                    <Text style={styles.inputSingle}>Approximate Distance from "zero" on the Spine</Text>
+                    <Text style={styles.inputSingle}>Approximate Distance from "zero" on the Spine:</Text>
                     <Item regular>
                         <TextInput
                             ref = 'riverDistance' 
@@ -305,8 +305,8 @@ class TideInfo extends Component {
             <View>
                 {/* Render Tide information */}
                 <View style={styles.inputSingleContainer}>
-                    <Text style={{fontSize: 20}}>Last Tide Before Cleanup</Text>
-                    <Text style={styles.inputSingle}>Type</Text>
+                    <Text style={{fontSize: 20}}>Last Tide Before Clean Up</Text>
+                    <Text style={styles.inputSingle}>Type (pick one):</Text>
                     <Item regular>
                         <Picker
                             mode='dropdown'
@@ -325,7 +325,7 @@ class TideInfo extends Component {
                 </View>
                 <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
                     <View style={styles.inputDouble}>
-                        <Text style={styles.inputDouble}>Height (ft.)</Text>
+                        <Text style={styles.inputDouble}>Height (ft.):</Text>
                         <Item regular>
                             <TextInput
                                 ref = 'tideHeightA' 
@@ -339,7 +339,7 @@ class TideInfo extends Component {
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={{marginBottom: 5}}>Select Time</Text>
+                        <Text style={{marginBottom: 5}}>Select Time:</Text>
                         <Item regular>
                             <Button onPress={this.onPressLastTime} style={{color: 'gray'}}>
                                 <Icon name='clock'></Icon>
@@ -362,7 +362,7 @@ class TideInfo extends Component {
                 </View>
                 <View style={styles.inputSingleContainer}>
                     <Text style={{fontSize: 20}}>Next Tide After Cleanup</Text>
-                    <Text style={styles.inputSingle}>Type</Text>
+                    <Text style={styles.inputSingle}>Type (pick one):</Text>
                     <Item regular>
                         <Picker
                             mode='dropdown'
@@ -394,7 +394,7 @@ class TideInfo extends Component {
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={{marginBottom: 5}}>Select Time</Text>
+                        <Text style={{marginBottom: 5}}>Select Time:</Text>
                         <Item regular>
                             <Button onPress={this.onPressNextTime} style={{color: 'gray'}}>
                                 <Icon name='clock'></Icon>
@@ -512,7 +512,7 @@ class SlopeSubstrate extends Component {
             <View>
                 {/* Render the slope information */}
                 <View style={styles.inputSingleContainer}>
-                    <Text>Beach Slope:</Text>
+                    <Text>Beach Slope {"\n"} (pick most appropriate one)</Text>
                     <Item regular>
                         <Picker
                             mode='dropdown'
@@ -532,7 +532,7 @@ class SlopeSubstrate extends Component {
 
                 {/* Render the subtrate type choices */}
                 <View style={styles.inputSingleContainer}>
-                    <Text>Substrate Type:</Text>
+                    <Text>Substrate Type {"\n"} (check all that apply)</Text>
                     <View style={[styles.inputSingle, (this.props.invalidFields.includes('subType') ? 
                                         {borderColor: 'red', borderWidth: 2} : {})]}
                      >
@@ -579,7 +579,7 @@ class SlopeSubstrate extends Component {
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
                             />
-                            <Text style={{marginLeft:15, fontSize: 16}}>Other</Text>
+                            <Text style={{marginLeft:15, fontSize: 16}}>Other:</Text>
                         </View>
                         <Item regular style={{marginTop: 3}}>
                             <TextInput 

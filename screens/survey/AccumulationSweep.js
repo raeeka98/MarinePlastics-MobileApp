@@ -33,7 +33,6 @@ var BUTTONS = [
     'Misc. Plastic',
     'Plastic Bottles / Plastic Caps',
     'Styrofoam',
-    'Wood / Paper',
     'Food / Organics',
     'Urethane Foam',
     'Metal',
@@ -42,6 +41,7 @@ var BUTTONS = [
     'Aluminum Cans / Foil',
     'Hygiene Items',
     'Tile / Brick',
+    'Wood / Paper',
     'Cancel'
 ]
 
@@ -65,7 +65,6 @@ export default class AccumulationSweep extends Component {
                 {key: 'Misc. Plastic'},
                 {key: 'Plastic Bottles / Plastic Caps'},
                 {key: 'Styrofoam'},
-                {key: 'Wood / Paper'},
                 {key: 'Food / Organics'},
                 {key: 'Urethane Foam'},
                 {key: 'Metal'},
@@ -74,6 +73,7 @@ export default class AccumulationSweep extends Component {
                 {key: 'Aluminum Cans / Foil'},
                 {key: 'Hygiene Items'},
                 {key: 'Tile / Brick'},
+                {key: 'Wood / Paper'},
 
             ],
             MicroData: this.props.MicroData ? this.props.MicroData : {},
@@ -152,7 +152,6 @@ export default class AccumulationSweep extends Component {
             {title: 'Misc. Plastic'},
             {title: 'Plastic Bottles / Plastic Caps'},
             {title: 'Styrofoam'},
-            {title: 'Wood / Paper'},
             {title: 'Food / Organics'},
             {title: 'Urethane Foam'},
             {title: 'Metal'},
@@ -161,6 +160,7 @@ export default class AccumulationSweep extends Component {
             {title: 'Aluminum Cans / Foil'},
             {title: 'Hygiene Items'},
             {title: 'Tile / Brick'},
+            {title: 'Wood / Paper'},
         ]
         return(
             <View style={[{flex: 1, backgroundColor: '#e4eaff', marginBottom: 60}]}>

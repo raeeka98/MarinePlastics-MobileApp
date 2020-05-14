@@ -120,7 +120,7 @@ export default class TeamInfo extends Component {
                             value={this.state.surveyData.userLast}
                         />
                     </Item>
-                    <Text style={styles.inputSingle}>Organization Name</Text>
+                    <Text style={styles.inputSingle}>Organization Name (if applicable)</Text>
                     <Item regular>
                         <Input
                             style={this.props.invalidFields.includes('orgName') ? {borderWidth: 2, borderColor: 'red'} : {}}
@@ -129,7 +129,7 @@ export default class TeamInfo extends Component {
                             value={this.state.surveyData.orgName}
                         />
                     </Item>
-                    <Text style={styles.inputSingle}>Organization Location</Text>
+                    <Text style={styles.inputSingle}>Organization Location (City, Country)</Text>
                     <Item regular>
                         <Input
                             style={this.props.invalidFields.includes('orgLoc') ? {borderWidth: 2, borderColor: 'red'} : {}}

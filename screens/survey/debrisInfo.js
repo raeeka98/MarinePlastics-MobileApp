@@ -1,16 +1,21 @@
 const debrisInfoID = {
     'Cigarette Butts'                   : 'cigaretteButts',
     'Fishing Line / Polypropylene Rope' : 'fishingLineRope',
+    'Plastic Cups'                      : 'plasticCups',                         
     'Plastic Straws'                    : 'plasticStraws',
     'Filmed Plastic'                    : 'filmedPlastic',
+    'Misc. Plastic'                     : 'miscPlastic',
     'Plastic Bottles / Plastic Caps'    : 'plasticBottlesCaps',
-    'Aluminum Cans / Foil / Metal'      : 'aluminumCans', 
+    'Styrofoam'                         : 'styrofoam',
+    'Food / Organics'                   : 'foodOrganic',
+    'Urethane Foam'                     : 'urethaneFoam',
+    'Metal'                             : 'metal',
     'Glass'                             : 'glass',
-    'Styofoam / Urethane'               : 'styrothane',
-    'Other: Plastics'                   : 'otherPlastic',        
-    'Other: Food / Organics'            : 'otherFood',
-    'Other: Cotton / Cloth'             : 'otherCotton',
-    'Other: Wood / Paper'               : 'otherWood'
+    'Cotton / Cloth'                    : 'cottonCloth',
+    'Aluminum Cans / Foil'              : 'aluminumCans', 
+    'Hygiene Items'                     : 'hygieneItems',
+    'Tile / Brick'                      : 'tileBrick',
+    'Wood / Paper'                      : 'woodPaper'
 }
 
 export default debrisInfoID
