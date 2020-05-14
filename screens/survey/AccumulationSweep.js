@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import CheckBox from 'react-native-check-box'
+
 import {
   TextInput,
 } from 'react-native'
@@ -38,7 +40,7 @@ var BUTTONS = [
     'Metal',
     'Glass',
     'Cotton / Cloth',
-    'Aluminum Cans / Foil',
+    'Aluminum Cans',
     'Hygiene Items',
     'Tile / Brick',
     'Wood / Paper',
@@ -70,7 +72,7 @@ export default class AccumulationSweep extends Component {
                 {key: 'Metal'},
                 {key: 'Glass'},
                 {key: 'Cotton / Cloth'},
-                {key: 'Aluminum Cans / Foil'},
+                {key: 'Aluminum Cans'},
                 {key: 'Hygiene Items'},
                 {key: 'Tile / Brick'},
                 {key: 'Wood / Paper'},
@@ -157,7 +159,7 @@ export default class AccumulationSweep extends Component {
             {title: 'Metal'},
             {title: 'Glass'},
             {title: 'Cotton / Cloth'},
-            {title: 'Aluminum Cans / Foil'},
+            {title: 'Aluminum Cans'},
             {title: 'Hygiene Items'},
             {title: 'Tile / Brick'},
             {title: 'Wood / Paper'},

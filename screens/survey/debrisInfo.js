@@ -12,7 +12,7 @@ const debrisInfoID = {
     'Metal'                             : 'metal',
     'Glass'                             : 'glass',
     'Cotton / Cloth'                    : 'cottonCloth',
-    'Aluminum Cans / Foil'              : 'aluminumCans', 
+    'Aluminum Cans'                     : 'aluminumCans', 
     'Hygiene Items'                     : 'hygieneItems',
     'Tile / Brick'                      : 'tileBrick',
     'Wood / Paper'                      : 'woodPaper'

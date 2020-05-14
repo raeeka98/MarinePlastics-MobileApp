@@ -31,7 +31,7 @@ var BUTTONS = [
     'Metal',
     'Glass',
     'Cotton / Cloth',
-    'Aluminum Cans / Foil',
+    'Aluminum Cans',
     'Hygiene Items',
     'Tile / Brick',
     'Wood / Paper',
@@ -61,7 +61,7 @@ export default class RibInput extends Component {
                 {title: 'Metal'},
                 {title: 'Glass'},
                 {title: 'Cotton / Cloth'},
-                {title: 'Aluminum Cans / Foil'},
+                {title: 'Aluminum Cans'},
                 {title: 'Hygiene Items'},
                 {title: 'Tile / Brick'},
                 {title: 'Wood / Paper'},
@@ -93,6 +93,7 @@ export default class RibInput extends Component {
 
     /**
      * Save the new rib start and rib length information
+     * NEED TO ADD A DELETE MODAL!!
      */
 
     saveModal(ribStart, ribLength){
@@ -120,6 +121,9 @@ export default class RibInput extends Component {
      *  the values. Additionally, the values will fall under some subcategories, including either
      *  "fresh" or 'weathered'
      */
+    /*
+        need to add a button to delete a rib around line 240
+    */
     renderCategoryInput = (item) => {
         const currentItemKey = debrisInfoID[item.title];
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
@@ -243,7 +247,7 @@ export default class RibInput extends Component {
                             </Button>
                             <Button info style={{justifyContent: 'center', width: 100}}onPress={this.saveModal.bind(this, ribStart, ribLength)}>
                                 <Text style={{color: 'white', padding: 8}}>Save</Text>
-                            </Button>
+                            </Button>  
                         </View>
 
                     </View>
