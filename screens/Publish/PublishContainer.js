@@ -101,6 +101,9 @@ export default class PublishContainer extends Component {
   closeConfirmOpenBeachModal = () => this.setState({isBeachModalVisible: true, isConfirmModalVisible: false})
 
   openPublishModal(survey) {
+    console.log("mergedSurvey:");
+    console.log(survey);
+
     const {surveyName} = survey;
     this.setState({
       isSubmitModalVisible: true,
@@ -110,11 +113,19 @@ export default class PublishContainer extends Component {
   }
 
   onPressBeach(beachName, beachID) {
-    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: beachID, confirmBeach: beachName});
+    this.setState({ isBeachModalVisible: false, match: beachID, confirmBeach: beachName });
+
+    setTimeout(() => {
+      this.setState({ isConfirmModalVisible: true });
+    }, 2000);
   }
 
   onPressNoMatch(beachName) {
-    this.setState({isConfirmModalVisible: true, isBeachModalVisible: false, match: null, confirmBeach: beachName})
+    this.setState({ isBeachModalVisible: false, match: null, confirmBeach: beachName });
+
+    setTimeout(() => {
+      this.setState({ isConfirmModalVisible: true });
+    }, 2000);
   }
 
 
@@ -534,7 +545,7 @@ export default class PublishContainer extends Component {
                   <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isBeachModalVisible: false})}>
                     <Text>Cancel</Text>
                   </Button>
-                  <Button success style={{alignSelf: 'center'}} onPress={()=>this.onPressBeach(this.state.beachName)}>
+                  <Button success style={{alignSelf: 'center'}} onPress={()=>this.onPressNoMatch(this.state.beachName)}>
                     <Text>No match</Text>
                   </Button>
                 </View>
