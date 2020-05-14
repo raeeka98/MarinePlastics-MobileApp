@@ -9,6 +9,9 @@
     "eject": "expo eject",
     "test": "jest"
   },
+  "jest": {
+    "preset": "react-native"
+  },
   "dependencies": {
     "@expo/samples": "2.1.1",
     "axios": "^0.18.1",
@@ -45,7 +48,7 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^8.0.0",
-    "jest": "^23.6.0"
+    "jest-expo": "^37.0.0"
   },
   "peerDependencies": {
     "react-native": "^0.55.4",

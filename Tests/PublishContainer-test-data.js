@@ -269,7 +269,7 @@ var testCalculateTotalsMDSExpect2 = [
   ]
 ];
 
-export {
+module.exports = {
   testCalculateTotalsMDSMergedSurvey1,
   testCalculateTotalsMDSMergedSurvey2,
   testCalculateTotalsMDSExpect1,
