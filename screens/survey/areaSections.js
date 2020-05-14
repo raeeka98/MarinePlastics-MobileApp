@@ -42,7 +42,7 @@ class BeachInfo extends Component {
                     </Item>
 
                     <Button light full style={{padding: 8, marginTop: 8}}onPress={this.props.updateSurveyLocation}>
-                        <Text>Coordinates</Text>
+                        <Text>Get Coordinates</Text>
                     </Button>
                     <Text style={styles.inputSingle}>Latitude:</Text>
                     <Item regular>
