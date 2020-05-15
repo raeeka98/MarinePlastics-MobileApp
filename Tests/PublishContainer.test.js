@@ -1,6 +1,6 @@
 /**
  * PublishContainer.test.js
- * Tests calculateTotals in ../screens/Publish/PublishContainer.js for the
+ * Tests calculateTotals(type, currentSurvey) from calculateTotals.js for the
  * micro debris code using variables in PublishContainer-test-data.js.
  */
 const calculateTotals = require('./calculateTotals');

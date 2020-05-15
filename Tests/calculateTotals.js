@@ -1,3 +1,18 @@
+/**
+ * calculateTotals.js
+ * Contains copy of calculateTotals(type) from
+ * ../screens/Publish/PublishContainer.js for testing with
+ * PublishContainer.test.js.
+ */
+
+/**
+ * Given a survey type, 'SRS', 'AS', or 'MDS', calculates the total fresh and
+ * weathered trash for each type of debris in the given survey type in
+ * currentSurvey.
+ * @params {any} type, {any} currentSurvey
+ * @return array of totals for fresh and weathered debris for each type of
+ * trash
+ */
 function calculateTotals(type, currentSurvey) {
   let totals = {};
   let totalsArray = [];
