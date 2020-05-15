@@ -156,32 +156,56 @@ export default class PublishContainer extends Component {
     let totals = {};
     let totalsArray = [];
     let data;
-    switch(type){
+    switch (type) {
       case 'SRS':
         data = currentSurvey.SRSData;
         break;
-      default:
+      case 'AS':
         data = currentSurvey.ASData;
+        break;
+      case 'MDS':
+        data = currentSurvey.MicroData;
+        break;
+      default:
+        return [];
     }
 
     for (const id in data) {
-      const noSuffix = type === 'SRS' ? id.replace(/__[1-4]/, '') : id.replace(/__accumulation/, '');
+      const noSuffix = null;
+
+      // set noSuffix to type of debris and fresh or weathered
+      switch (type) {
+        case 'SRS':
+          noSuffix = id.replace(/__[1-4]/, '');
+          break;
+        case 'AS':
+          noSuffix = id.replace(/__accumulation/, '');
+          break;
+        default:
+          noSuffix = id.replace(/__micro|[1-4]/g, '');
+      }
       const trashName = noSuffix.replace(/__\w+/, '');
       const freshWeath = noSuffix.replace(/\w+__/, '');
-      if(totals[trashName] === undefined) {
+
+      // special case for micro debris
+      if (trashName === 'rib') {
+        trashName = 'microdebris';
+      }
+
+      if (totals[trashName] === undefined) {
         totals[trashName] = {
-            fresh: 0,
-            weathered: 0
+          fresh: 0,
+          weathered: 0
         }
       }
-      if(freshWeath === 'weathered') {
+      if (freshWeath === 'weathered') {
         totals[trashName].weathered += data[id];
-        if(isNaN(totals[trashName].weathered)) {
+        if (isNaN(totals[trashName].weathered)) {
           totals[trashName].weathered = 0;
         }
       } else {
         totals[trashName].fresh += data[id];
-        if(isNaN(totals[trashName].fresh)) {
+        if (isNaN(totals[trashName].fresh)) {
           totals[trashName].fresh = 0;
         }
       }
@@ -189,10 +213,10 @@ export default class PublishContainer extends Component {
     for (const id in totals) {
       totalsArray.push([
         id,
-        {fresh: totals[id].fresh, weathered: totals[id].weathered}
+        { fresh: totals[id].fresh, weathered: totals[id].weathered }
       ])
     }
-    return totalsArray
+    return totalsArray;
   }
 
   async checkIfBeachExists(survey){
@@ -304,6 +328,7 @@ export default class PublishContainer extends Component {
         } ,
         SRSDebris: this.calculateTotals('SRS'),
         ASDebris: this.calculateTotals('AS'),
+        MicroDebris: this.calculateTotals('MDS'),
         numOfP: 0
       },
       bID: this.state.match ? this.state.match : undefined,
