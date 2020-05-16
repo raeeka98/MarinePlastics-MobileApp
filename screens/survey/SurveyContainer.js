@@ -66,7 +66,13 @@ const navigateToHome = NavigationActions.navigate({
  *   substrateTypePebble: Boolean,
  *   subastrateTypeRipRap: Boolean,
  *   substrateTypeSeaweed: Boolean,
- *   subStrateTypeOther: String
+ *   subStrateTypeOther: String,
+ *   incompleteSurveyTime: Boolean,
+ *   incompleteSurveyPeople: Boolean,
+ *   incompleteSurveyArea: Boolean,
+ *   incompleteSurveyTrash: Boolean,
+ *   incompleteSurveyOther: String
+ *   
  * },
  *
  * ribData: {
@@ -457,12 +463,15 @@ export default class SurveyContainer extends Component {
                 return (
                     <AccumulationSweep
                         surveyData={this.state.surveyData}
+                        updateSurveyState={this.updateSurveyState}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
                         ribData={this.state.ribData}
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
+                        checkedbox={this.checkedbox}
+                        invalidFields={this.state.invalidFields}
                         onClickFinish={this.onClickFinish}
                         fromPublish={this.state.fromPublish}
                         tabArray={this.state.tabArray}
@@ -614,7 +623,12 @@ export default class SurveyContainer extends Component {
 
         if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
             && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
-            invalid.push('subType');
+            invalid.push('subType')
+
+        if(!survey.surveyData.incompleteSurveyTime && !survey.surveyData.incompleteSurveyPeople
+            && !survey.surveyData.incompleteSurveyArea && !survey.surveyData.incompleteSurveyTrash
+            && !survey.surveyData.incompleteSurveyOther)
+            invalid.push('incompleteSurvey');
 
         return invalid
     }

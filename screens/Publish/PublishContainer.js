@@ -293,6 +293,13 @@ export default class PublishContainer extends Component {
           rem: surveyData.usageRemote ? surveyData.usageRemote : undefined,
           other: surveyData.usageOther ? surveyData.usageOther : undefined
         } ,
+        incompleteSurvey: {
+          time: surveyData.incompleteSurveyTime ? surveyData.incompleteSurveyTime : undefined,
+          people: surveyData.incompleteSurveyPeople ? surveyData.incompleteSurveyPeople : undefined,
+          area: surveyData.incompleteSurveyArea ? surveyData.incompleteSurveyArea : undefined,
+          trash: surveyData.incompleteSurveyTrash ? surveyData.incompleteSurveyTrash : undefined,
+          other: surveyData.incompleteSurveyOther ? surveyData.incompleteSurveyOther : undefined,
+        } ,
         SRSDebris: this.calculateTotals('SRS'),
         ASDebris: this.calculateTotals('AS'),
         numOfP: 0
@@ -378,7 +385,12 @@ export default class PublishContainer extends Component {
 
      if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
          && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
-         invalid.push('subType');
+         invalid.push('subType')
+         
+     if(!survey.surveyData.incompleteSurveyTime && !survey.surveyData.incompleteSurveyPeople
+         && !survey.surveyData.incompleteSurveyArea && !survey.surveyData.incompleteSurveyTrash
+         && !survey.surveyData.incompleteSurveyOther)
+         invalid.push('incompleteSurvey');
 
      return invalid
   }
