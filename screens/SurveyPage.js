@@ -39,7 +39,7 @@ class SurveyPage extends Component {
               website and familiarize yourself with the procedure.
             </Text> 
           </Text>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto', marginBottom: '5%'}}>
+          <Text style={{fontSize: 16, fontFamily: 'Roboto', marginBottom: '10%'}}>
             The survey on this app is a digital translation of 
             COI's paper protocol. But there are some changes that should be noted. We have integrated QR code scanning
             and generation in this app to make it easier for groups to split up and work on different ribs during the survey. 
