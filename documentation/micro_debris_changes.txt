@@ -1,0 +1,4 @@
+The following are changes made to allow the mobile app to send micro debris data to the database:
+  Edited following in MarinePlastics-MobileApp/screens/Publish/PublishContainer.js:
+    calculateTotals(type)
+    convertSurvey(index)
