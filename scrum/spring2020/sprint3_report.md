@@ -23,7 +23,7 @@
 
 ## Actions to stop doing
 
-- 
+- pushing back meeting times
 
 ## Actions to start doing
 
