@@ -20,7 +20,7 @@ import PageHeader from '../components/PageHeader';
   class TutorialPage extends Component {
 
   static navigationOptions = {
-    title: 'New Tutorial',
+    title: 'Tutorial',
     drawerIcon: ({focused}) => (
       <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'dodgerblue' : 'black')}} />
     )
@@ -30,23 +30,32 @@ import PageHeader from '../components/PageHeader';
         return (
             <View style={{flex:1}}>
                 <IndicatorViewPager
-                    style={{height:500}}
+                    style={{height:700}}
                     indicator={this._renderDotIndicator()}>
                     <View style={{backgroundColor:'cadetblue'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI1.png')}/>
-        </View>
-                    <View style={{backgroundColor:'cornflowerblue'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI2.png')}/> 
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-1.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI3.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-2.png')}/> 
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI4.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-3.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-      <Image style={styles.stretch} source={require('./COI-instructions/COI5.png')}/>
-        <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-4.png')}/>
+        </View>
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-5.png')}/>
+        </View>
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-6.png')}/>
+        </View>
+                            <View style={{backgroundColor:'#1AA094'}}>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-7.png')}/>
+        </View>
+                    <View style={{backgroundColor:'#1AA094'}}>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-8.png')}/>
+            <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
             <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
           </Button>
         </View>

@@ -30,24 +30,18 @@ import PageHeader from '../components/PageHeader';
         return (
             <View style={{flex:1}}>
                 <IndicatorViewPager
-                    style={{height:500}}
+                    style={{height:700}}
                     indicator={this._renderDotIndicator()}>
                     <View style={{backgroundColor:'cadetblue'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI1.png')}/>
-        </View>
-                    <View style={{backgroundColor:'cornflowerblue'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI2.png')}/> 
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-1.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI3.png')}/>
-        </View>
-                    <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI4.png')}/>
-        </View>
-                    <View style={{backgroundColor:'#1AA094'}}>
-      <Image style={styles.stretch} source={require('./COI-instructions/COI5.png')}/>
-        <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
-            <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-9.png')}/>
+            <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
+            <Text style={{color:'white', fontWeight: 'bold'}}>SEE TUTORIAL</Text>
+          </Button>
+            <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
+            <Text style={{color:'white', fontWeight: 'bold'}}>CONTINUE TO SURVEY</Text>
           </Button>
         </View>
                 </IndicatorViewPager>
@@ -57,10 +51,11 @@ import PageHeader from '../components/PageHeader';
     
     
     _renderDotIndicator() {
-        return <PagerDotIndicator pageCount={5} />;
+        return <PagerDotIndicator pageCount={2} />;
     }
 }
 export default SurveyPage;
+console.disableYellowBox = true; // delete this when you want to see expo errors 
 
 // window variables
 const windowWidth = Dimensions.get('window').width;

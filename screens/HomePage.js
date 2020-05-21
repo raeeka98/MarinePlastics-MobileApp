@@ -14,6 +14,8 @@ import {
   Container,
   Content,
   Spinner,
+  Image,
+  ImageBackground,
   Button
 } from 'native-base'
 
@@ -193,7 +195,7 @@ class HomePage extends Component {
     }
     if(surveyArray.length === 0) {
       return(
-        <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys!</Text>
+        <Text style={{textAlign: 'center', fontSize: 18, color: 'gray'}}>You haven't published any surveys</Text>
       )
     }
     return <FlatList data={surveyArray} extraData={this.state} renderItem={({item}) => {return item.val}} />
@@ -316,7 +318,6 @@ class HomePage extends Component {
     bin = ("000000000" + (Number(dec).toString(2))).slice(-9);
     return bin;
   }
-
 
   render() {
     if(this.state.pageLoading) {
