@@ -33,10 +33,10 @@ import PageHeader from '../components/PageHeader';
                     style={{height:700}}
                     indicator={this._renderDotIndicator()}>
                     <View style={{backgroundColor:'cadetblue'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI-1.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-1.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions/COI-9.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-9.png')}/>
             <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
             <Text style={{color:'white', fontWeight: 'bold'}}>SEE TUTORIAL</Text>
           </Button>
