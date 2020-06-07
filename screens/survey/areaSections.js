@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {TextInput, View, Text} from 'react-native'
-import {Item, Button, Icon, Picker} from 'native-base'
+import React, { Component } from 'react'
+import { TextInput, View, Text } from 'react-native'
+import { Item, Button, Icon, Picker } from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import CheckBox from 'react-native-check-box'
 
@@ -23,36 +23,36 @@ class BeachInfo extends Component {
     }
 
     render() {
-        return (    
-            <View style={{marginBottom: 8}}>
+        return (
+            <View style={{ marginBottom: 8 }}>
                 {/* Render the Beach Info */}
                 <View style={styles.inputSingleContainer}>
                     <Text style={styles.inputSingle}>Name of Beach</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'beachName' 
-                            placeholder={invisiblePlaceholder} 
+                            ref='beachName'
+                            placeholder={invisiblePlaceholder}
                             style={[styles.textInput, (
-                                this.props.invalidFields.includes('beachName') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {}
-                            )]} 
+                                this.props.invalidFields.includes('beachName') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {}
+                            )]}
                             onChange={this.props.updateSurveyState.bind(this, 'beachName')}
                             value={this.state.surveyData.beachName}
                         />
                     </Item>
 
-                    <Button light full style={{padding: 8, marginTop: 8}}onPress={this.props.updateSurveyLocation}>
+                    <Button light full style={{ padding: 8, marginTop: 8 }} onPress={this.props.updateSurveyLocation}>
                         <Text>Get Coordinates</Text>
                     </Button>
                     <Text style={styles.inputSingle}>Latitude:</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'latitude' 
-                            placeholder={invisiblePlaceholder} 
+                            ref='latitude'
+                            placeholder={invisiblePlaceholder}
                             style={[styles.textInput, (
-                                this.props.invalidFields.includes('latitude') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {}
-                            )]}  
+                                this.props.invalidFields.includes('latitude') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {}
+                            )]}
                             onChange={this.props.updateSurveyState.bind(this, 'latitude')}
                             keyboardType='number-pad'
                             value={this.state.surveyData.latitude ? this.state.surveyData.latitude + "" : ""}
@@ -61,12 +61,12 @@ class BeachInfo extends Component {
                     <Text style={styles.inputSingle}>Longitude:</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'longitude' 
-                            placeholder={invisiblePlaceholder} 
+                            ref='longitude'
+                            placeholder={invisiblePlaceholder}
                             style={[styles.textInput, (
-                                this.props.invalidFields.includes('longitude') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {}
-                            )]} 
+                                this.props.invalidFields.includes('longitude') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {}
+                            )]}
                             keyboardType='number-pad'
                             onChange={this.props.updateSurveyState.bind(this, 'longitude')}
                             value={this.state.surveyData.longitude ? this.state.surveyData.longitude + "" : ""}
@@ -74,106 +74,106 @@ class BeachInfo extends Component {
                     </Item>
                 </View>
                 <View style={styles.inputDoubleContainer}>
-                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('usage') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {})]} >
+                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('usage') ?
+                        { borderColor: 'red', borderWidth: 2 } : {})]} >
                         <Text>
                             Major Usage {"\n"} (most appropriate one)
-                        </Text> 
-                        <View 
-                            style={styles.checkBox} 
+                        </Text>
+                        <View
+                            style={styles.checkBox}
                         >
-                            <CheckBox 
-                                style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.usageRecreation} 
-                                onClick={this.props.checkedbox.bind(this, 'usageRecreation')} 
+                            <CheckBox
+                                style={styles.checkBoxInput}
+                                isChecked={this.state.surveyData.usageRecreation}
+                                onClick={this.props.checkedbox.bind(this, 'usageRecreation')}
                             />
-                            <Text style={{marginLeft:5}}>Recreation</Text>
+                            <Text style={{ marginLeft: 5 }}>Recreation</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox 
-                                style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.usageCommercial} 
-                                onClick={this.props.checkedbox.bind(this, 'usageCommercial')} 
+                            <CheckBox
+                                style={styles.checkBoxInput}
+                                isChecked={this.state.surveyData.usageCommercial}
+                                onClick={this.props.checkedbox.bind(this, 'usageCommercial')}
                             />
-                            <Text style={{marginLeft:5}}>Commercial</Text>
+                            <Text style={{ marginLeft: 5 }}>Commercial</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox 
-                                style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.usageRemote} 
-                                onClick={this.props.checkedbox.bind(this, 'usageRemote')} 
+                            <CheckBox
+                                style={styles.checkBoxInput}
+                                isChecked={this.state.surveyData.usageRemote}
+                                onClick={this.props.checkedbox.bind(this, 'usageRemote')}
                             />
-                            <Text style={{marginLeft:5}}>Remote/Unused</Text>
+                            <Text style={{ marginLeft: 5 }}>Remote/Unused</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox 
-                                style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.otherChecked} 
-                                onClick={this.props.checkedbox.bind(this, 'otherChecked')} 
+                            <CheckBox
+                                style={styles.checkBoxInput}
+                                isChecked={this.state.surveyData.otherChecked}
+                                onClick={this.props.checkedbox.bind(this, 'otherChecked')}
                             />
-                            <Text style={{marginLeft:5}}>Other:</Text>
+                            <Text style={{ marginLeft: 5 }}>Other:</Text>
                         </View>
-                        <Item regular style={{marginTop: 3}}>
-                            <TextInput 
-                                editable={this.state.surveyData.otherChecked === true} 
-                                placeholder={invisiblePlaceholder} 
-                                style={{height: 30}}
+                        <Item regular style={{ marginTop: 3 }}>
+                            <TextInput
+                                editable={this.state.surveyData.otherChecked === true}
+                                placeholder={invisiblePlaceholder}
+                                style={{ height: 30 }}
                                 onChange={this.props.updateSurveyState.bind(this, 'usageOther')}
                                 value={this.state.surveyData.usageOther}
                             />
                         </Item>
                     </View>
-                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('locChoice') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {})]}>
+                    <View style={[styles.inputDouble, (this.props.invalidFields.includes('locChoice') ?
+                        { borderColor: 'red', borderWidth: 2 } : {})]}>
                         <Text>
                             Reason For Beach Choice {"\n"} (check all that apply)
                         </Text>
-                        <View 
-                            style={[styles.checkBox]} 
+                        <View
+                            style={[styles.checkBox]}
                         >
-                            <CheckBox 
-                                style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.locationChoiceProximity} 
-                                onClick={this.props.checkedbox.bind(this, 'locationChoiceProximity')} 
+                            <CheckBox
+                                style={styles.checkBoxInput}
+                                isChecked={this.state.surveyData.locationChoiceProximity}
+                                onClick={this.props.checkedbox.bind(this, 'locationChoiceProximity')}
                             />
-                            <Text  style={{marginLeft:5}}>Proximity/Convenience</Text>
+                            <Text style={{ marginLeft: 5 }}>Proximity/Convenience</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox 
-                                style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.locationChoiceDebris} 
-                                onClick={this.props.checkedbox.bind(this, 'locationChoiceDebris')} 
+                            <CheckBox
+                                style={styles.checkBoxInput}
+                                isChecked={this.state.surveyData.locationChoiceDebris}
+                                onClick={this.props.checkedbox.bind(this, 'locationChoiceDebris')}
                             />
-                            <Text style={{marginLeft:5}}>Known for Debris</Text>
+                            <Text style={{ marginLeft: 5 }}>Known for Debris</Text>
                         </View>
                         <View style={styles.checkBox}>
-                            <CheckBox 
-                                style={styles.checkBoxInput} 
-                                isChecked={this.state.surveyData.lcOtherChecked} 
-                                onClick={this.props.checkedbox.bind(this, 'lcOtherChecked')} 
+                            <CheckBox
+                                style={styles.checkBoxInput}
+                                isChecked={this.state.surveyData.lcOtherChecked}
+                                onClick={this.props.checkedbox.bind(this, 'lcOtherChecked')}
                             />
-                            <Text style={{marginLeft:5}}>Other:</Text>
+                            <Text style={{ marginLeft: 5 }}>Other:</Text>
                         </View>
-                        <Item regular style={{marginTop: 3}}>
-                            <TextInput 
-                                editable={this.state.surveyData.lcOtherChecked === true} 
-                                placeholder={invisiblePlaceholder} 
-                                style={{height: 30}}
+                        <Item regular style={{ marginTop: 3 }}>
+                            <TextInput
+                                editable={this.state.surveyData.lcOtherChecked === true}
+                                placeholder={invisiblePlaceholder}
+                                style={{ height: 30 }}
                                 onChange={this.props.updateSurveyState.bind(this, 'locationChoiceOther')}
                                 value={this.state.surveyData.locationChoiceOther}
                             />
                         </Item>
                     </View>
                 </View>
-                <View style={{marginLeft: 15, marginRight:15}}>
+                <View style={{ marginLeft: 15, marginRight: 15 }}>
                     <Text style={styles.inputSingle}>Compass Direction {"\n"} (when facing the water - Degrees)</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'cmpsDir' 
+                            ref='cmpsDir'
                             keyboardType='number-pad'
-                            placeholder={invisiblePlaceholder} 
-                            style={[styles.textInput, (this.props.invalidFields.includes('cmpsDir') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {})]} 
+                            placeholder={invisiblePlaceholder}
+                            style={[styles.textInput, (this.props.invalidFields.includes('cmpsDir') ?
+                                { borderColor: 'red', borderWidth: 2 } : {})]}
                             onChange={this.props.updateSurveyState.bind(this, 'cmpsDir')}
                             value={this.state.surveyData.cmpsDir}
                         />
@@ -193,7 +193,7 @@ class NRO extends Component {
     constructor(props) {
         super(props)
 
-        this.state={
+        this.state = {
             surveyData: this.props.surveyData ? this.props.surveyData : {}
         }
     }
@@ -206,10 +206,10 @@ class NRO extends Component {
                     <Text style={styles.inputSingle}>River Name:</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'riverName' 
-                            placeholder={invisiblePlaceholder} 
-                            style={[styles.textInput, (this.props.invalidFields.includes('riverName') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {})]} 
+                            ref='riverName'
+                            placeholder={invisiblePlaceholder}
+                            style={[styles.textInput, (this.props.invalidFields.includes('riverName') ?
+                                { borderColor: 'red', borderWidth: 2 } : {})]}
                             onChange={this.props.updateSurveyState.bind(this, 'riverName')}
                             value={this.state.surveyData.riverName}
                         />
@@ -217,11 +217,11 @@ class NRO extends Component {
                     <Text style={styles.inputSingle}>Approximate Distance from "zero" on the Spine:</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'riverDistance' 
-                            placeholder={invisiblePlaceholder} 
+                            ref='riverDistance'
+                            placeholder={invisiblePlaceholder}
                             keyboardType='number-pad'
-                            style={[styles.textInput, (this.props.invalidFields.includes('riverDistance') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {})]} 
+                            style={[styles.textInput, (this.props.invalidFields.includes('riverDistance') ?
+                                { borderColor: 'red', borderWidth: 2 } : {})]}
                             onChange={this.props.updateSurveyState.bind(this, 'riverDistance')}
                             value={this.state.surveyData.riverDistance}
                         />
@@ -248,7 +248,7 @@ class TideInfo extends Component {
 
     displayTimeString = (time) => {
         const tideTime = this.state.surveyData[time]
-        if(!tideTime)
+        if (!tideTime)
             return "--:--";
         let timeString, hours, hourString, minutes, minutesString;
         hours = tideTime.getHours();
@@ -261,7 +261,7 @@ class TideInfo extends Component {
     }
 
     onPressLastTime = () => {
-        this.setState({showLastTime: true})
+        this.setState({ showLastTime: true })
     }
 
     setLastTime = (time) => {
@@ -276,12 +276,12 @@ class TideInfo extends Component {
     }
 
     onCancelLast = () => {
-        this.setState({showLastTime: false})
+        this.setState({ showLastTime: false })
 
     }
 
     onPressNextTime = () => {
-        this.setState({showNextTime: true})
+        this.setState({ showNextTime: true })
     }
 
     setNextTime = (time) => {
@@ -296,120 +296,120 @@ class TideInfo extends Component {
     }
 
     onCancelNext = () => {
-        this.setState({showNextTime: false})
+        this.setState({ showNextTime: false })
 
     }
 
-    render () {
+    render() {
         return (
             <View>
                 {/* Render Tide information */}
                 <View style={styles.inputSingleContainer}>
-                    <Text style={{fontSize: 20}}>Last Tide Before Clean Up</Text>
+                    <Text style={{ fontSize: 20 }}>Last Tide Before Clean Up</Text>
                     <Text style={styles.inputSingle}>Type (pick one):</Text>
                     <Item regular>
                         <Picker
                             mode='dropdown'
-                            iosIcon={<Icon name="arrow-down"/>}
+                            iosIcon={<Icon name="arrow-down" />}
                             placeholder="Please Select"
                             placeholderStyle={{ color: "#bfc6ea" }}
-                            style={{width: undefined}}
+                            style={{ width: undefined }}
                             selectedValue={this.state.surveyData.tideTypeA}
-                            onValueChange={this.props.onDropdownChange.bind(this, 'tideTypeA' )}
+                            onValueChange={this.props.onDropdownChange.bind(this, 'tideTypeA')}
                         >
                             <Picker.Item label="High" value="high" />
                             <Picker.Item label="Low" value='low' />
                         </Picker>
-                        
+
                     </Item>
                 </View>
-                <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
+                <View style={[styles.inputDoubleContainer, { marginBottom: 20 }]}>
                     <View style={styles.inputDouble}>
                         <Text style={styles.inputDouble}>Height (ft.):</Text>
                         <Item regular>
                             <TextInput
-                                ref = 'tideHeightA' 
+                                ref='tideHeightA'
                                 keyboardType="number-pad"
-                                placeholder={invisiblePlaceholder} 
-                                style={[styles.textInput, (this.props.invalidFields.includes('tideHeightA') ? 
-                                        {borderColor: 'red', borderWidth: 2} : {})]}  
+                                placeholder={invisiblePlaceholder}
+                                style={[styles.textInput, (this.props.invalidFields.includes('tideHeightA') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {})]}
                                 onChange={this.props.updateSurveyState.bind(this, 'tideHeightA')}
                                 value={this.state.surveyData.tideHeightA}
                             />
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={{marginBottom: 5}}>Select Time:</Text>
+                        <Text style={{ marginBottom: 5 }}>Select Time:</Text>
                         <Item regular>
-                            <Button onPress={this.onPressLastTime} style={{color: 'gray'}}>
+                            <Button onPress={this.onPressLastTime} style={{ color: 'gray' }}>
                                 <Icon name='clock'></Icon>
                             </Button>
                             <DateTimePicker
-                                isVisible={this.state.showLastTime}    
+                                isVisible={this.state.showLastTime}
                                 mode={'time'}
                                 onConfirm={this.props.updateSurveyTime.bind(this, 'tideTimeA')}
-                                is24Hour={false}   
-                                onCancel={this.onCancelLast}                   
+                                is24Hour={false}
+                                onCancel={this.onCancelLast}
                             />
-                            <TextInput 
-                                editable={false }
-                                style={[{width: '70%', textAlign: 'center', fontSize: 17}, (this.props.invalidFields.includes('tideTimeA') ? 
-                                            {borderColor: 'red', borderWidth: 2} : {})]} 
+                            <TextInput
+                                editable={false}
+                                style={[{ width: '70%', textAlign: 'center', fontSize: 17 }, (this.props.invalidFields.includes('tideTimeA') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {})]}
                                 value={this.displayTimeString('tideTimeA')}
                             />
                         </Item>
                     </View>
                 </View>
                 <View style={styles.inputSingleContainer}>
-                    <Text style={{fontSize: 20}}>Next Tide After Cleanup</Text>
+                    <Text style={{ fontSize: 20 }}>Next Tide After Cleanup</Text>
                     <Text style={styles.inputSingle}>Type (pick one):</Text>
                     <Item regular>
                         <Picker
                             mode='dropdown'
-                            iosIcon={<Icon name="arrow-down"/>}
+                            iosIcon={<Icon name="arrow-down" />}
                             placeholder="Please Select"
                             placeholderStyle={{ color: "#bfc6ea" }}
-                            style={{width: undefined}}
+                            style={{ width: undefined }}
                             selectedValue={this.state.surveyData.tideTypeB}
-                            onValueChange={this.props.onDropdownChange.bind(this, 'tideTypeB' )}
+                            onValueChange={this.props.onDropdownChange.bind(this, 'tideTypeB')}
                         >
                             <Picker.Item label="High" value="high" />
                             <Picker.Item label="Low" value='low' />
                         </Picker>
                     </Item>
                 </View>
-                <View style={[styles.inputDoubleContainer, {marginBottom: 20}]}>
+                <View style={[styles.inputDoubleContainer, { marginBottom: 20 }]}>
                     <View style={styles.inputDouble}>
                         <Text style={styles.inputDouble}>Height (ft.)</Text>
                         <Item regular>
                             <TextInput
-                                ref = 'tideHeightB' 
-                                placeholder={invisiblePlaceholder} 
+                                ref='tideHeightB'
+                                placeholder={invisiblePlaceholder}
                                 keyboardType="number-pad"
-                                style={[styles.textInput, (this.props.invalidFields.includes('tideHeightB') ? 
-                                        {borderColor: 'red', borderWidth: 2} : {})]} 
+                                style={[styles.textInput, (this.props.invalidFields.includes('tideHeightB') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {})]}
                                 onChange={this.props.updateSurveyState.bind(this, 'tideHeightB')}
                                 value={this.state.surveyData.tideHeightB}
                             />
                         </Item>
                     </View>
                     <View style={styles.inputDouble}>
-                        <Text style={{marginBottom: 5}}>Select Time:</Text>
+                        <Text style={{ marginBottom: 5 }}>Select Time:</Text>
                         <Item regular>
-                            <Button onPress={this.onPressNextTime} style={{color: 'gray'}}>
+                            <Button onPress={this.onPressNextTime} style={{ color: 'gray' }}>
                                 <Icon name='clock'></Icon>
                             </Button>
                             <DateTimePicker
-                                isVisible={this.state.showNextTime}    
+                                isVisible={this.state.showNextTime}
                                 mode={'time'}
                                 onConfirm={this.props.updateSurveyTime.bind(this, 'tideTimeB')}
-                                is24Hour={false}   
-                                onCancel={this.onCancelNext}                   
+                                is24Hour={false}
+                                onCancel={this.onCancelNext}
                             />
-                            <TextInput 
-                                editable={false }
-                                style={[{width: '70%', textAlign: 'center', fontSize: 17}, (this.props.invalidFields.includes('tideTimeB') ? 
-                                            {borderColor: 'red', borderWidth: 2} : {})]} 
+                            <TextInput
+                                editable={false}
+                                style={[{ width: '70%', textAlign: 'center', fontSize: 17 }, (this.props.invalidFields.includes('tideTimeB') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {})]}
                                 value={this.displayTimeString('tideTimeB')}
                             />
                         </Item>
@@ -433,23 +433,23 @@ class WindInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            surveyData : this.props.surveyData ? this.props.surveyData : {}
+            surveyData: this.props.surveyData ? this.props.surveyData : {}
         }
     }
 
     render() {
-        return(
+        return (
             <View>
                 {/* Render the wind info */}
                 <View style={styles.inputSingleContainer}>
                     <Text style={styles.inputSingle}>Speed (knots):</Text>
                     <Item regular>
                         <TextInput
-                            ref = 'windSpeed'
-                            keyboardType="number-pad" 
-                            placeholder={invisiblePlaceholder} 
-                            style={[styles.textInput, (this.props.invalidFields.includes('windSpeed') ? 
-                                        {borderColor: 'red', borderWidth: 2} : {})]} 
+                            ref='windSpeed'
+                            keyboardType="number-pad"
+                            placeholder={invisiblePlaceholder}
+                            style={[styles.textInput, (this.props.invalidFields.includes('windSpeed') ?
+                                { borderColor: 'red', borderWidth: 2 } : {})]}
                             onChange={this.props.updateSurveyState.bind(this, 'windSpeed')}
                             value={this.state.surveyData.windSpeed}
                         />
@@ -458,13 +458,13 @@ class WindInfo extends Component {
                     <Item regular>
                         <Picker
                             mode='dropdown'
-                            iosIcon={<Icon name="arrow-down"/>}
+                            iosIcon={<Icon name="arrow-down" />}
                             placeholder="Please Select"
                             placeholderStyle={{ color: "#bfc6ea" }}
-                            style={{width: undefined}}
+                            style={{ width: undefined }}
                             selectedValue={this.state.surveyData.windDir}
-                            
-                            onValueChange={this.props.onDropdownChange.bind(this, 'windDir' )}
+
+                            onValueChange={this.props.onDropdownChange.bind(this, 'windDir')}
                         >
                             <Picker.Item label="North" value="n" />
                             <Picker.Item label="Northeast" value='ne' />
@@ -479,14 +479,14 @@ class WindInfo extends Component {
                     <Text style={styles.inputSingle}>COMMENTS: </Text>
                     <Item regular>
                         <TextInput
-                            ref = 'windCom' 
-                            placeholder={invisiblePlaceholder} 
+                            ref='windComments'
+                            placeholder={invisiblePlaceholder}
                             style={[styles.textInput, (
-                                this.props.invalidFields.includes('windCom') ? 
-                                    {borderColor: 'red', borderWidth: 2} : {}
-                            )]} 
-                            onChange={this.props.updateSurveyState.bind(this, 'windCom')}
-                            value={this.state.surveyData.windCom}
+                                this.props.invalidFields.includes('windComments') ?
+                                    { borderColor: 'red', borderWidth: 2 } : {}
+                            )]}
+                            onChange={this.props.updateSurveyState.bind(this, 'windComments')}
+                            value={this.state.surveyData.windComments}
                         />
                     </Item>
                 </View>
@@ -503,7 +503,7 @@ class SlopeSubstrate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            surveyData : this.props.surveyData ? this.props.surveyData : {}
+            surveyData: this.props.surveyData ? this.props.surveyData : {}
         }
     }
 
@@ -516,76 +516,76 @@ class SlopeSubstrate extends Component {
                     <Item regular>
                         <Picker
                             mode='dropdown'
-                            iosIcon={<Icon name="arrow-down"/>}
+                            iosIcon={<Icon name="arrow-down" />}
                             placeholder="Please Select"
                             placeholderStyle={{ color: "#bfc6ea" }}
-                            style={{width: undefined}}
+                            style={{ width: undefined }}
                             selectedValue={this.state.surveyData.slope}
-                            onValueChange={this.props.onDropdownChange.bind(this, 'slope' )}
+                            onValueChange={this.props.onDropdownChange.bind(this, 'slope')}
                         >
                             <Picker.Item label="Winter Profile" value="winter" />
                             <Picker.Item label="Summer Profile" value='summer' />
                         </Picker>
                     </Item>
-                    
+
                 </View>
 
                 {/* Render the subtrate type choices */}
                 <View style={styles.inputSingleContainer}>
                     <Text>Substrate Type {"\n"} (check all that apply)</Text>
-                    <View style={[styles.inputSingle, (this.props.invalidFields.includes('subType') ? 
-                                        {borderColor: 'red', borderWidth: 2} : {})]}
-                     >
+                    <View style={[styles.inputSingle, (this.props.invalidFields.includes('subType') ?
+                        { borderColor: 'red', borderWidth: 2 } : {})]}
+                    >
                         <View style={styles.checkBoxLarge}>
-                            <CheckBox 
-                                isChecked={this.state.surveyData.substrateTypeSand} 
-                                onClick={this.props.checkedbox.bind(this, 'substrateTypeSand')} 
+                            <CheckBox
+                                isChecked={this.state.surveyData.substrateTypeSand}
+                                onClick={this.props.checkedbox.bind(this, 'substrateTypeSand')}
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
-                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
+                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text  style={{marginLeft:15, fontSize: 16}}>Sand</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Sand</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
-                            <CheckBox 
-                                isChecked={this.state.surveyData.substrateTypePebble} 
-                                onClick={this.props.checkedbox.bind(this, 'substrateTypePebble')} 
+                            <CheckBox
+                                isChecked={this.state.surveyData.substrateTypePebble}
+                                onClick={this.props.checkedbox.bind(this, 'substrateTypePebble')}
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
-                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
+                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{marginLeft:15, fontSize: 16}}>Pebble</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Pebble</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
-                            <CheckBox 
-                                isChecked={this.state.surveyData.substrateTypeRipRap} 
+                            <CheckBox
+                                isChecked={this.state.surveyData.substrateTypeRipRap}
                                 onClick={this.props.checkedbox.bind(this, 'substrateTypeRipRap')}
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
-                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}  
+                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{marginLeft:15, fontSize: 16}}>Rip Rap (large boulders)</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Rip Rap (large boulders)</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
-                            <CheckBox 
-                                isChecked={this.state.surveyData.substrateTypeSeaweed} 
-                                onClick={this.props.checkedbox.bind(this, 'substrateTypeSeaweed')} 
+                            <CheckBox
+                                isChecked={this.state.surveyData.substrateTypeSeaweed}
+                                onClick={this.props.checkedbox.bind(this, 'substrateTypeSeaweed')}
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
-                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
+                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{marginLeft:15, fontSize: 16}}>Seaweed</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Seaweed</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
-                            <CheckBox 
-                                isChecked={this.state.surveyData.stOther} 
-                                onClick={this.props.checkedbox.bind(this, 'stOther')} 
+                            <CheckBox
+                                isChecked={this.state.surveyData.stOther}
+                                onClick={this.props.checkedbox.bind(this, 'stOther')}
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
-                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />} 
+                                unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{marginLeft:15, fontSize: 16}}>Other:</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Other:</Text>
                         </View>
-                        <Item regular style={{marginTop: 3}}>
-                            <TextInput 
-                                editable={this.state.surveyData.stOther === true} 
-                                placeholder={invisiblePlaceholder} 
-                                style={{height: 30}}
+                        <Item regular style={{ marginTop: 3 }}>
+                            <TextInput
+                                editable={this.state.surveyData.stOther === true}
+                                placeholder={invisiblePlaceholder}
+                                style={{ height: 30 }}
                                 onChange={this.props.updateSurveyState.bind(this, 'substrateTypeOther')}
                                 value={this.state.surveyData.substrateTypeOther}
                             />
@@ -597,4 +597,4 @@ class SlopeSubstrate extends Component {
     }
 }
 
-export {BeachInfo, NRO, TideInfo, WindInfo,SlopeSubstrate};
+export { BeachInfo, NRO, TideInfo, WindInfo, SlopeSubstrate };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as Font from 'expo-font'
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 import {
 
@@ -21,7 +21,7 @@ import Scanner from "./Scanner";
 import Import from "./Import";
 import surveyDB from '../../storage/mongoStorage'
 import testSurveys from '../../testJSON/testSurveys';
-import {NavigationActions} from 'react-navigation'
+import { NavigationActions } from 'react-navigation'
 
 import {
   SubmitModal,
@@ -43,27 +43,27 @@ export default class PublishContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading : true,
-      isImporting : true,
-      isScanning : false,
-      isPublished : false,
+      loading: true,
+      isImporting: true,
+      isScanning: false,
+      isPublished: false,
       isLoggedIn: true,
-      surveys : []
+      surveys: []
     };
     const initSurvey = this.props.navigation.getParam('initSurvey');
-    if(initSurvey) {
-        this.state.surveys.push(initSurvey);
-        this.state.surveyID = initSurvey.inProgress;
+    if (initSurvey) {
+      this.state.surveys.push(initSurvey);
+      this.state.surveyID = initSurvey.inProgress;
     }
-     // bind methods
-     this.removeSurvey = this.removeSurvey.bind(this);
-     this.convertSurvey = this.convertSurvey.bind(this);
-     this.openPublishModal = this.openPublishModal.bind(this);
-     this.onPressSubmit = this.onPressSubmit.bind(this);
-     this.openBeachModal = this.openBeachModal.bind(this);
-     this.renderBeachItem = this.renderBeachItem.bind(this);
-     this.finalBeachSubmit = this.finalBeachSubmit.bind(this);
-     console.log(toExport.SERVER_URL)
+    // bind methods
+    this.removeSurvey = this.removeSurvey.bind(this);
+    this.convertSurvey = this.convertSurvey.bind(this);
+    this.openPublishModal = this.openPublishModal.bind(this);
+    this.onPressSubmit = this.onPressSubmit.bind(this);
+    this.openBeachModal = this.openBeachModal.bind(this);
+    this.renderBeachItem = this.renderBeachItem.bind(this);
+    this.finalBeachSubmit = this.finalBeachSubmit.bind(this);
+    console.log(toExport.SERVER_URL)
   }
 
   async componentDidMount() {
@@ -72,13 +72,13 @@ export default class PublishContainer extends Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
     this.setState({
-      loading : false
+      loading: false
     });
 
   }
 
   async componentWillReceiveProps(props) {
-    if(props.navigation.getParam('isVerified')){
+    if (props.navigation.getParam('isVerified')) {
       /* If we're coming from the edit, we should call the function that checks
        * to see if the given survey's beach name exists in the survey
        */
@@ -87,24 +87,24 @@ export default class PublishContainer extends Component {
       const survey = await surveyDB.getSurvey(verifyID)
       console.log("SURVEY HERE")
       console.log(survey);
-      this.setState({mergedSurvey: survey, surveyID: verifyID})
+      this.setState({ mergedSurvey: survey, surveyID: verifyID })
       this.checkIfBeachExists(survey);
     }
   }
 
   // Manage Modals ============================================================
 
-  closeSubmitModal = () => this.setState({isSubmitModalVisible: false});
-  closeLoginModal = () => this.setState({isLoginModalVisible: false});
-  closeFinishedModal = () => this.setState({isFinishedVisible: false});
-  closeConfirmModal = () => this.setState({isConfirmModalVisible: false});
-  closeConfirmOpenBeachModal = () => this.setState({isBeachModalVisible: true, isConfirmModalVisible: false})
+  closeSubmitModal = () => this.setState({ isSubmitModalVisible: false });
+  closeLoginModal = () => this.setState({ isLoginModalVisible: false });
+  closeFinishedModal = () => this.setState({ isFinishedVisible: false });
+  closeConfirmModal = () => this.setState({ isConfirmModalVisible: false });
+  closeConfirmOpenBeachModal = () => this.setState({ isBeachModalVisible: true, isConfirmModalVisible: false })
 
   openPublishModal(survey) {
     console.log("mergedSurvey:");
     console.log(survey);
 
-    const {surveyName} = survey;
+    const { surveyName } = survey;
     this.setState({
       isSubmitModalVisible: true,
       selectedName: surveyName,
@@ -133,20 +133,20 @@ export default class PublishContainer extends Component {
   // ADD/REMOVE SURVEY TO LIST OF IMPORTED SURVEYS TO BE MERGED ================
 
   addSurvey = (data) => {
-      this.setState(prevState => {
-          prevState.surveys.push(data);
-          prevState.isScanning = false;
-          prevState.isImporting = true;
-          prevState.isPublished = false;
-          return prevState;
-      });
+    this.setState(prevState => {
+      prevState.surveys.push(data);
+      prevState.isScanning = false;
+      prevState.isImporting = true;
+      prevState.isPublished = false;
+      return prevState;
+    });
   }
 
   removeSurvey = (index) => {
-      this.setState(prevState => {
-          prevState.surveys.splice(index, 1);
-          return prevState;
-      });
+    this.setState(prevState => {
+      prevState.surveys.splice(index, 1);
+      return prevState;
+    });
   }
 
   // Merge Surveys ===========================================================
@@ -219,18 +219,18 @@ export default class PublishContainer extends Component {
     return totalsArray;
   }
 
-  async checkIfBeachExists(survey){
+  async checkIfBeachExists(survey) {
     const beachName = survey.surveyData.beachName;
     //Use the beach name to query the server's database
-    const exists = await axios.get(`${toExport.SERVER_URL}/beaches/search`, {params: {q: beachName}})
+    const exists = await axios.get(`${toExport.SERVER_URL}/beaches/search`, { params: { q: beachName } })
       .then(res => {
         console.log(res.data)
-        if(res.data.length === 0){
+        if (res.data.length === 0) {
           return false;
         } else {
           console.log(res.data)
-          if(res.data[0].n === beachName){
-            this.setState({match: res.data[0]._id})
+          if (res.data[0].n === beachName) {
+            this.setState({ match: res.data[0]._id })
             return true;
           }
           return false;
@@ -240,7 +240,7 @@ export default class PublishContainer extends Component {
         console.log(`EERROORRR\n${err}`);
         return false;
       })
-    if(exists){
+    if (exists) {
       //If its true, then complete the submission!
       console.log(`The beach ${beachName} exists in the database`);
       //Here's where we'll submit the survey to the database
@@ -289,7 +289,7 @@ export default class PublishContainer extends Component {
           f: surveyData.userFirst ? surveyData.userFirst : "",
           l: surveyData.userLast ? surveyData.userLast : "",
         },
-        email: userEmail,
+        email: surveyData.userEmail,
         userID: userID,
         org: surveyData.orgName ? surveyData.orgName : "",
         reason: {
@@ -307,10 +307,10 @@ export default class PublishContainer extends Component {
         },
         slope: surveyData.slope ? surveyData.slope : "",
         cmpsDir: surveyData.cmpsDir ? surveyData.cmpsDir : 0,
-        lastTide : {
+        lastTide: {
           type: surveyData.tideTypeB ? surveyData.tideTypeB : "",
           time: surveyData.tideTimeB ? this.convertTimeString(surveyData.tideTimeB) : "",
-          height: surveyData.tideHeightB ? surveyData.tideHeightB: ""
+          height: surveyData.tideHeightB ? surveyData.tideHeightB : ""
         },
         nextTide: {
           type: surveyData.tideTypeA ? surveyData.tideTypeA : "",
@@ -320,21 +320,21 @@ export default class PublishContainer extends Component {
         wind: {
           dir: surveyData.windDir ? surveyData.windDir : "",
           spd: surveyData.windSpeed ? surveyData.windSpeed : "",
-          comm: surveyData.windCom ? surveyData.windCom : ""
+          comment: surveyData.windComments ? surveyData.windComments : ""
         },
         majorUse: {
           rec: surveyData.usageRecreation ? surveyData.usageRecreation : undefined,
           com: surveyData.usageCommercial ? surveyData.usageCommercial : undefined,
           rem: surveyData.usageRemote ? surveyData.usageRemote : undefined,
           other: surveyData.usageOther ? surveyData.usageOther : undefined
-        } ,
+        },
         incompleteSurvey: {
           time: surveyData.incompleteSurveyTime ? surveyData.incompleteSurveyTime : undefined,
           people: surveyData.incompleteSurveyPeople ? surveyData.incompleteSurveyPeople : undefined,
           area: surveyData.incompleteSurveyArea ? surveyData.incompleteSurveyArea : undefined,
           trash: surveyData.incompleteSurveyTrash ? surveyData.incompleteSurveyTrash : undefined,
           other: surveyData.incompleteSurveyOther ? surveyData.incompleteSurveyOther : undefined,
-        } ,
+        },
         SRSDebris: this.calculateTotals('SRS'),
         ASDebris: this.calculateTotals('AS'),
         MicroDebris: this.calculateTotals('MDS'),
@@ -355,7 +355,7 @@ export default class PublishContainer extends Component {
   /**
    * Converts time to a string that will be stored in the database
    */
-  convertTimeString(time){
+  convertTimeString(time) {
     let timeString = "";
     timeString = time.toString().split(/ /)[4].substring(0, 5);
     return timeString;
@@ -367,18 +367,18 @@ export default class PublishContainer extends Component {
   async finalBeachSubmit() {
     const formToSubmit = await this.convertSurvey();
     console.log(formToSubmit);
-      //If there is a beach ID, then we can just sumbit the survey under that beach
+    //If there is a beach ID, then we can just sumbit the survey under that beach
 
     axios.post(`${toExport.SERVER_URL}/beaches/surveys`, formToSubmit)
       .then(res => {
-        if(res.data.survID){
-          this.setState({isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false})
+        if (res.data.survID) {
+          this.setState({ isFinishedVisible: true, isConfirmModalVisible: false, isBeachModalVisible: false })
           //Finally set the 'published' variable for the survey
-          surveyDB.updateSurvey(this.state.surveyID, {$set: {published: true}});
+          surveyDB.updateSurvey(this.state.surveyID, { $set: { published: true } });
         }
       })
       .catch(err => {
-        this.setState({isConfirmModalVisible: false})
+        this.setState({ isConfirmModalVisible: false })
         console.log("Error submitting form:")
         let error = err.response.data.error
         console.log(error);
@@ -388,47 +388,47 @@ export default class PublishContainer extends Component {
 
   async isSurveyValid() {
     //We should also check to see if the user is logged in
-    if(await AsyncStorage.getItem('accessToken') === null){
+    if (await AsyncStorage.getItem('accessToken') === null) {
       // Use another modal to alert the user that they must log in
-      this.setState({isSubmitModalVisible: false, isLoginModalVisible: true, isLoggedIn: false});
+      this.setState({ isSubmitModalVisible: false, isLoginModalVisible: true, isLoggedIn: false });
       return
-     }
-     let survey = this.state.mergedSurvey
-     console.log("-----SURVEY-----")
-     console.log(survey)
-     let invalid = [];
+    }
+    let survey = this.state.mergedSurvey
+    console.log("-----SURVEY-----")
+    console.log(survey)
+    let invalid = [];
 
-     const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc', 'userEmail',
-         'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
-         'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
-         'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
-         'latitude', 'longitude'
-     ];
+    const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc', 'userEmail',
+      'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
+      'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
+      'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
+      'latitude', 'longitude'
+    ];
 
-     for(const id in requiredIDs) {
-       if(survey.surveyData[requiredIDs[id]] === undefined) {
-         invalid.push(requiredIDs[id]);
-       }
-     }
+    for (const id in requiredIDs) {
+      if (survey.surveyData[requiredIDs[id]] === undefined) {
+        invalid.push(requiredIDs[id]);
+      }
+    }
 
-     if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther
-         && !survey.surveyData.locationChoiceProximity)
-         invalid.push('locChoice')
+    if (!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther
+      && !survey.surveyData.locationChoiceProximity)
+      invalid.push('locChoice')
 
-     if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
-        && !survey.surveyData.usageRemote && !survey.surveyData.usageOther)
-         invalid.push('usage')
+    if (!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
+      && !survey.surveyData.usageRemote && !survey.surveyData.usageOther)
+      invalid.push('usage')
 
-     if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
-         && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
-         invalid.push('subType')
-         
-     if(!survey.surveyData.incompleteSurveyTime && !survey.surveyData.incompleteSurveyPeople
-         && !survey.surveyData.incompleteSurveyArea && !survey.surveyData.incompleteSurveyTrash
-         && !survey.surveyData.incompleteSurveyOther)
-         invalid.push('incompleteSurvey');
+    if (!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
+      && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
+      invalid.push('subType')
 
-     return invalid
+    /*if(!survey.surveyData.incompleteSurveyTime && !survey.surveyData.incompleteSurveyPeople
+        && !survey.surveyData.incompleteSurveyArea && !survey.surveyData.incompleteSurveyTrash
+        && !survey.surveyData.incompleteSurveyOther)
+        invalid.push('incompleteSurvey'); */
+
+    return invalid
   }
 
 
@@ -446,28 +446,28 @@ export default class PublishContainer extends Component {
     )
       .then(res => {
         console.log(res.data)
-        this.setState({beachName: beachName, isBeachModalVisible: true, isLoadingModalVisible: false, beachList: res.data})
+        this.setState({ beachName: beachName, isBeachModalVisible: true, isLoadingModalVisible: false, beachList: res.data })
       })
       .catch(err => {
         console.log("COORDS ERROR")
         console.log(err);
-        this.setState({isLoadingModalVisible: false});
+        this.setState({ isLoadingModalVisible: false });
       })
 
   }
 
 
 
-  async onPressSubmit(){
+  async onPressSubmit() {
     const currentSurvey = this.state.mergedSurvey;
     let invalidArray = await this.isSurveyValid();
-    if(!this.state.isLoggedIn){
+    if (!this.state.isLoggedIn) {
       return;
     }
-    if(invalidArray.length > 0){
+    if (invalidArray.length > 0) {
       /* If we have some invalid fields, navigate to SurveyContainer and indicate which fields are invalid */
       console.log("Not valid")
-      this.setState({isSubmitModalVisible: false});
+      this.setState({ isSubmitModalVisible: false });
       this.props.navigation.navigate('SurveyContainer', {
         surveyName: this.state.surveys[0].surveyName,
         ribData: currentSurvey.ribData,
@@ -482,26 +482,26 @@ export default class PublishContainer extends Component {
     } else {
       /* Call the function to check if the beach name matches a name in the database */
       console.log("Survey is valid");
-      this.setState({isSubmitModalVisible: false, isLoadingModalVisible: true})
+      this.setState({ isSubmitModalVisible: false, isLoadingModalVisible: true })
       this.checkIfBeachExists(currentSurvey);
       /* If it returns true, then submit the survey to the database using the beach data stored in the db */
       /* Else, check beaches within a 5 mile radius (Maybe use Connor's haversine formula? */
-        /* If the user selects a beach on there (ie the name of the beach they intended to submit under), submit using that data */
-        /* Otherwise, create a new beach in the database */
+      /* If the user selects a beach on there (ie the name of the beach they intended to submit under), submit using that data */
+      /* Otherwise, create a new beach in the database */
     }
   }
 
   // MERGE AND PUBLISH SURVEY ==================================================
 
   publishSurvey = () => {
-      const { surveys } = this.state;
-      const mergedSurvey = mergeSurveys(surveys);
-      this.openPublishModal(mergedSurvey);
+    const { surveys } = this.state;
+    const mergedSurvey = mergeSurveys(surveys);
+    this.openPublishModal(mergedSurvey);
   }
 
-  renderBeachItem({item}) {
+  renderBeachItem({ item }) {
     return (
-      <Button transparent key={item.n} onPress={()=>{this.onPressBeach(item.n, item._id)}}>
+      <Button transparent key={item.n} onPress={() => { this.onPressBeach(item.n, item._id) }}>
         <Text>{item.n}</Text>
       </Button>
     )
@@ -509,87 +509,87 @@ export default class PublishContainer extends Component {
 
   toScanner = () => {
     this.setState({
-      isScanning : true,
-      isImporting : false,
-      isPublished : false
+      isScanning: true,
+      isImporting: false,
+      isPublished: false
     });
   }
 
   render() {
-    if(this.state.loading) {
-      return <Spinner color='blue'/>;
+    if (this.state.loading) {
+      return <Spinner color='blue' />;
     }
     else {
-      return(
+      return (
         <Container>
           <PageHeader title='Publish Survey' arrow openDrawer={() => this.props.navigation.pop()} />
-            {this.state.isScanning &&
-                <Scanner
-                  surveys={this.state.surveys}
-                  addSurvey={this.addSurvey}/>
-            }
-            {this.state.isImporting &&
-                <Import
-                  surveys={this.state.surveys}
-                  publishSurvey={this.publishSurvey}
-                  removeSurvey={this.removeSurvey}
-                  toScanner={this.toScanner}/>
-            }
-            {this.state.isPublished &&
-                <Published/>
-            }
-            <SubmitModal
-              isSubmitModalVisible={this.state.isSubmitModalVisible}
-              selectedName={this.state.selectedName}
-              onPressSubmit={this.onPressSubmit}
-              closeSubmitModal={this.closeSubmitModal}
-              />
-            <LoginModal
-              isLoginModalVisible={this.state.isLoginModalVisible}
-              closeLoginModal={this.closeLoginModal}
-              />
-            <LoadingModal
-              isLoadingModalVisible={this.state.isLoadingModalVisible}
-              />
-            <ConfirmModal
-              isConfirmModalVisible={this.state.isConfirmModalVisible}
-              match={this.state.match}
-              confirmBeach={this.state.confirmBeach}
-              closeConfirmModal={this.closeConfirmModal}
-              closeConfirmOpenBeachModal={this.closeConfirmOpenBeachModal}
-              finalBeachSubmit={this.finalBeachSubmit}
-              foundBeach={this.state.foundBeach}
-              />
-            <FinishedModal
-              isFinishedVisible={this.state.isFinishedVisible}
-              closeFinishedModal={this.closeFinishedModal}
-              />
-            <Modal isVisible={this.state.isBeachModalVisible}>
-              <View style={{alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white'}}>
-                <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold'}}>Beach Not Found!</Text>
-                <Text style={{padding: 8, fontSize: 15}}>
-                  It looks like the beach "{this.state.beachName}" is not in our database! We may actually have it stored, just under a different name.
+          {this.state.isScanning &&
+            <Scanner
+              surveys={this.state.surveys}
+              addSurvey={this.addSurvey} />
+          }
+          {this.state.isImporting &&
+            <Import
+              surveys={this.state.surveys}
+              publishSurvey={this.publishSurvey}
+              removeSurvey={this.removeSurvey}
+              toScanner={this.toScanner} />
+          }
+          {this.state.isPublished &&
+            <Published />
+          }
+          <SubmitModal
+            isSubmitModalVisible={this.state.isSubmitModalVisible}
+            selectedName={this.state.selectedName}
+            onPressSubmit={this.onPressSubmit}
+            closeSubmitModal={this.closeSubmitModal}
+          />
+          <LoginModal
+            isLoginModalVisible={this.state.isLoginModalVisible}
+            closeLoginModal={this.closeLoginModal}
+          />
+          <LoadingModal
+            isLoadingModalVisible={this.state.isLoadingModalVisible}
+          />
+          <ConfirmModal
+            isConfirmModalVisible={this.state.isConfirmModalVisible}
+            match={this.state.match}
+            confirmBeach={this.state.confirmBeach}
+            closeConfirmModal={this.closeConfirmModal}
+            closeConfirmOpenBeachModal={this.closeConfirmOpenBeachModal}
+            finalBeachSubmit={this.finalBeachSubmit}
+            foundBeach={this.state.foundBeach}
+          />
+          <FinishedModal
+            isFinishedVisible={this.state.isFinishedVisible}
+            closeFinishedModal={this.closeFinishedModal}
+          />
+          <Modal isVisible={this.state.isBeachModalVisible}>
+            <View style={{ alignSelf: 'center', width: '90%', height: '85%', backgroundColor: 'white' }}>
+              <Text style={{ alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: 'bold' }}>Beach Not Found!</Text>
+              <Text style={{ padding: 8, fontSize: 15 }}>
+                It looks like the beach "{this.state.beachName}" is not in our database! We may actually have it stored, just under a different name.
                   Here's a list of the closest beaches based on your survey's coordinates.
                 </Text>
-                <Text style={{padding:8, fontSize: 15, fontWeight: 'bold'}}>
-                  If you see your beach here, select it by tapping on the name.
-                  Otherwise, tap 'No match' so that we can add it to the database for you!
+              <Text style={{ padding: 8, fontSize: 15, fontWeight: 'bold' }}>
+                If you see your beach here, select it by tapping on the name.
+                Otherwise, tap 'No match' so that we can add it to the database for you!
                 </Text>
-                <FlatList
-                  style={{backgroundColor: 'ghostwhite', padding: 8}}
-                  data={this.state.beachList} extraData={this.state}
-                  renderItem={this.renderBeachItem}
-                />
-                <View style={{flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'flex-end', marginBottom: 5}}>
-                  <Button light style={{alignSelf: 'center'}} onPress={() => this.setState({isBeachModalVisible: false})}>
-                    <Text>Cancel</Text>
-                  </Button>
-                  <Button success style={{alignSelf: 'center'}} onPress={()=>this.onPressNoMatch(this.state.beachName)}>
-                    <Text>No match</Text>
-                  </Button>
-                </View>
+              <FlatList
+                style={{ backgroundColor: 'ghostwhite', padding: 8 }}
+                data={this.state.beachList} extraData={this.state}
+                renderItem={this.renderBeachItem}
+              />
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'flex-end', marginBottom: 5 }}>
+                <Button light style={{ alignSelf: 'center' }} onPress={() => this.setState({ isBeachModalVisible: false })}>
+                  <Text>Cancel</Text>
+                </Button>
+                <Button success style={{ alignSelf: 'center' }} onPress={() => this.onPressNoMatch(this.state.beachName)}>
+                  <Text>No match</Text>
+                </Button>
               </View>
-            </Modal>
+            </View>
+          </Modal>
         </Container>
       );
     }

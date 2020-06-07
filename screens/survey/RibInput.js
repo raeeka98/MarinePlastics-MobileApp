@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import {TextInput, Text, View, ScrollView } from 'react-native'
+import { TextInput, Text, View, ScrollView } from 'react-native'
 import {
-  Item,
-  Button,
-  Icon,
-  Accordion,
-  Card,
-  CardItem,
-  Left,
-  Right
+    Item,
+    Button,
+    Icon,
+    Accordion,
+    Card,
+    CardItem,
+    Left,
+    Right
 } from 'native-base'
 import Modal from 'react-native-modal'
 
@@ -40,7 +40,7 @@ var BUTTONS = [
 
 
 export default class RibInput extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             SRSData: this.props.SRSData,
@@ -48,23 +48,23 @@ export default class RibInput extends Component {
             ribData: this.props.ribData,
             ribNumber: this.props.ribNumber,
             inputItems: [
-                {title: 'Cigarette Butts'},
-                {title: 'Fishing Line / Polypropylene Rope'},
-                {title: 'Plastic Cups'},
-                {title: 'Plastic Straws'},
-                {title: 'Filmed Plastic'},
-                {title: 'Misc. Plastic'},
-                {title: 'Plastic Bottles / Plastic Caps'},
-                {title: 'Styrofoam'},
-                {title: 'Food / Organics'},
-                {title: 'Urethane Foam'},
-                {title: 'Metal'},
-                {title: 'Glass'},
-                {title: 'Cotton / Cloth'},
-                {title: 'Aluminum Cans'},
-                {title: 'Hygiene Items'},
-                {title: 'Tile / Brick'},
-                {title: 'Wood / Paper'},
+                { title: 'Cigarette Butts' },
+                { title: 'Fishing Line / Polypropylene Rope' },
+                { title: 'Plastic Cups' },
+                { title: 'Plastic Straws' },
+                { title: 'Filmed Plastic' },
+                { title: 'Misc. Plastic' },
+                { title: 'Plastic Bottles / Plastic Caps' },
+                { title: 'Styrofoam' },
+                { title: 'Food / Organics' },
+                { title: 'Urethane Foam' },
+                { title: 'Metal' },
+                { title: 'Glass' },
+                { title: 'Cotton / Cloth' },
+                { title: 'Aluminum Cans' },
+                { title: 'Hygiene Items' },
+                { title: 'Tile / Brick' },
+                { title: 'Wood / Paper' },
             ],
             selections: BUTTONS,
             isModalVisible: false,
@@ -78,7 +78,7 @@ export default class RibInput extends Component {
      */
 
     showModal = () => {
-        this.setState({isModalVisible: true})
+        this.setState({ isModalVisible: true })
     }
 
     cancelModal = () => {
@@ -96,7 +96,7 @@ export default class RibInput extends Component {
      * NEED TO ADD A DELETE MODAL!!
      */
 
-    saveModal(ribStart, ribLength){
+    saveModal(ribStart, ribLength) {
         this.setState(prevState => {
             prevState.isModalVisible = false;
             prevState.ribData[ribStart] = prevState.editStart !== '' ? prevState.editStart : prevState.ribData[ribStart];
@@ -106,7 +106,7 @@ export default class RibInput extends Component {
             return prevState
         })
     }
-    onEditChange(refName, e){
+    onEditChange(refName, e) {
         let key = refName;
         let val = e.nativeEvent.text
         this.setState(prevState => {
@@ -129,20 +129,20 @@ export default class RibInput extends Component {
         const freshKey = `${currentItemKey}__fresh__${this.state.ribNumber}`
         const weatheredKey = `${currentItemKey}__weathered__${this.state.ribNumber}`
         return (
-            <View style = {{padding:10, width: '99%', alignSelf: 'center', backgroundColor: '#ffffff'}}>
-                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Fresh:</Text>
-                    <View style={{flexDirection: 'row'}}>
+            <View style={{ padding: 10, width: '99%', alignSelf: 'center', backgroundColor: '#ffffff' }}>
+                <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
+                    <Text style={{ fontSize: 18, alignSelf: 'center', justifyContent: 'center' }}>Amount Fresh:</Text>
+                    <View style={{ flexDirection: 'row' }}>
                         <Button
                             light
                             onPress={this.props.decrementSRS.bind(this, freshKey)}
                         >
-                            <Icon type='AntDesign' name='minus'/>
+                            <Icon type='AntDesign' name='minus' />
                         </Button>
                         <Item regular>
                             <TextInput
                                 editable={false}
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
+                                style={{ width: 50, height: 35, textAlign: 'center', fontSize: 18 }}
                                 value={this.state.SRSData[freshKey] ? this.state.SRSData[freshKey] + '' : '0'}
                             />
                         </Item>
@@ -150,24 +150,24 @@ export default class RibInput extends Component {
                             light
                             onPress={this.props.incrementSRS.bind(this, freshKey)}
                         >
-                            <Icon type='AntDesign' name='plus'/>
+                            <Icon type='AntDesign' name='plus' />
                         </Button>
                     </View>
 
                 </View>
-                <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 10}]}>
-                    <Text style={{fontSize: 18, alignSelf: 'center', justifyContent: 'center'}}>Amount Weathered:</Text>
-                    <View style={{flexDirection: 'row'}}>
+                <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 10 }]}>
+                    <Text style={{ fontSize: 18, alignSelf: 'center', justifyContent: 'center' }}>Amount Weathered:</Text>
+                    <View style={{ flexDirection: 'row' }}>
                         <Button
                             light
                             onPress={this.props.decrementSRS.bind(this, weatheredKey)}
                         >
-                            <Icon type='AntDesign' name='minus'/>
+                            <Icon type='AntDesign' name='minus' />
                         </Button>
                         <Item regular>
                             <TextInput
                                 editable={false}
-                                style={{width : 50, height: 35, textAlign: 'center',fontSize: 18}}
+                                style={{ width: 50, height: 35, textAlign: 'center', fontSize: 18 }}
                                 value={this.state.SRSData[weatheredKey] ? this.state.SRSData[weatheredKey] + '' : '0'}
                             />
                         </Item>
@@ -175,7 +175,7 @@ export default class RibInput extends Component {
                             light
                             onPress={this.props.incrementSRS.bind(this, weatheredKey)}
                         >
-                            <Icon type='AntDesign' name='plus'/>
+                            <Icon type='AntDesign' name='plus' />
                         </Button>
                     </View>
                 </View>
@@ -184,70 +184,70 @@ export default class RibInput extends Component {
     }
 
 
-    renderAccordionHeader = (item, expanded) => <SurveyItemHeader title={item.title} expanded={expanded}/>;
+    renderAccordionHeader = (item, expanded) => <SurveyItemHeader title={item.title} expanded={expanded} />;
 
     render() {
         const ribStart = `r${this.state.ribNumber}Start`;
         const ribLength = `r${this.state.ribNumber}Length`
         return (
-            <ScrollView style={{marginBottom: 50, backgroundColor: '#e4eaff', flex: 1}}>
+            <ScrollView style={{ marginBottom: 50, backgroundColor: '#e4eaff', flex: 1 }}>
                 <View style={
-                        [
-                            styles.inputDoubleContainer,
-                            {
-                                alignItems: 'center',
-                                justifyContent: 'space-evenly',
-                                marginTop: 15
-                            }
-                        ]
-                      }
+                    [
+                        styles.inputDoubleContainer,
+                        {
+                            alignItems: 'center',
+                            justifyContent: 'space-evenly',
+                            marginTop: 15
+                        }
+                    ]
+                }
                 >
-                    <Text style={{fontSize: 17}}>Rib Start:</Text>
-                    <Text style={{fontSize: 17}}>{this.state.ribData[ribStart]}</Text>
-                    <Text style={{fontSize: 17}}>Rib Length:</Text>
-                    <Text style={{fontSize: 17}}>{this.state.ribData[ribLength]}</Text>
+                    <Text style={{ fontSize: 17 }}>Rib Start:</Text>
+                    <Text style={{ fontSize: 17 }}>{this.state.ribData[ribStart]}</Text>
+                    <Text style={{ fontSize: 17 }}>Rib Length:</Text>
+                    <Text style={{ fontSize: 17 }}>{this.state.ribData[ribLength]}</Text>
                     <Button onPress={this.showModal}>
-                        <Text style={{padding: 8, color: 'white'}}>Edit Rib Info</Text>
+                        <Text style={{ padding: 8, color: 'white' }}>Edit Rib Info</Text>
                     </Button>
                 </View>
                 <Accordion
-                    style={{marginTop: 20, padding: 10}}
+                    style={{ marginTop: 20, padding: 10 }}
                     dataArray={this.state.inputItems}
                     renderContent={this.renderCategoryInput}
                     renderHeader={this.renderAccordionHeader}
                 />
                 <Modal isVisible={this.state.isModalVisible}>
-                    <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
-                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Edit rib information</Text>
-                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 20}]}>
-                            <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Start:</Text>
-                            <Item regular style={{marginRight: 10}}>
+                    <View style={{ alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white' }} >
+                        <Text style={{ alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500' }}>Edit rib information</Text>
+                        <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 20 }]}>
+                            <Text style={{ marginLeft: 10, fontSize: 18 }}>New Rib Start:</Text>
+                            <Item regular style={{ marginRight: 10 }}>
                                 <TextInput
-                                    style={{width: 50, height: 35, fontSize: 18}}
+                                    style={{ width: 50, height: 35, fontSize: 18 }}
                                     keyboardType="number-pad"
                                     onChange={this.onEditChange.bind(this, 'editStart')}
                                     value={this.state.editStart}
                                 />
                             </Item>
                         </View>
-                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-between', marginBottom: 30}]}>
-                            <Text style={{marginLeft: 10, fontSize: 18}}>New Rib Length:</Text>
-                            <Item regular style={{marginRight: 10}}>
+                        <View style={[styles.inputDoubleContainer, { justifyContent: 'space-between', marginBottom: 30 }]}>
+                            <Text style={{ marginLeft: 10, fontSize: 18 }}>New Rib Length:</Text>
+                            <Item regular style={{ marginRight: 10 }}>
                                 <TextInput
-                                    style={{width: 50, height: 35, fontSize: 18}}
+                                    style={{ width: 50, height: 35, fontSize: 18 }}
                                     keyboardType="number-pad"
                                     onChange={this.onEditChange.bind(this, 'editLength')}
                                     value={this.state.editLength}
                                 />
                             </Item>
                         </View>
-                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
-                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
-                                <Text style={{padding: 8}}>Cancel</Text>
+                        <View style={[styles.inputDoubleContainer, { justifyContent: 'space-evenly' }]}>
+                            <Button light style={{ justifyContent: 'center', width: 100 }} onPress={this.cancelModal}>
+                                <Text style={{ padding: 8 }}>Cancel</Text>
                             </Button>
-                            <Button info style={{justifyContent: 'center', width: 100}}onPress={this.saveModal.bind(this, ribStart, ribLength)}>
-                                <Text style={{color: 'white', padding: 8}}>Save</Text>
-                            </Button>  
+                            <Button info style={{ justifyContent: 'center', width: 100 }} onPress={this.saveModal.bind(this, ribStart, ribLength)}>
+                                <Text style={{ color: 'white', padding: 8 }}>Save</Text>
+                            </Button>
                         </View>
 
                     </View>
