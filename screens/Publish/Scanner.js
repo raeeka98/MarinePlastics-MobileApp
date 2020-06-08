@@ -19,8 +19,8 @@ import debrisInfoID from '../survey/debrisInfo'
 
 export default class Scanner extends Component {
   constructor(props) {
-      super(props);
-      this.pushed = false;
+    super(props);
+    this.pushed = false;
   }
   state = {
     hasCameraPermission: null,
@@ -41,13 +41,13 @@ export default class Scanner extends Component {
       decoded.push(dec);
     }
     var survey = {
-      surveyData : {},
-      SRSData : {},
-      ASData : {},
-      MicroData : {},
+      surveyData: {},
+      SRSData: {},
+      ASData: {},
+      MicroData: {},
       ribData: {}
     };
-    var i=0;
+    var i = 0;
     for (var ribNum = 1; ribNum <= 4; ribNum++) {
       //RIB 1 (example rib) DO FOR EACH RIB
       survey.ribData[`r${ribNum}Start`] = decoded[i++];
@@ -91,7 +91,7 @@ export default class Scanner extends Component {
     const { hasCameraPermission } = this.state;
 
     if (hasCameraPermission === null) {
-      return <Spinner color='green'/>;
+      return <Spinner color='green' />;
     }
     if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
@@ -107,13 +107,13 @@ export default class Scanner extends Component {
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    if(type == BarCodeScanner.Constants.BarCodeType.qr) {
+    if (type == BarCodeScanner.Constants.BarCodeType.qr) {
       let survey = this.decodeText(data);
       console.log(survey)
       this.props.addSurvey(survey);
     }
     else {
-        alert("Not a Valid QR Code!");
+      alert("Not a Valid QR Code!");
     }
   }
 }

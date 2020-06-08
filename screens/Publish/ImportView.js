@@ -17,27 +17,27 @@ export default class ImportView extends Component {
   render() {
     let { index, name } = this.props;
     return (
-      <Card style={{ borderRadius:10 }}>
+      <Card style={{ borderRadius: 10 }}>
         <CardItem bordered style={{
-            borderRadius: 10,
-            height: 100
-          }}>
+          borderRadius: 10,
+          height: 100
+        }}>
           <Left>
-            <Button transparent onPress={() => {}}>
+            <Button transparent onPress={() => { }}>
               <Text>{name}</Text>
             </Button>
           </Left>
           <Right>
-              {index == 0 ?
-                <Text>[MASTER]</Text>
-                :
-                <Button danger large
-                  id={index}
-                  onPress={() => this.props.removeSurvey(index)}
-                  >
-                  <Icon name="trash" style={{ fontSize: 40 }} />
-                </Button>
-              }
+            {index == 0 ?
+              <Text>[MASTER]</Text>
+              :
+              <Button danger large
+                id={index}
+                onPress={() => this.props.removeSurvey(index)}
+              >
+                <Icon name="trash" style={{ fontSize: 40 }} />
+              </Button>
+            }
 
           </Right>
         </CardItem>

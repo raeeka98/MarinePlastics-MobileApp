@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     container: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         marginTop: 3
     },
     checkBoxInput: {
-        marginRight:5,
+        marginRight: 5,
         height: 25,
         width: 25
     },
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         marginTop: 6
     },
     checkBoxLargeInput: {
-        marginRight:10,
+        marginRight: 10,
         height: 35,
         width: 35
     },
