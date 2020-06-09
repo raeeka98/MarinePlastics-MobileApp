@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {TextInput, View } from 'react-native'
-import {Button, Item, Text, Container, Content} from 'native-base'
+import { TextInput, View } from 'react-native'
+import { Button, Item, Text, Container, Content } from 'native-base'
 import Modal from 'react-native-modal'
 
 import styles from './surveyStyles'
@@ -14,14 +14,14 @@ import surveyDB from '../../storage/mongoStorage'
 import { NavigationActions } from 'react-navigation';
 
 import {
-  ExitModal
+    ExitModal
 } from './SurveyModals'
 
 
 const navigateToHome = NavigationActions.navigate({
     routeName: 'DrawerNavigator',
     params: {},
-    action: NavigationActions.navigate({routeName: 'HomePage', params: {reload: true}})
+    action: NavigationActions.navigate({ routeName: 'HomePage', params: { reload: true } })
 });
 
 /**
@@ -36,6 +36,7 @@ const navigateToHome = NavigationActions.navigate({
  *   userLast: String,
  *   orgName: String,
  *   orgLoc: String,
+ *   userEmail: String,
  *   cleanupDate: Date,
  *   cleanupTime: Date,
  *   beachName: String,
@@ -43,6 +44,7 @@ const navigateToHome = NavigationActions.navigate({
  *   longitude: Number,
  *   usageRecreation: Boolean,
  *   usageCommercial: Boolean,
+ *   usageRemote: Boolean,
  *   usageOther: String,
  *   locationChoiceProximity: boolean,
  *   locationChoiceDebris: Boolean,
@@ -58,12 +60,19 @@ const navigateToHome = NavigationActions.navigate({
  *   tideTimeB: Date,
  *   windSpeed: String,
  *   windDir: String,
+ *   windCom: String,
  *   slope: String,
  *   substrateTypeSand: Boolean,
  *   substrateTypePebble: Boolean,
  *   subastrateTypeRipRap: Boolean,
  *   substrateTypeSeaweed: Boolean,
- *   subStrateTypeOther: String
+ *   subStrateTypeOther: String,
+ *   incompleteSurveyTime: Boolean,
+ *   incompleteSurveyPeople: Boolean,
+ *   incompleteSurveyArea: Boolean,
+ *   incompleteSurveyTrash: Boolean,
+ *   incompleteSurveyOther: String
+ *   
  * },
  *
  * ribData: {
@@ -116,13 +125,13 @@ export default class SurveyContainer extends Component {
                 tideTypeB: 'high',
                 slope: 'winter'
             },
-            SRSData: nav.getParam('SRSData') ? nav.getParam('SRSData') :  {},
+            SRSData: nav.getParam('SRSData') ? nav.getParam('SRSData') : {},
             ASData: nav.getParam('ASData') ? nav.getParam('ASData') : {},
             MicroData: nav.getParam('MicroData') ? nav.getParam('MicroData') : {},
             ribData: nav.getParam('ribData') ? nav.getParam('ribData') : {},
-            tabArray : [],
+            tabArray: [],
             ribsToSelect: undefined,
-            shouldRender:{
+            shouldRender: {
                 teamInfo: true,
                 area: false,
                 srs: false,
@@ -140,14 +149,14 @@ export default class SurveyContainer extends Component {
         }
         this.renderCurrentScreen = this.renderCurrentScreen.bind(this);
         this.moveToTeamInfo = this.moveToTeamInfo.bind(this);
-        this.moveToArea=this.moveToArea.bind(this);
+        this.moveToArea = this.moveToArea.bind(this);
         this.moveToSRS = this.moveToSRS.bind(this);
         this.moveToAS = this.moveToAS.bind(this);
         this.moveToMicro = this.moveToMicro.bind(this);
     }
 
     static navigationOptions = {
-        header : null
+        header: null
     }
 
     /**
@@ -157,7 +166,7 @@ export default class SurveyContainer extends Component {
     moveToTeamInfo() {
         this.setState({
             currentScreen: "teamInfo",
-            shouldRender:{
+            shouldRender: {
                 teamInfo: true,
                 area: false,
                 srs: false,
@@ -170,7 +179,7 @@ export default class SurveyContainer extends Component {
     moveToArea() {
         this.setState({
             currentScreen: "area",
-            shouldRender:{
+            shouldRender: {
                 teamInfo: false,
                 area: true,
                 srs: false,
@@ -183,7 +192,7 @@ export default class SurveyContainer extends Component {
     moveToSRS() {
         this.setState({
             currentScreen: "srs",
-            shouldRender:{
+            shouldRender: {
                 teamInfo: false,
                 area: false,
                 srs: true,
@@ -196,7 +205,7 @@ export default class SurveyContainer extends Component {
     moveToAS() {
         this.setState({
             currentScreen: "as",
-            shouldRender:{
+            shouldRender: {
                 teamInfo: false,
                 area: false,
                 srs: false,
@@ -209,7 +218,7 @@ export default class SurveyContainer extends Component {
     moveToMicro() {
         this.setState({
             currentScreen: "micro",
-            shouldRender:{
+            shouldRender: {
                 teamInfo: false,
                 area: false,
                 srs: false,
@@ -226,14 +235,14 @@ export default class SurveyContainer extends Component {
      * value
      */
     updateSurveyState(refName, e) {
-        let key =  refName;//e.target.id;
+        let key = refName;//e.target.id;
         let value = e.nativeEvent.text;
         this.setState(prevState => {
             prevState.surveyData[key] = value;
             return prevState;
         })
-        if(key === 'cleanupTime')
-            this.setState({showTime: false})
+        if (key === 'cleanupTime')
+            this.setState({ showTime: false })
     }
 
     /*
@@ -309,70 +318,70 @@ export default class SurveyContainer extends Component {
         })
     }
 
-     /**
-     * Increment or decrement the given key. When decrementing, the user cannot have a negative
-     * value.
-     */
+    /**
+    * Increment or decrement the given key. When decrementing, the user cannot have a negative
+    * value.
+    */
 
-    decrementSRS (refName, e){
+    decrementSRS(refName, e) {
         let key = refName;
         this.setState(prevState => {
-            const newVal =  prevState.SRSData[key] - 1;
-            if(newVal === undefined)
+            const newVal = prevState.SRSData[key] - 1;
+            if (newVal === undefined)
                 return prevState
-            if(newVal < 0)
+            if (newVal < 0)
                 return prevState
             prevState.SRSData[key]--;
             return prevState;
         })
     }
 
-    incrementSRS(refName, e){
+    incrementSRS(refName, e) {
         let key = refName;
         this.setState(prevState => {
-            prevState.SRSData[key] = prevState.SRSData[key] ?  prevState.SRSData[key] + 1 : 1;
+            prevState.SRSData[key] = prevState.SRSData[key] ? prevState.SRSData[key] + 1 : 1;
             return prevState;
         })
     }
 
-    decrementAS (refName, e){
+    decrementAS(refName, e) {
         let key = refName;
         this.setState(prevState => {
-            const newVal =  prevState.ASData[key] - 1;
-            if(newVal === undefined)
+            const newVal = prevState.ASData[key] - 1;
+            if (newVal === undefined)
                 return prevState
-            if(newVal < 0)
+            if (newVal < 0)
                 return prevState
             prevState.ASData[key]--;
             return prevState;
         })
     }
 
-    incrementAS(refName, e){
+    incrementAS(refName, e) {
         let key = refName;
         this.setState(prevState => {
-            prevState.ASData[key] = prevState.ASData[key] ?  prevState.ASData[key] + 1 : 1;
+            prevState.ASData[key] = prevState.ASData[key] ? prevState.ASData[key] + 1 : 1;
             return prevState;
         })
     }
 
-    decrementMicro (refName, e){
+    decrementMicro(refName, e) {
         let key = refName;
         this.setState(prevState => {
-            const newVal =  prevState.MicroData[key] - 1;
-            if(newVal === undefined)
+            const newVal = prevState.MicroData[key] - 1;
+            if (newVal === undefined)
                 return prevState
-            if(newVal < 0)
+            if (newVal < 0)
                 return prevState
             prevState.MicroData[key]--;
             return prevState;
         })
     }
 
-    incrementMicro(refName, e){
+    incrementMicro(refName, e) {
         let key = refName;
         this.setState(prevState => {
-            prevState.MicroData[key] = prevState.MicroData[key] ?  prevState.MicroData[key] + 1 : 1;
+            prevState.MicroData[key] = prevState.MicroData[key] ? prevState.MicroData[key] + 1 : 1;
             return prevState;
         })
     }
@@ -384,9 +393,9 @@ export default class SurveyContainer extends Component {
      */
 
     renderCurrentScreen() {
-        const {currentScreen} = this.state;
-        switch(currentScreen) {
-            case "teamInfo" :
+        const { currentScreen } = this.state;
+        switch (currentScreen) {
+            case "teamInfo":
                 return (
                     <TeamInfo
                         surveyData={this.state.surveyData}
@@ -406,8 +415,8 @@ export default class SurveyContainer extends Component {
                         closeBackModal={this.closeBackModal}
                     />
                 )
-            case "area" :
-                return(
+            case "area":
+                return (
                     <Area
                         surveyData={this.state.surveyData}
                         SRSData={this.state.SRSData}
@@ -428,7 +437,7 @@ export default class SurveyContainer extends Component {
                         closeBackModal={this.closeBackModal}
                     />
                 )
-            case "srs" :
+            case "srs":
                 return (
                     <SurfaceRibScan
                         surveyData={this.state.surveyData}
@@ -450,16 +459,19 @@ export default class SurveyContainer extends Component {
                         closeBackModal={this.closeBackModal}
                     />
                 )
-            case "as" :
+            case "as":
                 return (
                     <AccumulationSweep
                         surveyData={this.state.surveyData}
+                        updateSurveyState={this.updateSurveyState}
                         SRSData={this.state.SRSData}
                         ASData={this.state.ASData}
                         MicroData={this.state.MicroData}
                         ribData={this.state.ribData}
                         incrementAS={this.incrementAS}
                         decrementAS={this.decrementAS}
+                        checkedbox={this.checkedbox}
+                        invalidFields={this.state.invalidFields}
                         onClickFinish={this.onClickFinish}
                         fromPublish={this.state.fromPublish}
                         tabArray={this.state.tabArray}
@@ -468,7 +480,7 @@ export default class SurveyContainer extends Component {
                         closeBackModal={this.closeBackModal}
                     />
                 )
-            default :
+            default:
                 return (
                     <MicroDebris
                         surveyData={this.state.surveyData}
@@ -494,8 +506,8 @@ export default class SurveyContainer extends Component {
      * after the user selects this survey tp be edited
      */
 
-    setRemade =() => {
-        this.setState({remade: true})
+    setRemade = () => {
+        this.setState({ remade: true })
     }
 
     onClickFinish = () => {
@@ -503,23 +515,23 @@ export default class SurveyContainer extends Component {
          * Render a modal/popup that will prompt the user to enter in a user defined name for the survey
          * Once they finish, then the survey will be stored locally and accessed locally
          */
-        this.setState({isModalVisible:true})
+        this.setState({ isModalVisible: true })
     }
 
     onChangeSurveyName = (e) => {
         let surveyName = e.nativeEvent.text;
-        this.setState({surveyName: surveyName})
+        this.setState({ surveyName: surveyName })
     }
 
-    cancelModal =() => {
-        this.setState({isModalVisible:false})
+    cancelModal = () => {
+        this.setState({ isModalVisible: false })
     }
 
-    saveModal = async  () => {
+    saveModal = async () => {
         /**
          * Commit all of the data to local storage
          */
-        const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
+        const { surveyName, surveyData, SRSData, ASData, MicroData, ribData } = this.state;
         const survStoreData = {
             surveyName,
             surveyData,
@@ -530,7 +542,7 @@ export default class SurveyContainer extends Component {
             published: false,
             /* Possibly store user credentials here too */
         }
-        if(this.props.navigation.getParam('inProgress') !== undefined){
+        if (this.props.navigation.getParam('inProgress') !== undefined) {
             /* This survey just needs an update */
             let survID = this.props.navigation.getParam('inProgress');
             await surveyDB.updateSurvey(survID, survStoreData);
@@ -538,7 +550,7 @@ export default class SurveyContainer extends Component {
             await surveyDB.addSurvey(survStoreData);
         }
         /* Navigate back to the home page */
-        await this.setState({isModalVisible:false, surveyName: ''})
+        await this.setState({ isModalVisible: false, surveyName: '' })
         this.props.navigation.dispatch(navigateToHome);
     }
 
@@ -550,14 +562,14 @@ export default class SurveyContainer extends Component {
 
     onPressVerify = () => {
         let invalidArray = this.verifyModal();
-        if(invalidArray.length > 0){
+        if (invalidArray.length > 0) {
             /* Let the user know that they ain't done yet */
-            this.setState({invalidFields: invalidArray, isModalVisible: false, isValidVisible: true})
+            this.setState({ invalidFields: invalidArray, isModalVisible: false, isValidVisible: true })
         } else {
             /* Save the survey, move back to publish */
             let survID = this.props.navigation.getParam('inProgress');
             console.log("SURVEY ID:" + survID)
-            const {surveyName, surveyData, SRSData, ASData, MicroData, ribData} = this.state;
+            const { surveyName, surveyData, SRSData, ASData, MicroData, ribData } = this.state;
             const survStoreData = {
                 surveyName,
                 surveyData,
@@ -588,44 +600,44 @@ export default class SurveyContainer extends Component {
         /* Here we'll need to verify the new survey information */
         const survey = this.state;
         let invalid = [];
-        const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc',
+        const requiredIDs = ['userFirst', 'userLast', 'orgName', 'orgLoc', 'userEmail',
             'cleanupTime', 'cleanupDate', 'beachName', 'cmpsDir', 'riverName',
             'riverDistance', 'slope', 'tideHeightA', 'tideHeightB', 'tideTimeA',
             'tideTimeB', 'tideTypeA', 'tideTypeB', 'windDir', 'windSpeed',
             'latitude', 'longitude'
         ];
 
-        for(const id in requiredIDs) {
-            if(survey.surveyData[requiredIDs[id]] === undefined) {
+        for (const id in requiredIDs) {
+            if (survey.surveyData[requiredIDs[id]] === undefined) {
                 invalid.push(requiredIDs[id]);
             }
         }
 
-        if(!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther
+        if (!survey.surveyData.locationChoiceDebris && !survey.surveyData.locationChoiceOther
             && !survey.surveyData.locationChoiceProximity)
             invalid.push('locChoice')
 
-        if(!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
-            && !survey.surveyData.usageOther)
+        if (!survey.surveyData.usageRecreation && !survey.surveyData.usageCommercial
+            && !survey.surveyData.usageRemote && !survey.surveyData.usageOther)
             invalid.push('usage')
 
-        if(!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
+        if (!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
             && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
-            invalid.push('subType');
+            invalid.push('subType')
 
         return invalid
     }
 
     cancelValidModal = () => {
-        this.setState({isValidVisible: false})
+        this.setState({ isValidVisible: false })
     }
 
     openBackModal = () => {
-        this.setState({isBackVisible: true})
+        this.setState({ isBackVisible: true })
     }
 
     closeBackModal = () => {
-        this.setState({isBackVisible: false})
+        this.setState({ isBackVisible: false })
     }
 
     closeBackAndNavigate = async () => {
@@ -634,35 +646,35 @@ export default class SurveyContainer extends Component {
     }
 
     render() {
-        const {shouldRender} = this.state;
-        return(
+        const { shouldRender } = this.state;
+        return (
             <Container style={styles.container}>
                 {this.renderCurrentScreen()}
                 {/* This modal is used to prompt the user to give the survey a name before saving */}
                 <Modal isVisible={this.state.isModalVisible}>
-                    <View style={{alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
-                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>Enter Survey Name:</Text>
-                        <View style={[styles.inputSingleContainer, {marginBottom: 30}]}>
+                    <View style={{ alignSelf: 'center', width: '90%', height: 250, backgroundColor: 'white' }} >
+                        <Text style={{ alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500' }}>Enter Survey Name:</Text>
+                        <View style={[styles.inputSingleContainer, { marginBottom: 30 }]}>
                             <Item regular>
                                 <TextInput
-                                    style={{width: '90%', height: 40, fontSize: 18}}
+                                    style={{ width: '90%', height: 40, fontSize: 18 }}
                                     placeholder="<Survey Name>"
                                     onChange={this.onChangeSurveyName}
                                     value={this.state.surveyName}
                                 />
                             </Item>
                         </View>
-                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
-                            <Button light style={{justifyContent: 'center',width: 100}}onPress={this.cancelModal}>
-                                <Text style={{color: 'black', fontWeight: 'bold', padding: 8}}>Back</Text>
+                        <View style={[styles.inputDoubleContainer, { justifyContent: 'space-evenly' }]}>
+                            <Button light style={{ justifyContent: 'center', width: 100 }} onPress={this.cancelModal}>
+                                <Text style={{ color: 'black', fontWeight: 'bold', padding: 8 }}>Back</Text>
                             </Button>
                             {
                                 this.state.fromPublish ?
-                                    <Button success style={{justifyContent: 'center', width: 100}} onPress={this.onPressVerify}>
-                                        <Text style={{color: 'white', fontWeight: 'bold', padding: 8}}>Verify</Text>
+                                    <Button success style={{ justifyContent: 'center', width: 100 }} onPress={this.onPressVerify}>
+                                        <Text style={{ color: 'white', fontWeight: 'bold', padding: 8 }}>Verify</Text>
                                     </Button> :
-                                    <Button success style={{justifyContent: 'center', width: 100}}onPress={this.saveModal}>
-                                        <Text style={{color: 'white', fontWeight: 'bold', padding: 8}}>Save</Text>
+                                    <Button success style={{ justifyContent: 'center', width: 100 }} onPress={this.saveModal}>
+                                        <Text style={{ color: 'white', fontWeight: 'bold', padding: 8 }}>Save</Text>
                                     </Button>
                             }
 
@@ -672,26 +684,26 @@ export default class SurveyContainer extends Component {
                 </Modal>
                 {/* Modal to tell the user that their survey is invalid */}
                 <Modal isVisible={this.state.isValidVisible}>
-                    <View style={{alignSelf: 'center', justifyContent:'center', alignItems: 'center', width: '90%', height: 250, backgroundColor: 'white'}} >
-                        <Text style={{alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500'}}>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: '90%', height: 250, backgroundColor: 'white' }} >
+                        <Text style={{ alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500' }}>
                             Please fill out the required fields, highlighted in red.
                         </Text>
-                        <View style={[styles.inputDoubleContainer, {justifyContent: 'space-evenly'}]}>
-                            <Button info style={{justifyContent: 'center',width: 100}}onPress={this.cancelValidModal}>
-                                <Text style={{color: 'white', padding: 8}}>Continue</Text>
+                        <View style={[styles.inputDoubleContainer, { justifyContent: 'space-evenly' }]}>
+                            <Button info style={{ justifyContent: 'center', width: 100 }} onPress={this.cancelValidModal}>
+                                <Text style={{ color: 'white', padding: 8 }}>Continue</Text>
                             </Button>
                         </View>
                     </View>
                 </Modal>
                 <ExitModal
-                  isBackVisible={this.state.isBackVisible}
-                  closeBackModal={this.closeBackModal}
-                  closeBackAndNavigate={this.closeBackAndNavigate}
-                  />
+                    isBackVisible={this.state.isBackVisible}
+                    closeBackModal={this.closeBackModal}
+                    closeBackAndNavigate={this.closeBackAndNavigate}
+                />
                 {/* Render the survey footer */}
                 <SurveyFooter
                     teamInfo={shouldRender.teamInfo}
-                    area={shouldRender.area }
+                    area={shouldRender.area}
                     srs={shouldRender.srs}
                     as={shouldRender.as}
                     micro={shouldRender.micro}

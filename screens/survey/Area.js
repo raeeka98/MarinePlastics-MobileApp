@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import {View, Text, ScrollView} from 'react-native'
-import {Button, Icon, Header, Left, Right, Body, Accordion} from 'native-base'
+import React, { Component } from 'react'
+import { View, Text, ScrollView } from 'react-native'
+import { Button, Icon, Header, Left, Right, Body, Accordion } from 'native-base'
 
 import KeyboardView from '../../components/KeyboardView'
 import styles from './surveyStyles'
 import headerStyles from '../../components/headerStyles'
-import {BeachInfo, NRO, TideInfo, WindInfo, SlopeSubstrate} from './areaSections'
+import { BeachInfo, NRO, TideInfo, WindInfo, SlopeSubstrate } from './areaSections'
 
 /**
  * Users still need to enter in this information while they're at the beach because they need
@@ -14,7 +14,7 @@ import {BeachInfo, NRO, TideInfo, WindInfo, SlopeSubstrate} from './areaSections
 */
 
 
-export default class Area extends Component{
+export default class Area extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,37 +34,39 @@ export default class Area extends Component{
         }
     }
 
-    static navigationOptions =  {
+    static navigationOptions = {
         title: "Survey Area"
     }
 
     renderAccordionHeader = (item, expanded) => {
-        if(expanded) {
+        if (expanded) {
             return (
-                <View 
+                <View
                     style={{
-                        flexDirection: "row", 
+                        flexDirection: "row",
                         padding: 10,
                         justifyContent: "space-between",
-                        alignItems: "center" ,
-                        backgroundColor: "#87cefa" }}
+                        alignItems: "center",
+                        backgroundColor: "#87cefa"
+                    }}
                 >
-                    <Text style={{fontWeight: "500"}}>{" "}{item.title}</Text>
-                    <Icon style={{fontSize: 18}} type="SimpleLineIcons" name="arrow-up"/>
+                    <Text style={{ fontWeight: "500" }}>{" "}{item.title}</Text>
+                    <Icon style={{ fontSize: 18 }} type="SimpleLineIcons" name="arrow-up" />
                 </View>
             )
         }
         return (
-            <View 
+            <View
                 style={{
                     flexDirection: "row",
                     padding: 10,
                     justifyContent: "space-between",
-                    alignItems: "center" ,
-                    backgroundColor: "#1a8cff" }} 
+                    alignItems: "center",
+                    backgroundColor: "#1a8cff"
+                }}
             >
-                <Text style={{fontWeight: "400", color: 'white'}}>{" "}{item.title}</Text>
-                <Icon style={{fontSize: 18, color: 'white'}}type="SimpleLineIcons" name="arrow-down"/>
+                <Text style={{ fontWeight: "400", color: 'white' }}>{" "}{item.title}</Text>
+                <Icon style={{ fontSize: 18, color: 'white' }} type="SimpleLineIcons" name="arrow-down" />
             </View>
         )
     }
@@ -82,77 +84,77 @@ export default class Area extends Component{
         const subSections = [
             {
                 title: "Beach Info",
-                content: <BeachInfo 
-                            surveyData={this.props.surveyData} 
-                            updateSurveyState={this.props.updateSurveyState}
-                            invalidFields={this.props.invalidFields} 
-                            checkedbox={this.props.checkedbox} 
-                            updateSurveyLocation={this.props.updateSurveyLocation}
-                        />  
+                content: <BeachInfo
+                    surveyData={this.props.surveyData}
+                    updateSurveyState={this.props.updateSurveyState}
+                    invalidFields={this.props.invalidFields}
+                    checkedbox={this.props.checkedbox}
+                    updateSurveyLocation={this.props.updateSurveyLocation}
+                />
             },
             {
                 title: "Nearest River Output",
-                content: <NRO 
-                            surveyData={this.props.surveyData} 
-                            updateSurveyState={this.props.updateSurveyState}
-                            invalidFields={this.props.invalidFields}
-                         />
+                content: <NRO
+                    surveyData={this.props.surveyData}
+                    updateSurveyState={this.props.updateSurveyState}
+                    invalidFields={this.props.invalidFields}
+                />
             },
             {
                 title: "Tide Info",
-                content: <TideInfo 
-                            surveyData={this.props.surveyData} 
-                            updateSurveyState={this.props.updateSurveyState}
-                            invalidFields={this.props.invalidFields}
-                            updateSurveyTime={this.props.updateSurveyTime}
-                            onDropdownChange={this.props.onDropdownChange}
+                content: <TideInfo
+                    surveyData={this.props.surveyData}
+                    updateSurveyState={this.props.updateSurveyState}
+                    invalidFields={this.props.invalidFields}
+                    updateSurveyTime={this.props.updateSurveyTime}
+                    onDropdownChange={this.props.onDropdownChange}
 
-                         />
+                />
             },
             {
                 title: "Wind Info",
-                content: <WindInfo 
-                            surveyData={this.props.surveyData} 
-                            updateSurveyState={this.props.updateSurveyState}
-                            invalidFields={this.props.invalidFields}
-                            onDropdownChange={this.props.onDropdownChange}
-                         />
+                content: <WindInfo
+                    surveyData={this.props.surveyData}
+                    updateSurveyState={this.props.updateSurveyState}
+                    invalidFields={this.props.invalidFields}
+                    onDropdownChange={this.props.onDropdownChange}
+                />
             },
             {
                 title: "Slope and Substrate Type",
-                content: <SlopeSubstrate 
-                            surveyData={this.props.surveyData} 
-                            updateSurveyState={this.props.updateSurveyState}
-                            invalidFields={this.props.invalidFields}
-                            onDropdownChange={this.props.onDropdownChange}
-                            checkedbox={this.props.checkedbox}
-                         />
+                content: <SlopeSubstrate
+                    surveyData={this.props.surveyData}
+                    updateSurveyState={this.props.updateSurveyState}
+                    invalidFields={this.props.invalidFields}
+                    onDropdownChange={this.props.onDropdownChange}
+                    checkedbox={this.props.checkedbox}
+                />
             }
         ]
-        return(
+        return (
             /* We'll need to use the KeyboardView component to prevent the keyboard from blocking the input
              * while the user is typing
              */
             <KeyboardView style={styles.container}>
-            
+
                 <Header hasTabs style={headerStyles.header} >
                     <Left style={headerStyles.headerContents}>
-                    <Button transparent onPress={this.props.openBackModal}>
-                        <Icon type="AntDesign" name='close'/>
-                    </Button>
+                        <Button transparent onPress={this.props.openBackModal}>
+                            <Icon type="AntDesign" name='close' />
+                        </Button>
                     </Left>
                     <Body style={headerStyles.headerContents}>
-                        <Text style={{fontSize: 18, color: 'white'}}>Survey Area</Text>
+                        <Text style={{ fontSize: 18, color: 'white' }}>Survey Area</Text>
                     </Body>
                     <Right style={headerStyles.headerContents}>
                         <Button success onPress={this.props.onClickFinish}>
-                            <Text style={{padding: 5, color: 'white'}}>Finish</Text>
+                            <Text style={{ padding: 5, color: 'white' }}>Finish</Text>
                         </Button>
                     </Right>
                 </Header>
 
-                <ScrollView style={{marginBottom:125}}>
-                    <Accordion dataArray={subSections} renderContent={(item) => {return item.content}} renderHeader={this.renderAccordionHeader}/>                       
+                <ScrollView style={{ marginBottom: 125 }}>
+                    <Accordion dataArray={subSections} renderContent={(item) => { return item.content }} renderHeader={this.renderAccordionHeader} />
                 </ScrollView>
 
             </KeyboardView>
