@@ -657,7 +657,7 @@ export default class SurveyContainer extends Component {
                         <View style={[styles.inputSingleContainer, { marginBottom: 30 }]}>
                             <Item regular>
                                 <TextInput
-                                    style={{ width: '90%', height: 40, fontSize: 18 }}
+                                    style={{ width: '90%', height: 40, fontSize: 18, color: 'black' }}
                                     placeholder="<Survey Name>"
                                     onChange={this.onChangeSurveyName}
                                     value={this.state.surveyName}
