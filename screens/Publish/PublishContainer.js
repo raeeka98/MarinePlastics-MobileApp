@@ -318,9 +318,9 @@ export default class PublishContainer extends Component {
           height: surveyData.tideHeightA ? surveyData.tideHeightA : ""
         },
         wind: {
-          dir: surveyData.windDir ? surveyData.windDir : "",
-          spd: surveyData.windSpeed ? surveyData.windSpeed : "",
-          comment: surveyData.windComments ? surveyData.windComments : ""
+          dir: surveyData.windDir ? surveyData.windDir : undefined,
+          spd: surveyData.windSpeed ? surveyData.windSpeed : undefined,
+          comment: surveyData.windComments ? surveyData.windComments : undefined
         },
         majorUse: {
           rec: surveyData.usageRecreation ? surveyData.usageRecreation : undefined,
@@ -333,7 +333,7 @@ export default class PublishContainer extends Component {
           people: surveyData.incompleteSurveyPeople ? surveyData.incompleteSurveyPeople : undefined,
           area: surveyData.incompleteSurveyArea ? surveyData.incompleteSurveyArea : undefined,
           trash: surveyData.incompleteSurveyTrash ? surveyData.incompleteSurveyTrash : undefined,
-          other: surveyData.incompleteSurveyOther ? surveyData.incompleteSurveyOther : undefined,
+          other: surveyData.incompleteSurveyOther ? surveyData.incompleteSurveyOther : undefined
         },
         SRSDebris: this.calculateTotals('SRS'),
         ASDebris: this.calculateTotals('AS'),

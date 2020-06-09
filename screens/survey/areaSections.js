@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TextInput, View, Text } from 'react-native'
-import { Item, Button, Icon, Picker } from 'native-base'
+import { Item, Button, Icon, Picker, Input } from 'native-base'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import CheckBox from 'react-native-check-box'
 
@@ -87,7 +87,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.usageRecreation}
                                 onClick={this.props.checkedbox.bind(this, 'usageRecreation')}
                             />
-                            <Text style={{ marginLeft: 5 }}>Recreation</Text>
+                            <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Recreation</Text>
                         </View>
                         <View style={styles.checkBox}>
                             <CheckBox
@@ -95,7 +95,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.usageCommercial}
                                 onClick={this.props.checkedbox.bind(this, 'usageCommercial')}
                             />
-                            <Text style={{ marginLeft: 5 }}>Commercial</Text>
+                            <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Commercial</Text>
                         </View>
                         <View style={styles.checkBox}>
                             <CheckBox
@@ -103,7 +103,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.usageRemote}
                                 onClick={this.props.checkedbox.bind(this, 'usageRemote')}
                             />
-                            <Text style={{ marginLeft: 5 }}>Remote/Unused</Text>
+                            <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Remote/Unused</Text>
                         </View>
                         <View style={styles.checkBox}>
                             <CheckBox
@@ -111,7 +111,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.otherChecked}
                                 onClick={this.props.checkedbox.bind(this, 'otherChecked')}
                             />
-                            <Text style={{ marginLeft: 5 }}>Other:</Text>
+                            <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Other:</Text>
                         </View>
                         <Item regular style={{ marginTop: 3 }}>
                             <TextInput
@@ -136,7 +136,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.locationChoiceProximity}
                                 onClick={this.props.checkedbox.bind(this, 'locationChoiceProximity')}
                             />
-                            <Text style={{ marginLeft: 5 }}>Proximity/Convenience</Text>
+                            <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Proximity or  {"\n"} Convenience </Text>
                         </View>
                         <View style={styles.checkBox}>
                             <CheckBox
@@ -144,7 +144,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.locationChoiceDebris}
                                 onClick={this.props.checkedbox.bind(this, 'locationChoiceDebris')}
                             />
-                            <Text style={{ marginLeft: 5 }}>Known for Debris</Text>
+                            <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Known for Debris</Text>
                         </View>
                         <View style={styles.checkBox}>
                             <CheckBox
@@ -152,7 +152,7 @@ class BeachInfo extends Component {
                                 isChecked={this.state.surveyData.lcOtherChecked}
                                 onClick={this.props.checkedbox.bind(this, 'lcOtherChecked')}
                             />
-                            <Text style={{ marginLeft: 5 }}>Other:</Text>
+                            <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Other:</Text>
                         </View>
                         <Item regular style={{ marginTop: 3 }}>
                             <TextInput
@@ -478,7 +478,7 @@ class WindInfo extends Component {
                     </Item>
                     <Text style={styles.inputSingle}>COMMENTS: </Text>
                     <Item regular>
-                        <TextInput
+                        <Input
                             ref='windComments'
                             placeholder={invisiblePlaceholder}
                             style={[styles.textInput, (
@@ -543,7 +543,7 @@ class SlopeSubstrate extends Component {
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Sand</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16, alignSelf: 'center', textAlign: 'center' }}>Sand</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
                             <CheckBox
@@ -552,7 +552,7 @@ class SlopeSubstrate extends Component {
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Pebble</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16, alignSelf: 'center', textAlign: 'center' }}>Pebble</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
                             <CheckBox
@@ -561,7 +561,7 @@ class SlopeSubstrate extends Component {
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Rip Rap (large boulders)</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16, alignSelf: 'center', textAlign: 'center' }}>Rip Rap (large boulders)</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
                             <CheckBox
@@ -570,7 +570,7 @@ class SlopeSubstrate extends Component {
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Seaweed</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16, alignSelf: 'center', textAlign: 'center' }}>Seaweed</Text>
                         </View>
                         <View style={styles.checkBoxLarge}>
                             <CheckBox
@@ -579,7 +579,7 @@ class SlopeSubstrate extends Component {
                                 checkedImage={<Icon type="AntDesign" name="checksquare" color="#84E17F" size={45} />}
                                 unCheckedImage={<Icon type="Feather" name="square" color="#84E17F" size={45} />}
                             />
-                            <Text style={{ marginLeft: 15, fontSize: 16 }}>Other:</Text>
+                            <Text style={{ marginLeft: 15, fontSize: 16, alignSelf: 'center', textAlign: 'center' }}>Other:</Text>
                         </View>
                         <Item regular style={{ marginTop: 3 }}>
                             <TextInput

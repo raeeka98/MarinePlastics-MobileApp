@@ -15,6 +15,7 @@ import {
     Left,
     Body,
     Right,
+    Input,
     Card,
     CardItem
 } from 'native-base'
@@ -196,7 +197,7 @@ export default class AccumulationSweep extends Component {
                                     isChecked={this.state.surveyData.incompleteSurveyTime}
                                     onClick={this.props.checkedbox.bind(this, 'incompleteSurveyTime')}
                                 />
-                                <Text style={{ marginLeft: 5 }}>Not enough time</Text>
+                                <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Not enough time</Text>
                             </View>
                             <View style={styles.checkBox}>
                                 <CheckBox
@@ -204,7 +205,7 @@ export default class AccumulationSweep extends Component {
                                     isChecked={this.state.surveyData.incompleteSurveyPeople}
                                     onClick={this.props.checkedbox.bind(this, 'incompleteSurveyPeople')}
                                 />
-                                <Text style={{ marginLeft: 5 }}>Not enough people</Text>
+                                <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Not enough people</Text>
                             </View>
                             <View style={styles.checkBox}>
                                 <CheckBox
@@ -212,7 +213,7 @@ export default class AccumulationSweep extends Component {
                                     isChecked={this.state.surveyData.incompleteSurveyArea}
                                     onClick={this.props.checkedbox.bind(this, 'incompleteSurveyArea')}
                                 />
-                                <Text style={{ marginLeft: 5 }}>Too much area</Text>
+                                <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Too much area</Text>
                             </View>
                             <View style={styles.checkBox}>
                                 <CheckBox
@@ -220,7 +221,7 @@ export default class AccumulationSweep extends Component {
                                     isChecked={this.state.surveyData.incompleteSurveyTrash}
                                     onClick={this.props.checkedbox.bind(this, 'incompleteSurveyTrash')}
                                 />
-                                <Text style={{ marginLeft: 5 }}>Too much trash</Text>
+                                <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Too much trash</Text>
                             </View>
                             <View style={styles.checkBox}>
                                 <CheckBox
@@ -228,13 +229,13 @@ export default class AccumulationSweep extends Component {
                                     isChecked={this.state.surveyData.isotherChecked}
                                     onClick={this.props.checkedbox.bind(this, 'isotherChecked')}
                                 />
-                                <Text style={{ marginLeft: 5 }}>Other:</Text>
+                                <Text style={{ marginLeft: 5, alignSelf: 'center', textAlign: 'center' }}>Other:</Text>
                             </View>
                             <Item regular style={{ marginTop: 3 }}>
-                                <TextInput
+                                <Input
                                     editable={this.state.surveyData.isotherChecked === true}
                                     placeholder={invisiblePlaceholder}
-                                    style={{ height: 30 }}
+                                    style={{ height: 30}}
                                     onChange={this.props.updateSurveyState.bind(this, 'incompleteSurveyOther')}
                                     value={this.state.surveyData.incompleteSurveyOther}
                                 />
