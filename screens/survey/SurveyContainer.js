@@ -625,11 +625,6 @@ export default class SurveyContainer extends Component {
             && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
             invalid.push('subType')
 
-        /*if(!survey.surveyData.incompleteSurveyTime && !survey.surveyData.incompleteSurveyPeople
-            && !survey.surveyData.incompleteSurveyArea && !survey.surveyData.incompleteSurveyTrash
-            && !survey.surveyData.incompleteSurveyOther)
-            invalid.push('incompleteSurvey');*/
-
         return invalid
     }
 

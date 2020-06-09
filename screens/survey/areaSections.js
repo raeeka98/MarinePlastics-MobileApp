@@ -481,10 +481,7 @@ class WindInfo extends Component {
                         <Input
                             ref='windComments'
                             placeholder={invisiblePlaceholder}
-                            style={[styles.textInput, (
-                                this.props.invalidFields.includes('windComments') ?
-                                    { borderColor: 'red', borderWidth: 2 } : {}
-                            )]}
+                            style={[styles.textInput]}
                             onChange={this.props.updateSurveyState.bind(this, 'windComments')}
                             value={this.state.surveyData.windComments}
                         />

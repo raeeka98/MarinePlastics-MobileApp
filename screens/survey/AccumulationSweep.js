@@ -185,8 +185,7 @@ export default class AccumulationSweep extends Component {
                 </Header>
                 <ScrollView>
                     <View style={[styles.inputSingleContainer, { padding: 10, flex: 1, width: '99%', alignSelf: 'center', backgroundColor: 'white', marginBottom: 5 }]}>
-                        <View style={[styles.inputSingle, (this.props.invalidFields.includes('incompleteSurvey') ?
-                            { borderColor: 'red', borderWidth: 2 } : {})]} >
+                        <View style={[styles.inputSingle]} >
                             <Text>
                                 If unable to complete an accumulation survey, {"\n"}
                                 check box as to why:

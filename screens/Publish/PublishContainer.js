@@ -318,9 +318,9 @@ export default class PublishContainer extends Component {
           height: surveyData.tideHeightA ? surveyData.tideHeightA : ""
         },
         wind: {
-          dir: surveyData.windDir ? surveyData.windDir : undefined,
-          spd: surveyData.windSpeed ? surveyData.windSpeed : undefined,
-          comment: surveyData.windComments ? surveyData.windComments : undefined
+          dir: surveyData.windDir ? surveyData.windDir : "",
+          spd: surveyData.windSpeed ? surveyData.windSpeed : "",
+          comment: surveyData.windComments ? surveyData.windComments : ""
         },
         majorUse: {
           rec: surveyData.usageRecreation ? surveyData.usageRecreation : undefined,
@@ -422,11 +422,6 @@ export default class PublishContainer extends Component {
     if (!survey.surveyData.substrateTypeSand && !survey.surveyData.substrateTypePebble && !survey.surveyData.substrateTypeRipRap
       && !survey.surveyData.substrateTypeSeaweed && !survey.surveyData.substrateTypeOther)
       invalid.push('subType')
-
-    /*if(!survey.surveyData.incompleteSurveyTime && !survey.surveyData.incompleteSurveyPeople
-        && !survey.surveyData.incompleteSurveyArea && !survey.surveyData.incompleteSurveyTrash
-        && !survey.surveyData.incompleteSurveyOther)
-        invalid.push('incompleteSurvey'); */
 
     return invalid
   }
