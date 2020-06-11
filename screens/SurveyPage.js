@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Icon, Button, Text} from 'native-base';
+import {Icon, Button, Text, Container, Content} from 'native-base';
 import Axios from 'axios';
 // import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
@@ -27,28 +27,30 @@ import PageHeader from '../components/PageHeader';
   }
 
   render() {
+        const {navigate} = this.props.navigation; 
         return (
+          <Container style={{flex: 1}}>
+          <PageHeader title="Survey" openDrawer={this.props.navigation.openDrawer}/>
+          <Content style={{backgroundColor: '#e4eaff'}}>
             <View style={{flex:1}}>
                 <IndicatorViewPager
-                    style={{height:700}}
+                    style={{height:500}}
                     indicator={this._renderDotIndicator()}>
                     <View style={{backgroundColor:'cadetblue'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-1.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-1.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-9.png')}/>
-            <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
-            <Text style={{color:'white', fontWeight: 'bold'}}>SEE TUTORIAL</Text>
-          </Button>
-            <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-9.png')}/>
+            <Button info full style={{borderRadius: 8}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
             <Text style={{color:'white', fontWeight: 'bold'}}>CONTINUE TO SURVEY</Text>
           </Button>
         </View>
                 </IndicatorViewPager>
         </View>
+        </Content>
+        </Container>
         );
       }
-    
     
     _renderDotIndicator() {
         return <PagerDotIndicator pageCount={2} />;

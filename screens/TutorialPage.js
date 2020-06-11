@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {Icon, Button, Text} from 'native-base';
+import {Icon, Button, Text, Container, Content} from 'native-base';
 import Axios from 'axios';
 // import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
 import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'react-native-best-viewpager';
-import { Platform, StyleSheet, View, Dimensions, Image } from "react-native";  
+import {Platform, StyleSheet, View, Dimensions, Image } from "react-native";  
 import PageHeader from '../components/PageHeader';
 
 /**
@@ -22,53 +22,60 @@ import PageHeader from '../components/PageHeader';
   static navigationOptions = {
     title: 'Tutorial',
     drawerIcon: ({focused}) => (
-      <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'dodgerblue' : 'black')}} />
+      <Icon type='Entypo' name='text' style={{fontSize: 20, color:(focused ? 'dodgerblue' : 'black')}} />
     )
   }
 
   render() {
-        return (
-            <View style={{flex:1}}>
-                <IndicatorViewPager
-                    style={{height:700}}
+    const {navigate} = this.props.navigation; 
+      return(
+        <Container style={{flex: 1}}>
+          <PageHeader title="Tutorial" openDrawer={this.props.navigation.openDrawer}/>
+          <Content style={{backgroundColor: '#e4eaff'}}>
+            <View style={{padding: 0}}>
+
+            <IndicatorViewPager
+                    style={{height:475}}
                     indicator={this._renderDotIndicator()}>
                     <View style={{backgroundColor:'cadetblue'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-1.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-1.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-2.png')}/> 
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-2.png')}/> 
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-3.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-3.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-4.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-4.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-5.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-5.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-6.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-6.png')}/>
         </View>
                             <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-7.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-7.png')}/>
         </View>
                     <View style={{backgroundColor:'#1AA094'}}>
-                        <Image style={styles.stretch} source={require('./COI-instructions2.0/COI-8.png')}/>
+                        <Image style={styles.stretch} source={require('./COI-instructions/COI-8.png')}/>
+
             <Button info full style={{borderRadius: 5}} onPress={() => this.props.navigation.navigate("SurveyContainer")} >
-            <Text style={{color:'white', fontWeight: 'bold'}}>OK, LETS PICK UP SOME TRASH!</Text>
+            <Text style={{color:'white', fontWeight: 'bold'}}>Proceed to survey</Text>
           </Button>
         </View>
                 </IndicatorViewPager>
-        </View>
-        );
-      }
-    
 
-    
+
+            </View>
+          </Content>
+        </Container>
+      );
+    }
     _renderDotIndicator() {
         return <PagerDotIndicator pageCount={5} />;
-    }
+  }
 }
 export default TutorialPage;
 
@@ -96,7 +103,8 @@ const styles = StyleSheet.create({
   },
    stretch: {
    flex: 1,
-   justifyContent: "center",
+   justifyContent: 'flex-start',
+   alignItems: 'stretch',
    width: windowWidth,
    height: windowHeight,
    resizeMode: 'contain',
