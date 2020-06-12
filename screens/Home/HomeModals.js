@@ -16,13 +16,13 @@ function DeleteModal(props) {
     <Modal isVisible={isDeleteVisible}>
       <View style={{ alignSelf: 'center', width: '90%', height: 200, backgroundColor: 'white' }} >
         <Text style={{ alignSelf: 'center', padding: 8, fontSize: 20, fontWeight: '500' }}>Delete {name}?</Text>
-        <Text style={{ alignSelf: 'center', padding: 4, fontSize: 16 }}>If you delete, the data is gone for good!</Text>
+        <Text style={{ alignSelf: 'center', padding: 4, fontSize: 16 }}>Are you sure you would like to delete your survey?</Text>
         <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-evenly' }}>
           <Button light style={{ justifyContent: 'center', width: 100 }} onPress={cancelDelete}>
-            <Text>No</Text>
+            <Text>Cancel</Text>
           </Button>
-          <Button danger style={{ justifyContent: 'center', width: 100 }} onPress={deleteSurvey} title='Edit'>
-            <Text>Delete</Text>
+          <Button danger style={{ justifyContent: 'center', width: 120 }} onPress={deleteSurvey} title='Edit'>
+            <Text>Yes, delete</Text>
           </Button>
         </View>
       </View>
