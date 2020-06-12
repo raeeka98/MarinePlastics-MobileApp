@@ -16,17 +16,17 @@ export function mergeSurveys(surveys) {
 function mergeSRS(surveys) {
     let finalSRS = {};
     surveys.forEach(survey => {
-        if(survey.hasOwnProperty("SRSData")){
-          for (const debris in survey.SRSData) {
-              if(finalSRS.hasOwnProperty(debris)) {
-                  finalSRS[debris] += survey.SRSData[debris];
-              }
-              else {
-                  if(survey.SRSData[debris] === 0)
-                    continue
-                  finalSRS[debris] = survey.SRSData[debris];
-              }
-          }
+        if (survey.hasOwnProperty("SRSData")) {
+            for (const debris in survey.SRSData) {
+                if (finalSRS.hasOwnProperty(debris)) {
+                    finalSRS[debris] += survey.SRSData[debris];
+                }
+                else {
+                    if (survey.SRSData[debris] === 0)
+                        continue
+                    finalSRS[debris] = survey.SRSData[debris];
+                }
+            }
         }
     });
     return finalSRS;
@@ -35,17 +35,17 @@ function mergeSRS(surveys) {
 function mergeAS(surveys) {
     let finalAS = {};
     surveys.forEach(survey => {
-        if(survey.hasOwnProperty("ASData")){
-          for (const debris in survey.ASData) {
-              if(finalAS.hasOwnProperty(debris)) {
-                  finalAS[debris] += survey.ASData[debris];
-              }
-              else {
-                  if(survey.ASData[debris] === 0) 
-                    continue
-                  finalAS[debris] = survey.ASData[debris];
-              }
-          }
+        if (survey.hasOwnProperty("ASData")) {
+            for (const debris in survey.ASData) {
+                if (finalAS.hasOwnProperty(debris)) {
+                    finalAS[debris] += survey.ASData[debris];
+                }
+                else {
+                    if (survey.ASData[debris] === 0)
+                        continue
+                    finalAS[debris] = survey.ASData[debris];
+                }
+            }
         }
     });
     return finalAS;
@@ -54,17 +54,17 @@ function mergeAS(surveys) {
 function mergeMicro(surveys) {
     let finalMicro = {};
     surveys.forEach(survey => {
-        if(survey.hasOwnProperty("MicroData")){
-          for (const debris in survey.MicroData) {
-              if(finalMicro.hasOwnProperty(debris)) {
-                  finalMicro[debris] += survey.MicroData[debris];
-              }
-              else {
-                  if(survey.MicroData[debris] === 0) 
-                    continue
-                  finalMicro[debris] = survey.MicroData[debris];
-              }
-          }
+        if (survey.hasOwnProperty("MicroData")) {
+            for (const debris in survey.MicroData) {
+                if (finalMicro.hasOwnProperty(debris)) {
+                    finalMicro[debris] += survey.MicroData[debris];
+                }
+                else {
+                    if (survey.MicroData[debris] === 0)
+                        continue
+                    finalMicro[debris] = survey.MicroData[debris];
+                }
+            }
         }
     });
     return finalMicro;
@@ -73,12 +73,12 @@ function mergeMicro(surveys) {
 function mergeRib(surveys) {
     let finalRib = {};
     surveys.forEach(survey => {
-        if(survey.hasOwnProperty("ribData")){
-          for (const ribInfo in survey.ribData) {
-              if(survey.ribData[ribInfo] === 0)
-                continue
-              finalRib[ribInfo] = survey.ribData[ribInfo];
-          }
+        if (survey.hasOwnProperty("ribData")) {
+            for (const ribInfo in survey.ribData) {
+                if (survey.ribData[ribInfo] === 0)
+                    continue
+                finalRib[ribInfo] = survey.ribData[ribInfo];
+            }
         }
     });
     return finalRib;

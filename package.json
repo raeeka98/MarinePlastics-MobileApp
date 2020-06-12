@@ -6,15 +6,20 @@
     "ios": "expo start --ios",
     "cross": "npm run nexus & expo start --ios --android",
     "nexus": "emulator -avd Nexus_5X_API_28_x86",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "react-native"
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "@expo/vector-icons": "10.1.0",
     "axios": "^0.18.1",
     "babel-preset-react-native": "^4.0.1",
     "braces": "^3.0.2",
     "eslint": "^6.8.0",
-    "expo": "^36.0.2",
+    "expo": "^36.0.0",
     "expo-constants": "^8.0.0",
     "expo-font": "^8.0.0",
     "jwt-decode": "^2.2.0",
@@ -42,11 +47,13 @@
     "react-navigation": "^3.7.1",
     "react-navigator": "0.0.0-0",
     "react-time-picker": "^3.5.1",
+    "readable-stream": "^2.3.6",
     "rn-viewpager": "^1.2.9",
     "watchman": "^1.0.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^8.0.0"
+    "babel-preset-expo": "^8.0.0",
+    "jest-expo": "^37.0.0"
   },
   "peerDependencies": {
     "react-native": "^0.55.4",

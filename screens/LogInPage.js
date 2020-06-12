@@ -52,13 +52,13 @@ function toQueryString(params) {
 class LogInPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { accessToken: null, email: null, name: null, picture: null, isLoading: true};
+    this.state = { accessToken: null, email: null, name: null, picture: null, isLoading: true };
   }
 
   static navigationOptions = {
     title: "Profile/Login",
-    drawerIcon: ({focused}) => (
-      <Icon type='MaterialIcons' name='person' style={{fontSize: 20, color: (focused ? 'dodgerblue' : 'black')}} />
+    drawerIcon: ({ focused }) => (
+      <Icon type='MaterialIcons' name='person' style={{ fontSize: 20, color: (focused ? 'dodgerblue' : 'black') }} />
     )
   }
 
@@ -68,15 +68,16 @@ class LogInPage extends Component {
     await this._retrieveEmail()
     await this._retrieveNickname()
     await this._retrievePicture()
-    this.setState({ isLoading : false })
+    this.setState({ isLoading: false })
   }
 
   // Log out by setting the stored variables to null then saving to AsyncStorage.
   _onlogout = async () => {
     //console.log('Setting AccessToken to Null for Logout');
     Linking.openURL(`${credentials.domain}/v2/logout`).then(success => {
-      this.setState({ accessToken: null, email: null, name: null, picture: null }, () => {this._storeAccessToken()})}).catch(
-        error => console.log(error));
+      this.setState({ accessToken: null, email: null, name: null, picture: null }, () => { this._storeAccessToken() })
+    }).catch(
+      error => console.log(error));
     //console.log('Successful Logout');
   };
 
@@ -100,7 +101,7 @@ class LogInPage extends Component {
     //console.log('Authentication response ', response);
 
     // Handle the response if login was successful.
-    if (response.type === 'success'){
+    if (response.type === 'success') {
       this.handleResponse(response.params);
     }
   };
@@ -126,7 +127,7 @@ class LogInPage extends Component {
       email: name,
       name: nickname,
       picture: picture
-    }, () => {this._storeAccessToken()});
+    }, () => { this._storeAccessToken() });
 
     //console.log('Storing AccessToken for LogIn');
     //this._storeAccessToken();
@@ -141,7 +142,7 @@ class LogInPage extends Component {
       let nameValue = this.state.name;
       let pictureValue = this.state.picture;
       // If the value we're storing is null then we're erasing it.
-      if (value === null){
+      if (value === null) {
         //console.log('Value is Null on storeAccesToken');
         //console.log('Clearing AccessToken in AsyncStorage');
         await AsyncStorage.removeItem('accessToken');
@@ -158,7 +159,7 @@ class LogInPage extends Component {
       }
 
       // Repeat for accesstoken (above), email, nickname, and picture (below).
-      if (emailValue === null){
+      if (emailValue === null) {
         //console.log('Email value is Null on Email');
         //console.log('Clearing Email in AsyncStorage');
         await AsyncStorage.removeItem('email');
@@ -173,13 +174,13 @@ class LogInPage extends Component {
         //console.log('Current email stored: ', await AsyncStorage.getItem('email'));
       }
 
-      if (nameValue === null){
+      if (nameValue === null) {
         //console.log('Name value is Null on Name');
         //console.log('Clearing Name in AsyncStorage');
         await AsyncStorage.removeItem('name');
         //console.log('Cleared');
         //console.log('Current name stored: ', await AsyncStorage.getItem('name'));
-      }else {
+      } else {
         //console.log('Name value is not Null on Name');
         //console.log('Overriding Name in AsyncStorage');
         await AsyncStorage.setItem('name', nameValue);
@@ -187,13 +188,13 @@ class LogInPage extends Component {
         //console.log('Current name stored: ', await AsyncStorage.getItem('name'));
       }
 
-      if (pictureValue === null){
+      if (pictureValue === null) {
         //console.log('Picture value is Null on Picture');
         //console.log('Clearing Picture in AsyncStorage');
         await AsyncStorage.removeItem('picture');
         //console.log('Cleared');
         //console.log('Current picture stored: ', await AsyncStorage.getItem('picture'));
-      }else {
+      } else {
         //console.log('Picture value is not Null on Picture');
         //console.log('Overriding Picture in AsyncStorage');
         await AsyncStorage.setItem('picture', pictureValue);
@@ -206,7 +207,7 @@ class LogInPage extends Component {
   };
 
   // Get the accessToken from AsyncStorage and set the according state variable.
-  _retrieveAccessToken = async() => {
+  _retrieveAccessToken = async () => {
     try {
       const value = await AsyncStorage.getItem('accessToken');
       console.log(value);
@@ -221,7 +222,7 @@ class LogInPage extends Component {
   };
 
   // Get the email from AsyncStorage and set the according state variable.
-  _retrieveEmail = async() => {
+  _retrieveEmail = async () => {
     try {
       const emailValue = await AsyncStorage.getItem('email');
       console.log(emailValue);
@@ -236,7 +237,7 @@ class LogInPage extends Component {
   };
 
   // Get the name from AsyncStorage and set the according state variable.
-  _retrieveNickname = async() => {
+  _retrieveNickname = async () => {
     try {
       const nameValue = await AsyncStorage.getItem('name');
       console.log(nameValue);
@@ -251,7 +252,7 @@ class LogInPage extends Component {
   }
 
   // Get the picture from AsyncStorage and set the according state variable.
-  _retrievePicture = async() => {
+  _retrievePicture = async () => {
     try {
       const pictureValue = await AsyncStorage.getItem('picture');
       console.log(pictureValue);
@@ -268,29 +269,29 @@ class LogInPage extends Component {
   // Render the GUI elements.
   render() {
     // Navigation variable (DO NOT TOUCH).
-    const {navigate} = this.props.navigation;
+    const { navigate } = this.props.navigation;
     // We'll determine if a user is logged in just by looking at the accesstoken state variable.
     // Store that in a boolean variable.
     let loggedIn = this.state.accessToken === null ? false : true;
-    if(this.state.isLoading) {
+    if (this.state.isLoading) {
       return (
         <Container>
           <Spinner color='blue' />
         </Container>
       );
     } else {
-      return(
-        <Container style={{flex: 1}}>
-          <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer}/>
-          <Content style={{backgroundColor: '#e4eaff'}}>
-            <View style={{padding: 40}}>
+      return (
+        <Container style={{ flex: 1 }}>
+          <PageHeader title="Profile" openDrawer={this.props.navigation.openDrawer} />
+          <Content style={{ backgroundColor: '#e4eaff' }}>
+            <View style={{ padding: 40 }}>
               <Image
-                  style={styles.profilePic}
-                  source={(loggedIn && this.state.picture) ? {uri : this.state.picture} : require('./blank-profile-picture.png')}
-                  />
+                style={styles.profilePic}
+                source={(loggedIn && this.state.picture) ? { uri: this.state.picture } : require('./blank-profile-picture.png')}
+              />
             </View>
 
-            <Card style={{padding: 10}}>
+            <Card style={{ padding: 10 }}>
 
               <CardItem bordered>
                 <Left>
@@ -306,16 +307,16 @@ class LogInPage extends Component {
               </CardItem>
 
               <CardItem>
-                  <Left>
-                    <Title>
-                      Email:
+                <Left>
+                  <Title>
+                    Email:
                     </Title>
-                  </Left>
-                  <Body>
-                    <Title>
-                      {loggedIn ? this.state.email : ''}
-                    </Title>
-                  </Body>
+                </Left>
+                <Body>
+                  <Title>
+                    {loggedIn ? this.state.email : ''}
+                  </Title>
+                </Body>
               </CardItem>
             </Card>
 
@@ -324,7 +325,7 @@ class LogInPage extends Component {
                 <Button danger onPress={this._onlogout} style={styles.button}>
                   <Text style={[styles.paragraph]}>Log Out</Text>
                 </Button>
-              :
+                :
                 <Button info onPress={this._loginV3} style={styles.button}>
                   <Text style={[styles.paragraph]}>Log In</Text>
                 </Button>
@@ -368,7 +369,7 @@ const styles = StyleSheet.create({
     color: "#158964"
   },
   profilePic: {
-    width:150,
+    width: 150,
     height: 150,
     paddingBottom: 100,
     alignSelf: 'center'

@@ -3,9 +3,11 @@ import {Icon, Button, Text, Container, Content} from 'native-base';
 import Axios from 'axios';
 // import { AppLoading, Asset, Font } from 'expo';
 //import t from 'tcomb-form-native';
-import {createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer} from 'react-navigation';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'react-native-best-viewpager';
-import { Platform, StyleSheet, View, Dimensions, Image } from "react-native";  
+import { Platform, StatusBar, StyleSheet, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+// import { AppLoading, Asset, Font } from 'expo';
+//import t from 'tcomb-form-native';
+import { createStackNavigator, createAppContainer, StackNavigator, createNavigationContainer } from 'react-navigation';
 import PageHeader from '../components/PageHeader';
 
 /**
@@ -14,15 +16,14 @@ import PageHeader from '../components/PageHeader';
  * Instead of some paragraphs to serve as an on-boarding session, it'll be much better to
  * create a little tutorial guide that shows the user how to fill out and generate QR codes
  * with our app.
-   */
+*/
 
-
-  class SurveyPage extends Component {
+class SurveyPage extends Component {
 
   static navigationOptions = {
     title: 'New Survey',
-    drawerIcon: ({focused}) => (
-      <Icon type='AntDesign' name='form' style={{fontSize: 20, color:(focused ? 'dodgerblue' : 'black')}} />
+    drawerIcon: ({ focused }) => (
+      <Icon type='AntDesign' name='form' style={{ fontSize: 20, color: (focused ? 'dodgerblue' : 'black') }} />
     )
   }
 

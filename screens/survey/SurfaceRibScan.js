@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {Text, View} from 'react-native'
-import {Button, Tab,Icon, Tabs, Header, Left, Body, Right, Picker} from 'native-base'
+import { Text, View } from 'react-native'
+import { Button, Tab, Icon, Tabs, Header, Left, Body, Right, Picker } from 'native-base'
 
 import styles from './surveyStyles'
 import RibInput from './RibInput'
@@ -31,7 +31,7 @@ export default class SurfaceRibScan extends Component {
      * - This is a boolean variable that is used to remake the tab sections when the user leaves
      *   the survey or navigates to another section.
      */
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -96,17 +96,17 @@ export default class SurfaceRibScan extends Component {
      */
 
     remakeTabs = () => {
-        const {ribData} = this.state;
-        if(ribData.r1Start !== undefined){
+        const { ribData } = this.state;
+        if (ribData.r1Start !== undefined) {
             this.submitAddRib('1', ribData.r1Length, ribData.r1Start);
         }
-        if(ribData.r2Start !== undefined){
+        if (ribData.r2Start !== undefined) {
             this.submitAddRib('2', ribData.r2Length, ribData.r2Start);
         }
-        if(ribData.r3Start !== undefined){
+        if (ribData.r3Start !== undefined) {
             this.submitAddRib('3', ribData.r3Length, ribData.r3Start);
         }
-        if(ribData.r4Start !== undefined){
+        if (ribData.r4Start !== undefined) {
             this.submitAddRib('4', ribData.r4Length, ribData.r4Start);
         }
         this.props.setRemade();
@@ -116,8 +116,8 @@ export default class SurfaceRibScan extends Component {
      * We need to check to see if we're editing a pre-existing survey. If so,
      * we have to reconstruct the tabs
      */
-    componentWillMount(){
-        if(!this.state.remade)
+    componentWillMount() {
+        if (!this.state.remade)
             this.remakeTabs()
     }
 
@@ -132,15 +132,15 @@ export default class SurfaceRibScan extends Component {
                 <Header hasTabs style={headerStyles.header}>
                     <Left style={headerStyles.headerContents}>
                         <Button transparent onPress={this.props.openBackModal}>
-                            <Icon type="AntDesign" name='close'/>
+                            <Icon type="AntDesign" name='close' />
                         </Button>
                     </Left>
                     <Body style={headerStyles.headerContents}>
-                        <Text style={{fontSize: 18, color: 'white'}}>Surface Rib Scan</Text>
+                        <Text style={{ fontSize: 18, color: 'white' }}>Surface Rib Scan</Text>
                     </Body>
                     <Right style={headerStyles.headerContents}>
                         <Button success onPress={this.props.onClickFinish}>
-                            <Text style={{padding: 5, color: 'white'}}>Finish</Text>
+                            <Text style={{ padding: 5, color: 'white' }}>Finish</Text>
                         </Button>
                     </Right>
                 </Header>
@@ -158,9 +158,9 @@ export default class SurfaceRibScan extends Component {
                                     ribsToSelect={this.state.ribsToSelect}
                                 />
                             </Tab>
-                        : null
+                            : null
                     }
-                   {this.state.tabArray}
+                    {this.state.tabArray}
                 </Tabs>
 
             </View>
